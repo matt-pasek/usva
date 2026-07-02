@@ -1,4 +1,4 @@
-export { cn } from "./lib/cn.js";
+export { cn } from "./cn.js";
 export { springs, variants } from "./motion/presets.js";
 export * from "./primitives/badge/index.js";
 export * from "./primitives/card/index.js";

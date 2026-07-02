@@ -1,5 +1,5 @@
 import * as React from "react";
-import { cn } from "../../lib/cn-static.js";
+import { cn } from "../../cn.js";
 
 type Div = React.HTMLAttributes<HTMLDivElement>;
 const make = (base: string, name: string) =>

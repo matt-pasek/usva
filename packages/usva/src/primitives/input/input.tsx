@@ -1,6 +1,6 @@
 "use client";
 import * as React from "react";
-import { cn } from "../../lib/cn.js";
+import { cn } from "../../cn.js";
 
 export type InputProps = React.InputHTMLAttributes<HTMLInputElement>;
 
