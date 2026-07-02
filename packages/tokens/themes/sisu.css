@@ -1,0 +1,9 @@
+[data-theme="sisu"] {
+  --usva-font-sans: 'Inter', system-ui, sans-serif;
+  --usva-font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+  --usva-bg: #0f1116; --usva-surface: #171a21; --usva-surface-2: #1e222b; --usva-overlay: #12141a;
+  --usva-ink: #f3f3ff; --usva-muted: #a7adbd; --usva-faint: #5b6070; --usva-on-accent: #0f1116;
+  --usva-accent: #7ea0ff; --usva-accent-2: #5c7cff; --usva-accent-ink: #f3f3ff;
+  --usva-success: #4ad991; --usva-warning: #ffc861; --usva-danger: #ff6b83; --usva-info: #7ea0ff;
+  --usva-border: #262b36; --usva-border-strong: #363c4a; --usva-ring: #7ea0ff;
+}

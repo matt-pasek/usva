@@ -1,0 +1,23 @@
+@theme {
+  --font-sans: var(--usva-font-sans);
+  --font-mono: var(--usva-font-mono);
+  --color-bg: var(--usva-bg);
+  --color-surface: var(--usva-surface);
+  --color-surface-2: var(--usva-surface-2);
+  --color-overlay: var(--usva-overlay);
+  --color-ink: var(--usva-ink);
+  --color-muted: var(--usva-muted);
+  --color-faint: var(--usva-faint);
+  --color-on-accent: var(--usva-on-accent);
+  --color-accent: var(--usva-accent);
+  --color-accent-2: var(--usva-accent-2);
+  --color-accent-ink: var(--usva-accent-ink);
+  --color-success: var(--usva-success);
+  --color-warning: var(--usva-warning);
+  --color-danger: var(--usva-danger);
+  --color-info: var(--usva-info);
+  --color-border: var(--usva-border);
+  --color-border-strong: var(--usva-border-strong);
+  --color-ring: var(--usva-ring);
+  --radius-sm: 0.25rem; --radius-md: 0.5rem; --radius-lg: 0.75rem; --radius-xl: 1rem;
+}
