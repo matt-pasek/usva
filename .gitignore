@@ -9,3 +9,6 @@ registry/r/
 # planning/specs
 docs/superpowers/
 .idea/
+
+# case-study working notes (kept local)
+USVA_CASE_STUDY.md

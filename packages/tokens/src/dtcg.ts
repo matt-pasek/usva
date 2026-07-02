@@ -10,7 +10,11 @@ export function toDTCG() {
     space: Object.fromEntries(Object.entries(tokens.space).map(([k, v]) => [k, dim(v)])),
     text: Object.fromEntries(Object.entries(tokens.text).map(([k, v]) => [k, dim(v)])),
     motion: {
-      duration: Object.fromEntries(Object.entries(tokens.motion.duration).map(([k, v]) => [k, dur(v)])),
+      duration: {
+        fast: dur(tokens.motion.duration.fast),
+        base: dur(tokens.motion.duration.base),
+        slow: dur(tokens.motion.duration.slow),
+      },
     },
   };
 }

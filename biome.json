@@ -1,6 +1,6 @@
 {
   "$schema": "https://biomejs.dev/schemas/2.3.0/schema.json",
-  "files": { "ignore": ["dist", ".next", "registry/r", "node_modules"] },
+  "files": { "includes": ["**", "!**/dist/**", "!**/.next/**", "!**/registry/r/**", "!**/node_modules/**"] },
   "formatter": { "enabled": true, "indentStyle": "space", "indentWidth": 2 },
   "linter": { "enabled": true, "rules": { "recommended": true } }
 }
