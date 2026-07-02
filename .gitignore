@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.turbo/
+registry/r/
+.next/
+*.log
+.DS_Store
+
+# planning/specs
+docs/superpowers/
