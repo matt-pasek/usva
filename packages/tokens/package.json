@@ -1,0 +1,22 @@
+{
+  "name": "@matt-pasek/usva-tokens",
+  "version": "0.0.0",
+  "type": "module",
+  "license": "MIT",
+  "sideEffects": ["*.css"],
+  "exports": {
+    ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" },
+    "./preset": { "types": "./dist/preset.d.ts", "import": "./dist/preset.js" },
+    "./theme.css": "./theme.css",
+    "./themes/portfolio.css": "./themes/portfolio.css",
+    "./themes/sisu.css": "./themes/sisu.css",
+    "./tokens.dtcg.json": "./dist/tokens.dtcg.json"
+  },
+  "scripts": {
+    "build": "tsup && bun run src/emit-dtcg.ts",
+    "typecheck": "tsc --noEmit",
+    "lint": "biome check .",
+    "test": "vitest run"
+  },
+  "devDependencies": { "tsup": "^8.3.0", "vitest": "^2.1.0" }
+}
