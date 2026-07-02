@@ -8,7 +8,7 @@
     ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" },
     "./preset": { "types": "./dist/preset.d.ts", "import": "./dist/preset.js" },
     "./theme.css": "./theme.css",
-    "./themes/portfolio.css": "./themes/portfolio.css",
+    "./themes/kajo.css": "./themes/kajo.css",
     "./themes/sisu.css": "./themes/sisu.css",
     "./tokens.dtcg.json": "./dist/tokens.dtcg.json"
   },
