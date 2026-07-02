@@ -1,0 +1,16 @@
+{
+  "name": "@matt-pasek/usva-cli",
+  "version": "0.0.0",
+  "type": "module",
+  "license": "MIT",
+  "bin": { "usva": "./dist/usva.js" },
+  "exports": { ".": { "types": "./dist/build-registry.d.ts", "import": "./dist/build-registry.js" } },
+  "scripts": {
+    "build": "tsup",
+    "registry": "bun run src/build-registry.ts",
+    "typecheck": "tsc --noEmit",
+    "lint": "biome check .",
+    "test": "vitest run"
+  },
+  "devDependencies": { "@types/bun": "^1.1.14", "tsup": "^8.3.0", "vitest": "^2.1.0" }
+}
