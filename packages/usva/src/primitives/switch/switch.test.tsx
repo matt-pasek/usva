@@ -18,7 +18,8 @@ describe("Switch", () => {
     const onCheckedChange = vi.fn();
     render(<Switch label="Notifications" onCheckedChange={onCheckedChange} />);
     const el = screen.getByRole("switch", { name: "Notifications" });
-    el.focus();
+    await userEvent.tab();
+    expect(el).toHaveFocus();
     await userEvent.keyboard(" ");
     expect(onCheckedChange.mock.calls[0]?.[0]).toBe(true);
   });
