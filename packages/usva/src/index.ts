@@ -6,6 +6,7 @@ export * from "./primitives/card/index.js";
 export * from "./primitives/checkbox/index.js";
 export * from "./primitives/dialog/index.js";
 export * from "./primitives/input/index.js";
+export * from "./primitives/popover/index.js";
 export * from "./primitives/radio/index.js";
 export * from "./primitives/select/index.js";
 export * from "./primitives/switch/index.js";
