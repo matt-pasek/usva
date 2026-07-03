@@ -30,6 +30,7 @@ export const NAMES = [
   "radio",
   "select",
   "switch",
+  "tabs",
   "tooltip",
 ] as const;
 
