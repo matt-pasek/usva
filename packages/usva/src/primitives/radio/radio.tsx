@@ -37,7 +37,7 @@ export const RadioGroup = React.forwardRef(RadioGroupImpl) as <Value = string>(
 (RadioGroup as { displayName?: string }).displayName = "RadioGroup";
 
 const rootVariants = cva(
-  "flex shrink-0 items-center justify-center rounded-full border border-border bg-surface outline-none transition-colors data-[checked]:border-accent focus-visible:ring-2 focus-visible:ring-ring aria-invalid:border-danger disabled:cursor-not-allowed disabled:opacity-50",
+  "relative flex shrink-0 items-center justify-center rounded-full border border-border bg-surface outline-none transition-[color,background-color,border-color,box-shadow,scale] duration-200 ease-soft before:absolute before:-inset-2.5 before:content-[''] data-[unchecked]:hover:border-border-strong data-[checked]:border-accent data-[checked]:glow-ring active:scale-[0.98] motion-reduce:transition-none motion-reduce:transform-none focus-visible:border-transparent focus-visible:ring-focus aria-invalid:border-danger disabled:cursor-not-allowed disabled:opacity-50",
   {
     variants: {
       size: {
@@ -49,7 +49,7 @@ const rootVariants = cva(
   },
 );
 
-const indicatorVariants = cva("rounded-full bg-accent", {
+const indicatorVariants = cva("rounded-full bg-accent bg-gradient-accent", {
   variants: {
     size: {
       sm: "h-2 w-2",
@@ -86,8 +86,9 @@ export const Radio = React.forwardRef<HTMLButtonElement, RadioProps>(
             {...props}
           >
             <Base.Indicator
+              keepMounted
               className={cn(
-                "flex items-center justify-center data-[unchecked]:hidden",
+                "flex items-center justify-center transition-[scale] duration-200 ease-spring motion-reduce:transition-none motion-reduce:transform-none data-[unchecked]:scale-0 data-[checked]:scale-100",
               )}
             >
               <span className={indicatorVariants({ size })} />

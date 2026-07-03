@@ -35,10 +35,10 @@ export const DialogContent = React.forwardRef<
       ref={ref}
       className={cn(
         "fixed left-1/2 top-1/2 z-overlay w-full max-w-md -translate-x-1/2 -translate-y-1/2",
-        "rounded-lg border border-border bg-surface p-6 text-ink shadow-lg",
-        "transition-[opacity,transform] duration-200 motion-reduce:transition-none motion-reduce:transform-none",
-        "data-[starting-style]:opacity-0 data-[starting-style]:scale-95 data-[starting-style]:-translate-x-1/2 data-[starting-style]:-translate-y-[calc(50%-0.5rem)]",
-        "data-[ending-style]:opacity-0 data-[ending-style]:scale-95",
+        "rim-light wash-accent isolate rounded-2xl border border-border bg-surface p-6 text-ink shadow-overlay",
+        "transition-[opacity,translate,scale,filter] duration-[350ms] ease-spring motion-reduce:transition-none motion-reduce:transform-none",
+        "data-[starting-style]:opacity-0 data-[starting-style]:blur-[4px] data-[starting-style]:scale-[0.96] data-[starting-style]:-translate-x-1/2 data-[starting-style]:-translate-y-[calc(50%-0.75rem)]",
+        "data-[ending-style]:opacity-0 data-[ending-style]:scale-[0.98] data-[ending-style]:-translate-x-1/2 data-[ending-style]:-translate-y-[calc(50%-0.25rem)] data-[ending-style]:duration-200 data-[ending-style]:ease-soft",
         className,
       )}
       {...props}
@@ -55,7 +55,10 @@ export const DialogTitle = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <Base.Title
     ref={ref}
-    className={cn("text-lg font-semibold text-ink", className)}
+    className={cn(
+      "text-balance text-lg font-semibold tracking-[-0.01em] text-ink",
+      className,
+    )}
     {...props}
   />
 ));
@@ -67,7 +70,7 @@ export const DialogDescription = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <Base.Description
     ref={ref}
-    className={cn("text-sm text-muted", className)}
+    className={cn("text-pretty text-sm text-muted", className)}
     {...props}
   />
 ));
@@ -80,8 +83,10 @@ export const DialogClose = React.forwardRef<
   <Base.Close
     ref={ref}
     className={cn(
-      "inline-flex items-center justify-center rounded-md text-muted outline-none transition-colors",
-      "hover:text-ink focus-visible:ring-2 focus-visible:ring-ring",
+      "inline-flex items-center justify-center rounded-md text-muted outline-none",
+      "transition-[color,background-color,scale] duration-150 ease-soft",
+      "hover:bg-surface-2 hover:text-ink active:scale-[0.96] focus-visible:ring-focus",
+      "motion-reduce:transition-none motion-reduce:transform-none",
       className,
     )}
     {...props}

@@ -9,7 +9,7 @@ export const skeletonVariants = cva(
       variant: {
         text: "h-4 w-full rounded-md",
         circle: "aspect-square rounded-full",
-        rect: "rounded-md",
+        rect: "rounded-lg",
       },
     },
     defaultVariants: { variant: "text" },

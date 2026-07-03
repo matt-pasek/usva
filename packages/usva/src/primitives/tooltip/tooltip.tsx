@@ -12,11 +12,14 @@ export const TooltipContent = React.forwardRef<
   React.ComponentPropsWithoutRef<typeof Base.Popup> & { sideOffset?: number }
 >(({ className, sideOffset = 6, children, ...props }, ref) => (
   <Base.Portal>
-    <Base.Positioner sideOffset={sideOffset}>
+    <Base.Positioner sideOffset={sideOffset} className="z-overlay">
       <Base.Popup
         ref={ref}
         className={cn(
-          "z-50 rounded-md border border-border bg-overlay px-2.5 py-1.5 text-xs text-ink shadow-md",
+          "rim-light rounded-md border border-border bg-surface-2 px-2.5 py-1.5 font-mono text-[11px] leading-none text-ink shadow-raised",
+          "transition-[opacity,translate] duration-150 ease-soft motion-reduce:transition-none motion-reduce:transform-none",
+          "data-[starting-style]:translate-y-0.5 data-[starting-style]:opacity-0",
+          "data-[ending-style]:translate-y-0.5 data-[ending-style]:opacity-0",
           className,
         )}
         {...props}

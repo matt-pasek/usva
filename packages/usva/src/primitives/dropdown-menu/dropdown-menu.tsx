@@ -27,10 +27,10 @@ export const DropdownMenuContent = React.forwardRef<
       <Base.Popup
         ref={ref}
         className={cn(
-          "min-w-40 rounded-md border border-border bg-overlay py-1 text-sm text-ink shadow-md",
-          "transition-[opacity,transform] duration-150 motion-reduce:transition-none motion-reduce:transform-none",
-          "data-[starting-style]:opacity-0 data-[starting-style]:scale-95",
-          "data-[ending-style]:opacity-0 data-[ending-style]:scale-95",
+          "rim-light min-w-40 rounded-lg border border-border bg-surface-2 p-1 text-sm text-ink shadow-floating",
+          "origin-[var(--transform-origin)] transition-[opacity,translate,scale,filter] duration-200 ease-spring motion-reduce:transition-none motion-reduce:transform-none",
+          "data-[starting-style]:translate-y-1 data-[starting-style]:scale-[0.97] data-[starting-style]:opacity-0 data-[starting-style]:blur-[2px]",
+          "data-[ending-style]:scale-[0.98] data-[ending-style]:opacity-0 data-[ending-style]:duration-150 data-[ending-style]:ease-soft",
           className,
         )}
         {...props}
@@ -57,8 +57,9 @@ export const DropdownMenuItem = React.forwardRef<
     ref={ref}
     onClick={onSelect}
     className={cn(
-      "flex cursor-default items-center gap-2 px-3 py-1.5 outline-none",
-      "data-[highlighted]:bg-surface-2",
+      "relative flex cursor-default select-none items-center gap-2 rounded-md px-2.5 py-2 text-muted outline-none",
+      "before:absolute before:inset-0 before:rounded-[inherit] before:bg-ink/0 before:transition-colors before:duration-150 before:content-[''] motion-reduce:before:transition-none",
+      "[&>*]:relative data-[highlighted]:text-ink data-[highlighted]:before:bg-ink/5",
       "data-[disabled]:cursor-not-allowed data-[disabled]:opacity-50",
       className,
     )}
@@ -73,7 +74,7 @@ export const DropdownMenuSeparator = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <hr
     ref={ref}
-    className={cn("my-1 h-px border-0 bg-border", className)}
+    className={cn("-mx-1 my-1 h-px border-0 bg-border", className)}
     {...props}
   />
 ));
@@ -85,7 +86,7 @@ export const DropdownMenuLabel = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn("px-3 py-1.5 text-xs text-muted", className)}
+    className={cn("px-2.5 py-1.5 text-xs text-faint", className)}
     {...props}
   />
 ));

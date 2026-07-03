@@ -26,16 +26,19 @@ export const SelectTrigger = React.forwardRef<
   <Base.Trigger
     ref={ref}
     className={cn(
-      "flex h-10 w-full items-center justify-between gap-2 rounded-md border border-border bg-surface px-3 text-sm text-ink outline-none transition-colors",
-      "focus-visible:ring-2 focus-visible:ring-ring",
-      "aria-invalid:border-danger aria-invalid:ring-danger",
+      "group flex h-10 w-full items-center justify-between gap-2 rounded-lg border border-border bg-surface px-3 text-sm text-ink outline-none",
+      "transition-[color,box-shadow,border-color] duration-200 ease-soft",
+      "hover:border-border-strong",
+      "focus-visible:border-transparent focus-visible:ring-focus",
+      "data-[popup-open]:border-transparent data-[popup-open]:ring-focus",
+      "aria-invalid:border-danger",
       "disabled:cursor-not-allowed disabled:opacity-50",
       className,
     )}
     {...props}
   >
     {children}
-    <Base.Icon className="text-muted">
+    <Base.Icon className="text-muted transition-transform duration-200 ease-soft group-data-[popup-open]:rotate-180">
       <ChevronIcon />
     </Base.Icon>
   </Base.Trigger>
@@ -53,7 +56,10 @@ export const SelectContent = React.forwardRef<
       <Base.Popup
         ref={ref}
         className={cn(
-          "max-h-64 overflow-auto rounded-md border border-border bg-overlay py-1 text-sm text-ink shadow-md",
+          "rim-light max-h-[min(24rem,var(--available-height))] min-w-[var(--anchor-width)] overflow-auto rounded-lg border border-border bg-surface-2 p-1 text-sm text-ink shadow-floating",
+          "origin-[var(--transform-origin)] transition-[opacity,translate,scale,filter] duration-200 ease-spring motion-reduce:transition-none motion-reduce:transform-none",
+          "data-[starting-style]:translate-y-1 data-[starting-style]:scale-[0.97] data-[starting-style]:opacity-0 data-[starting-style]:blur-[2px]",
+          "data-[ending-style]:scale-[0.98] data-[ending-style]:opacity-0 data-[ending-style]:duration-150 data-[ending-style]:ease-soft",
           className,
         )}
         {...props}
@@ -72,15 +78,17 @@ export const SelectItem = React.forwardRef<HTMLDivElement, SelectItemProps>(
     <Base.Item
       ref={ref}
       className={cn(
-        "flex cursor-default items-center justify-between gap-2 px-3 py-1.5 outline-none",
-        "data-[highlighted]:bg-surface-2",
+        "relative flex cursor-default select-none items-center justify-between gap-2 rounded-md px-2.5 py-2 text-muted outline-none",
+        "before:absolute before:inset-0 before:rounded-[inherit] before:bg-ink/0 before:transition-colors before:duration-150 before:content-[''] motion-reduce:before:transition-none",
+        "data-[highlighted]:text-ink data-[highlighted]:before:bg-ink/5",
+        "data-[selected]:glow-ring data-[selected]:text-ink",
         "data-[disabled]:cursor-not-allowed data-[disabled]:opacity-50",
         className,
       )}
       {...props}
     >
-      <Base.ItemText>{children}</Base.ItemText>
-      <Base.ItemIndicator className="text-accent">
+      <Base.ItemText className="relative">{children}</Base.ItemText>
+      <Base.ItemIndicator className="relative text-accent">
         <CheckIcon />
       </Base.ItemIndicator>
     </Base.Item>

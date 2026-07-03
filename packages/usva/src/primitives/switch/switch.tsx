@@ -6,7 +6,7 @@ import * as React from "react";
 import { cn } from "../../cn.js";
 
 const trackVariants = cva(
-  "relative inline-flex shrink-0 items-center rounded-full border border-border bg-surface-2 outline-none transition-colors data-[checked]:border-accent data-[checked]:bg-accent focus-visible:ring-2 focus-visible:ring-ring aria-invalid:border-danger disabled:cursor-not-allowed disabled:opacity-50",
+  "relative inline-flex shrink-0 items-center rounded-full border border-border bg-surface-2 outline-none transition-[color,background-color,border-color,box-shadow] duration-200 ease-soft before:absolute before:-inset-y-2 before:inset-x-0 before:content-[''] data-[unchecked]:hover:border-border-strong data-[checked]:border-accent data-[checked]:bg-accent data-[checked]:bg-gradient-accent data-[checked]:glow-ring focus-visible:border-transparent focus-visible:ring-focus aria-invalid:border-danger disabled:cursor-not-allowed disabled:opacity-50",
   {
     variants: {
       size: {
@@ -19,7 +19,7 @@ const trackVariants = cva(
 );
 
 const thumbVariants = cva(
-  "block rounded-full bg-ink shadow-sm transition-transform duration-200 ease-out motion-reduce:transition-none data-[checked]:bg-on-accent",
+  "block rounded-full bg-ink shadow-raised transition-[translate] duration-200 ease-spring motion-reduce:transition-none motion-reduce:transform-none data-[checked]:bg-on-accent",
   {
     variants: {
       size: {

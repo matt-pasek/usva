@@ -34,10 +34,10 @@ export const PopoverContent = React.forwardRef<
       <Base.Popup
         ref={ref}
         className={cn(
-          "rounded-lg border border-border bg-overlay p-4 text-ink shadow-lg",
-          "transition-[opacity,transform] duration-150 motion-reduce:transition-none motion-reduce:transform-none",
-          "data-[starting-style]:opacity-0 data-[starting-style]:scale-95",
-          "data-[ending-style]:opacity-0 data-[ending-style]:scale-95",
+          "rim-light rounded-xl border border-border bg-surface-2 p-4 text-ink shadow-floating",
+          "origin-[var(--transform-origin)] transition-[opacity,translate,scale,filter] duration-200 ease-spring motion-reduce:transition-none motion-reduce:transform-none",
+          "data-[starting-style]:translate-y-1 data-[starting-style]:scale-[0.97] data-[starting-style]:opacity-0 data-[starting-style]:blur-[2px]",
+          "data-[ending-style]:scale-[0.98] data-[ending-style]:opacity-0 data-[ending-style]:duration-150 data-[ending-style]:ease-soft",
           className,
         )}
         {...props}
@@ -53,7 +53,11 @@ export const PopoverArrow = React.forwardRef<
   HTMLDivElement,
   React.ComponentPropsWithoutRef<typeof Base.Arrow>
 >(({ className, ...props }, ref) => (
-  <Base.Arrow ref={ref} className={cn("fill-overlay", className)} {...props} />
+  <Base.Arrow
+    ref={ref}
+    className={cn("fill-surface-2", className)}
+    {...props}
+  />
 ));
 PopoverArrow.displayName = "PopoverArrow";
 
@@ -88,8 +92,9 @@ export const PopoverClose = React.forwardRef<
   <Base.Close
     ref={ref}
     className={cn(
-      "inline-flex items-center justify-center rounded-md text-muted outline-none transition-colors",
-      "hover:text-ink focus-visible:ring-2 focus-visible:ring-ring",
+      "inline-flex items-center justify-center rounded-md text-muted outline-none",
+      "transition-[color] duration-150 ease-soft",
+      "hover:text-ink focus-visible:ring-focus",
       className,
     )}
     {...props}
