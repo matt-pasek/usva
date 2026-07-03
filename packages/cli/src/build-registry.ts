@@ -30,6 +30,7 @@ export const NAMES = [
   "popover",
   "radio",
   "select",
+  "skeleton",
   "switch",
   "tabs",
   "toast",

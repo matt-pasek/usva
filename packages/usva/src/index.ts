@@ -11,6 +11,7 @@ export * from "./primitives/input/index.js";
 export * from "./primitives/popover/index.js";
 export * from "./primitives/radio/index.js";
 export * from "./primitives/select/index.js";
+export * from "./primitives/skeleton/index.js";
 export * from "./primitives/switch/index.js";
 export * from "./primitives/tabs/index.js";
 export * from "./primitives/toast/index.js";
