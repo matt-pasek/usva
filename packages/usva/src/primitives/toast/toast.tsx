@@ -37,17 +37,11 @@ export interface ToastProviderProps {
   timeout?: number;
 }
 
-const swipeTransform = {
-  transform:
-    "translateX(var(--toast-swipe-movement-x, 0px)) translateY(var(--toast-swipe-movement-y, 0px))",
-};
-
 function ToastItem({ toast: item }: { toast: Base.Root.ToastObject }) {
   return (
     <Base.Root
       toast={item}
       swipeDirection={["down", "right"]}
-      style={swipeTransform}
       className={cn(
         "pointer-events-auto flex w-full max-w-sm flex-col gap-1 rounded-lg border border-border bg-surface p-4 text-ink shadow-lg",
         "border-l-4",
