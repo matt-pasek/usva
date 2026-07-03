@@ -24,6 +24,7 @@ export const NAMES = [
   "card",
   "checkbox",
   "input",
+  "radio",
   "tooltip",
 ] as const;
 
