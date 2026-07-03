@@ -1,9 +1,23 @@
-[data-theme="kajo"], :root {
-  --usva-font-sans: 'Fira Sans', system-ui, sans-serif;
-  --usva-font-mono: 'Fira Mono', ui-monospace, monospace;
-  --usva-bg: #0a0613; --usva-surface: #100b1f; --usva-surface-2: #120e1c; --usva-overlay: #0c0718;
-  --usva-ink: #e6e3f2; --usva-muted: #8b85a8; --usva-faint: #4c4663; --usva-on-accent: #0a0613;
-  --usva-accent: #a78bfa; --usva-accent-2: #8b5cf6; --usva-accent-ink: #e6e3f2;
-  --usva-success: #52c989; --usva-warning: #e0b341; --usva-danger: #e0556b; --usva-info: #6ea8fe;
-  --usva-border: #221c30; --usva-border-strong: #3a3350; --usva-ring: #a78bfa;
+[data-theme="kajo"],
+:root {
+  --usva-font-sans: "Fira Sans", system-ui, sans-serif;
+  --usva-font-mono: "Fira Mono", ui-monospace, monospace;
+  --usva-bg: #0a0613;
+  --usva-surface: #100b1f;
+  --usva-surface-2: #120e1c;
+  --usva-overlay: #0c0718;
+  --usva-ink: #e6e3f2;
+  --usva-muted: #8b85a8;
+  --usva-faint: #4c4663;
+  --usva-on-accent: #0a0613;
+  --usva-accent: #a78bfa;
+  --usva-accent-2: #8b5cf6;
+  --usva-accent-ink: #e6e3f2;
+  --usva-success: #52c989;
+  --usva-warning: #e0b341;
+  --usva-danger: #e0556b;
+  --usva-info: #6ea8fe;
+  --usva-border: #221c30;
+  --usva-border-strong: #3a3350;
+  --usva-ring: #a78bfa;
 }

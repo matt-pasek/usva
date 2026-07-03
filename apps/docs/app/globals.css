@@ -1,7 +1,11 @@
-@import 'tailwindcss';
-@import '@matt-pasek/usva-tokens/theme.css';
-@import '@matt-pasek/usva-tokens/themes/kajo.css';
-@import '@matt-pasek/usva-tokens/themes/sisu.css';
+@import "tailwindcss";
+@import "@matt-pasek/usva-tokens/theme.css";
+@import "@matt-pasek/usva-tokens/themes/kajo.css";
+@import "@matt-pasek/usva-tokens/themes/sisu.css";
 @source '../node_modules/@matt-pasek/usva/dist/index.js';
 
-body { background: var(--usva-bg); color: var(--usva-ink); font-family: var(--font-sans); }
+body {
+  background: var(--usva-bg);
+  color: var(--usva-ink);
+  font-family: var(--font-sans);
+}

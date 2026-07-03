@@ -2,7 +2,13 @@
   "name": "docs",
   "private": true,
   "type": "module",
-  "scripts": { "dev": "next dev", "build": "next build", "start": "next start", "lint": "biome check .", "typecheck": "tsc --noEmit" },
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "biome check .",
+    "typecheck": "tsc --noEmit"
+  },
   "dependencies": {
     "@matt-pasek/usva": "workspace:*",
     "@matt-pasek/usva-tokens": "workspace:*",

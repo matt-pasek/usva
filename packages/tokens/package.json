@@ -3,10 +3,18 @@
   "version": "0.0.0",
   "type": "module",
   "license": "MIT",
-  "sideEffects": ["*.css"],
+  "sideEffects": [
+    "*.css"
+  ],
   "exports": {
-    ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" },
-    "./preset": { "types": "./dist/preset.d.ts", "import": "./dist/preset.js" },
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./preset": {
+      "types": "./dist/preset.d.ts",
+      "import": "./dist/preset.js"
+    },
     "./theme.css": "./theme.css",
     "./themes/kajo.css": "./themes/kajo.css",
     "./themes/sisu.css": "./themes/sisu.css",
@@ -18,5 +26,8 @@
     "lint": "biome check .",
     "test": "vitest run"
   },
-  "devDependencies": { "tsup": "^8.3.0", "vitest": "^2.1.0" }
+  "devDependencies": {
+    "tsup": "^8.3.0",
+    "vitest": "^2.1.0"
+  }
 }

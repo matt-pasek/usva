@@ -2,7 +2,10 @@
   "$schema": "https://turbo.build/schema.json",
   "tasks": {
     "build": { "dependsOn": ["^build"], "outputs": ["dist/**"] },
-    "docs#build": { "dependsOn": ["^build"], "outputs": [".next/**", "!.next/cache/**"] },
+    "docs#build": {
+      "dependsOn": ["^build"],
+      "outputs": [".next/**", "!.next/cache/**"]
+    },
     "registry": { "dependsOn": ["^build"], "outputs": ["../../registry/r/**"] },
     "lint": {},
     "typecheck": { "dependsOn": ["^build"] },

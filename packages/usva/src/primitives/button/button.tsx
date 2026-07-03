@@ -13,7 +13,11 @@ export const buttonVariants = cva(
         ghost: "bg-transparent text-ink hover:bg-surface-2",
         outline: "border border-border text-ink hover:bg-surface-2",
       },
-      size: { sm: "h-8 px-3 text-sm", md: "h-10 px-4 text-sm", lg: "h-12 px-6 text-base" },
+      size: {
+        sm: "h-8 px-3 text-sm",
+        md: "h-10 px-4 text-sm",
+        lg: "h-12 px-6 text-base",
+      },
     },
     defaultVariants: { variant: "solid", size: "md" },
   },
@@ -28,13 +32,24 @@ export interface ButtonProps
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, asChild, ...props }, ref) => {
     const Comp = asChild ? Slot : "button";
-    return <Comp ref={ref} className={cn(buttonVariants({ variant, size }), className)} {...props} />;
+    return (
+      <Comp
+        ref={ref}
+        className={cn(buttonVariants({ variant, size }), className)}
+        {...props}
+      />
+    );
   },
 );
 Button.displayName = "Button";
 
-function Slot({ children, className, ...props }: React.HTMLAttributes<HTMLElement> & { children?: React.ReactNode }) {
-  if (!React.isValidElement<React.HTMLAttributes<HTMLElement>>(children)) return null;
+function Slot({
+  children,
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLElement> & { children?: React.ReactNode }) {
+  if (!React.isValidElement<React.HTMLAttributes<HTMLElement>>(children))
+    return null;
   const childProps = children.props;
   return React.cloneElement(children, {
     ...props,

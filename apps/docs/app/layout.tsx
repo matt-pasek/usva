@@ -4,7 +4,10 @@ import type { ReactNode } from "react";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://usva.dev"),
-  title: { default: "usva. — beautiful, usable React components", template: "%s · usva." },
+  title: {
+    default: "usva. — beautiful, usable React components",
+    template: "%s · usva.",
+  },
   description:
     "An open-source React design system: dual-distributed as an npm package and a shadcn-compatible registry.",
   openGraph: { type: "website", url: "https://usva.dev", siteName: "usva." },
@@ -24,7 +27,11 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html lang="en" data-theme="kajo">
       <body>
         {children}
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+        <script
+          type="application/ld+json"
+          // biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD structured data must be injected as a raw script body
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
       </body>
     </html>
   );

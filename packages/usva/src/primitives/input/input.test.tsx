@@ -12,6 +12,8 @@ describe("Input", () => {
   });
   it("reflects invalid state", () => {
     render(<Input aria-label="x" aria-invalid />);
-    expect(screen.getByLabelText("x").className).toContain("aria-invalid:border-danger");
+    expect(screen.getByLabelText("x").className).toContain(
+      "aria-invalid:border-danger",
+    );
   });
 });
