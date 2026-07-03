@@ -6,6 +6,7 @@ registry/r/
 storybook-static/
 *.log
 .DS_Store
+*.tsbuildinfo
 
 # planning/specs
 docs/superpowers/
