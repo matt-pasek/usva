@@ -66,6 +66,19 @@ describe("Radio + RadioGroup", () => {
     expect(screen.getByText("Choose plan A")).toBeInTheDocument();
   });
 
+  it("announces horizontal orientation via aria-orientation", () => {
+    render(
+      <RadioGroup name="plan" orientation="horizontal" aria-label="Plan">
+        <Radio value="a" label="A" />
+        <Radio value="b" label="B" />
+      </RadioGroup>,
+    );
+    expect(screen.getByRole("radiogroup")).toHaveAttribute(
+      "aria-orientation",
+      "horizontal",
+    );
+  });
+
   it("no a11y violations", async () => {
     const { container } = render(
       <RadioGroup name="plan" aria-label="Plan">

@@ -20,6 +20,7 @@ function RadioGroupImpl<Value = string>(
   return (
     <BaseRadioGroup
       ref={ref}
+      aria-orientation={orientation}
       className={cn(
         "flex gap-3",
         orientation === "horizontal" ? "flex-row" : "flex-col",
