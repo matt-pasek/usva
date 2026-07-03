@@ -68,13 +68,12 @@ export const DropdownMenuItem = React.forwardRef<
 DropdownMenuItem.displayName = "DropdownMenuItem";
 
 export const DropdownMenuSeparator = React.forwardRef<
-  HTMLDivElement,
-  React.ComponentPropsWithoutRef<"div">
+  HTMLHRElement,
+  React.ComponentPropsWithoutRef<"hr">
 >(({ className, ...props }, ref) => (
-  <div
+  <hr
     ref={ref}
-    role="separator"
-    className={cn("my-1 h-px bg-border", className)}
+    className={cn("my-1 h-px border-0 bg-border", className)}
     {...props}
   />
 ));
