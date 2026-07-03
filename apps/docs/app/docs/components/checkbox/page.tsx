@@ -1,5 +1,7 @@
 import { Card, CardBody, CardHeader } from "@matt-pasek/usva";
 import type { Metadata } from "next";
+import { InstallBlock } from "@/components/install-block";
+import { SourceView } from "@/components/source-view";
 import { CheckboxDemo } from "./checkbox-demo";
 
 export const metadata: Metadata = {
@@ -43,8 +45,6 @@ const usageSnippet = `import { Checkbox } from "@matt-pasek/usva";
   onCheckedChange={(checked) => console.log(checked)}
 />`;
 
-const registrySnippet = "npx shadcn add https://usva.dev/r/checkbox.json";
-
 export default function CheckboxPage() {
   return (
     <main className="mx-auto flex max-w-2xl flex-col gap-8 p-10">
@@ -65,23 +65,8 @@ export default function CheckboxPage() {
 
       <Card>
         <CardHeader>Install</CardHeader>
-        <CardBody className="flex flex-col gap-4">
-          <div className="flex flex-col gap-1">
-            <p className="text-sm text-muted">
-              As a package dependency (recommended):
-            </p>
-            <pre className="overflow-x-auto rounded-md border border-border bg-surface-2 p-3 text-xs text-ink">
-              <code>bun add @matt-pasek/usva</code>
-            </pre>
-          </div>
-          <div className="flex flex-col gap-1">
-            <p className="text-sm text-muted">
-              Or copy the source into your project via shadcn:
-            </p>
-            <pre className="overflow-x-auto rounded-md border border-border bg-surface-2 p-3 text-xs text-ink">
-              <code>{registrySnippet}</code>
-            </pre>
-          </div>
+        <CardBody>
+          <InstallBlock registryName="checkbox" />
         </CardBody>
       </Card>
 
@@ -91,6 +76,13 @@ export default function CheckboxPage() {
           <pre className="overflow-x-auto rounded-md border border-border bg-surface-2 p-3 text-xs text-ink">
             <code>{usageSnippet}</code>
           </pre>
+        </CardBody>
+      </Card>
+
+      <Card>
+        <CardHeader>Source</CardHeader>
+        <CardBody>
+          <SourceView filePath="packages/usva/src/primitives/checkbox/checkbox.tsx" />
         </CardBody>
       </Card>
 
