@@ -31,9 +31,7 @@ function RadioGroupImpl<Value = string>(
   );
 }
 
-export const RadioGroup = React.forwardRef(RadioGroupImpl) as <
-  Value = string,
->(
+export const RadioGroup = React.forwardRef(RadioGroupImpl) as <Value = string>(
   props: RadioGroupProps<Value> & { ref?: React.Ref<HTMLDivElement> },
 ) => React.ReactElement;
 (RadioGroup as { displayName?: string }).displayName = "RadioGroup";
