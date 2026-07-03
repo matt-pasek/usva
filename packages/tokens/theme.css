@@ -21,13 +21,111 @@
   --color-border: var(--usva-border);
   --color-border-strong: var(--usva-border-strong);
   --color-ring: var(--usva-ring);
+  --color-live: var(--usva-live, var(--usva-accent));
   --radius-sm: 0.25rem; --radius-md: 0.5rem; --radius-lg: 0.75rem; --radius-xl: 1rem;
+  --radius-2xl: 1.25rem; --radius-3xl: 1.5rem;
+  --ease-soft: var(--usva-ease-soft, cubic-bezier(0.22, 1, 0.36, 1));
+  --ease-emphasis: var(--usva-ease-emphasis, cubic-bezier(0.25, 0, 0, 1));
+  --ease-spring: var(--usva-ease-spring, cubic-bezier(0.22, 1, 0.36, 1));
 }
 
 @utility z-base { z-index: var(--usva-z-base); }
 @utility z-dropdown { z-index: var(--usva-z-dropdown); }
 @utility z-overlay { z-index: var(--usva-z-overlay); }
 @utility z-toast { z-index: var(--usva-z-toast); }
+
+/* ── Elevation recipe ─────────────────────────────────────
+   Single box-shadow vocabulary; kajo skins it bold, sisu quiet.
+   Each level bundles the inset top-highlight so surfaces read
+   as lit from above. State transitions swap one level for
+   another (never stack), so there is no box-shadow conflict. */
+@utility shadow-raised   { box-shadow: var(--usva-inset-hairline), var(--usva-shadow-raised); }
+@utility shadow-floating { box-shadow: var(--usva-inset-hairline), var(--usva-shadow-floating); }
+@utility shadow-overlay  { box-shadow: var(--usva-inset-hairline), var(--usva-shadow-overlay); }
+
+/* Colored accent bloom — the signature "faint glow" on interactive/live parts */
+@utility glow-accent        { box-shadow: var(--usva-glow-accent); }
+@utility glow-accent-strong { box-shadow: var(--usva-glow-accent-strong); }
+
+/* Glow ring — the shared selection/energy idiom: crisp accent ring hugging the
+   edge, plus (in bold skins) an outer bloom. One shadow, swaps cleanly with the
+   elevation levels above. */
+@utility glow-ring { box-shadow: var(--usva-glow-ring); }
+
+/* Rim light — a 1px gradient catching the top edge of a raised surface, as if
+   lit from above. Skins tint it: bold themes tint toward the accent, quiet
+   themes keep it near-white and faint. */
+@utility rim-light {
+  position: relative;
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 10%;
+    right: 10%;
+    height: 1px;
+    pointer-events: none;
+    background-image: linear-gradient(
+      to right,
+      transparent,
+      var(--usva-rim-light, rgb(255 255 255 / 0.08)),
+      transparent
+    );
+  }
+}
+
+/* Radial accent wash — atmosphere instead of flat fills. Themes define the
+   full gradient stack (bold skins run a dual accent/accent-alt wash). */
+@utility wash-accent {
+  background-image: var(--usva-wash-accent);
+  background-repeat: no-repeat;
+}
+
+/* Inner-lit accent fill — solid surfaces (primary buttons) read as a material
+   catching light, not a flat swatch. */
+@utility bg-gradient-accent { background-image: var(--usva-gradient-accent); }
+
+/* Focus recipe — one utility, applied via focus-visible: */
+@utility ring-focus { box-shadow: var(--usva-focus); }
+
+/* Gradient hairline — the SectionLabel motif; put on a 1px-tall element.
+   Strength is a theme dial: bold skins glow, quiet skins whisper. */
+@utility hairline-accent {
+  background-image: linear-gradient(
+    to right,
+    color-mix(in srgb, var(--usva-accent) var(--usva-hairline-strength, 45%), transparent),
+    transparent
+  );
+}
+
+/* Signature enter animation — fade up with a short blur-in */
+@keyframes usva-reveal-up {
+  from { opacity: 0; transform: translateY(12px); filter: blur(4px); }
+  to   { opacity: 1; transform: none; filter: blur(0); }
+}
+@utility animate-reveal {
+  animation: usva-reveal-up 0.45s var(--usva-ease-emphasis, cubic-bezier(0.25, 0, 0, 1)) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .animate-reveal { animation: none; }
+}
+
+/* Live pulse — the green heartbeat. Reserved for things that are actually
+   alive right now (live status, current step); never decorative. */
+@keyframes usva-live-pulse {
+  0% {
+    box-shadow: 0 0 0 0
+      color-mix(in srgb, var(--usva-live, var(--usva-accent)) 60%, transparent);
+  }
+  70% { box-shadow: 0 0 0 6px transparent; }
+  100% { box-shadow: 0 0 0 0 transparent; }
+}
+@utility animate-live-pulse {
+  animation: usva-live-pulse 2s var(--usva-ease-soft, cubic-bezier(0.22, 1, 0.36, 1)) infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .animate-live-pulse { animation: none; }
+}
 
 @keyframes shimmer {
   from { background-position: 150% 0; }
