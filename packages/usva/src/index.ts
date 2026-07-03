@@ -1,5 +1,6 @@
 export { cn } from "./cn.js";
 export { springs, variants } from "./motion/presets.js";
+export * from "./primitives/avatar/index.js";
 export * from "./primitives/badge/index.js";
 export * from "./primitives/button/index.js";
 export * from "./primitives/card/index.js";

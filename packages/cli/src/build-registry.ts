@@ -19,6 +19,7 @@ const here = dirname(fileURLToPath(import.meta.url));
 const PRIMITIVES = resolve(here, "../../usva/src/primitives");
 const OUT = resolve(here, "../../../registry/r");
 export const NAMES = [
+  "avatar",
   "button",
   "badge",
   "card",
