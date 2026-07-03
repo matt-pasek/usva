@@ -24,6 +24,7 @@ export const NAMES = [
   "card",
   "checkbox",
   "dialog",
+  "dropdown-menu",
   "input",
   "popover",
   "radio",
