@@ -27,6 +27,11 @@ describe("Skeleton", () => {
     });
   });
 
+  it("applies radius via style", () => {
+    const { container } = render(<Skeleton radius={8} />);
+    expect(container.firstChild).toHaveStyle({ borderRadius: "8px" });
+  });
+
   it("no a11y violations", async () => {
     const { container } = render(<Skeleton />);
     expect(await axe(container)).toHaveNoViolations();
