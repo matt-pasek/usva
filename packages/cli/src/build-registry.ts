@@ -18,7 +18,14 @@ export interface RegistryItem {
 const here = dirname(fileURLToPath(import.meta.url));
 const PRIMITIVES = resolve(here, "../../usva/src/primitives");
 const OUT = resolve(here, "../../../registry/r");
-const NAMES = ["button", "badge", "card", "input", "tooltip"] as const;
+const NAMES = [
+  "button",
+  "badge",
+  "card",
+  "checkbox",
+  "input",
+  "tooltip",
+] as const;
 
 export async function buildRegistry(): Promise<void> {
   mkdirSync(OUT, { recursive: true });
