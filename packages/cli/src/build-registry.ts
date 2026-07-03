@@ -23,6 +23,7 @@ export const NAMES = [
   "badge",
   "card",
   "checkbox",
+  "dialog",
   "input",
   "radio",
   "select",
