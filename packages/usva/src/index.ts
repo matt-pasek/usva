@@ -1,7 +1,18 @@
 export { cn } from "./cn.js";
 export { springs, variants } from "./motion/presets.js";
+export * from "./primitives/avatar/index.js";
 export * from "./primitives/badge/index.js";
 export * from "./primitives/button/index.js";
 export * from "./primitives/card/index.js";
+export * from "./primitives/checkbox/index.js";
+export * from "./primitives/dialog/index.js";
+export * from "./primitives/dropdown-menu/index.js";
 export * from "./primitives/input/index.js";
+export * from "./primitives/popover/index.js";
+export * from "./primitives/radio/index.js";
+export * from "./primitives/select/index.js";
+export * from "./primitives/skeleton/index.js";
+export * from "./primitives/switch/index.js";
+export * from "./primitives/tabs/index.js";
+export * from "./primitives/toast/index.js";
 export * from "./primitives/tooltip/index.js";

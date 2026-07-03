@@ -3,8 +3,10 @@ dist/
 .turbo/
 registry/r/
 .next/
+storybook-static/
 *.log
 .DS_Store
+*.tsbuildinfo
 
 # planning/specs
 docs/superpowers/

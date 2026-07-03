@@ -5,12 +5,14 @@
   --color-surface: var(--usva-surface);
   --color-surface-2: var(--usva-surface-2);
   --color-overlay: var(--usva-overlay);
+  --color-scrim: var(--usva-scrim);
   --color-ink: var(--usva-ink);
   --color-muted: var(--usva-muted);
   --color-faint: var(--usva-faint);
   --color-on-accent: var(--usva-on-accent);
   --color-accent: var(--usva-accent);
   --color-accent-2: var(--usva-accent-2);
+  --color-accent-alt: var(--usva-accent-alt);
   --color-accent-ink: var(--usva-accent-ink);
   --color-success: var(--usva-success);
   --color-warning: var(--usva-warning);
@@ -20,4 +22,25 @@
   --color-border-strong: var(--usva-border-strong);
   --color-ring: var(--usva-ring);
   --radius-sm: 0.25rem; --radius-md: 0.5rem; --radius-lg: 0.75rem; --radius-xl: 1rem;
+}
+
+@utility z-base { z-index: var(--usva-z-base); }
+@utility z-dropdown { z-index: var(--usva-z-dropdown); }
+@utility z-overlay { z-index: var(--usva-z-overlay); }
+@utility z-toast { z-index: var(--usva-z-toast); }
+
+@keyframes shimmer {
+  from { background-position: 150% 0; }
+  to { background-position: -50% 0; }
+}
+@utility animate-shimmer {
+  background-image: linear-gradient(
+    100deg,
+    transparent 20%,
+    color-mix(in srgb, var(--usva-surface) 60%, transparent) 40%,
+    color-mix(in srgb, var(--usva-muted) 40%, transparent) 50%,
+    transparent 80%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.6s ease-in-out infinite;
 }

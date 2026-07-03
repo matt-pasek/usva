@@ -3,12 +3,14 @@ export const ROLE_NAMES = [
   "surface",
   "surface-2",
   "overlay",
+  "scrim",
   "ink",
   "muted",
   "faint",
   "on-accent",
   "accent",
   "accent-2",
+  "accent-alt",
   "accent-ink",
   "success",
   "warning",
@@ -20,3 +22,12 @@ export const ROLE_NAMES = [
 ] as const;
 
 export type RoleName = (typeof ROLE_NAMES)[number];
+
+export const Z_LAYERS = {
+  base: 0,
+  dropdown: 20,
+  overlay: 40,
+  toast: 60,
+} as const;
+
+export type ZLayerName = keyof typeof Z_LAYERS;

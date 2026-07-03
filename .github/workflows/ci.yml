@@ -1,0 +1,52 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    name: test (react ${{ matrix.react }})
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        react: [18, 19]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.3.13
+      - run: bun install
+
+      # default install resolves react/react-dom@19 (peerDependencies: react >=18);
+      # for the 18 leg, swap the resolved version in packages/usva before running tests
+      - if: matrix.react == 18
+        name: pin react@18 for this leg
+        run: bun add -D react@18 react-dom@18 --exact
+        working-directory: packages/usva
+
+      - run: bun run build
+      - run: bun run lint
+      - run: bun run typecheck
+      - run: bun run test
+
+  chromatic:
+    name: chromatic
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.3.13
+      - run: bun install
+      - uses: chromaui/action@latest
+        with:
+          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+          workingDir: packages/usva
+          buildScriptName: build-storybook
+          onlyChanged: true
+          exitZeroOnChanges: true
