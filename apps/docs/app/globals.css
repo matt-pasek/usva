@@ -2,7 +2,7 @@
 @import "@matt-pasek/usva-tokens/theme.css";
 @import "@matt-pasek/usva-tokens/themes/kajo.css";
 @import "@matt-pasek/usva-tokens/themes/sisu.css";
-@source '../node_modules/@matt-pasek/usva/dist/index.js';
+@source '../node_modules/@matt-pasek/usva/dist/**/*.js';
 
 body {
   background: var(--usva-bg);

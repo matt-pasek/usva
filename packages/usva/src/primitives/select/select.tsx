@@ -1,6 +1,5 @@
 "use client";
 import { Select as Base } from "@base-ui/react/select";
-import { Z_LAYERS } from "@matt-pasek/usva-tokens";
 import * as React from "react";
 import { cn } from "../../cn.js";
 
@@ -50,10 +49,7 @@ export const SelectContent = React.forwardRef<
   React.ComponentPropsWithoutRef<typeof Base.Popup> & { sideOffset?: number }
 >(({ className, sideOffset = 6, children, ...props }, ref) => (
   <Base.Portal>
-    <Base.Positioner
-      sideOffset={sideOffset}
-      style={{ zIndex: Z_LAYERS.dropdown }}
-    >
+    <Base.Positioner sideOffset={sideOffset} className="z-dropdown">
       <Base.Popup
         ref={ref}
         className={cn(
