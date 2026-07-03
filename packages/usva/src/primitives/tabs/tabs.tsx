@@ -38,7 +38,7 @@ export const TabsTab = React.forwardRef<HTMLButtonElement, TabsTabProps>(
       ref={ref}
       className={cn(
         "px-3 py-2 text-sm text-muted outline-none transition-colors",
-        "data-[selected]:text-ink",
+        "data-[active]:text-ink",
         "focus-visible:ring-2 focus-visible:ring-ring",
         "data-[disabled]:cursor-not-allowed data-[disabled]:opacity-50",
         className,
