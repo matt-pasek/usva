@@ -6,6 +6,10 @@ describe("roles", () => {
     expect(ROLE_NAMES).toContain("scrim");
   });
 
+  it("includes accent-alt as the paired green brand accent role", () => {
+    expect(ROLE_NAMES).toContain("accent-alt");
+  });
+
   it("exposes a z-index layer scale", () => {
     expect(Z_LAYERS).toMatchObject({
       base: expect.any(Number),

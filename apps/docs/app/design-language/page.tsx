@@ -69,7 +69,7 @@ export default function DesignLanguagePage() {
                 {p.accentPair ? (
                   <span>
                     <span className="text-accent">Two</span> accents,{" "}
-                    <span className="text-success">paired</span>
+                    <span className="text-accent-alt">paired</span>
                   </span>
                 ) : (
                   p.title

@@ -10,6 +10,7 @@ export const ROLE_NAMES = [
   "on-accent",
   "accent",
   "accent-2",
+  "accent-alt",
   "accent-ink",
   "success",
   "warning",
