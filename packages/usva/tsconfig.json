@@ -3,5 +3,5 @@
   "compilerOptions": {
     "outDir": "dist"
   },
-  "include": ["src", "vitest.setup.ts", "vitest.d.ts"]
+  "include": ["src", "vitest.setup.ts", "vitest.d.ts", ".storybook"]
 }
