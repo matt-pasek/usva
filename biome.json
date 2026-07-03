@@ -8,6 +8,7 @@
       "!**/registry/r",
       "!**/node_modules",
       "!**/.turbo",
+      "!**/storybook-static",
       "!**/*.css"
     ]
   },

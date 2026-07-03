@@ -7,6 +7,10 @@
       "outputs": [".next/**", "!.next/cache/**"]
     },
     "registry": { "dependsOn": ["^build"], "outputs": ["../../registry/r/**"] },
+    "build-storybook": {
+      "dependsOn": ["^build"],
+      "outputs": ["storybook-static/**"]
+    },
     "lint": {},
     "typecheck": { "dependsOn": ["^build"] },
     "test": { "dependsOn": ["^build"] }
