@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 
 const routes = [
   "",
+  "/design-language",
   "/docs/installation",
   "/docs/theming",
   "/docs/components/button",

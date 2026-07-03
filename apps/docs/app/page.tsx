@@ -6,12 +6,16 @@ import {
   CardHeader,
   Input,
 } from "@matt-pasek/usva";
+import Link from "next/link";
 import { ThemeSwitcher } from "../components/ThemeSwitcher";
 
 export default function Home() {
   return (
     <main className="mx-auto flex max-w-2xl flex-col gap-6 p-10">
       <h1 className="text-3xl font-semibold">usva.</h1>
+      <Link href="/design-language" className="text-sm text-accent">
+        design language →
+      </Link>
       <ThemeSwitcher />
       <Card>
         <CardHeader>
