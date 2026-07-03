@@ -5,6 +5,7 @@
   --color-surface: var(--usva-surface);
   --color-surface-2: var(--usva-surface-2);
   --color-overlay: var(--usva-overlay);
+  --color-scrim: var(--usva-scrim);
   --color-ink: var(--usva-ink);
   --color-muted: var(--usva-muted);
   --color-faint: var(--usva-faint);
@@ -21,3 +22,8 @@
   --color-ring: var(--usva-ring);
   --radius-sm: 0.25rem; --radius-md: 0.5rem; --radius-lg: 0.75rem; --radius-xl: 1rem;
 }
+
+@utility z-base { z-index: var(--usva-z-base); }
+@utility z-dropdown { z-index: var(--usva-z-dropdown); }
+@utility z-overlay { z-index: var(--usva-z-overlay); }
+@utility z-toast { z-index: var(--usva-z-toast); }

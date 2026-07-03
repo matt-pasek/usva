@@ -6,6 +6,7 @@
   --usva-surface: #100b1f;
   --usva-surface-2: #120e1c;
   --usva-overlay: #0c0718;
+  --usva-scrim: rgba(10, 6, 19, 0.6);
   --usva-ink: #e6e3f2;
   --usva-muted: #8b85a8;
   --usva-faint: #4c4663;
@@ -20,4 +21,8 @@
   --usva-border: #221c30;
   --usva-border-strong: #3a3350;
   --usva-ring: #a78bfa;
+  --usva-z-base: 0;
+  --usva-z-dropdown: 20;
+  --usva-z-overlay: 40;
+  --usva-z-toast: 60;
 }
