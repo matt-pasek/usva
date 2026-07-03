@@ -55,8 +55,8 @@ export default function DropdownMenuPage() {
         <p className="text-muted">
           Built on Base UI <code>Menu</code>, with a portal-positioned menu,
           roving keyboard focus, and dotted compound composition (
-          <code>DropdownMenu.Trigger</code>, <code>DropdownMenu.Content</code>
-          , <code>DropdownMenu.Item</code>).
+          <code>DropdownMenu.Trigger</code>, <code>DropdownMenu.Content</code>,{" "}
+          <code>DropdownMenu.Item</code>).
         </p>
       </div>
 
