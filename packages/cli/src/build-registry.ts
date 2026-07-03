@@ -31,6 +31,7 @@ export const NAMES = [
   "select",
   "switch",
   "tabs",
+  "toast",
   "tooltip",
 ] as const;
 
