@@ -18,6 +18,7 @@
     "./theme.css": "./theme.css",
     "./themes/kajo.css": "./themes/kajo.css",
     "./themes/sisu.css": "./themes/sisu.css",
+    "./themes/savi.css": "./themes/savi.css",
     "./tokens.dtcg.json": "./dist/tokens.dtcg.json"
   },
   "scripts": {

@@ -10,4 +10,14 @@ describe("toDTCG", () => {
     const out = toDTCG();
     expect(out.motion.duration.base.$value).toBe("200ms");
   });
+
+  it("exports every duration tier, so the Figma scale matches the code", () => {
+    const out = toDTCG();
+    expect(Object.keys(out.motion.duration).sort()).toEqual([
+      "ambient",
+      "base",
+      "fast",
+      "slow",
+    ]);
+  });
 });

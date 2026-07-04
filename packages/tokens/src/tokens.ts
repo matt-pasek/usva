@@ -26,11 +26,23 @@ export const tokens = {
     "4xl": "2.25rem",
   },
   motion: {
-    duration: { fast: "120ms", base: "200ms", slow: "360ms" },
+    /**
+     * The savi (neutral) baseline. kajo stretches these and sisu compresses
+     * them via --usva-duration-*; see each theme file. Assign by what moves:
+     * fast = colour/border/opacity, base = transform/scale/shadow,
+     * slow = enter-exit and travelling indicators, ambient = media zoom and
+     * progress travel.
+     */
+    duration: {
+      fast: "150ms",
+      base: "200ms",
+      slow: "300ms",
+      ambient: "500ms",
+    },
     easing: {
-      standard: "cubic-bezier(0.2,0,0,1)",
-      entrance: "cubic-bezier(0,0,0,1)",
-      exit: "cubic-bezier(0.3,0,1,1)",
+      soft: "cubic-bezier(0.22, 1, 0.36, 1)",
+      emphasis: "cubic-bezier(0.25, 0, 0, 1)",
+      spring: "cubic-bezier(0.34, 1.56, 0.64, 1)",
     },
     spring: {
       soft: { type: "spring", stiffness: 210, damping: 30 },

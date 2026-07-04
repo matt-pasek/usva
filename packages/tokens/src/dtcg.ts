@@ -16,11 +16,9 @@ export function toDTCG() {
       Object.entries(tokens.text).map(([k, v]) => [k, dim(v)]),
     ),
     motion: {
-      duration: {
-        fast: dur(tokens.motion.duration.fast),
-        base: dur(tokens.motion.duration.base),
-        slow: dur(tokens.motion.duration.slow),
-      },
+      duration: Object.fromEntries(
+        Object.entries(tokens.motion.duration).map(([k, v]) => [k, dur(v)]),
+      ) as Record<keyof typeof tokens.motion.duration, DTCGToken>,
     },
   };
 }
