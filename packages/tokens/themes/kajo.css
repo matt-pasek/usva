@@ -3,8 +3,9 @@
   --usva-font-sans: "Fira Sans", system-ui, sans-serif;
   --usva-font-mono: "Fira Mono", ui-monospace, monospace;
   --usva-bg: #0a0613;
+  --usva-sunken: #0c0719;
   --usva-surface: #100b1f;
-  --usva-surface-2: #120e1c;
+  --usva-surface-2: #181328;
   --usva-overlay: #0c0718;
   --usva-scrim: rgba(10, 6, 19, 0.6);
   --usva-ink: #e6e3f2;
@@ -14,6 +15,7 @@
   --usva-accent: #a78bfa;
   --usva-accent-2: #8b5cf6;
   --usva-accent-alt: #52c989;
+  --usva-accent-tint: #2e254b;
   --usva-accent-ink: #e6e3f2;
   --usva-success: #52c989;
   --usva-warning: #e0b341;
@@ -83,6 +85,13 @@
     0, 0.2247 4.4%, 0.4771 9.6%, 0.6503 13.9%, 0.8177 19.4%, 0.9302 25.2%,
     1.0038 32.5%, 1.0361 41.3%, 1.0384 52%, 1.0176 68.9%, 1.0032 84.2%, 1
   );
+
+  /* Motion — languid; the showy pole. Stretched past the baseline so the
+     spring overshoot has room to read. */
+  --usva-duration-fast: 160ms;
+  --usva-duration-base: 220ms;
+  --usva-duration-slow: 340ms;
+  --usva-duration-ambient: 560ms;
 
   --usva-z-base: 0;
   --usva-z-dropdown: 20;
