@@ -6,9 +6,9 @@ import { cn } from "../../cn.js";
 export const buttonVariants = cva(
   cn(
     "relative isolate inline-flex select-none items-center justify-center gap-2 whitespace-nowrap rounded-lg font-medium tracking-[-0.01em] outline-none",
-    "transition-[color,background-color,box-shadow,border-color,scale,filter] duration-150 ease-soft",
+    "transition-control duration-fast ease-soft",
     "active:scale-[0.96] motion-reduce:transition-none motion-reduce:transform-none",
-    "before:pointer-events-none before:absolute before:inset-0 before:-z-10 before:rounded-[inherit] before:bg-transparent before:transition-colors before:duration-150",
+    "before:pointer-events-none before:absolute before:inset-0 before:-z-10 before:rounded-[inherit] before:bg-transparent before:transition-tint before:duration-fast",
     "focus-visible:ring-focus",
     "disabled:pointer-events-none disabled:opacity-50 disabled:saturate-[0.7]",
     "[&_svg]:pointer-events-none [&_svg]:shrink-0",
