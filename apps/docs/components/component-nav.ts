@@ -3,9 +3,18 @@ export type NavGroup = { label: string; items: NavItem[] };
 
 export const componentNav: NavGroup[] = [
   {
+    label: "Motion",
+    items: [
+      { slug: "reveal", label: "Reveal" },
+      { slug: "page-transition", label: "Page Transition" },
+    ],
+  },
+  {
     label: "Primitives",
     items: [
+      { slug: "announcement", label: "Announcement" },
       { slug: "avatar", label: "Avatar" },
+      { slug: "avatar-group", label: "Avatar Group" },
       { slug: "badge", label: "Badge" },
       { slug: "button", label: "Button" },
       { slug: "card", label: "Card" },
@@ -13,14 +22,17 @@ export const componentNav: NavGroup[] = [
       { slug: "chip", label: "Chip" },
       { slug: "dialog", label: "Dialog" },
       { slug: "dropdown-menu", label: "Dropdown Menu" },
+      { slug: "icon-button", label: "Icon Button" },
       { slug: "input", label: "Input" },
       { slug: "label", label: "Label" },
+      { slug: "notification-badge", label: "Notification Badge" },
       { slug: "popover", label: "Popover" },
       { slug: "progress", label: "Progress" },
       { slug: "radio", label: "Radio" },
       { slug: "select", label: "Select" },
       { slug: "skeleton", label: "Skeleton" },
       { slug: "spinner", label: "Spinner" },
+      { slug: "stat-chip", label: "Stat Chip" },
       { slug: "switch", label: "Switch" },
       { slug: "tabs", label: "Tabs" },
       { slug: "toast", label: "Toast" },
@@ -31,8 +43,12 @@ export const componentNav: NavGroup[] = [
     label: "Patterns",
     items: [
       { slug: "bento-grid", label: "Bento Grid" },
+      { slug: "panel", label: "Panel" },
       { slug: "section-label", label: "Section Label" },
       { slug: "stat-card", label: "Stat Card" },
+      { slug: "stripe-card", label: "Stripe Card" },
+      { slug: "step-list", label: "Step List" },
+      { slug: "feature-carousel", label: "Feature Carousel" },
       { slug: "empty-state", label: "Empty State" },
       { slug: "field-group", label: "Field Group" },
       { slug: "entity-card", label: "Entity Card" },

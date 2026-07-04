@@ -14,7 +14,7 @@ export function InstallBlock({
         <p className="text-sm text-muted">
           As a package dependency (recommended):
         </p>
-        <pre className="overflow-x-auto rounded-md border border-border bg-surface-2 p-3 text-xs text-ink">
+        <pre className="overflow-x-auto rounded-md border border-border bg-sunken p-3 text-xs text-on-sunken">
           <code>bun add {packageName}</code>
         </pre>
       </div>
@@ -22,7 +22,7 @@ export function InstallBlock({
         <p className="text-sm text-muted">
           Or copy the source into your project via shadcn:
         </p>
-        <pre className="overflow-x-auto rounded-md border border-border bg-surface-2 p-3 text-xs text-ink">
+        <pre className="overflow-x-auto rounded-md border border-border bg-sunken p-3 text-xs text-on-sunken">
           <code>npx shadcn add https://usva.dev/r/{registryName}.json</code>
         </pre>
       </div>

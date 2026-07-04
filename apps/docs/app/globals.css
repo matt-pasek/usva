@@ -3,6 +3,7 @@
 @import "@matt-pasek/usva-tokens/theme.css";
 @import "@matt-pasek/usva-tokens/themes/kajo.css";
 @import "@matt-pasek/usva-tokens/themes/sisu.css";
+@import "@matt-pasek/usva-tokens/themes/savi.css";
 @source '../../../packages/usva/dist/**/*.js';
 /* the /design-language token reference builds `bg-<role>` class names at
    runtime from ROLE_NAMES, which Tailwind's static scanner can't see —
