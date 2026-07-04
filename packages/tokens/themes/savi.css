@@ -1,0 +1,116 @@
+/* savi — Finnish for "clay". The grounded light theme: beige surfaces,
+   coffee-brown ink, a cool-oat sunken well read against espresso type, and
+   pastel green carried by the tint role.
+
+   Two constraints shape this palette:
+   1. Brown is dark orange. A well sits near the top of the lightness scale,
+      so any orange-hue chroma up there reads peach, not brown. The brown
+      therefore lives in the *type* (--usva-on-sunken) and the ink, while the
+      well itself stays a quiet, low-chroma oat.
+   2. --usva-accent is used as text and must clear 4.5:1 on surface, so it
+      stays a deep sage; the softer green lives in --usva-accent-tint (fills,
+      washes) and never in type. Grounding that tint darkens it, which drops
+      --usva-accent below 4.5:1 *on* it — so the tint carries its own
+      foreground, --usva-on-tint (here accent-2), the same way sunken carries
+      on-sunken. Other themes omit on-tint and fall back to accent.
+
+   Elevation reads honestly: sunken < bg < surface < surface-2. */
+[data-theme="savi"] {
+  --usva-font-sans: "Fira Sans", system-ui, sans-serif;
+  --usva-font-mono: "Fira Mono", ui-monospace, monospace;
+  --usva-bg: #e7dcc8;
+  --usva-sunken: #d6cdb6;
+  --usva-surface: #f1ead9;
+  --usva-surface-2: #faf4e5;
+  --usva-overlay: #f1ead9;
+  --usva-scrim: rgba(58, 45, 32, 0.35);
+  --usva-ink: #33291d;
+  --usva-muted: #635544;
+  --usva-faint: #96866c;
+  --usva-on-accent: #f4efe2;
+  --usva-on-sunken: #2a1f14;
+  --usva-accent: #2f6a41;
+  --usva-accent-2: #234f31;
+  --usva-accent-alt: #935e33;
+  --usva-accent-tint: #aec2a6;
+  --usva-on-tint: #234f31;
+  --usva-accent-ink: #33291d;
+  --usva-success: #2f8f57;
+  --usva-warning: #9a6b25;
+  --usva-danger: #a8443a;
+  --usva-info: #3f6493;
+  --usva-border: #d2c4a8;
+  --usva-border-strong: #b6a37f;
+  --usva-ring: #2f6a41;
+
+  /* Elevation — soft warm-brown shadows (light theme casts dark, not white),
+     with a faint near-white top highlight. */
+  --usva-inset-hairline: inset 0 1px 0 rgba(255, 255, 255, 0.55);
+  --usva-shadow-raised: 0 1px 2px rgba(58, 45, 32, 0.14),
+    0 0 0 1px rgba(58, 45, 32, 0.05);
+  --usva-shadow-floating: 0 2px 6px rgba(58, 45, 32, 0.1),
+    0 0 0 1px rgba(58, 45, 32, 0.05), 0 18px 40px -22px rgba(58, 45, 32, 0.3);
+  --usva-shadow-overlay: 0 24px 60px rgba(58, 45, 32, 0.22),
+    0 0 0 1px rgba(58, 45, 32, 0.08);
+
+  /* Accent glow — held back for daylight; near-silent like the dashboard. */
+  --usva-glow-accent: 0 0 0 0 transparent;
+  --usva-glow-accent-strong: 0 0 12px -4px color-mix(in srgb, var(--usva-accent) 35%, transparent);
+
+  /* Glow ring — inset accent ring, no bloom (the selection idiom). */
+  --usva-glow-ring: inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    0 0 0 1px color-mix(in srgb, var(--usva-accent) 50%, transparent);
+
+  /* Rim light — near-white top edge on the warm surfaces. */
+  --usva-rim-light: rgba(255, 255, 255, 0.6);
+
+  /* Radial wash — dual earth breath: sage top-right, clay bottom-left. */
+  --usva-wash-accent: radial-gradient(
+      120% 90% at 82% -8%,
+      color-mix(in srgb, var(--usva-accent) 10%, transparent),
+      transparent 55%
+    ),
+    radial-gradient(
+      110% 90% at 8% 108%,
+      color-mix(in srgb, var(--usva-accent-alt) 8%, transparent),
+      transparent 60%
+    );
+
+  /* Inner-lit accent fill for solid surfaces. */
+  --usva-gradient-accent: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--usva-accent) 88%, #fff),
+    var(--usva-accent)
+  );
+
+  /* Hairline strength + the live heartbeat color. savi draws the rule as a
+     solid line rather than a fade — the dark themes let it dissolve into the
+     surface, but on a light ground the tail reads as a smudge, not a fade. */
+  --usva-hairline-strength: 34%;
+  --usva-hairline-end: color-mix(
+    in srgb,
+    var(--usva-accent) var(--usva-hairline-strength),
+    transparent
+  );
+  --usva-live: var(--usva-accent);
+
+  /* Focus — clean ring, faint halo, no bloom. */
+  --usva-focus: 0 0 0 1px color-mix(in srgb, var(--usva-ring) 70%, transparent),
+    0 0 0 3px color-mix(in srgb, var(--usva-ring) 22%, transparent);
+
+  /* Motion — calm and grounded, no overshoot. */
+  --usva-ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  --usva-ease-emphasis: cubic-bezier(0.25, 0, 0, 1);
+  --usva-ease-spring: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* Motion — the neutral baseline; grounded and calm, no overshoot. */
+  --usva-duration-fast: 150ms;
+  --usva-duration-base: 200ms;
+  --usva-duration-slow: 300ms;
+  --usva-duration-ambient: 500ms;
+
+  --usva-z-base: 0;
+  --usva-z-dropdown: 20;
+  --usva-z-overlay: 40;
+  --usva-z-toast: 60;
+}
