@@ -9,8 +9,11 @@ import {
   CardHeader,
   CardIcon,
   CardTitle,
+  GlowCard,
 } from "@matt-pasek/usva";
 import type { Metadata } from "next";
+import { CardHighlightDemo } from "@/components/card-highlight-demo";
+import { CardSurfaceDemo } from "@/components/card-surface-demo";
 import { InstallBlock } from "@/components/install-block";
 import { SourceView } from "@/components/source-view";
 
@@ -21,6 +24,16 @@ export const metadata: Metadata = {
 };
 
 const props = [
+  {
+    name: "highlight",
+    type: '"none" | "wash" | "edge" | "ring"',
+    desc: "Accent treatment: none (default), a radial wash, a top edge hairline, or a full glow ring.",
+  },
+  {
+    name: "surface",
+    type: '"elevated" | "flat" | "glass" | "outline"',
+    desc: "How the card sits on the page. Shared with StatCard, Panel, and Dialog. Defaults to elevated.",
+  },
   {
     name: "interactive",
     type: "boolean",
@@ -124,6 +137,53 @@ export default function CardPage() {
       </Card>
 
       <Card>
+        <CardHeader>Highlights</CardHeader>
+        <CardBody>
+          <CardHighlightDemo />
+        </CardBody>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardEyebrow>Shared with StatCard · Panel · Dialog</CardEyebrow>
+          <CardTitle>Surface</CardTitle>
+        </CardHeader>
+        <CardBody>
+          <p className="mb-4 text-sm text-muted">
+            One <code>surface</code> word picks how a card-like surface sits on
+            the page. The same vocabulary drives <code>StatCard</code>,{" "}
+            <code>Panel</code>, and <code>Dialog</code>, so a choice reads the
+            same everywhere.
+          </p>
+          <CardSurfaceDemo />
+        </CardBody>
+      </Card>
+
+      <Card>
+        <CardHeader>Pointer glow</CardHeader>
+        <CardBody>
+          <p className="mb-4 text-sm text-muted">
+            <code>GlowCard</code> lights the edge of the border facing your
+            cursor and brightens as you approach it. It uses the same
+            directional glow a <code>BentoGrid</code> shares across a whole
+            grid.
+          </p>
+          <GlowCard>
+            <CardHeader>
+              <CardEyebrow>Interactive</CardEyebrow>
+              <CardTitle>Hover near the edges</CardTitle>
+            </CardHeader>
+            <CardBody>
+              <p className="text-sm text-muted">
+                Move your cursor toward the border. The lit arc turns to follow
+                the pointer.
+              </p>
+            </CardBody>
+          </GlowCard>
+        </CardBody>
+      </Card>
+
+      <Card>
         <CardHeader>Install</CardHeader>
         <CardBody>
           <InstallBlock registryName="card" />
@@ -133,7 +193,7 @@ export default function CardPage() {
       <Card>
         <CardHeader>Usage</CardHeader>
         <CardBody>
-          <pre className="overflow-x-auto rounded-md border border-border bg-surface-2 p-3 text-xs text-ink">
+          <pre className="overflow-x-auto rounded-md border border-border bg-sunken p-3 text-xs text-on-sunken">
             <code>{usageSnippet}</code>
           </pre>
         </CardBody>

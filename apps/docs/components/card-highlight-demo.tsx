@@ -1,0 +1,50 @@
+"use client";
+import {
+  Card,
+  CardBody,
+  CardEyebrow,
+  CardHeader,
+  type CardHighlight,
+  CardTitle,
+  SegmentedControl,
+} from "@matt-pasek/usva";
+import * as React from "react";
+
+const options: { value: CardHighlight; label: string }[] = [
+  { value: "none", label: "None" },
+  { value: "wash", label: "Wash" },
+  { value: "edge", label: "Edge" },
+  { value: "ring", label: "Ring" },
+];
+
+const blurb: Record<CardHighlight, string> = {
+  none: "The default surface — rim light and floating shadow, no accent.",
+  wash: "A radial accent wash bleeds atmosphere across the surface.",
+  edge: "A single accent hairline lights the top edge.",
+  ring: "The accent glow ring hugs the whole border for a live, selected feel.",
+};
+
+export function CardHighlightDemo() {
+  const [highlight, setHighlight] = React.useState<CardHighlight>("wash");
+
+  return (
+    <div className="flex flex-col gap-4">
+      <SegmentedControl
+        size="sm"
+        items={options}
+        value={highlight}
+        onValueChange={(v) => setHighlight(v as CardHighlight)}
+        aria-label="Card highlight"
+      />
+      <Card highlight={highlight}>
+        <CardHeader>
+          <CardEyebrow>highlight = &quot;{highlight}&quot;</CardEyebrow>
+          <CardTitle>Pick a highlight</CardTitle>
+        </CardHeader>
+        <CardBody>
+          <p className="text-sm text-muted">{blurb[highlight]}</p>
+        </CardBody>
+      </Card>
+    </div>
+  );
+}

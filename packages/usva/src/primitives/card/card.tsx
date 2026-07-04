@@ -13,15 +13,54 @@ const make = (base: string, name: string) =>
 
 export type CardHighlight = "none" | "wash" | "edge" | "ring";
 
+/**
+ * The shared surface vocabulary. One word picks how any card-like surface
+ * (Card, StatCard, Panel, Dialog) sits on the page, and the same choice reads
+ * consistently across all of them.
+ *   elevated: the default. Lit-from-above surface fill, rim light, shadow.
+ *   flat:     quiet surface fill, no lift. The sisu/dashboard workhorse.
+ *   glass:    translucent, blurs what sits behind it. A rare, purposeful
+ *             choice, never a default.
+ *   outline:  transparent, carried by its border alone.
+ */
+export type CardSurface = "elevated" | "flat" | "glass" | "outline";
+
+/** Background + rim treatment per surface. No shadow; consumers pick the level. */
+export const SURFACE_SKIN: Record<CardSurface, string> = {
+  elevated: "rim-light bg-surface",
+  flat: "bg-surface",
+  glass: "rim-light bg-surface/65 backdrop-blur-md",
+  outline: "bg-transparent",
+};
+
+/** Whether a surface reads as raised (gets its host's elevation shadow). */
+export const SURFACE_ELEVATED: Record<CardSurface, boolean> = {
+  elevated: true,
+  flat: false,
+  glass: true,
+  outline: false,
+};
+
 export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
   interactive?: boolean;
   highlight?: CardHighlight;
+  surface?: CardSurface;
   /** @deprecated use `highlight="wash"` */
   wash?: boolean;
 }
 
 export const Card = React.forwardRef<HTMLDivElement, CardProps>(
-  ({ className, interactive, highlight = "none", wash, ...p }, ref) => {
+  (
+    {
+      className,
+      interactive,
+      highlight = "none",
+      surface = "elevated",
+      wash,
+      ...p
+    },
+    ref,
+  ) => {
     const resolved: CardHighlight =
       highlight === "none" && wash ? "wash" : highlight;
     return (
@@ -29,14 +68,19 @@ export const Card = React.forwardRef<HTMLDivElement, CardProps>(
         ref={ref}
         data-interactive={interactive ? "" : undefined}
         data-highlight={resolved !== "none" ? resolved : undefined}
+        data-surface={surface}
         className={cn(
-          "rim-light isolate rounded-2xl border border-border bg-surface text-ink",
-          resolved === "ring" ? "glow-ring" : "shadow-floating",
+          "isolate rounded-2xl border border-border text-ink",
+          SURFACE_SKIN[surface],
+          resolved === "ring"
+            ? "glow-ring"
+            : SURFACE_ELEVATED[surface] && "shadow-floating",
           resolved === "wash" && "wash-accent",
           resolved === "edge" &&
-            "after:absolute after:inset-x-0 after:top-0 after:h-px after:hairline-accent",
+            "after:absolute after:inset-x-5 after:top-0 after:h-px after:hairline-accent",
           interactive &&
-            "transition-[translate,box-shadow] duration-200 ease-soft hover:-translate-y-0.5 hover:shadow-overlay motion-reduce:transform-none motion-reduce:transition-none",
+            "transition-control duration-base ease-soft hover:-translate-y-0.5 motion-reduce:transform-none motion-reduce:transition-none",
+          interactive && resolved !== "ring" && "hover:shadow-overlay",
           className,
         )}
         {...p}
