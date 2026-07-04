@@ -2,17 +2,19 @@
   --usva-font-sans: "Fira Sans", system-ui, sans-serif;
   --usva-font-mono: "Fira Code", ui-monospace, SFMono-Regular, Menlo, monospace;
   --usva-bg: #0d0d11;
+  --usva-sunken: #111117;
   --usva-surface: #15151c;
   --usva-surface-2: #1d1d28;
   --usva-overlay: #14141b;
   --usva-scrim: rgba(13, 13, 17, 0.6);
   --usva-ink: #ddddf0;
-  --usva-muted: #7878a0;
+  --usva-muted: #8282ab;
   --usva-faint: #454565;
   --usva-on-accent: #06140b;
   --usva-accent: #52c989;
   --usva-accent-2: #419648;
-  --usva-accent-alt: #a78bfa;
+  --usva-accent-alt: #74e3ad;
+  --usva-accent-tint: #203530;
   --usva-accent-ink: #ddddf0;
   --usva-success: #4ad991;
   --usva-warning: #f0a84d;
@@ -69,6 +71,13 @@
   --usva-ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
   --usva-ease-emphasis: cubic-bezier(0.25, 0, 0, 1);
   --usva-ease-spring: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* Motion — snappy; the dashboard pole. Compressed so direct manipulation
+     feels immediate, matching the quiet elevation and near-silent glow. */
+  --usva-duration-fast: 120ms;
+  --usva-duration-base: 160ms;
+  --usva-duration-slow: 240ms;
+  --usva-duration-ambient: 400ms;
 
   --usva-z-base: 0;
   --usva-z-dropdown: 20;
