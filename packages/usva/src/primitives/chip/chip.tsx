@@ -6,7 +6,7 @@ import { cn } from "../../cn.js";
 export const chipVariants = cva(
   cn(
     "inline-flex items-center gap-1.5 rounded-full border font-mono font-medium uppercase tracking-wide",
-    "transition-[color,background-color,border-color,translate,box-shadow] duration-150 ease-soft",
+    "transition-control duration-fast ease-soft",
     "hover:-translate-y-0.5 hover:border-border-strong motion-reduce:transform-none motion-reduce:transition-none",
   ),
   {
@@ -78,7 +78,7 @@ export const Chip = React.forwardRef<HTMLSpanElement, ChipProps>(
           onClick={onRemove}
           className={cn(
             "-mr-1 relative ml-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full outline-none",
-            "text-current/70 transition-[color,background-color,transform] duration-150 ease-soft",
+            "text-current/70 transition-control duration-fast ease-soft",
             "hover:bg-current/10 hover:text-current active:scale-90",
             "focus-visible:ring-focus motion-reduce:transform-none motion-reduce:transition-none",
             "before:absolute before:-inset-2.5 before:content-['']",
