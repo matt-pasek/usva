@@ -17,7 +17,7 @@ export const TooltipContent = React.forwardRef<
         ref={ref}
         className={cn(
           "rim-light rounded-md border border-border bg-surface-2 px-2.5 py-1.5 font-mono text-[11px] leading-none text-ink shadow-raised",
-          "transition-[opacity,translate] duration-150 ease-soft motion-reduce:transition-none motion-reduce:transform-none",
+          "transition-enter duration-fast ease-soft motion-reduce:transition-none motion-reduce:transform-none",
           "data-[starting-style]:translate-y-0.5 data-[starting-style]:opacity-0",
           "data-[ending-style]:translate-y-0.5 data-[ending-style]:opacity-0",
           className,
