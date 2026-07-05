@@ -35,9 +35,9 @@ export const PopoverContent = React.forwardRef<
         ref={ref}
         className={cn(
           "rim-light rounded-xl border border-border bg-surface-2 p-4 text-ink shadow-floating",
-          "origin-[var(--transform-origin)] transition-[opacity,translate,scale,filter] duration-200 ease-spring motion-reduce:transition-none motion-reduce:transform-none",
+          "origin-[var(--transform-origin)] transition-enter duration-base ease-spring motion-reduce:transition-none motion-reduce:transform-none",
           "data-[starting-style]:translate-y-1 data-[starting-style]:scale-[0.97] data-[starting-style]:opacity-0 data-[starting-style]:blur-[2px]",
-          "data-[ending-style]:scale-[0.98] data-[ending-style]:opacity-0 data-[ending-style]:duration-150 data-[ending-style]:ease-soft",
+          "data-[ending-style]:scale-[0.98] data-[ending-style]:opacity-0 data-[ending-style]:duration-fast data-[ending-style]:ease-soft",
           className,
         )}
         {...props}
@@ -93,7 +93,7 @@ export const PopoverClose = React.forwardRef<
     ref={ref}
     className={cn(
       "inline-flex items-center justify-center rounded-md text-muted outline-none",
-      "transition-[color] duration-150 ease-soft",
+      "transition-tint duration-fast ease-soft",
       "hover:text-ink focus-visible:ring-focus",
       className,
     )}
