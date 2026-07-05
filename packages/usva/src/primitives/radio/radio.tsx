@@ -37,7 +37,7 @@ export const RadioGroup = React.forwardRef(RadioGroupImpl) as <Value = string>(
 (RadioGroup as { displayName?: string }).displayName = "RadioGroup";
 
 const rootVariants = cva(
-  "relative flex shrink-0 items-center justify-center rounded-full border border-border bg-surface outline-none transition-[color,background-color,border-color,box-shadow,scale] duration-200 ease-soft before:absolute before:-inset-2.5 before:content-[''] data-[unchecked]:hover:border-border-strong data-[checked]:border-accent data-[checked]:glow-ring active:scale-[0.98] motion-reduce:transition-none motion-reduce:transform-none focus-visible:border-transparent focus-visible:ring-focus aria-invalid:border-danger disabled:cursor-not-allowed disabled:opacity-50",
+  "relative flex shrink-0 items-center justify-center rounded-full border border-border bg-surface outline-none transition-control duration-base ease-soft before:absolute before:-inset-2.5 before:content-[''] data-[unchecked]:hover:border-border-strong data-[checked]:border-accent data-[checked]:glow-ring active:scale-[0.98] motion-reduce:transition-none motion-reduce:transform-none focus-visible:border-transparent focus-visible:ring-focus aria-invalid:border-danger disabled:cursor-not-allowed disabled:opacity-50",
   {
     variants: {
       size: {
@@ -58,6 +58,12 @@ const indicatorVariants = cva("rounded-full bg-accent bg-gradient-accent", {
   },
   defaultVariants: { size: "md" },
 });
+
+// Indent the description to line up under the label: control width + the gap-2.
+const descIndent: Record<NonNullable<RadioProps["size"]>, string> = {
+  sm: "pl-6",
+  md: "pl-7",
+};
 
 export interface RadioProps
   extends Omit<
@@ -88,7 +94,7 @@ export const Radio = React.forwardRef<HTMLButtonElement, RadioProps>(
             <Base.Indicator
               keepMounted
               className={cn(
-                "flex items-center justify-center transition-[scale] duration-200 ease-spring motion-reduce:transition-none motion-reduce:transform-none data-[unchecked]:scale-0 data-[checked]:scale-100",
+                "flex items-center justify-center transition-control duration-base ease-spring motion-reduce:transition-none motion-reduce:transform-none data-[unchecked]:scale-0 data-[checked]:scale-100",
               )}
             >
               <span className={indicatorVariants({ size })} />
@@ -104,7 +110,9 @@ export const Radio = React.forwardRef<HTMLButtonElement, RadioProps>(
           ) : null}
         </div>
         {description ? (
-          <Field.Description className="pl-6 text-xs text-muted">
+          <Field.Description
+            className={cn("text-xs text-muted", descIndent[size ?? "md"])}
+          >
             {description}
           </Field.Description>
         ) : null}
