@@ -2,7 +2,7 @@ import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { axe } from "jest-axe";
 import { afterEach, describe, expect, it } from "vitest";
-import { ToastProvider, toast } from "./toast.js";
+import { notify, ToastProvider, toast } from "./toast.js";
 
 function Trigger({
   onClick,
@@ -94,6 +94,25 @@ describe("Toast", () => {
     await userEvent.click(screen.getByText("go"));
     expect(await screen.findByText("Archived")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Undo" })).toBeInTheDocument();
+  });
+
+  it("notify.* sugar shows a typed toast", async () => {
+    render(
+      <ToastProvider>
+        <Trigger
+          onClick={() => notify.success("Saved", { description: "Live now." })}
+        >
+          go
+        </Trigger>
+      </ToastProvider>,
+    );
+    await userEvent.click(screen.getByText("go"));
+    const title = await screen.findByText("Saved");
+    expect(title.closest("[data-type]")).toHaveAttribute(
+      "data-type",
+      "success",
+    );
+    expect(screen.getByText("Live now.")).toBeInTheDocument();
   });
 
   it("no a11y violations on a shown toast", async () => {

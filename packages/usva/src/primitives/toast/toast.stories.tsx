@@ -20,7 +20,7 @@ function TriggerButton({
     <button
       type="button"
       onClick={onClick}
-      className="rounded-md border border-border bg-surface px-4 py-2 text-sm text-ink transition-colors hover:bg-surface-2"
+      className="rounded-md border border-border bg-surface px-4 py-2 text-sm text-ink transition-tint hover:bg-surface-2"
     >
       {children}
     </button>

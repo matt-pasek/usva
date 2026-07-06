@@ -31,6 +31,25 @@ export function toast(options: ToastOptions): string {
   });
 }
 
+export type NotifyOptions = Omit<ToastOptions, "title" | "type">;
+
+function makeNotifier(type: ToastType) {
+  return (title: React.ReactNode, options?: NotifyOptions): string =>
+    toast({ ...options, title, type });
+}
+
+/**
+ * Provider-free imperative sugar over `toast()`. Call from anywhere:
+ * `notify.success("Saved")`, `notify.error("Upload failed", { description })`.
+ */
+export const notify = {
+  success: makeNotifier("success"),
+  warning: makeNotifier("warning"),
+  danger: makeNotifier("danger"),
+  error: makeNotifier("danger"),
+  info: makeNotifier("info"),
+};
+
 export interface ToastProviderProps {
   children?: React.ReactNode;
   limit?: number;
@@ -75,15 +94,16 @@ const toneStyles: Record<ToastType, ToneStyle> = {
 
 function ToastItem({ toast: item }: { toast: Base.Root.ToastObject }) {
   const tone = item.type ? toneStyles[item.type as ToastType] : undefined;
+  const duration = typeof item.timeout === "number" ? item.timeout : 0;
   return (
     <Base.Root
       toast={item}
       swipeDirection={["down", "right"]}
       className={cn(
-        "rim-light pointer-events-auto relative isolate flex w-full max-w-sm gap-3 overflow-hidden rounded-xl border border-border bg-overlay p-4 text-ink shadow-overlay",
-        "transition-[opacity,translate,filter] duration-300 ease-spring motion-reduce:transition-none motion-reduce:transform-none",
+        "group/toast rim-light pointer-events-auto relative isolate flex w-full max-w-sm gap-3 overflow-hidden rounded-xl border border-border bg-overlay p-4 text-ink shadow-overlay",
+        "transition-enter duration-slow ease-spring motion-reduce:transition-none motion-reduce:transform-none",
         "data-[starting-style]:translate-y-3 data-[starting-style]:opacity-0 data-[starting-style]:blur-[3px]",
-        "data-[ending-style]:translate-x-4 data-[ending-style]:opacity-0 data-[ending-style]:duration-150 data-[ending-style]:ease-soft",
+        "data-[ending-style]:translate-x-4 data-[ending-style]:opacity-0 data-[ending-style]:duration-fast data-[ending-style]:ease-soft",
         "data-[swiping]:transition-none motion-reduce:data-[starting-style]:translate-none motion-reduce:data-[ending-style]:translate-none",
       )}
     >
@@ -122,7 +142,7 @@ function ToastItem({ toast: item }: { toast: Base.Root.ToastObject }) {
         <Base.Action
           className={cn(
             "mt-1 self-start rounded-md border border-border-strong px-2.5 py-1 text-xs font-medium text-ink outline-none",
-            "transition-[color,background-color,border-color,scale] duration-150 ease-soft motion-reduce:transition-none",
+            "transition-control duration-fast ease-soft motion-reduce:transition-none",
             "hover:bg-surface-2 focus-visible:border-transparent focus-visible:ring-focus",
             "active:scale-[0.98] motion-reduce:transform-none",
           )}
@@ -132,12 +152,24 @@ function ToastItem({ toast: item }: { toast: Base.Root.ToastObject }) {
         aria-label="Dismiss"
         className={cn(
           "relative -m-1 flex size-6 shrink-0 items-center justify-center rounded-md text-muted outline-none",
-          "transition-[color,background-color,scale] duration-150 ease-soft motion-reduce:transition-none motion-reduce:transform-none",
+          "transition-control duration-fast ease-soft motion-reduce:transition-none motion-reduce:transform-none",
           "hover:bg-surface-2 hover:text-ink active:scale-[0.96] focus-visible:ring-focus",
         )}
       >
         <CloseIcon />
       </Base.Close>
+      {duration > 0 ? (
+        <span
+          aria-hidden="true"
+          style={
+            { "--usva-toast-duration": `${duration}ms` } as React.CSSProperties
+          }
+          className={cn(
+            "animate-toast-countdown pointer-events-none absolute inset-x-0 bottom-0 h-0.5 opacity-60 group-hover/toast:[animation-play-state:paused]",
+            tone ? tone.dot : "bg-border-strong",
+          )}
+        />
+      ) : null}
     </Base.Root>
   );
 }

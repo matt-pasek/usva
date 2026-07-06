@@ -1,5 +1,5 @@
 "use client";
-import { ToastProvider, toast } from "@matt-pasek/usva";
+import { notify, ToastProvider, toast } from "@matt-pasek/usva";
 
 function TriggerButton({
   children,
@@ -25,21 +25,15 @@ export function ToastDemo() {
       <div className="flex flex-wrap gap-2">
         <TriggerButton
           onClick={() =>
-            toast({
-              title: "Saved",
-              description: "Your changes are live.",
-              type: "success",
-            })
+            notify.success("Saved", { description: "Your changes are live." })
           }
         >
           Success
         </TriggerButton>
         <TriggerButton
           onClick={() =>
-            toast({
-              title: "Storage almost full",
+            notify.warning("Storage almost full", {
               description: "You're at 92% of your quota.",
-              type: "warning",
             })
           }
         >
@@ -47,10 +41,8 @@ export function ToastDemo() {
         </TriggerButton>
         <TriggerButton
           onClick={() =>
-            toast({
-              title: "Upload failed",
+            notify.error("Upload failed", {
               description: "Check your connection and try again.",
-              type: "danger",
             })
           }
         >
@@ -58,10 +50,8 @@ export function ToastDemo() {
         </TriggerButton>
         <TriggerButton
           onClick={() =>
-            toast({
-              title: "New version available",
+            notify.info("New version available", {
               description: "Refresh to update.",
-              type: "info",
             })
           }
         >
