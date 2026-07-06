@@ -5,12 +5,12 @@ import { cn } from "../../cn.js";
 const badgeTone = cva("", {
   variants: {
     tone: {
-      live: "bg-live text-bg",
+      live: "bg-live text-on-accent",
       accent: "bg-accent text-on-accent",
-      "accent-alt": "bg-accent-alt text-bg",
-      success: "bg-success text-bg",
-      warning: "bg-warning text-bg",
-      danger: "bg-danger text-bg",
+      "accent-alt": "bg-accent-alt text-on-accent",
+      success: "bg-success text-on-accent",
+      warning: "bg-warning text-on-accent",
+      danger: "bg-danger text-on-accent",
     },
   },
   defaultVariants: { tone: "live" },

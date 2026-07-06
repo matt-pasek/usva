@@ -17,9 +17,9 @@ export interface NotificationBadgeProps
 
 const toneClass: Record<NotificationTone, string> = {
   accent: "bg-accent text-on-accent",
-  "accent-alt": "bg-accent-alt text-bg",
-  danger: "bg-danger text-bg",
-  warning: "bg-warning text-bg",
+  "accent-alt": "bg-accent-alt text-on-accent",
+  danger: "bg-danger text-on-accent",
+  warning: "bg-warning text-on-accent",
 };
 
 export const NotificationBadge = React.forwardRef<
