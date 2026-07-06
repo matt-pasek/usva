@@ -70,7 +70,7 @@ export const Card = React.forwardRef<HTMLDivElement, CardProps>(
         data-highlight={resolved !== "none" ? resolved : undefined}
         data-surface={surface}
         className={cn(
-          "isolate rounded-2xl border border-border text-ink",
+          "relative isolate rounded-2xl border border-border text-ink",
           SURFACE_SKIN[surface],
           resolved === "ring"
             ? "glow-ring"
