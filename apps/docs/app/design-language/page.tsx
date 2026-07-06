@@ -93,7 +93,7 @@ export default function DesignLanguagePage() {
                 </li>
               ))}
             </ul>
-            <p className="mt-4 text-xs text-faint">
+            <p className="mt-4 text-xs text-muted">
               Full Voice &amp; Tone reference lands in Phase 4.
             </p>
           </CardBody>
@@ -138,7 +138,7 @@ export default function DesignLanguagePage() {
                     className="h-2 rounded-full bg-accent"
                     style={{ width: value }}
                   />
-                  <span className="font-mono text-xs text-faint">{value}</span>
+                  <span className="font-mono text-xs text-ink">{value}</span>
                 </div>
               ))}
             </div>
@@ -157,7 +157,7 @@ export default function DesignLanguagePage() {
                       style={{ borderRadius: value }}
                     />
                     <span className="font-mono text-xs text-muted">{name}</span>
-                    <span className="font-mono text-xs text-faint">{value}</span>
+                    <span className="font-mono text-xs text-ink">{value}</span>
                   </div>
                 ))}
               </div>
@@ -174,7 +174,7 @@ export default function DesignLanguagePage() {
                     className="flex items-center justify-between font-mono text-xs"
                   >
                     <span className="text-muted">{name}</span>
-                    <span className="text-faint">{value}</span>
+                    <span className="text-ink">{value}</span>
                   </div>
                 ))}
               </div>
@@ -194,7 +194,7 @@ export default function DesignLanguagePage() {
                   <span className="text-ink" style={{ fontSize: value }}>
                     usva.
                   </span>
-                  <span className="font-mono text-xs text-faint">{value}</span>
+                  <span className="font-mono text-xs text-ink">{value}</span>
                 </div>
               ))}
             </div>
