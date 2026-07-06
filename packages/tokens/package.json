@@ -19,10 +19,11 @@
     "./themes/kajo.css": "./themes/kajo.css",
     "./themes/sisu.css": "./themes/sisu.css",
     "./themes/savi.css": "./themes/savi.css",
-    "./tokens.dtcg.json": "./dist/tokens.dtcg.json"
+    "./tokens.dtcg.json": "./dist/tokens.dtcg.json",
+    "./roles-safelist.css": "./dist/roles-safelist.css"
   },
   "scripts": {
-    "build": "tsup && bun run src/emit-dtcg.ts",
+    "build": "tsup && bun run src/emit-dtcg.ts && bun run src/emit-safelist.ts",
     "typecheck": "tsc --noEmit",
     "lint": "biome check .",
     "test": "vitest run"

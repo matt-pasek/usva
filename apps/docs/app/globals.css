@@ -4,11 +4,8 @@
 @import "@matt-pasek/usva-tokens/themes/kajo.css";
 @import "@matt-pasek/usva-tokens/themes/sisu.css";
 @import "@matt-pasek/usva-tokens/themes/savi.css";
+@import "@matt-pasek/usva-tokens/roles-safelist.css";
 @source '../../../packages/usva/dist/**/*.js';
-/* the /design-language token reference builds `bg-<role>` class names at
-   runtime from ROLE_NAMES, which Tailwind's static scanner can't see —
-   safelist the same role vocabulary so the utilities still get generated */
-@source inline("bg-{bg,surface,surface-2,overlay,scrim,ink,muted,faint,on-accent,accent,accent-2,accent-alt,accent-ink,success,warning,danger,info,border,border-strong,ring}");
 
 body {
   background: var(--usva-bg);
