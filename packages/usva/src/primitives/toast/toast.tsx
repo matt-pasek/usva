@@ -61,16 +61,14 @@ interface ToneStyle {
   text: string;
   dot: string;
   tint: string;
-  pulse?: boolean;
 }
 
 const toneStyles: Record<ToastType, ToneStyle> = {
   success: {
     icon: <CheckIcon />,
     text: "text-success",
-    dot: "bg-live",
+    dot: "bg-success",
     tint: "bg-success/[0.06]",
-    pulse: true,
   },
   warning: {
     icon: <AlertIcon />,
@@ -129,11 +127,7 @@ function ToastItem({ toast: item }: { toast: Base.Root.ToastObject }) {
           {tone ? (
             <span
               aria-hidden="true"
-              className={cn(
-                "size-1.5 shrink-0 rounded-full",
-                tone.dot,
-                tone.pulse && "animate-live-pulse",
-              )}
+              className={cn("size-1.5 shrink-0 rounded-full", tone.dot)}
             />
           ) : null}
           <Base.Title className="text-sm font-semibold text-ink" />
