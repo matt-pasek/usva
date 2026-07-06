@@ -76,7 +76,7 @@ export default function BentoGridPage() {
                 Credits, grades, and deadlines pulled into one quiet overview.
               </CardBody>
             </BentoCard>
-            <BentoCard highlight="edge">
+            <BentoCard>
               <CardBody>
                 <CardEyebrow>credits</CardEyebrow>
                 <div className="mt-1 font-mono text-2xl tabular-nums text-ink">
@@ -84,7 +84,7 @@ export default function BentoGridPage() {
                 </div>
               </CardBody>
             </BentoCard>
-            <BentoCard highlight="ring">
+            <BentoCard>
               <CardBody>
                 <CardEyebrow>status</CardEyebrow>
                 <div className="mt-1 text-sm text-live">on track</div>
@@ -109,7 +109,7 @@ export default function BentoGridPage() {
       <Card>
         <CardHeader>Usage</CardHeader>
         <CardBody>
-          <pre className="overflow-x-auto rounded-md border border-border bg-surface-2 p-3 text-xs text-ink">
+          <pre className="overflow-x-auto rounded-md border border-border bg-sunken p-3 text-xs text-on-sunken">
             <code>{usageSnippet}</code>
           </pre>
         </CardBody>

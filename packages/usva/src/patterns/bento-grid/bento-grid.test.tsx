@@ -40,7 +40,7 @@ describe("BentoGrid", () => {
         <BentoCard>cell</BentoCard>
       </BentoGrid>,
     );
-    const cell = container.firstElementChild?.firstElementChild;
+    const cell = container.querySelector("[data-bento-card]");
     expect(cell?.className).toContain("bg-surface/70");
   });
   it("passes the highlight vocabulary through to the Card", () => {
