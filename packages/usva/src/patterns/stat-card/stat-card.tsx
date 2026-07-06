@@ -72,7 +72,7 @@ export const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
   ) => (
     <Card
       ref={ref}
-      wash
+      highlight="wash"
       surface={surface}
       className={cn(toneBorder[tone], className)}
       {...props}
