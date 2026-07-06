@@ -112,11 +112,11 @@ export default function SkeletonPage() {
           </p>
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="flex flex-col gap-2">
-              <span className="font-mono text-xs text-faint">real</span>
+              <span className="font-mono text-xs text-muted">real</span>
               <MediaCard />
             </div>
             <div className="flex flex-col gap-2">
-              <span className="font-mono text-xs text-faint">
+              <span className="font-mono text-xs text-muted">
                 &lt;SkeletonMirror&gt;
               </span>
               <SkeletonMirror>

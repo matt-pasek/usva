@@ -26,7 +26,7 @@ export function ComponentNav({ orientation = "vertical" }: Props) {
         >
           {!horizontal && (
             <div className="flex items-center gap-2">
-              <span className="font-mono text-[0.65rem] uppercase tracking-[0.18em] text-faint">
+              <span className="font-mono text-[0.65rem] uppercase tracking-[0.18em] text-muted">
                 {group.label}
               </span>
               <span className="hairline-accent h-px flex-1" />

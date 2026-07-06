@@ -53,7 +53,7 @@ export const Course: Story = {
         <Badge tone="accent-alt" mono>
           course
         </Badge>
-        <span className="text-xs tabular-nums text-faint">12 lessons</span>
+        <span className="text-xs tabular-nums text-muted">12 lessons</span>
       </EntityMeta>
       <EntityTitle>Building with design tokens</EntityTitle>
       <EntityBody>
