@@ -1,6 +1,7 @@
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { rewriteImports } from "./rewrite-imports.js";
 
 export interface RegistryFile {
   path: string;
@@ -71,7 +72,7 @@ async function emit(dir: string, name: string): Promise<void> {
   if (!item) throw new Error(`no registry export found for ${name}`);
   const files = item.files.map((f) => ({
     ...f,
-    content: readFileSync(`${dir}/${name}/${f.path}`, "utf8"),
+    content: rewriteImports(readFileSync(`${dir}/${name}/${f.path}`, "utf8")),
   }));
   writeFileSync(
     `${OUT}/${name}.json`,

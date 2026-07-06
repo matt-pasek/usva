@@ -7,6 +7,7 @@ import {
   PATTERNS,
   PRIMITIVES,
 } from "./build-registry.js";
+import { rewriteImports } from "./rewrite-imports.js";
 
 const dirsIn = (root: string): string[] =>
   readdirSync(root, { withFileTypes: true })
@@ -36,7 +37,7 @@ describe("buildRegistry", () => {
   });
 
   describe.each(NAMES)("%s registry parity", (name) => {
-    it("registry source is byte-identical to package source (no drift)", () => {
+    it("registry source matches package source once imports are flattened", () => {
       const json = JSON.parse(
         readFileSync(`../../registry/r/${name}.json`, "utf8"),
       );
@@ -46,13 +47,13 @@ describe("buildRegistry", () => {
           `../usva/src/primitives/${name}/${file.path}`,
           "utf8",
         );
-        expect(file.content).toBe(src);
+        expect(file.content).toBe(rewriteImports(src));
       }
     });
   });
 
   describe.each(PATTERN_NAMES)("%s pattern parity", (name) => {
-    it("registry source is byte-identical to package source (no drift)", () => {
+    it("registry source matches package source once imports are flattened", () => {
       const json = JSON.parse(
         readFileSync(`../../registry/r/${name}.json`, "utf8"),
       );
@@ -62,8 +63,45 @@ describe("buildRegistry", () => {
           `../usva/src/patterns/${name}/${file.path}`,
           "utf8",
         );
-        expect(file.content).toBe(src);
+        expect(file.content).toBe(rewriteImports(src));
       }
     });
+  });
+
+  describe.each([
+    ...NAMES,
+    ...PATTERN_NAMES,
+  ])("%s is self-contained", (name) => {
+    it("emits no import that escapes components/ui", () => {
+      const json = JSON.parse(
+        readFileSync(`../../registry/r/${name}.json`, "utf8"),
+      );
+      for (const file of json.files as { content: string }[])
+        expect(file.content).not.toMatch(/from "\.\.\//);
+    });
+  });
+
+  it("declares a registryDependency for every sibling component it imports", () => {
+    const missing: string[] = [];
+    for (const name of [...NAMES, ...PATTERN_NAMES]) {
+      const json = JSON.parse(
+        readFileSync(`../../registry/r/${name}.json`, "utf8"),
+      );
+      const declared: string[] = json.registryDependencies;
+      const own = (json.files as { path: string }[]).map((f) =>
+        f.path.replace(/\.tsx$/, ""),
+      );
+      for (const file of json.files as { content: string }[])
+        for (const match of file.content.matchAll(/from "\.\/([^"]+)"/g)) {
+          const imported = match[1];
+          if (
+            imported &&
+            !own.includes(imported) &&
+            !declared.includes(imported)
+          )
+            missing.push(`${name} -> ${imported}`);
+        }
+    }
+    expect(missing).toEqual([]);
   });
 });
