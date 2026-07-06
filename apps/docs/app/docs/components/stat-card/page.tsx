@@ -46,6 +46,16 @@ const props = [
     desc: 'Padding and value size. Defaults to "md".',
   },
   {
+    name: "featured",
+    type: "boolean",
+    desc: "Blow the tile up to a hero stat with a much larger numeral.",
+  },
+  {
+    name: "tone",
+    type: '"neutral" | "accent" | "accent-alt"',
+    desc: "Tints the border and colors the value. Defaults to neutral.",
+  },
+  {
     name: "spark",
     type: "React.ReactNode",
     desc: "Optional slot for a sparkline or mini-chart, stretched to fill.",
@@ -128,6 +138,30 @@ export default function StatCardPage() {
       </Card>
 
       <Card>
+        <CardHeader>Featured &amp; tone</CardHeader>
+        <CardBody>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <StatCard
+              featured
+              tone="accent"
+              label="Stars"
+              value="12.4k"
+              note="all-time"
+            />
+            <StatCard
+              featured
+              tone="accent-alt"
+              label="Uptime"
+              value="99.98"
+              unit="%"
+              trend="up"
+              note="30-day"
+            />
+          </div>
+        </CardBody>
+      </Card>
+
+      <Card>
         <CardHeader>Install</CardHeader>
         <CardBody>
           <InstallBlock registryName="stat-card" />
@@ -137,7 +171,7 @@ export default function StatCardPage() {
       <Card>
         <CardHeader>Usage</CardHeader>
         <CardBody>
-          <pre className="overflow-x-auto rounded-md border border-border bg-surface-2 p-3 text-xs text-ink">
+          <pre className="overflow-x-auto rounded-md border border-border bg-sunken p-3 text-xs text-on-sunken">
             <code>{usageSnippet}</code>
           </pre>
         </CardBody>

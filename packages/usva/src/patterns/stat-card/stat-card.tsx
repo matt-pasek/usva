@@ -1,8 +1,13 @@
 import * as React from "react";
 import { cn } from "../../cn.js";
-import { Card, CardBody } from "../../primitives/card/card.js";
+import {
+  Card,
+  CardBody,
+  type CardSurface,
+} from "../../primitives/card/card.js";
 
 export type StatTrend = "up" | "down" | "flat";
+export type StatTone = "neutral" | "accent" | "accent-alt";
 
 export interface StatCardProps
   extends Omit<React.HTMLAttributes<HTMLDivElement>, "title"> {
@@ -13,6 +18,12 @@ export interface StatCardProps
   icon?: React.ReactNode;
   trend?: StatTrend;
   size?: "sm" | "md";
+  /** Blow the tile up to a hero stat: larger numeral, more presence. */
+  featured?: boolean;
+  /** Tints the border and colors the value. Defaults to neutral. */
+  tone?: StatTone;
+  /** How the tile sits on the page. Defaults to elevated. */
+  surface?: CardSurface;
   spark?: React.ReactNode;
 }
 
@@ -28,6 +39,18 @@ const trendGlyph: Record<StatTrend, string> = {
   flat: "→",
 };
 
+const toneBorder: Record<StatTone, string> = {
+  neutral: "",
+  accent: "border-accent/25",
+  "accent-alt": "border-accent-alt/25",
+};
+
+const toneValue: Record<StatTone, string> = {
+  neutral: "text-ink",
+  accent: "text-accent",
+  "accent-alt": "text-accent-alt",
+};
+
 export const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
   (
     {
@@ -39,13 +62,24 @@ export const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
       icon,
       trend,
       size = "md",
+      featured,
+      tone = "neutral",
+      surface = "elevated",
       spark,
       ...props
     },
     ref,
   ) => (
-    <Card ref={ref} wash className={className} {...props}>
-      <CardBody className={size === "sm" ? "p-4" : "p-5"}>
+    <Card
+      ref={ref}
+      wash
+      surface={surface}
+      className={cn(toneBorder[tone], className)}
+      {...props}
+    >
+      <CardBody
+        className={cn(featured ? "p-6" : size === "sm" ? "p-4" : "p-5")}
+      >
         <div className="flex items-start justify-between gap-3">
           <span className="pt-0.5 font-mono text-[0.65rem] font-medium uppercase leading-none tracking-[0.16em] text-muted">
             {label}
@@ -63,19 +97,24 @@ export const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
         <div
           className={cn(
             "flex items-baseline gap-1.5",
-            size === "sm" ? "mt-2" : "mt-3",
+            featured ? "mt-4" : size === "sm" ? "mt-2" : "mt-3",
           )}
         >
           <span
             className={cn(
-              "font-mono font-semibold leading-none tabular-nums tracking-tight text-ink",
-              size === "sm" ? "text-2xl" : "text-[2rem]",
+              "font-mono font-semibold leading-none tabular-nums tracking-tight",
+              toneValue[tone],
+              featured
+                ? "text-[clamp(2.5rem,5vw,3.5rem)]"
+                : size === "sm"
+                  ? "text-2xl"
+                  : "text-[2rem]",
             )}
           >
             {value}
           </span>
           {unit != null && (
-            <span className="font-mono text-sm text-faint">{unit}</span>
+            <span className="font-mono text-sm text-muted">{unit}</span>
           )}
         </div>
 
