@@ -157,9 +157,7 @@ export default function DesignLanguagePage() {
                       style={{ borderRadius: value }}
                     />
                     <span className="font-mono text-xs text-muted">{name}</span>
-                    <span className="font-mono text-xs text-faint">
-                      {value}
-                    </span>
+                    <span className="font-mono text-xs text-faint">{value}</span>
                   </div>
                 ))}
               </div>
