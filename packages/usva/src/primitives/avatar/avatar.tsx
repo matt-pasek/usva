@@ -5,7 +5,7 @@ import * as React from "react";
 import { cn } from "../../cn.js";
 
 const rootVariants = cva(
-  "rim-light relative inline-flex shrink-0 select-none items-center justify-center rounded-full ring-1 ring-inset ring-border",
+  "relative inline-flex shrink-0 select-none items-center justify-center rounded-full ring-1 ring-inset ring-border",
   {
     variants: {
       size: {
@@ -19,7 +19,7 @@ const rootVariants = cva(
 );
 
 const fallbackVariants = cva(
-  "flex h-full w-full items-center justify-center bg-accent-2 font-semibold text-on-accent",
+  "flex h-full w-full items-center justify-center font-semibold",
   {
     variants: {
       size: {
@@ -27,13 +27,20 @@ const fallbackVariants = cva(
         md: "text-sm",
         lg: "text-base",
       },
+      tone: {
+        solid: "bg-accent-2 text-on-accent",
+        accent: "bg-accent-tint font-bold text-on-tint",
+        neutral: "bg-surface-2 text-muted",
+      },
     },
-    defaultVariants: { size: "md" },
+    defaultVariants: { size: "md", tone: "solid" },
   },
 );
 
+export type AvatarTone = "solid" | "accent" | "neutral";
+
 const dotVariants = cva(
-  "absolute right-0 bottom-0 rounded-full ring-2 ring-bg",
+  "absolute right-0 bottom-0 rounded-full ring-2 ring-surface",
   {
     variants: {
       size: {
@@ -65,10 +72,12 @@ export interface AvatarProps
   alt: string;
   fallback?: string;
   status?: AvatarStatus;
+  /** Fallback fill: solid accent (default), tinted accent, or neutral. */
+  tone?: AvatarTone;
 }
 
 export const Avatar = React.forwardRef<HTMLSpanElement, AvatarProps>(
-  ({ className, src, alt, fallback, size, status, ...props }, ref) => {
+  ({ className, src, alt, fallback, size, status, tone, ...props }, ref) => {
     return (
       <Base.Root
         ref={ref}
@@ -83,7 +92,7 @@ export const Avatar = React.forwardRef<HTMLSpanElement, AvatarProps>(
               className="h-full w-full object-cover"
             />
           ) : null}
-          <Base.Fallback className={fallbackVariants({ size })}>
+          <Base.Fallback className={fallbackVariants({ size, tone })}>
             {fallback}
           </Base.Fallback>
         </span>

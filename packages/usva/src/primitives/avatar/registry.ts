@@ -8,5 +8,8 @@ export const avatarRegistry = {
     "class-variance-authority",
   ],
   registryDependencies: [],
-  files: [{ path: "avatar.tsx", target: "components/ui/avatar.tsx" }],
+  files: [
+    { path: "avatar.tsx", target: "components/ui/avatar.tsx" },
+    { path: "avatar-group.tsx", target: "components/ui/avatar-group.tsx" },
+  ],
 } as const;
