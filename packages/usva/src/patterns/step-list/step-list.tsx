@@ -22,11 +22,12 @@ export const StepList = React.forwardRef<HTMLOListElement, StepListProps>(
       <ol ref={ref} className={cn("flex flex-col", className)} {...props}>
         {steps.map((step, i) => {
           const key = step.id ?? `step-${i}`;
+          const ordinal = (i + 1).toString().padStart(2, "0");
           return (
             <li key={key} className="flex gap-4">
               <div className="flex flex-col items-center">
                 <span className="grid size-11 shrink-0 place-items-center rounded-xl border border-border bg-surface-2 font-mono text-sm tabular-nums text-accent-alt [&_svg]:h-[1.15rem] [&_svg]:w-[1.15rem]">
-                  {step.icon ?? (i + 1).toString().padStart(2, "0")}
+                  {step.icon ?? ordinal}
                 </span>
                 {i < last && (
                   <span
@@ -36,9 +37,11 @@ export const StepList = React.forwardRef<HTMLOListElement, StepListProps>(
                 )}
               </div>
               <div className={cn(i < last ? "pb-8" : "pb-0")}>
-                <p className="mb-1 font-mono text-[0.7rem] tabular-nums tracking-[0.16em] text-muted">
-                  {(i + 1).toString().padStart(2, "0")}
-                </p>
+                {step.icon != null && (
+                  <p className="mb-1 font-mono text-[0.7rem] tabular-nums tracking-[0.16em] text-muted">
+                    {ordinal}
+                  </p>
+                )}
                 <h4 className="mb-1.5 text-base font-semibold tracking-[-0.01em] text-ink">
                   {step.title}
                 </h4>
