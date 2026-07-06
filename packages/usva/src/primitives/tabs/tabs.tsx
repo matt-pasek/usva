@@ -48,7 +48,7 @@ export const TabsTab = React.forwardRef<HTMLButtonElement, TabsTabProps>(
       ref={ref}
       className={cn(
         "relative z-10 rounded-md px-3 py-2 text-sm text-muted outline-none",
-        "transition-[color,scale] duration-150 ease-soft motion-reduce:transition-none",
+        "transition-control duration-fast ease-soft motion-reduce:transition-none",
         "hover:text-ink data-[active]:text-ink",
         "focus-visible:ring-focus",
         "active:scale-[0.98] motion-reduce:transform-none",
@@ -84,7 +84,7 @@ const TabsIndicator = React.forwardRef<HTMLSpanElement, TabsIndicatorProps>(
       <Base.Indicator
         ref={ref}
         className={cn(
-          "absolute bottom-0 z-0 h-px w-(--active-tab-width) translate-x-(--active-tab-left) hairline-accent transition-[translate,width] duration-300 ease-spring motion-reduce:transition-none",
+          "absolute bottom-0 z-0 h-px w-(--active-tab-width) translate-x-(--active-tab-left) hairline-accent transition-layout duration-slow ease-spring motion-reduce:transition-none",
           "data-[orientation=vertical]:top-0 data-[orientation=vertical]:right-0 data-[orientation=vertical]:bottom-auto data-[orientation=vertical]:h-(--active-tab-height) data-[orientation=vertical]:w-px data-[orientation=vertical]:translate-x-0 data-[orientation=vertical]:translate-y-(--active-tab-top)",
           className,
         )}
@@ -94,7 +94,7 @@ const TabsIndicator = React.forwardRef<HTMLSpanElement, TabsIndicatorProps>(
       <Base.Indicator
         ref={ref}
         className={cn(
-          "absolute top-0 left-0 z-0 h-(--active-tab-height) w-(--active-tab-width) translate-x-(--active-tab-left) translate-y-(--active-tab-top) rounded-md bg-surface-2 shadow-raised transition-[translate,width,height] duration-300 ease-spring motion-reduce:transition-none",
+          "absolute top-0 left-0 z-0 h-(--active-tab-height) w-(--active-tab-width) translate-x-(--active-tab-left) translate-y-(--active-tab-top) rounded-md bg-surface-2 shadow-raised transition-layout duration-slow ease-spring motion-reduce:transition-none",
           className,
         )}
         {...props}
