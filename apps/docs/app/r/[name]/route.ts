@@ -1,6 +1,18 @@
+import { readdirSync } from "node:fs";
 import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import { NextResponse } from "next/server";
+
+export const dynamic = "force-static";
+export const dynamicParams = false;
+
+const REGISTRY = resolve(process.cwd(), "../../registry/r");
+
+export function generateStaticParams(): { name: string }[] {
+  return readdirSync(REGISTRY)
+    .filter((f) => f.endsWith(".json"))
+    .map((f) => ({ name: f }));
+}
 
 export async function GET(
   _req: Request,
@@ -11,8 +23,7 @@ export async function GET(
   if (!/^[a-z-]+$/.test(base))
     return new NextResponse("bad name", { status: 400 });
   try {
-    const file = resolve(process.cwd(), "../../registry/r", `${base}.json`);
-    const body = await readFile(file, "utf8");
+    const body = await readFile(resolve(REGISTRY, `${base}.json`), "utf8");
     return new NextResponse(body, {
       headers: { "content-type": "application/json" },
     });
