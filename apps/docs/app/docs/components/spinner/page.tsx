@@ -12,14 +12,19 @@ import { SourceView } from "@/components/source-view";
 export const metadata: Metadata = {
   title: "Spinner",
   description:
-    "An accessible, glow-accented loading spinner in three sizes, plus a PageLoader wrapper for full-region loading states.",
+    "An accessible, glow-accented loading spinner in four animation styles (ring, dots, bars, orbit) and three sizes, plus a PageLoader wrapper.",
 };
 
 const props = [
   {
+    name: "variant",
+    type: '"ring" | "dots" | "bars" | "orbit"',
+    desc: 'Animation style. Defaults to "ring".',
+  },
+  {
     name: "size",
     type: '"sm" | "md" | "lg"',
-    desc: 'Diameter and border weight. Defaults to "md".',
+    desc: 'Diameter and weight. Defaults to "md".',
   },
   {
     name: "label",
@@ -28,13 +33,21 @@ const props = [
   },
 ];
 
+const variants = [
+  { variant: "ring", note: "The classic arc — a general default." },
+  { variant: "dots", note: "Three pulsing dots — light, unobtrusive inline." },
+  { variant: "bars", note: "An equalizer — reads as active processing." },
+  { variant: "orbit", note: "A glowing dot circling a faint track." },
+] as const;
+
 const usageSnippet = `import { Spinner, PageLoader } from "@matt-pasek/usva";
 
-<Spinner size="sm" />
-<Spinner size="md" label="Fetching" />
-<Spinner size="lg" />
+<Spinner variant="ring" />
+<Spinner variant="dots" size="sm" />
+<Spinner variant="bars" label="Processing" />
+<Spinner variant="orbit" size="lg" />
 
-<PageLoader label="Loading your workspace" />`;
+<PageLoader variant="orbit" label="Loading your workspace" />`;
 
 export default function SpinnerPage() {
   return (
@@ -42,24 +55,46 @@ export default function SpinnerPage() {
       <div className="flex flex-col gap-2">
         <h1 className="text-3xl font-semibold text-ink">Spinner</h1>
         <p className="text-muted">
-          A pure styled spinner with the kajo accent glow and{" "}
-          <code>role="status"</code> for assistive tech. The exported{" "}
-          <code>PageLoader</code> centers a large spinner with an optional
-          caption for whole-region loading states.
+          A pure styled spinner with the accent glow and{" "}
+          <code>role="status"</code> for assistive tech. Four animation styles —{" "}
+          <code>ring</code>, <code>dots</code>, <code>bars</code>, and{" "}
+          <code>orbit</code> — all reduced-motion safe. The exported{" "}
+          <code>PageLoader</code> centers one with an optional caption for
+          whole-region loading states.
         </p>
       </div>
 
       <Card>
-        <CardHeader>Demo</CardHeader>
+        <CardHeader>Variants</CardHeader>
+        <CardBody>
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+            {variants.map((v) => (
+              <div
+                key={v.variant}
+                className="flex flex-col items-center gap-3 rounded-lg border border-border bg-surface-2/40 p-5 text-center"
+              >
+                <div className="flex h-10 items-center">
+                  <Spinner variant={v.variant} size="lg" />
+                </div>
+                <p className="font-mono text-xs text-ink">{v.variant}</p>
+                <p className="text-xs leading-snug text-muted">{v.note}</p>
+              </div>
+            ))}
+          </div>
+        </CardBody>
+      </Card>
+
+      <Card>
+        <CardHeader>Sizes &amp; PageLoader</CardHeader>
         <CardBody>
           <div className="flex flex-col gap-6">
             <div className="flex items-center gap-6">
-              <Spinner size="sm" />
-              <Spinner size="md" />
-              <Spinner size="lg" />
+              <Spinner variant="dots" size="sm" />
+              <Spinner variant="dots" size="md" />
+              <Spinner variant="dots" size="lg" />
             </div>
             <div className="rounded-lg border border-border">
-              <PageLoader label="Loading your workspace" />
+              <PageLoader variant="orbit" label="Loading your workspace" />
             </div>
           </div>
         </CardBody>
@@ -75,7 +110,7 @@ export default function SpinnerPage() {
       <Card>
         <CardHeader>Usage</CardHeader>
         <CardBody>
-          <pre className="overflow-x-auto rounded-md border border-border bg-surface-2 p-3 text-xs text-ink">
+          <pre className="overflow-x-auto rounded-md border border-border bg-sunken p-3 text-xs text-on-sunken">
             <code>{usageSnippet}</code>
           </pre>
         </CardBody>
