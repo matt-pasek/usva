@@ -7,6 +7,8 @@ import {
   EntityActions,
   EntityBody,
   EntityCard,
+  EntityContent,
+  EntityIndex,
   EntityMedia,
   EntityMeta,
   EntityTitle,
@@ -22,6 +24,11 @@ export const metadata: Metadata = {
 };
 
 const props = [
+  {
+    name: "variant",
+    type: '"stack" | "row" | "showcase"',
+    desc: "Layout: stack (media-on-top tile, default), row (side media list row), or showcase (big numbered work card). Wrap text in EntityContent for row/showcase.",
+  },
   {
     name: "className",
     type: "string",
@@ -127,6 +134,68 @@ export default function EntityCardPage() {
       </Card>
 
       <Card>
+        <CardHeader>Showcase</CardHeader>
+        <CardBody>
+          <p className="mb-4 text-sm text-muted">
+            <code>variant=&quot;showcase&quot;</code> — the numbered
+            &quot;selected work&quot; card: an index marker, tag pills, an
+            oversized title, a blurb, and a case-study link.
+          </p>
+          <EntityCard variant="showcase" interactive>
+            <EntityContent>
+              <EntityMeta>
+                <EntityIndex>001</EntityIndex>
+                <Badge tone="accent" mono>
+                  Frontend
+                </Badge>
+                <Badge tone="accent-alt" mono>
+                  Design system
+                </Badge>
+              </EntityMeta>
+              <EntityTitle>jAIn 2.0</EntityTitle>
+              <EntityBody>
+                Solo frontend developer and UI designer on an AI-powered HR
+                platform: architecture, design system, and every user-facing
+                feature. Now in active use across the organisation.
+              </EntityBody>
+              <EntityActions>
+                <Button size="sm" variant="ghost">
+                  view case study →
+                </Button>
+              </EntityActions>
+            </EntityContent>
+          </EntityCard>
+        </CardBody>
+      </Card>
+
+      <Card>
+        <CardHeader>Row</CardHeader>
+        <CardBody>
+          <p className="mb-4 text-sm text-muted">
+            <code>variant=&quot;row&quot;</code> — a side media panel with the
+            content beside it (stacks on narrow screens). Wrap the text in{" "}
+            <code>EntityContent</code>.
+          </p>
+          <EntityCard variant="row" interactive>
+            <EntityMedia>
+              <div className="h-full w-full [background:linear-gradient(135deg,color-mix(in_srgb,var(--color-accent)_30%,transparent),transparent)]" />
+            </EntityMedia>
+            <EntityContent>
+              <EntityMeta>
+                <Badge tone="accent-alt">Course</Badge>
+                <Badge tone="success">Enrolled</Badge>
+              </EntityMeta>
+              <EntityTitle>Discrete Mathematics</EntityTitle>
+              <EntityBody className="pb-5">
+                MA-140 · 4 cr · a compact list row that keeps its media, meta,
+                and title in one line-up.
+              </EntityBody>
+            </EntityContent>
+          </EntityCard>
+        </CardBody>
+      </Card>
+
+      <Card>
         <CardHeader>Install</CardHeader>
         <CardBody>
           <InstallBlock registryName="entity-card" />
@@ -136,7 +205,7 @@ export default function EntityCardPage() {
       <Card>
         <CardHeader>Usage</CardHeader>
         <CardBody>
-          <pre className="overflow-x-auto rounded-md border border-border bg-surface-2 p-3 text-xs text-ink">
+          <pre className="overflow-x-auto rounded-md border border-border bg-sunken p-3 text-xs text-on-sunken">
             <code>{usageSnippet}</code>
           </pre>
         </CardBody>
