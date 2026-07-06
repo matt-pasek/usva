@@ -6,12 +6,12 @@ import * as React from "react";
 import { cn } from "../../cn.js";
 
 const trackVariants = cva(
-  "relative inline-flex shrink-0 items-center rounded-full border border-border bg-surface-2 outline-none transition-control duration-base ease-soft before:absolute before:-inset-y-2 before:inset-x-0 before:content-[''] data-[unchecked]:hover:border-border-strong data-[checked]:border-accent data-[checked]:bg-accent data-[checked]:bg-gradient-accent data-[checked]:glow-ring focus-visible:border-transparent focus-visible:ring-focus aria-invalid:border-danger disabled:cursor-not-allowed disabled:opacity-50",
+  "relative inline-flex shrink-0 items-center rounded-full border border-border bg-surface-2 outline-none transition-control duration-base ease-soft before:absolute before:content-[''] data-[unchecked]:hover:border-border-strong data-[checked]:border-accent data-[checked]:bg-accent data-[checked]:bg-gradient-accent data-[checked]:glow-ring focus-visible:border-transparent focus-visible:ring-focus aria-invalid:border-danger disabled:cursor-not-allowed disabled:opacity-50",
   {
     variants: {
       size: {
-        sm: "h-5 w-9",
-        md: "h-6 w-11",
+        sm: "h-5 w-9 before:-inset-y-3 before:-inset-x-1",
+        md: "h-6 w-11 before:-inset-y-2.5 before:inset-x-0",
       },
     },
     defaultVariants: { size: "md" },

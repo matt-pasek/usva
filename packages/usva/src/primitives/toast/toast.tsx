@@ -146,6 +146,7 @@ function ToastItem({ toast: item }: { toast: Base.Root.ToastObject }) {
         aria-label="Dismiss"
         className={cn(
           "relative -m-1 flex size-6 shrink-0 items-center justify-center rounded-md text-muted outline-none",
+          "before:absolute before:-inset-2.5 before:content-['']",
           "transition-control duration-fast ease-soft motion-reduce:transition-none motion-reduce:transform-none",
           "hover:bg-surface-2 hover:text-ink active:scale-[0.96] focus-visible:ring-focus",
         )}
@@ -188,7 +189,7 @@ export function ToastProvider({
     <Base.Provider toastManager={toastManager} limit={limit} timeout={timeout}>
       {children}
       <Base.Portal>
-        <Base.Viewport className="pointer-events-none fixed bottom-4 right-4 z-toast flex w-full max-w-sm flex-col-reverse gap-2">
+        <Base.Viewport className="pointer-events-none fixed bottom-4 left-4 right-4 z-toast flex w-auto flex-col-reverse gap-2 sm:left-auto sm:w-full sm:max-w-sm">
           <ToastList />
         </Base.Viewport>
       </Base.Portal>

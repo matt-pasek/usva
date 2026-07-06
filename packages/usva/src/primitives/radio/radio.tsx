@@ -37,12 +37,12 @@ export const RadioGroup = React.forwardRef(RadioGroupImpl) as <Value = string>(
 (RadioGroup as { displayName?: string }).displayName = "RadioGroup";
 
 const rootVariants = cva(
-  "relative flex shrink-0 items-center justify-center rounded-full border border-border bg-surface outline-none transition-control duration-base ease-soft before:absolute before:-inset-2.5 before:content-[''] data-[unchecked]:hover:border-border-strong data-[checked]:border-accent data-[checked]:glow-ring active:scale-[0.98] motion-reduce:transition-none motion-reduce:transform-none focus-visible:border-transparent focus-visible:ring-focus aria-invalid:border-danger disabled:cursor-not-allowed disabled:opacity-50",
+  "relative flex shrink-0 items-center justify-center rounded-full border border-border bg-surface outline-none transition-control duration-base ease-soft before:absolute before:content-[''] data-[unchecked]:hover:border-border-strong data-[checked]:border-accent data-[checked]:glow-ring active:scale-[0.98] motion-reduce:transition-none motion-reduce:transform-none focus-visible:border-transparent focus-visible:ring-focus aria-invalid:border-danger disabled:cursor-not-allowed disabled:opacity-50",
   {
     variants: {
       size: {
-        sm: "h-4 w-4",
-        md: "h-5 w-5",
+        sm: "h-4 w-4 before:-inset-3.5",
+        md: "h-5 w-5 before:-inset-3",
       },
     },
     defaultVariants: { size: "md" },
