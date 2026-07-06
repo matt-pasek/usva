@@ -26,7 +26,8 @@ export const EmptyState = React.forwardRef<HTMLDivElement, EmptyStateProps>(
     <div
       ref={ref}
       className={cn(
-        "flex flex-col items-center justify-center rounded-2xl border border-border px-6 py-14 text-center",
+        "group flex flex-col items-center justify-center rounded-2xl border border-border px-6 py-14 text-center",
+        "transition-tint duration-slow ease-soft hover:border-border-strong",
         variant === "dashed" ? "border-dashed bg-transparent" : "bg-surface",
         className,
       )}
@@ -35,7 +36,12 @@ export const EmptyState = React.forwardRef<HTMLDivElement, EmptyStateProps>(
       {icon != null && (
         <div
           aria-hidden="true"
-          className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl border border-border bg-surface-2 text-faint [&_svg]:h-5 [&_svg]:w-5"
+          className={cn(
+            "mb-4 flex h-11 w-11 items-center justify-center rounded-xl border border-border bg-surface-2 text-faint [&_svg]:h-5 [&_svg]:w-5",
+            "transition-control duration-slow ease-soft",
+            "group-hover:-translate-y-0.5 group-hover:border-border-strong group-hover:text-accent group-hover:glow-accent",
+            "motion-reduce:transition-none motion-reduce:group-hover:translate-y-0",
+          )}
         >
           {icon}
         </div>
