@@ -17,3 +17,6 @@ USVA_CASE_STUDY.md
 
 # local agent context (kept out of public history)
 CLAUDE.md
+
+# impeccable tool state (live-mode config + generated design sidecar)
+.impeccable/
