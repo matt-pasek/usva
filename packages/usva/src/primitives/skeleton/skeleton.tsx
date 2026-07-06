@@ -3,7 +3,7 @@ import * as React from "react";
 import { cn } from "../../cn.js";
 
 export const skeletonVariants = cva(
-  "block bg-surface-2 animate-shimmer motion-reduce:animate-none",
+  "skeleton-sheen relative block bg-sunken animate-shimmer motion-reduce:animate-none",
   {
     variants: {
       variant: {
@@ -41,3 +41,51 @@ export const Skeleton = React.forwardRef<HTMLDivElement, SkeletonProps>(
   ),
 );
 Skeleton.displayName = "Skeleton";
+
+export interface SkeletonMirrorProps
+  extends React.HTMLAttributes<HTMLDivElement> {
+  /** When false, renders children normally. Defaults to true. */
+  loading?: boolean;
+  label?: string;
+  children: React.ReactNode;
+}
+
+/**
+ * Auto-infers a skeleton from the layout it wraps: it renders your real
+ * children with every leaf greyed into a shaped block, so the placeholder
+ * always matches the component. One glimmer travels around the outline of the
+ * whole skeleton (plus a soft sweep across it), not per block.
+ */
+export const SkeletonMirror = React.forwardRef<
+  HTMLDivElement,
+  SkeletonMirrorProps
+>(
+  (
+    { className, loading = true, label = "Loading", children, ...props },
+    ref,
+  ) => {
+    if (!loading) return <>{children}</>;
+    return (
+      <div
+        ref={ref}
+        role="status"
+        aria-label={label}
+        className={cn(
+          "skeleton-sheen relative isolate select-none rounded-2xl",
+          className,
+        )}
+        {...props}
+      >
+        <div aria-hidden="true" className="skeleton-mask pointer-events-none">
+          {children}
+        </div>
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 animate-shimmer motion-reduce:animate-none"
+        />
+        <span className="sr-only">{label}</span>
+      </div>
+    );
+  },
+);
+SkeletonMirror.displayName = "SkeletonMirror";

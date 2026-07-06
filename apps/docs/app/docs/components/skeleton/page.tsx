@@ -1,12 +1,45 @@
-import { Card, CardBody, CardHeader, Skeleton } from "@matt-pasek/usva";
+import {
+  Card,
+  CardBody,
+  CardHeader,
+  Skeleton,
+  SkeletonMirror,
+} from "@matt-pasek/usva";
 import type { Metadata } from "next";
 import { InstallBlock } from "@/components/install-block";
 import { SourceView } from "@/components/source-view";
 
+function MediaCard() {
+  return (
+    <div className="flex flex-col gap-4 rounded-2xl border border-border bg-surface p-4 shadow-floating">
+      <div className="flex items-center gap-3">
+        <div className="size-11 rounded-full bg-sunken" />
+        <div className="flex flex-col gap-1.5">
+          <span className="text-sm font-semibold text-ink">Aino Virtanen</span>
+          <span className="text-xs text-muted">Product designer</span>
+        </div>
+      </div>
+      <div className="h-40 rounded-xl bg-sunken" />
+      <p className="text-sm text-muted">
+        A short caption describing the item, its state, and one more line of
+        supporting detail so the block has some height.
+      </p>
+      <div className="flex gap-2">
+        <span className="rounded-md bg-accent px-3 py-1.5 text-xs text-on-accent">
+          Open
+        </span>
+        <span className="rounded-md border border-border px-3 py-1.5 text-xs text-muted">
+          Share
+        </span>
+      </div>
+    </div>
+  );
+}
+
 export const metadata: Metadata = {
   title: "Skeleton",
   description:
-    "A styled-only loading placeholder with shimmer animation, no Base UI dependency.",
+    "A styled-only loading placeholder with a swishing outline sheen, plus SkeletonMirror, which auto-infers a skeleton from any layout you wrap.",
 };
 
 const props = [
@@ -68,6 +101,33 @@ export default function SkeletonPage() {
       </Card>
 
       <Card>
+        <CardHeader>Auto-inferred (SkeletonMirror)</CardHeader>
+        <CardBody className="flex flex-col gap-4">
+          <p className="text-sm text-muted">
+            <code>SkeletonMirror</code> wraps your real markup and greys every
+            leaf into a shaped block, so the placeholder always matches the
+            layout — it <em>is</em> the layout. One glimmer travels around the
+            whole outline. Works with any component, usva or your own; the{" "}
+            <code>MediaCard</code> below is a plain hand-rolled div.
+          </p>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div className="flex flex-col gap-2">
+              <span className="font-mono text-xs text-faint">real</span>
+              <MediaCard />
+            </div>
+            <div className="flex flex-col gap-2">
+              <span className="font-mono text-xs text-faint">
+                &lt;SkeletonMirror&gt;
+              </span>
+              <SkeletonMirror>
+                <MediaCard />
+              </SkeletonMirror>
+            </div>
+          </div>
+        </CardBody>
+      </Card>
+
+      <Card>
         <CardHeader>Install</CardHeader>
         <CardBody>
           <InstallBlock registryName="skeleton" />
@@ -77,7 +137,7 @@ export default function SkeletonPage() {
       <Card>
         <CardHeader>Usage</CardHeader>
         <CardBody>
-          <pre className="overflow-x-auto rounded-md border border-border bg-surface-2 p-3 text-xs text-ink">
+          <pre className="overflow-x-auto rounded-md border border-border bg-sunken p-3 text-xs text-on-sunken">
             <code>{usageSnippet}</code>
           </pre>
         </CardBody>

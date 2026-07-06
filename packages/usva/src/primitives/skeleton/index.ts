@@ -1,1 +1,7 @@
-export { Skeleton, type SkeletonProps, skeletonVariants } from "./skeleton.js";
+export {
+  Skeleton,
+  SkeletonMirror,
+  type SkeletonMirrorProps,
+  type SkeletonProps,
+  skeletonVariants,
+} from "./skeleton.js";
