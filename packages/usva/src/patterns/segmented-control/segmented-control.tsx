@@ -137,7 +137,7 @@ export const SegmentedControl = React.forwardRef<
           className={cn(
             "pointer-events-none absolute top-1 bottom-1 left-0 rounded-full bg-surface-2 shadow-raised",
             "[filter:drop-shadow(var(--usva-glow-accent))]",
-            "transition-[transform,width] duration-300 ease-spring motion-reduce:transition-none",
+            "transition-layout duration-slow ease-spring motion-reduce:transition-none",
             !indicator.ready && "opacity-0",
           )}
           style={{
@@ -163,7 +163,7 @@ export const SegmentedControl = React.forwardRef<
               className={cn(
                 "relative z-10 inline-flex items-center justify-center gap-1.5 rounded-full text-sm whitespace-nowrap outline-none",
                 sizeClasses[size],
-                "text-muted transition-colors duration-150 ease-soft",
+                "text-muted transition-tint duration-fast ease-soft",
                 "hover:text-ink aria-checked:text-ink",
                 "focus-visible:ring-focus",
               )}
