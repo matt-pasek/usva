@@ -49,7 +49,7 @@ export const Progress = React.forwardRef<HTMLDivElement, ProgressProps>(
             glow && "glow-accent",
             indeterminate
               ? "w-full animate-shimmer motion-reduce:animate-none"
-              : "transition-[width] duration-500 ease-soft motion-reduce:transition-none",
+              : "transition-layout duration-ambient ease-soft motion-reduce:transition-none",
           )}
           style={indeterminate ? undefined : { width: `${pct}%` }}
         />
