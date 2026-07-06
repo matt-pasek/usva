@@ -1,10 +1,30 @@
-import { readFileSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
 import { beforeAll, describe, expect, it } from "vitest";
-import { buildRegistry, NAMES, PATTERN_NAMES } from "./build-registry.js";
+import {
+  buildRegistry,
+  NAMES,
+  PATTERN_NAMES,
+  PATTERNS,
+  PRIMITIVES,
+} from "./build-registry.js";
+
+const dirsIn = (root: string): string[] =>
+  readdirSync(root, { withFileTypes: true })
+    .filter((e) => e.isDirectory())
+    .map((e) => e.name)
+    .sort();
 
 describe("buildRegistry", () => {
   beforeAll(async () => {
     await buildRegistry();
+  });
+
+  it("ships every primitive through the registry", () => {
+    expect([...NAMES].sort()).toEqual(dirsIn(PRIMITIVES));
+  });
+
+  it("ships every pattern through the registry", () => {
+    expect([...PATTERN_NAMES].sort()).toEqual(dirsIn(PATTERNS));
   });
 
   it("emits button.json with embedded source", () => {

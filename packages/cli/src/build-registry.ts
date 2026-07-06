@@ -16,8 +16,8 @@ export interface RegistryItem {
 }
 
 const here = dirname(fileURLToPath(import.meta.url));
-const PRIMITIVES = resolve(here, "../../usva/src/primitives");
-const PATTERNS = resolve(here, "../../usva/src/patterns");
+export const PRIMITIVES = resolve(here, "../../usva/src/primitives");
+export const PATTERNS = resolve(here, "../../usva/src/patterns");
 const OUT = resolve(here, "../../../registry/r");
 
 export const NAMES = [
@@ -27,15 +27,19 @@ export const NAMES = [
   "badge",
   "card",
   "checkbox",
+  "chip",
   "dialog",
   "dropdown-menu",
   "icon-button",
   "input",
+  "label",
   "notification-badge",
   "popover",
+  "progress",
   "radio",
   "select",
   "skeleton",
+  "spinner",
   "stat-chip",
   "switch",
   "tabs",
