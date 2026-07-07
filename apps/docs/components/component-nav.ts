@@ -58,6 +58,7 @@ export const componentNav: NavGroup[] = [
       { slug: "entity-card", label: "Entity Card" },
       { slug: "toolbar", label: "Toolbar" },
       { slug: "segmented-control", label: "Segmented Control" },
+      { slug: "progress-row", label: "Progress Row" },
     ],
   },
 ];

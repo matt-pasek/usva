@@ -29,6 +29,7 @@ export * from "./patterns/entity-card/index.js";
 export * from "./patterns/feature-carousel/index.js";
 export * from "./patterns/field-group/index.js";
 export * from "./patterns/panel/index.js";
+export * from "./patterns/progress-row/index.js";
 export * from "./patterns/section-label/index.js";
 export * from "./patterns/segmented-control/index.js";
 export * from "./patterns/stat-card/index.js";
