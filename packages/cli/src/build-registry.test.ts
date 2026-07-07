@@ -88,8 +88,10 @@ describe("buildRegistry", () => {
         readFileSync(`../../registry/r/${name}.json`, "utf8"),
       );
       const declared: string[] = json.registryDependencies;
+      // A registry item may ship a plain .ts helper alongside its .tsx, so both
+      // extensions have to normalize to the specifier the source imports.
       const own = (json.files as { path: string }[]).map((f) =>
-        f.path.replace(/\.tsx$/, ""),
+        f.path.replace(/\.tsx?$/, ""),
       );
       for (const file of json.files as { content: string }[])
         for (const match of file.content.matchAll(/from "\.\/([^"]+)"/g)) {

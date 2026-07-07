@@ -36,6 +36,7 @@ export const NAMES = [
   "icon-button",
   "input",
   "label",
+  "loading-overlay",
   "notification-badge",
   "popover",
   "progress",

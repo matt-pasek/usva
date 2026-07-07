@@ -27,6 +27,7 @@ export const componentNav: NavGroup[] = [
       { slug: "icon-button", label: "Icon Button" },
       { slug: "input", label: "Input" },
       { slug: "label", label: "Label" },
+      { slug: "loading-overlay", label: "Loading Overlay" },
       { slug: "notification-badge", label: "Notification Badge" },
       { slug: "popover", label: "Popover" },
       { slug: "progress", label: "Progress" },
