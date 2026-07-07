@@ -62,6 +62,7 @@ export const componentNav: NavGroup[] = [
       { slug: "mockup-showcase", label: "Mockup Showcase" },
       { slug: "section-heading", label: "Section Heading" },
       { slug: "pullquote", label: "Pullquote" },
+      { slug: "stat-bento", label: "Stat Bento" },
     ],
   },
 ];

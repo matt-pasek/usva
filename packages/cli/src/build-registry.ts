@@ -65,6 +65,7 @@ export const PATTERN_NAMES = [
   "section-heading",
   "section-label",
   "segmented-control",
+  "stat-bento",
   "stat-card",
   "step-list",
   "stripe-card",
