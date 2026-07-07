@@ -55,6 +55,7 @@ export * from "./primitives/hint-popover/index.js";
 export * from "./primitives/icon-button/index.js";
 export * from "./primitives/input/index.js";
 export * from "./primitives/label/index.js";
+export * from "./primitives/list/index.js";
 export * from "./primitives/loading-overlay/index.js";
 export * from "./primitives/log-line/index.js";
 export * from "./primitives/notification-badge/index.js";

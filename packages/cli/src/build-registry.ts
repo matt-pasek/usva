@@ -36,6 +36,7 @@ export const NAMES = [
   "icon-button",
   "input",
   "label",
+  "list",
   "loading-overlay",
   "log-line",
   "notification-badge",
