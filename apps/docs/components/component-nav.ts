@@ -21,6 +21,7 @@ export const componentNav: NavGroup[] = [
       { slug: "checkbox", label: "Checkbox" },
       { slug: "chip", label: "Chip" },
       { slug: "dialog", label: "Dialog" },
+      { slug: "drawer", label: "Drawer" },
       { slug: "dropdown-menu", label: "Dropdown Menu" },
       { slug: "icon-button", label: "Icon Button" },
       { slug: "input", label: "Input" },

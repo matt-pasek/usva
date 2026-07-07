@@ -30,6 +30,7 @@ export const NAMES = [
   "checkbox",
   "chip",
   "dialog",
+  "drawer",
   "dropdown-menu",
   "icon-button",
   "input",
