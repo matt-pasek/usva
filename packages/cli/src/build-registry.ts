@@ -37,6 +37,7 @@ export const NAMES = [
   "input",
   "label",
   "loading-overlay",
+  "log-line",
   "notification-badge",
   "popover",
   "progress",
