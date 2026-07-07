@@ -11,7 +11,7 @@ export const buttonVariants = cva(
   cn(
     "relative isolate inline-flex select-none items-center justify-center gap-2 whitespace-nowrap rounded-lg font-medium tracking-[-0.01em] outline-none",
     "transition-control duration-fast ease-soft",
-    "active:scale-[0.96] motion-reduce:transition-none motion-reduce:transform-none",
+    "hover:-translate-y-px active:scale-[0.96] motion-reduce:transition-none motion-reduce:transform-none",
     "before:pointer-events-none before:absolute before:inset-0 before:-z-10 before:rounded-[inherit] before:bg-transparent before:transition-tint before:duration-fast",
     "after:absolute after:inset-x-0 after:content-['']",
     "focus-visible:ring-focus",
@@ -30,6 +30,8 @@ export const buttonVariants = cva(
         ghost: "bg-transparent text-muted hover:text-ink hover:before:bg-ink/5",
         outline:
           "border border-border bg-transparent text-ink hover:border-border-strong hover:before:bg-ink/5 focus-visible:border-transparent",
+        onSurface:
+          "border border-ink/10 bg-ink/[0.055] font-semibold text-ink hover:border-ink/20 hover:before:bg-ink/5",
       },
       size: {
         sm: "h-8 gap-1.5 rounded-md px-3 text-xs after:-inset-y-1.5",
@@ -120,13 +122,17 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       ),
     };
 
+    // The lift is declared twice on purpose. Motion writes an inline transform on the
+    // first press and never gives it back, which outranks the `hover:-translate-y-px`
+    // class from here on. That class is what the motion-free `asChild` path uses.
     return (
       <motion.button
         ref={ref}
         layout={!reduce}
         data-status={display}
         aria-busy={busy || undefined}
-        whileTap={reduce ? undefined : { scale: 0.96 }}
+        whileHover={reduce ? undefined : { y: -1 }}
+        whileTap={reduce ? undefined : { scale: 0.96, y: 0 }}
         transition={
           reduce
             ? { duration: 0 }

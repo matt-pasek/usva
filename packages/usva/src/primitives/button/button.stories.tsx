@@ -31,6 +31,17 @@ export const Outline: Story = {
   args: { variant: "outline" },
 };
 
+export const OnSurface: Story = {
+  args: { variant: "onSurface", children: "View on GitHub" },
+  decorators: [
+    (Story) => (
+      <div className="rounded-xl bg-gradient-accent p-10">
+        <Story />
+      </div>
+    ),
+  ],
+};
+
 export const Small: Story = {
   args: { size: "sm" },
 };

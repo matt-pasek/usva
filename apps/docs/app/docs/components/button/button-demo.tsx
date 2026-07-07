@@ -24,6 +24,13 @@ export function ButtonDemo() {
         <Button>Hover for glow</Button>
         <Button disabled>Disabled</Button>
       </div>
+
+      <div className="flex flex-wrap items-center gap-3 rounded-xl bg-gradient-accent p-6">
+        <Button variant="onSurface">onSurface</Button>
+        <Button variant="onSurface" size="sm">
+          Over a gradient
+        </Button>
+      </div>
     </div>
   );
 }

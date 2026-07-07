@@ -13,8 +13,8 @@ export const metadata: Metadata = {
 const props = [
   {
     name: "variant",
-    type: '"solid" | "soft" | "outline" | "ghost"',
-    desc: 'Visual weight of the button. Defaults to "solid".',
+    type: '"solid" | "soft" | "outline" | "ghost" | "onSurface"',
+    desc: 'Visual weight of the button. Defaults to "solid". Use "onSurface" for buttons sitting on an image or gradient.',
   },
   {
     name: "size",
@@ -47,11 +47,13 @@ export default function ButtonPage() {
       <div className="flex flex-col gap-2">
         <h1 className="text-3xl font-semibold text-ink">Button</h1>
         <p className="text-muted">
-          Four variants (<code>solid</code>, <code>soft</code>,{" "}
-          <code>outline</code>, <code>ghost</code>) across three sizes. The{" "}
-          <code>solid</code> variant lights up with the kajo accent glow on
-          hover, and <code>asChild</code> lets any element inherit the button
-          styling.
+          Five variants (<code>solid</code>, <code>soft</code>,{" "}
+          <code>outline</code>, <code>ghost</code>, <code>onSurface</code>)
+          across three sizes. Every variant lifts a pixel on hover and presses
+          down on click. The <code>solid</code> variant lights up with the kajo
+          accent glow on hover, <code>onSurface</code> is a translucent tonal
+          fill for buttons over imagery, and <code>asChild</code> lets any
+          element inherit the button styling.
         </p>
       </div>
 

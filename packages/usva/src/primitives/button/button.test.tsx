@@ -15,9 +15,35 @@ describe("Button", () => {
     render(<Button variant="ghost">x</Button>);
     expect(screen.getByRole("button").className).toContain("bg-transparent");
   });
+  it("onSurface is a translucent tonal fill for image and gradient backdrops", () => {
+    render(<Button variant="onSurface">x</Button>);
+    const className = screen.getByRole("button").className;
+    expect(className).toContain("bg-ink/[0.055]");
+    expect(className).toContain("border-ink/10");
+  });
   it("has no a11y violations", async () => {
     const { container } = render(<Button>ok</Button>);
     expect(await axe(container)).toHaveNoViolations();
+  });
+  it("has no a11y violations on onSurface", async () => {
+    const { container } = render(<Button variant="onSurface">ok</Button>);
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
+  /**
+   * asChild renders a plain element with no motion wrapper, so the hover lift has to
+   * come from the class. On the motion path `whileHover` supplies it instead: motion
+   * writes an inline transform after the first press, which would beat the class.
+   */
+  it("carries the hover lift class for the motion-free asChild path", () => {
+    render(
+      <Button asChild>
+        <a href="/docs">Read the docs</a>
+      </Button>,
+    );
+    expect(screen.getByRole("link").className).toContain(
+      "hover:-translate-y-px",
+    );
   });
 });
 
