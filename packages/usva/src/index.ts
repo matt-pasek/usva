@@ -39,6 +39,7 @@ export * from "./patterns/section-label/index.js";
 export * from "./patterns/segmented-control/index.js";
 export * from "./patterns/stat-bento/index.js";
 export * from "./patterns/stat-card/index.js";
+export * from "./patterns/step-chips/index.js";
 export * from "./patterns/step-list/index.js";
 export * from "./patterns/stripe-card/index.js";
 export * from "./patterns/toolbar/index.js";
