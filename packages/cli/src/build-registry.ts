@@ -54,6 +54,7 @@ export const NAMES = [
 
 export const PATTERN_NAMES = [
   "bento-grid",
+  "case-study-hero",
   "empty-state",
   "entity-card",
   "feature-carousel",
