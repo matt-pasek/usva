@@ -59,6 +59,7 @@ export const componentNav: NavGroup[] = [
       { slug: "toolbar", label: "Toolbar" },
       { slug: "segmented-control", label: "Segmented Control" },
       { slug: "progress-row", label: "Progress Row" },
+      { slug: "mockup-showcase", label: "Mockup Showcase" },
     ],
   },
 ];
