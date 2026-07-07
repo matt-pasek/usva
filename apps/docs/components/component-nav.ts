@@ -23,6 +23,7 @@ export const componentNav: NavGroup[] = [
       { slug: "dialog", label: "Dialog" },
       { slug: "drawer", label: "Drawer" },
       { slug: "dropdown-menu", label: "Dropdown Menu" },
+      { slug: "hint-popover", label: "Hint Popover" },
       { slug: "icon-button", label: "Icon Button" },
       { slug: "input", label: "Input" },
       { slug: "label", label: "Label" },

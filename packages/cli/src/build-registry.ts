@@ -32,6 +32,7 @@ export const NAMES = [
   "dialog",
   "drawer",
   "dropdown-menu",
+  "hint-popover",
   "icon-button",
   "input",
   "label",

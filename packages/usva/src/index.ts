@@ -45,6 +45,7 @@ export * from "./primitives/chip/index.js";
 export * from "./primitives/dialog/index.js";
 export * from "./primitives/drawer/index.js";
 export * from "./primitives/dropdown-menu/index.js";
+export * from "./primitives/hint-popover/index.js";
 export * from "./primitives/icon-button/index.js";
 export * from "./primitives/input/index.js";
 export * from "./primitives/label/index.js";
