@@ -63,6 +63,7 @@ export const PATTERN_NAMES = [
   "feature-carousel",
   "field-group",
   "footer",
+  "hero-split",
   "mockup-showcase",
   "panel",
   "progress-row",
