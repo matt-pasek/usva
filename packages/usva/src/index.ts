@@ -31,6 +31,7 @@ export * from "./patterns/field-group/index.js";
 export * from "./patterns/mockup-showcase/index.js";
 export * from "./patterns/panel/index.js";
 export * from "./patterns/progress-row/index.js";
+export * from "./patterns/pullquote/index.js";
 export * from "./patterns/section-heading/index.js";
 export * from "./patterns/section-label/index.js";
 export * from "./patterns/segmented-control/index.js";

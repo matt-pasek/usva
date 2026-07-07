@@ -61,6 +61,7 @@ export const PATTERN_NAMES = [
   "mockup-showcase",
   "panel",
   "progress-row",
+  "pullquote",
   "section-heading",
   "section-label",
   "segmented-control",

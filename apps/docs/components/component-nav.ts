@@ -61,6 +61,7 @@ export const componentNav: NavGroup[] = [
       { slug: "progress-row", label: "Progress Row" },
       { slug: "mockup-showcase", label: "Mockup Showcase" },
       { slug: "section-heading", label: "Section Heading" },
+      { slug: "pullquote", label: "Pullquote" },
     ],
   },
 ];
