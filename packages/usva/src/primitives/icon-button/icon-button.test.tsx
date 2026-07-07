@@ -64,3 +64,54 @@ describe("IconButton", () => {
     expect(await axe(container)).toHaveNoViolations();
   });
 });
+
+describe("IconButton loading", () => {
+  it("swaps the icon for a spinner and marks itself busy", () => {
+    render(
+      <IconButton aria-label="Sync" loading>
+        <Dot />
+      </IconButton>,
+    );
+    const button = screen.getByRole("button", { name: "Sync" });
+    expect(button).toHaveAttribute("aria-busy", "true");
+    expect(button.querySelector("circle")).toBeNull();
+  });
+
+  it("keeps its accessible name while loading", () => {
+    render(
+      <IconButton aria-label="Sync" loading>
+        <Dot />
+      </IconButton>,
+    );
+    expect(screen.getByRole("button")).toHaveAccessibleName("Sync");
+  });
+
+  it("swallows clicks while loading", () => {
+    const onClick = vi.fn();
+    render(
+      <IconButton aria-label="Sync" loading onClick={onClick}>
+        <Dot />
+      </IconButton>,
+    );
+    screen.getByRole("button").click();
+    expect(onClick).not.toHaveBeenCalled();
+  });
+
+  it("is not disabled while loading", () => {
+    render(
+      <IconButton aria-label="Sync" loading>
+        <Dot />
+      </IconButton>,
+    );
+    expect(screen.getByRole("button")).not.toBeDisabled();
+  });
+
+  it("has no a11y violations while loading", async () => {
+    const { container } = render(
+      <IconButton aria-label="Sync" loading>
+        <Dot />
+      </IconButton>,
+    );
+    expect(await axe(container)).toHaveNoViolations();
+  });
+});

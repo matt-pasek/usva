@@ -2,6 +2,7 @@
 import { cva, type VariantProps } from "class-variance-authority";
 import * as React from "react";
 import { cn } from "../../cn.js";
+import { Spinner } from "../spinner/spinner.js";
 
 const iconButtonVariants = cva(
   cn(
@@ -10,13 +11,16 @@ const iconButtonVariants = cva(
     "active:scale-[0.96] focus-visible:ring-focus",
     "disabled:pointer-events-none disabled:opacity-50",
     "motion-reduce:transition-none motion-reduce:transform-none",
+    "before:absolute before:content-['']",
     "[&_svg]:pointer-events-none",
   ),
   {
     variants: {
+      // the `before` inset expands the hit area to 44px without growing the box,
+      // so it has to scale inversely with the visual size
       size: {
-        sm: "size-8 rounded-lg [&_svg]:h-4 [&_svg]:w-4",
-        md: "size-10 rounded-xl [&_svg]:h-[1.15rem] [&_svg]:w-[1.15rem]",
+        sm: "size-8 rounded-lg before:-inset-1.5 [&_svg]:h-4 [&_svg]:w-4",
+        md: "size-10 rounded-xl before:-inset-0.5 [&_svg]:h-[1.15rem] [&_svg]:w-[1.15rem]",
       },
       active: {
         true: "glow-ring border-transparent text-accent",
@@ -43,36 +47,60 @@ export interface IconButtonProps
   /** Optional visible tooltip on hover/focus. Falls back to aria-label. */
   tooltip?: React.ReactNode;
   side?: "top" | "bottom" | "left" | "right";
+  /** Swaps the icon for a spinner. Blocks interaction without dimming the control. */
+  loading?: boolean;
 }
 
 export const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
   (
-    { className, size, active, tooltip, side = "top", children, ...props },
+    {
+      className,
+      size = "md",
+      active,
+      tooltip,
+      side = "top",
+      loading,
+      onClick,
+      children,
+      ...props
+    },
     ref,
   ) => {
     const id = React.useId();
+    const glyph = loading ? (
+      <Spinner
+        aria-hidden="true"
+        label=""
+        tone="current"
+        size="sm"
+        className={size === "sm" ? "scale-75" : undefined}
+      />
+    ) : (
+      children
+    );
+    const shared = {
+      type: "button",
+      "aria-busy": loading || undefined,
+      "data-loading": loading || undefined,
+      onClick: loading ? undefined : onClick,
+      className: cn(
+        iconButtonVariants({ size, active }),
+        loading && "pointer-events-none",
+        className,
+      ),
+    } as const;
+
     if (!tooltip) {
       return (
-        <button
-          ref={ref}
-          type="button"
-          className={cn(iconButtonVariants({ size, active }), className)}
-          {...props}
-        >
-          {children}
+        <button ref={ref} {...shared} {...props}>
+          {glyph}
         </button>
       );
     }
     return (
       <span className="group relative isolate inline-flex">
-        <button
-          ref={ref}
-          type="button"
-          aria-describedby={id}
-          className={cn(iconButtonVariants({ size, active }), className)}
-          {...props}
-        >
-          {children}
+        <button ref={ref} aria-describedby={id} {...shared} {...props}>
+          {glyph}
         </button>
         <span
           id={id}

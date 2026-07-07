@@ -19,6 +19,25 @@ describe("Spinner", () => {
     expect(screen.getByText("Saving")).toBeInTheDocument();
   });
 
+  it("glows in accent by default", () => {
+    const { container } = render(<Spinner />);
+    const ring = container.querySelector("span > span");
+    expect(ring?.className).toContain("border-t-accent");
+    expect(ring?.className).toContain("drop-shadow");
+  });
+
+  it.each([
+    "ring",
+    "dots",
+    "bars",
+    "orbit",
+  ] as const)("drops the accent glow for tone=current (%s)", (variant) => {
+    const { container } = render(<Spinner tone="current" variant={variant} />);
+    expect(container.innerHTML).not.toContain("drop-shadow");
+    expect(container.innerHTML).not.toContain("bg-accent");
+    expect(container.innerHTML).not.toContain("border-t-accent");
+  });
+
   it("guards animation under prefers-reduced-motion", () => {
     const { container } = render(<Spinner />);
     const ring = container.querySelector("span > span");

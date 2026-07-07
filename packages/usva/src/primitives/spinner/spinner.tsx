@@ -4,12 +4,12 @@ import { cn } from "../../cn.js";
 
 export type SpinnerVariant = "ring" | "dots" | "bars" | "orbit";
 export type SpinnerSize = "sm" | "md" | "lg";
+export type SpinnerTone = "accent" | "current";
 
 export const spinnerVariants = cva(
   cn(
-    "inline-block shrink-0 rounded-full border-border border-t-accent",
+    "inline-block shrink-0 rounded-full",
     "animate-spin motion-reduce:animate-none",
-    "[filter:drop-shadow(var(--usva-glow-accent))]",
   ),
   {
     variants: {
@@ -18,8 +18,13 @@ export const spinnerVariants = cva(
         md: "h-6 w-6 border-[1.5px]",
         lg: "h-8 w-8 border-2",
       },
+      tone: {
+        accent:
+          "border-border border-t-accent [filter:drop-shadow(var(--usva-glow-accent))]",
+        current: "border-current/25 border-t-current",
+      },
     },
-    defaultVariants: { size: "md" },
+    defaultVariants: { size: "md", tone: "accent" },
   },
 );
 
@@ -35,13 +40,37 @@ const dot: Record<SpinnerSize, string> = {
   lg: "size-2",
 };
 
-const glow = "[filter:drop-shadow(var(--usva-glow-accent))]";
+/** `current` inherits the parent's text colour, so it stays legible on a filled surface. */
+const fill: Record<SpinnerTone, string> = {
+  accent: "bg-accent",
+  current: "bg-current",
+};
 
-function Ring({ size }: { size: SpinnerSize }) {
-  return <span className={spinnerVariants({ size })} />;
+const glow: Record<SpinnerTone, string> = {
+  accent: "[filter:drop-shadow(var(--usva-glow-accent))]",
+  current: "",
+};
+
+const strongGlow: Record<SpinnerTone, string> = {
+  accent: "[filter:drop-shadow(var(--usva-glow-accent-strong))]",
+  current: "",
+};
+
+const track: Record<SpinnerTone, string> = {
+  accent: "border-border/60",
+  current: "border-current/20",
+};
+
+interface RendererProps {
+  size: SpinnerSize;
+  tone: SpinnerTone;
 }
 
-function Dots({ size }: { size: SpinnerSize }) {
+function Ring({ size, tone }: RendererProps) {
+  return <span className={spinnerVariants({ size, tone })} />;
+}
+
+function Dots({ size, tone }: RendererProps) {
   return (
     <span
       className={cn(
@@ -54,9 +83,10 @@ function Dots({ size }: { size: SpinnerSize }) {
           key={i}
           style={{ animationDelay: `${i * 160}ms` }}
           className={cn(
-            "rounded-full bg-accent animate-loader-pulse motion-reduce:animate-none",
+            "rounded-full animate-loader-pulse motion-reduce:animate-none",
+            fill[tone],
             dot[size],
-            glow,
+            glow[tone],
           )}
         />
       ))}
@@ -64,7 +94,7 @@ function Dots({ size }: { size: SpinnerSize }) {
   );
 }
 
-function Bars({ size }: { size: SpinnerSize }) {
+function Bars({ size, tone }: RendererProps) {
   const width = size === "sm" ? "w-0.5" : size === "lg" ? "w-1" : "w-[3px]";
   return (
     <span
@@ -79,7 +109,8 @@ function Bars({ size }: { size: SpinnerSize }) {
           key={i}
           style={{ animationDelay: `${i * 130}ms` }}
           className={cn(
-            "h-full origin-center rounded-full bg-accent animate-loader-bar motion-reduce:animate-none",
+            "h-full origin-center rounded-full animate-loader-bar motion-reduce:animate-none",
+            fill[tone],
             width,
           )}
         />
@@ -88,7 +119,7 @@ function Bars({ size }: { size: SpinnerSize }) {
   );
 }
 
-function Orbit({ size }: { size: SpinnerSize }) {
+function Orbit({ size, tone }: RendererProps) {
   return (
     <span
       className={cn(
@@ -96,12 +127,15 @@ function Orbit({ size }: { size: SpinnerSize }) {
         box[size],
       )}
     >
-      <span className="absolute inset-0 rounded-full border border-border/60" />
+      <span
+        className={cn("absolute inset-0 rounded-full border", track[tone])}
+      />
       <span
         className={cn(
-          "absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent",
+          "absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2 rounded-full",
+          fill[tone],
           dot[size],
-          "[filter:drop-shadow(var(--usva-glow-accent-strong))]",
+          strongGlow[tone],
         )}
       />
     </span>
@@ -110,7 +144,7 @@ function Orbit({ size }: { size: SpinnerSize }) {
 
 const RENDERERS: Record<
   SpinnerVariant,
-  (p: { size: SpinnerSize }) => React.ReactElement
+  (p: RendererProps) => React.ReactElement
 > = {
   ring: Ring,
   dots: Dots,
@@ -122,12 +156,20 @@ export interface SpinnerProps
   extends Omit<React.HTMLAttributes<HTMLSpanElement>, "children"> {
   size?: SpinnerSize;
   variant?: SpinnerVariant;
+  tone?: SpinnerTone;
   label?: string;
 }
 
 export const Spinner = React.forwardRef<HTMLSpanElement, SpinnerProps>(
   (
-    { className, size = "md", variant = "ring", label = "Loading", ...props },
+    {
+      className,
+      size = "md",
+      variant = "ring",
+      tone = "accent",
+      label = "Loading",
+      ...props
+    },
     ref,
   ) => {
     const Impl = RENDERERS[variant];
@@ -138,7 +180,7 @@ export const Spinner = React.forwardRef<HTMLSpanElement, SpinnerProps>(
         className={cn("inline-flex", className)}
         {...props}
       >
-        <Impl size={size} />
+        <Impl size={size} tone={tone} />
         <span className="sr-only">{label}</span>
       </span>
     );
@@ -151,10 +193,21 @@ export interface PageLoaderProps
   label?: string;
   size?: SpinnerSize;
   variant?: SpinnerVariant;
+  tone?: SpinnerTone;
 }
 
 export const PageLoader = React.forwardRef<HTMLDivElement, PageLoaderProps>(
-  ({ className, label, size = "lg", variant = "ring", ...props }, ref) => (
+  (
+    {
+      className,
+      label,
+      size = "lg",
+      variant = "ring",
+      tone = "accent",
+      ...props
+    },
+    ref,
+  ) => (
     <div
       ref={ref}
       className={cn(
@@ -163,7 +216,12 @@ export const PageLoader = React.forwardRef<HTMLDivElement, PageLoaderProps>(
       )}
       {...props}
     >
-      <Spinner size={size} variant={variant} label={label ?? "Loading"} />
+      <Spinner
+        size={size}
+        variant={variant}
+        tone={tone}
+        label={label ?? "Loading"}
+      />
       {label ? (
         <p
           aria-hidden="true"
