@@ -50,6 +50,7 @@ export const NAMES = [
   "switch",
   "tabs",
   "toast",
+  "toggle-chip",
   "tooltip",
 ] as const;
 

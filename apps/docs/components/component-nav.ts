@@ -41,6 +41,7 @@ export const componentNav: NavGroup[] = [
       { slug: "switch", label: "Switch" },
       { slug: "tabs", label: "Tabs" },
       { slug: "toast", label: "Toast" },
+      { slug: "toggle-chip", label: "Toggle Chip" },
       { slug: "tooltip", label: "Tooltip" },
     ],
   },
