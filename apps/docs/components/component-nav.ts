@@ -68,6 +68,7 @@ export const componentNav: NavGroup[] = [
       { slug: "checklist-card", label: "Checklist Card" },
       { slug: "step-chips", label: "Step Chips" },
       { slug: "cta-banner", label: "CTA Banner" },
+      { slug: "footer", label: "Footer" },
     ],
   },
 ];
