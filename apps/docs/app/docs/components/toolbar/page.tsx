@@ -6,7 +6,10 @@ import {
   CardHeader,
   Toolbar,
   ToolbarActions,
+  ToolbarCount,
   ToolbarGroup,
+  ToolbarLegend,
+  ToolbarLegendItem,
 } from "@matt-pasek/usva";
 import type { Metadata } from "next";
 import { InstallBlock } from "@/components/install-block";
@@ -96,6 +99,44 @@ export default function ToolbarPage() {
               </ToolbarActions>
             </Toolbar>
           </div>
+        </CardBody>
+      </Card>
+
+      <Card>
+        <CardHeader>Legend and counts</CardHeader>
+        <CardBody>
+          <div className="overflow-hidden rounded-lg border border-border">
+            <Toolbar>
+              <ToolbarLegend max={3}>
+                <ToolbarLegendItem swatch="#8b5cf6">
+                  Computer Science
+                </ToolbarLegendItem>
+                <ToolbarLegendItem swatch="#52c989">
+                  Mathematics
+                </ToolbarLegendItem>
+                <ToolbarLegendItem swatch="#e0b341">Physics</ToolbarLegendItem>
+                <ToolbarLegendItem swatch="#6ea8fe">
+                  Linguistics
+                </ToolbarLegendItem>
+                <ToolbarLegendItem swatch="#e0556b">
+                  Philosophy
+                </ToolbarLegendItem>
+              </ToolbarLegend>
+              <ToolbarActions>
+                <ToolbarCount count={3}>unsaved</ToolbarCount>
+                <ToolbarCount tone="warning" count={1}>
+                  issue
+                </ToolbarCount>
+                <Button size="sm">Confirm</Button>
+              </ToolbarActions>
+            </Toolbar>
+          </div>
+          <p className="mt-3 text-sm text-muted">
+            A legend swatch takes any CSS color, because it names a thing rather
+            than carrying a tone. <code>ToolbarCount</code> takes a semantic
+            tone and returns nothing at a count of zero, so callers stop
+            guarding the render.
+          </p>
         </CardBody>
       </Card>
 
