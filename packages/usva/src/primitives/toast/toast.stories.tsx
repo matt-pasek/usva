@@ -1,13 +1,21 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { ToastProvider, toast } from "./toast.js";
+import { Toaster, toast } from "./toast.js";
 
-const meta: Meta<typeof ToastProvider> = {
+const meta: Meta<typeof Toaster> = {
   title: "Primitives/Toast",
-  component: ToastProvider,
+  component: Toaster,
+  decorators: [
+    (Story) => (
+      <>
+        <Story />
+        <Toaster />
+      </>
+    ),
+  ],
 };
 export default meta;
 
-type Story = StoryObj<typeof ToastProvider>;
+type Story = StoryObj<typeof Toaster>;
 
 function TriggerButton({
   children,
@@ -29,89 +37,79 @@ function TriggerButton({
 
 export const Success: Story = {
   render: () => (
-    <ToastProvider>
-      <TriggerButton
-        onClick={() =>
-          toast({
-            title: "Saved",
-            description: "Your changes are live.",
-            type: "success",
-          })
-        }
-      >
-        Show success toast
-      </TriggerButton>
-    </ToastProvider>
+    <TriggerButton
+      onClick={() =>
+        toast({
+          title: "Saved",
+          description: "Your changes are live.",
+          type: "success",
+        })
+      }
+    >
+      Show success toast
+    </TriggerButton>
   ),
 };
 
 export const Warning: Story = {
   render: () => (
-    <ToastProvider>
-      <TriggerButton
-        onClick={() =>
-          toast({
-            title: "Storage almost full",
-            description: "You're at 92% of your quota.",
-            type: "warning",
-          })
-        }
-      >
-        Show warning toast
-      </TriggerButton>
-    </ToastProvider>
+    <TriggerButton
+      onClick={() =>
+        toast({
+          title: "Storage almost full",
+          description: "You're at 92% of your quota.",
+          type: "warning",
+        })
+      }
+    >
+      Show warning toast
+    </TriggerButton>
   ),
 };
 
 export const Danger: Story = {
   render: () => (
-    <ToastProvider>
-      <TriggerButton
-        onClick={() =>
-          toast({
-            title: "Upload failed",
-            description: "Check your connection and try again.",
-            type: "danger",
-          })
-        }
-      >
-        Show danger toast
-      </TriggerButton>
-    </ToastProvider>
+    <TriggerButton
+      onClick={() =>
+        toast({
+          title: "Upload failed",
+          description: "Check your connection and try again.",
+          type: "danger",
+        })
+      }
+    >
+      Show danger toast
+    </TriggerButton>
   ),
 };
 
 export const Info: Story = {
   render: () => (
-    <ToastProvider>
-      <TriggerButton
-        onClick={() =>
-          toast({
-            title: "New version available",
-            description: "Refresh to update.",
-            type: "info",
-          })
-        }
-      >
-        Show info toast
-      </TriggerButton>
-    </ToastProvider>
+    <TriggerButton
+      onClick={() =>
+        toast({
+          title: "New version available",
+          description: "Refresh to update.",
+          type: "info",
+        })
+      }
+    >
+      Show info toast
+    </TriggerButton>
   ),
 };
 
 export const WithAction: Story = {
   render: () => (
-    <ToastProvider>
-      <TriggerButton
-        onClick={() =>
-          toast({
-            title: "Conversation archived",
-            action: { label: "Undo", onClick: () => {} },
-          })
-        }
-      >
-        Show toast with action
-      </TriggerButton>
-    </ToastProvider>
+    <TriggerButton
+      onClick={() =>
+        toast({
+          title: "Conversation archived",
+          action: { label: "Undo", onClick: () => {} },
+        })
+      }
+    >
+      Show toast with action
+    </TriggerButton>
   ),
 };

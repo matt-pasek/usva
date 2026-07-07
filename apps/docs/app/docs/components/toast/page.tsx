@@ -38,12 +38,12 @@ const props = [
   },
 ];
 
-const usageSnippet = `import { toast, ToastProvider } from "@matt-pasek/usva";
+const usageSnippet = `import { toast, Toaster } from "@matt-pasek/usva";
 
-// mount once, e.g. in a root layout
-<ToastProvider>{children}</ToastProvider>
+// mount once, e.g. in a root layout. It does not wrap your app.
+<Toaster />
 
-// call from anywhere
+// call from anywhere, including outside React
 toast({ title: "Saved", description: "Your changes are live.", type: "success" });`;
 
 export default function ToastPage() {
@@ -52,10 +52,13 @@ export default function ToastPage() {
       <div className="flex flex-col gap-2">
         <h1 className="text-3xl font-semibold text-ink">Toast</h1>
         <p className="text-muted">
-          Built on Base UI's <code>Toast</code> manager, so <code>toast()</code>{" "}
-          is callable from anywhere in the tree and stays SSR-safe. Mount{" "}
-          <code>ToastProvider</code> once (e.g. in a root layout) — it renders
-          the viewport and list internally.
+          Built on Base UI's <code>Toast</code> manager, which lives at module
+          scope rather than in React context. So <code>toast()</code> is
+          callable from anywhere, even outside React, and stays SSR-safe. Mount{" "}
+          <code>Toaster</code> once (e.g. in a root layout) to render the
+          viewport. It does not wrap your app, and your call sites do not need
+          to sit beneath it. Toasts fired before it mounts are dropped, not
+          queued.
         </p>
       </div>
 

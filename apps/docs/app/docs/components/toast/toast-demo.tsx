@@ -1,5 +1,5 @@
 "use client";
-import { notify, ToastProvider, toast } from "@matt-pasek/usva";
+import { notify, Toaster, toast } from "@matt-pasek/usva";
 
 function TriggerButton({
   children,
@@ -21,7 +21,7 @@ function TriggerButton({
 
 export function ToastDemo() {
   return (
-    <ToastProvider>
+    <>
       <div className="flex flex-wrap gap-2">
         <TriggerButton
           onClick={() =>
@@ -68,6 +68,7 @@ export function ToastDemo() {
           With action
         </TriggerButton>
       </div>
-    </ToastProvider>
+      <Toaster />
+    </>
   );
 }

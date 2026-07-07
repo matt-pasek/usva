@@ -39,8 +39,9 @@ function makeNotifier(type: ToastType) {
 }
 
 /**
- * Provider-free imperative sugar over `toast()`. Call from anywhere:
+ * Imperative sugar over `toast()`. Call from anywhere, including outside React:
  * `notify.success("Saved")`, `notify.error("Upload failed", { description })`.
+ * Needs a mounted `Toaster` to render into, but not around the call site.
  */
 export const notify = {
   success: makeNotifier("success"),
@@ -50,8 +51,7 @@ export const notify = {
   info: makeNotifier("info"),
 };
 
-export interface ToastProviderProps {
-  children?: React.ReactNode;
+export interface ToasterProps {
   limit?: number;
   timeout?: number;
 }
@@ -180,14 +180,14 @@ function ToastList() {
   );
 }
 
-export function ToastProvider({
-  children,
-  limit,
-  timeout,
-}: ToastProviderProps) {
+/**
+ * Mount once, anywhere in the tree. It does not wrap your app: `notify` and `toast`
+ * talk to a module-scoped manager, not to React context, so the call site never has
+ * to sit underneath this. Toasts fired before it mounts are dropped, not queued.
+ */
+export function Toaster({ limit, timeout }: ToasterProps) {
   return (
     <Base.Provider toastManager={toastManager} limit={limit} timeout={timeout}>
-      {children}
       <Base.Portal>
         <Base.Viewport className="pointer-events-none fixed bottom-4 left-4 right-4 z-toast flex w-auto flex-col-reverse gap-2 sm:left-auto sm:w-full sm:max-w-sm">
           <ToastList />
@@ -196,7 +196,7 @@ export function ToastProvider({
     </Base.Provider>
   );
 }
-ToastProvider.displayName = "ToastProvider";
+Toaster.displayName = "Toaster";
 
 function CloseIcon() {
   return (
