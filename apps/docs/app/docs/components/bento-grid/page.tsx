@@ -1,11 +1,15 @@
 import {
   BentoCard,
   BentoGrid,
+  BentoInfo,
+  BentoMetric,
+  BentoText,
   Card,
   CardBody,
   CardEyebrow,
   CardHeader,
   CardTitle,
+  Chip,
 } from "@matt-pasek/usva";
 import type { Metadata } from "next";
 import { InstallBlock } from "@/components/install-block";
@@ -96,6 +100,49 @@ export default function BentoGridPage() {
               </CardBody>
             </BentoCard>
           </BentoGrid>
+        </CardBody>
+      </Card>
+
+      <Card>
+        <CardHeader>Cells</CardHeader>
+        <CardBody>
+          <BentoGrid columns={4}>
+            <BentoCard span={2}>
+              <BentoText
+                label="Problem"
+                title="Students could not see their whole degree."
+                body="Requirements were spread across four systems, none of which agreed with the others."
+              />
+            </BentoCard>
+            <BentoCard span={2}>
+              <BentoMetric
+                animate
+                value="2.4"
+                suffix="k"
+                label="active users"
+              />
+            </BentoCard>
+            <BentoCard span={2}>
+              <BentoMetric animate value="94" suffix="%" label="hit ratio" />
+            </BentoCard>
+            <BentoCard span={2}>
+              <BentoInfo label="Role">Sole designer and engineer</BentoInfo>
+            </BentoCard>
+            <BentoCard span={2}>
+              <BentoInfo label="Stack">
+                <div className="flex flex-wrap gap-1.5">
+                  <Chip>React</Chip>
+                  <Chip>Tailwind</Chip>
+                  <Chip>Base UI</Chip>
+                </div>
+              </BentoInfo>
+            </BentoCard>
+          </BentoGrid>
+          <p className="mt-3 text-sm text-muted">
+            <code>BentoCard</code> is the container: span, row span, edge glow.
+            The three cells are content, and supply only padding and fill. They
+            work as a child of any <code>Card</code>, not just a bento cell.
+          </p>
         </CardBody>
       </Card>
 

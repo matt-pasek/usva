@@ -1,7 +1,13 @@
-import { render, screen } from "@testing-library/react";
+import { act, render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
-import { describe, expect, it } from "vitest";
-import { BentoCard, BentoGrid } from "./bento-grid.js";
+import { describe, expect, it, vi } from "vitest";
+import {
+  BentoCard,
+  BentoGrid,
+  BentoInfo,
+  BentoMetric,
+  BentoText,
+} from "./bento-grid.js";
 
 describe("BentoGrid", () => {
   it("paints one shared wash spanning the grid", () => {
@@ -64,5 +70,176 @@ describe("BentoGrid", () => {
     );
     expect(await axe(container)).toHaveNoViolations();
     expect(screen.getByText("Tile one")).toBeInTheDocument();
+  });
+});
+
+describe("Bento cells", () => {
+  it("BentoMetric renders a value and a labelled pill", () => {
+    render(<BentoMetric value="2.4k" label="active users" />);
+    expect(screen.getByText("2.4k")).toBeInTheDocument();
+    expect(screen.getByText("active users")).toBeInTheDocument();
+  });
+
+  it("BentoMetric renders the value with tabular figures", () => {
+    render(<BentoMetric value="2.4k" label="users" />);
+    expect(screen.getByText("2.4k").className).toContain("tabular-nums");
+  });
+
+  it("BentoMetric renders a suffix keyed to the alternate accent", () => {
+    render(<BentoMetric value="98" suffix="%" label="uptime" />);
+    const suffix = screen.getByText("%");
+    expect(suffix).toBeInTheDocument();
+    expect(suffix.className).toContain("text-accent-alt");
+  });
+
+  it("BentoMetric omits the suffix element when no suffix is given", () => {
+    const { container } = render(<BentoMetric value="98" label="uptime" />);
+    expect(container.querySelector(".text-accent-alt")).toBeNull();
+  });
+
+  it("BentoMetric size lg carries the heavier display weight", () => {
+    render(<BentoMetric size="lg" value="12" label="shipped" />);
+    const value = screen.getByText("12");
+    expect(value.className).toContain("font-black");
+    expect(value.className).not.toContain("text-ink/70");
+  });
+
+  it("BentoMetric defaults to the md weight", () => {
+    render(<BentoMetric value="12" label="shipped" />);
+    const value = screen.getByText("12");
+    expect(value.className).toContain("font-bold");
+    expect(value.className).toContain("text-ink/70");
+  });
+
+  it("BentoMetric keeps the label pill on one line", () => {
+    render(<BentoMetric value="2.4" label="active users" />);
+    const pill = screen.getByText("active users");
+    expect(pill.className).toContain("whitespace-nowrap");
+  });
+});
+
+describe("BentoMetric count-up", () => {
+  it("lands on the target value", async () => {
+    render(<BentoMetric animate value={2.4} label="users" />);
+    expect(await screen.findByText("2.4")).toBeInTheDocument();
+  });
+
+  it("preserves the decimal places of the target", async () => {
+    render(<BentoMetric animate value={99.9} label="uptime" />);
+    expect(await screen.findByText("99.9")).toBeInTheDocument();
+  });
+
+  it("counts integers without inventing decimals", async () => {
+    render(<BentoMetric animate value={30} label="students" />);
+    expect(await screen.findByText("30")).toBeInTheDocument();
+  });
+
+  it("renders a non-numeric value verbatim rather than counting it", () => {
+    render(<BentoMetric animate value="n/a" label="unknown" />);
+    expect(screen.getByText("n/a")).toBeInTheDocument();
+  });
+
+  it("jumps straight to the target when motion is reduced", () => {
+    const original = window.matchMedia;
+    window.matchMedia = ((query: string) => ({
+      matches: query.includes("prefers-reduced-motion"),
+      media: query,
+      addEventListener: () => {},
+      removeEventListener: () => {},
+    })) as unknown as typeof window.matchMedia;
+
+    render(<BentoMetric animate value={2.4} label="users" />);
+    expect(screen.getByText("2.4")).toBeInTheDocument();
+
+    window.matchMedia = original;
+  });
+
+  it("does not animate unless asked", () => {
+    render(<BentoMetric value={2.4} label="users" />);
+    expect(screen.getByText("2.4")).toBeInTheDocument();
+  });
+
+  /** A throttled or background tab delivers no frame. Zero forever is worse than static. */
+  it("snaps to the target when no animation frame ever arrives", () => {
+    vi.useFakeTimers();
+    const raf = vi
+      .spyOn(window, "requestAnimationFrame")
+      .mockImplementation(() => 1);
+
+    render(<BentoMetric animate value={2.4} label="users" />);
+    expect(screen.getByText("0.0")).toBeInTheDocument();
+
+    act(() => {
+      vi.advanceTimersByTime(1200);
+    });
+    expect(screen.getByText("2.4")).toBeInTheDocument();
+
+    raf.mockRestore();
+    vi.useRealTimers();
+  });
+
+  it("skips the count entirely while the document is hidden", () => {
+    const hidden = vi
+      .spyOn(document, "hidden", "get")
+      .mockReturnValue(true as unknown as boolean);
+
+    render(<BentoMetric animate value={2.4} label="users" />);
+    expect(screen.getByText("2.4")).toBeInTheDocument();
+
+    hidden.mockRestore();
+  });
+
+  it("BentoInfo takes arbitrary children rather than a tech-stack variant", () => {
+    render(
+      <BentoInfo label="Stack">
+        <span>React</span>
+        <span>Tailwind</span>
+      </BentoInfo>,
+    );
+    expect(screen.getByText("React")).toBeInTheDocument();
+    expect(screen.getByText("Tailwind")).toBeInTheDocument();
+  });
+
+  it("BentoText renders a heading and an optional body", () => {
+    render(<BentoText title="The problem" body="Students could not see it." />);
+    expect(
+      screen.getByRole("heading", { name: "The problem" }),
+    ).toBeInTheDocument();
+    expect(screen.getByText("Students could not see it.")).toBeInTheDocument();
+  });
+
+  it("BentoText omits the label block when no label is given", () => {
+    const { container } = render(<BentoText title="Bare" />);
+    expect(container.querySelector(".font-mono")).toBeNull();
+  });
+
+  it("cells accept an icon as a node slot", () => {
+    render(
+      <BentoInfo label="Role" icon={<svg aria-hidden="true" role="none" />}>
+        Sole engineer
+      </BentoInfo>,
+    );
+    expect(screen.getByText("Sole engineer")).toBeInTheDocument();
+  });
+
+  it("has no a11y violations inside a grid", async () => {
+    const { container } = render(
+      <BentoGrid columns={4}>
+        <BentoCard span={2}>
+          <BentoText
+            label="Problem"
+            title="Unseen degree"
+            body="A long tail."
+          />
+        </BentoCard>
+        <BentoCard>
+          <BentoMetric value="2.4k" label="active users" />
+        </BentoCard>
+        <BentoCard>
+          <BentoInfo label="Role">Sole designer</BentoInfo>
+        </BentoCard>
+      </BentoGrid>,
+    );
+    expect(await axe(container)).toHaveNoViolations();
   });
 });
