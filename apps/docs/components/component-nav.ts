@@ -67,6 +67,7 @@ export const componentNav: NavGroup[] = [
       { slug: "case-study-hero", label: "Case Study Hero" },
       { slug: "checklist-card", label: "Checklist Card" },
       { slug: "step-chips", label: "Step Chips" },
+      { slug: "cta-banner", label: "CTA Banner" },
     ],
   },
 ];
