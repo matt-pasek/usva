@@ -25,6 +25,7 @@ export {
 } from "./motion/reveal-config.js";
 export * from "./patterns/bento-grid/index.js";
 export * from "./patterns/case-study-hero/index.js";
+export * from "./patterns/checklist-card/index.js";
 export * from "./patterns/empty-state/index.js";
 export * from "./patterns/entity-card/index.js";
 export * from "./patterns/feature-carousel/index.js";
