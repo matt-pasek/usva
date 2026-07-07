@@ -10,6 +10,7 @@ storybook-static/
 
 # planning/specs
 docs/superpowers/
+.superpowers/
 .idea/
 
 # case-study working notes (kept local)
