@@ -1,3 +1,4 @@
+"use client";
 import * as React from "react";
 import { cn } from "../../cn.js";
 
@@ -49,6 +50,11 @@ export const ProgressRow = React.forwardRef<HTMLDivElement, ProgressRowProps>(
     const percent = ratio(value, max) * 100;
     const name = ariaLabel ?? (typeof label === "string" ? label : undefined);
 
+    const [fill, setFill] = React.useState(0);
+    React.useEffect(() => {
+      setFill(percent);
+    }, [percent]);
+
     return (
       <div
         ref={ref}
@@ -74,7 +80,7 @@ export const ProgressRow = React.forwardRef<HTMLDivElement, ProgressRowProps>(
                 barColor == null && "bg-accent",
               )}
               style={{
-                width: `${percent}%`,
+                width: `${fill}%`,
                 backgroundColor: barColor,
               }}
             />
