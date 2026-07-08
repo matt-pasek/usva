@@ -34,6 +34,7 @@ export * from "./patterns/field-group/index.js";
 export * from "./patterns/footer/index.js";
 export * from "./patterns/hero-split/index.js";
 export * from "./patterns/mockup-showcase/index.js";
+export * from "./patterns/page-header/index.js";
 export * from "./patterns/panel/index.js";
 export * from "./patterns/progress-row/index.js";
 export * from "./patterns/pullquote/index.js";

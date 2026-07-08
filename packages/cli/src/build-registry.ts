@@ -66,6 +66,7 @@ export const PATTERN_NAMES = [
   "footer",
   "hero-split",
   "mockup-showcase",
+  "page-header",
   "panel",
   "progress-row",
   "pullquote",
