@@ -59,6 +59,7 @@ export const PATTERN_NAMES = [
   "case-study-hero",
   "checklist-card",
   "cta-banner",
+  "dashboard-grid",
   "disclosure-row",
   "empty-state",
   "entity-card",
