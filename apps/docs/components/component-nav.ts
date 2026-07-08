@@ -72,6 +72,7 @@ export const componentNav: NavGroup[] = [
       { slug: "hero-split", label: "Hero Split" },
       { slug: "footer", label: "Footer" },
       { slug: "page-header", label: "Page Header" },
+      { slug: "disclosure-row", label: "Disclosure Row" },
     ],
   },
 ];
