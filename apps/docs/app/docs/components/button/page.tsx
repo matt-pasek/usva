@@ -31,6 +31,26 @@ const props = [
     type: "boolean",
     desc: "Disables the button and dims it to 50% opacity.",
   },
+  {
+    name: "status",
+    type: '"idle" | "loading" | "success" | "error"',
+    desc: 'Drives the content machine. "loading" swaps in a spinner and blocks clicks; "success" and "error" flash their own colour and icon, then settle back to idle.',
+  },
+  {
+    name: "loadingText / successText / errorText",
+    type: "ReactNode",
+    desc: "Labels shown alongside the spinner, check, and alert icons for each non-idle status.",
+  },
+  {
+    name: "settleDelay",
+    type: "number",
+    desc: "How long success or error holds before returning to idle. Defaults to 1200ms.",
+  },
+  {
+    name: "onSettle",
+    type: "() => void",
+    desc: "Fires when a success or error status settles back to idle.",
+  },
 ];
 
 const usageSnippet = `import { Button } from "@matt-pasek/usva";

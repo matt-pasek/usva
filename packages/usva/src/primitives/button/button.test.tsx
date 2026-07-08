@@ -58,8 +58,7 @@ describe("Button status", () => {
         Save
       </Button>,
     );
-    expect(screen.getByRole("button")).toHaveTextContent("Saving");
-    expect(screen.getByRole("button")).not.toHaveTextContent("Save");
+    expect(screen.getByRole("button")).toHaveAccessibleName("Saving");
   });
 
   it("defaults the loading text to Loading", () => {

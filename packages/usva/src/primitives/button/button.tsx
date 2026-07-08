@@ -1,6 +1,6 @@
 "use client";
 import { cva, type VariantProps } from "class-variance-authority";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 import * as React from "react";
 import { cn } from "../../cn.js";
 import { Spinner } from "../spinner/spinner.js";
@@ -44,6 +44,16 @@ export const buttonVariants = cva(
 );
 
 const SPINNER_SIZE = { sm: "sm", md: "sm", lg: "md" } as const;
+
+const GRID_STYLE: React.CSSProperties = {
+  display: "grid",
+  placeItems: "center",
+};
+const CELL_STYLE: React.CSSProperties = { gridArea: "1 / 1" };
+const SIZER_STYLE: React.CSSProperties = {
+  ...CELL_STYLE,
+  visibility: "hidden",
+};
 
 type MotionConflicts =
   | "onAnimationStart"
@@ -128,7 +138,6 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     return (
       <motion.button
         ref={ref}
-        layout={!reduce}
         data-status={display}
         aria-busy={busy || undefined}
         whileHover={reduce ? undefined : { y: -1 }}
@@ -142,22 +151,36 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         className={cn(buttonVariants({ variant, size }), className)}
         {...props}
       >
-        <AnimatePresence mode="popLayout" initial={false}>
+        {/* Every state is stacked in one grid cell so the button reserves the widest
+            state's width up front and never reshapes between them. Only the active
+            label is shown; the rest are hidden sizers. Grid placement is inline-styled,
+            not Tailwind, so a consumer's build can never tree-shake the layout away. */}
+        <span style={GRID_STYLE}>
+          {(Object.keys(content) as ButtonStatus[]).map((s) => (
+            <span
+              key={s}
+              aria-hidden
+              style={SIZER_STYLE}
+              className="inline-flex items-center gap-2 whitespace-nowrap"
+            >
+              {content[s]}
+            </span>
+          ))}
           <motion.span
             key={display}
-            initial={reduce ? false : { opacity: 0, y: -6 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={reduce ? { opacity: 0 } : { opacity: 0, y: 6 }}
+            style={CELL_STYLE}
+            initial={reduce ? false : { opacity: 0, scale: 0.96 }}
+            animate={{ opacity: 1, scale: 1 }}
             transition={
               reduce
                 ? { duration: 0 }
-                : { type: "spring", stiffness: 500, damping: 40 }
+                : { duration: 0.2, ease: [0.22, 1, 0.36, 1] }
             }
             className="inline-flex items-center gap-2 whitespace-nowrap"
           >
             {content[display]}
           </motion.span>
-        </AnimatePresence>
+        </span>
       </motion.button>
     );
   },
