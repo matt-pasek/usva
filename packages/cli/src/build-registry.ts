@@ -71,6 +71,7 @@ export const PATTERN_NAMES = [
   "panel",
   "progress-row",
   "pullquote",
+  "roadmap-timeline",
   "section-heading",
   "section-label",
   "segmented-control",

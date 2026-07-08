@@ -39,6 +39,7 @@ export * from "./patterns/page-header/index.js";
 export * from "./patterns/panel/index.js";
 export * from "./patterns/progress-row/index.js";
 export * from "./patterns/pullquote/index.js";
+export * from "./patterns/roadmap-timeline/index.js";
 export * from "./patterns/section-heading/index.js";
 export * from "./patterns/section-label/index.js";
 export * from "./patterns/segmented-control/index.js";
