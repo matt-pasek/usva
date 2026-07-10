@@ -75,6 +75,7 @@ export const componentNav: NavGroup[] = [
       { slug: "disclosure-row", label: "Disclosure Row" },
       { slug: "dashboard-grid", label: "Dashboard Grid" },
       { slug: "roadmap-timeline", label: "Roadmap Timeline" },
+      { slug: "floating-nav", label: "Floating Nav" },
     ],
   },
 ];

@@ -65,6 +65,7 @@ export const PATTERN_NAMES = [
   "entity-card",
   "feature-carousel",
   "field-group",
+  "floating-nav",
   "footer",
   "hero-split",
   "mockup-showcase",

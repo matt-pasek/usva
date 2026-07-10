@@ -33,6 +33,7 @@ export * from "./patterns/empty-state/index.js";
 export * from "./patterns/entity-card/index.js";
 export * from "./patterns/feature-carousel/index.js";
 export * from "./patterns/field-group/index.js";
+export * from "./patterns/floating-nav/index.js";
 export * from "./patterns/footer/index.js";
 export * from "./patterns/hero-split/index.js";
 export * from "./patterns/mockup-showcase/index.js";
