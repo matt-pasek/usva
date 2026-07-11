@@ -273,8 +273,6 @@ export default function SulaNavPage() {
         <CardBody className="flex flex-col gap-4">
           <SourceView filePath="packages/usva/src/sula/sula-nav/sula-nav.tsx" />
           <SourceView filePath="packages/usva/src/sula/sula-nav/nav-geometry.ts" />
-          <SourceView filePath="packages/usva/src/sula/sula-nav/nav-shader.ts" />
-          <SourceView filePath="packages/usva/src/sula/sula-nav/nav-field.ts" />
         </CardBody>
       </Card>
 

@@ -2,15 +2,17 @@ import { describe, expect, it } from "vitest";
 import { createEnergyTracker } from "./energy.js";
 
 describe("createEnergyTracker", () => {
-  it("bumps to min(1, speed * gain)", () => {
+  it("eases toward min(1, speed * gain)", () => {
     const tracker = createEnergyTracker();
-    expect(tracker.bump(0.01)).toBeCloseTo(0.4, 10);
-    expect(tracker.value).toBeCloseTo(0.4, 10);
+    expect(tracker.bump(0.01)).toBeCloseTo(0.4 * 0.18, 10);
+    expect(tracker.value).toBeCloseTo(0.4 * 0.18, 10);
   });
 
-  it("clamps a fast bump to 1", () => {
+  it("eases into a fast bump instead of jumping to full energy", () => {
     const tracker = createEnergyTracker();
-    expect(tracker.bump(5)).toBe(1);
+    const first = tracker.bump(5);
+    expect(first).toBeGreaterThan(0);
+    expect(first).toBeLessThan(0.3);
   });
 
   it("decays by the decay factor when speed is 0", () => {
@@ -29,8 +31,12 @@ describe("createEnergyTracker", () => {
   });
 
   it("honours custom options", () => {
-    const tracker = createEnergyTracker({ gain: 10, parkBelow: 0.5 });
-    expect(tracker.bump(0.03)).toBeCloseTo(0.3, 10);
+    const tracker = createEnergyTracker({
+      attack: 0.5,
+      gain: 10,
+      parkBelow: 0.5,
+    });
+    expect(tracker.bump(0.03)).toBeCloseTo(0.15, 10);
     expect(tracker.parked()).toBe(true);
   });
 });

@@ -2,7 +2,23 @@
 import { animate, useReducedMotion } from "motion/react";
 import * as React from "react";
 import { cn } from "../../cn.js";
-import { clamp01, smoother } from "../sula-motion/curves.js";
+import {
+  createField,
+  type FieldColors,
+  resolveColor,
+  shineForBackdrop,
+} from "../sula-core/field.js";
+import {
+  type Blob,
+  bridgeNecks,
+  measureRestBlobs,
+  morphBlob,
+  type Neck,
+  packHover,
+  packUniforms,
+  restDiffers,
+} from "../sula-core/geometry.js";
+import { clamp01, smoother, smoothstep } from "../sula-motion/curves.js";
 import { createEnergyTracker } from "../sula-motion/energy.js";
 import {
   barSpring,
@@ -13,20 +29,7 @@ import {
   textFade,
 } from "../sula-motion/springs.js";
 import {
-  createField,
-  type FieldColors,
-  resolveColor,
-  shineForBackdrop,
-} from "./nav-field.js";
-import {
-  type Blob,
-  bridgeNecks,
   loadPhase,
-  measureRestBlobs,
-  morphBlob,
-  type Neck,
-  packUniforms,
-  restDiffers,
   revealSide,
   type SwitchRole,
   switchFade,
@@ -106,11 +109,25 @@ const K_ACTIVE = 24;
  * the rebound, capped so it never tears. */
 const SQUASH_GAIN = 3.4;
 const SQUASH_MAX = 0.11;
-/** Peak surface undulation, in px of edge displacement. Alive while moving,
- * gone at rest, so the field is a calm sheet of glass once settled. */
-const WOBBLE_MAX = 0.6;
+/** Peak surface undulation, in px of edge displacement. Kept below the authored
+ * stretch/squash motion so long bars read as fluid glass, not a noisy coastline. */
+const WOBBLE_MAX = 0.24;
 /** How far the row compresses toward its centre at the peak of a switch. */
 const PULL_FRAC = 0.06;
+/** Merge floor: adjacent parts within reach hold a soft surface-tension waist at
+ * rest, so the row reads as parts pulling toward each other rather than floating
+ * apart. Kept low so it never fuses into one slab. */
+const REST_MERGE = 0.32;
+/** Bridge-neck reach as a multiple of the merge radius. The switch tail and the
+ * rest path must share it: a spring's `.finished` resolves about a second after
+ * the visual settle, and only then does the rest path take over, so if it reached
+ * for necks any differently the bridges would visibly recalculate a beat late. */
+const NECK_REACH = 1.15;
+/** Peak edge displacement of the hover ripple, in px. Local to the hovered
+ * part, so it can run hotter than the global settle wobble. */
+const HOVER_WOBBLE = 1.1;
+/** Per-frame ease toward the hover target, in and out. */
+const HOVER_EASE = 0.16;
 
 function readColors(
   node: HTMLElement,
@@ -247,8 +264,32 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
       let dpr = 1;
       let raf = 0;
       let running = 0;
+      let hoverIndex = -1;
+      let hoverAmt = 0;
+      let hoverBlob: Blob | null = null;
+      let hoverPoint = { x: 0, y: 0 };
+      let hoverTarget = { x: 0, y: 0 };
+      let hasHoverPoint = false;
       const energy = createEnergyTracker();
       const start = performance.now();
+
+      /* The ripple follows the hovered part's live blob; on leave the blob is
+       * kept so the ripple fades in place instead of teleporting to zero. */
+      const updateHover = (aligned: Array<Blob | undefined>) => {
+        const focus =
+          hoverIndex >= 0 ? (aligned[hoverIndex] ?? rest[hoverIndex]) : null;
+        hoverAmt += ((focus ? 1 : 0) - hoverAmt) * HOVER_EASE;
+        if (focus) {
+          hoverBlob = focus;
+          if (!hasHoverPoint) {
+            hoverPoint = { x: focus.cx, y: focus.cy };
+            hoverTarget = hoverPoint;
+            hasHoverPoint = true;
+          }
+        }
+        hoverPoint.x += (hoverTarget.x - hoverPoint.x) * HOVER_EASE;
+        hoverPoint.y += (hoverTarget.y - hoverPoint.y) * HOVER_EASE;
+      };
 
       const bT = { value: 0 };
       const dT = { value: 0 };
@@ -311,8 +352,18 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
           packed: packUniforms({ blobs, necks, k: liveK }, dpr, canvasH),
           k: liveK * dpr,
           time: (performance.now() - start) / 1000,
-          wobble: WOBBLE_MAX * energy.value,
+          wobble: WOBBLE_MAX * energy.value * energy.value,
           alpha: 1,
+          hover:
+            hoverBlob && hoverAmt > 0.01
+              ? packHover(
+                  hoverBlob,
+                  hoverAmt * HOVER_WOBBLE,
+                  dpr,
+                  canvasH,
+                  hoverPoint,
+                )
+              : null,
         });
       };
 
@@ -330,7 +381,11 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
         pDrip = dT.value;
 
         const load = loadPhase(barRest, bT.value, 0, dT.value);
-        const blobs: Blob[] = [squash(load.bar, vBar, true), ...load.extras];
+        const barBlob = squash(load.bar, vBar, true);
+        /* The row in left-to-right part order (brand, active bar, side pills),
+         * so bridgeNecks can hold a neck between each adjacent pair. */
+        const rowBlobs: Blob[] = [];
+        const aligned: Array<Blob | undefined> = [];
         const necks: Neck[] = [...load.necks];
 
         const barNode = parts[barIndex];
@@ -340,11 +395,17 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
         }
 
         for (let i = 0; i < parts.length; i++) {
-          if (i === barIndex) continue;
+          if (i === barIndex) {
+            rowBlobs.push(barBlob);
+            aligned[i] = barBlob;
+            continue;
+          }
           const restI = rest[i];
           if (!restI) continue;
           const side = revealSide(load.bar, restI, sT.value, mergeRadius);
-          blobs.push(squash(side.blob, vSide, false));
+          const sideBlob = squash(side.blob, vSide, false);
+          rowBlobs.push(sideBlob);
+          aligned[i] = sideBlob;
           if (side.neck) necks.push(side.neck);
           const node = parts[i];
           if (node) {
@@ -359,15 +420,35 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
         const speed = Math.abs(vBar) + Math.abs(vSide) + Math.abs(vDrip);
         energy.bump(speed);
         const liveK = mergeRadius + (K_ACTIVE - mergeRadius) * energy.value;
+        /* Rest tension necks between adjacent row parts. The reach uses a
+         * slightly wider k so parts at the default flex gap still neck at rest.
+         * They persist because the last drawn frame keeps them once the field
+         * parks. Transition necks come first so they win the MAX_NECKS budget.
+         * Scaled by how far the sides are out (sT): when they melt in, the merge
+         * fades to zero so a lone bar shows no orphan pinch toward a hidden part,
+         * and adjacency stays correct because the row order is unchanged. */
+        const restMerge = REST_MERGE * smoothstep(0.5, 0.95, sT.value);
+        const restNecks =
+          restMerge > 0.001
+            ? bridgeNecks(rowBlobs, liveK * NECK_REACH, restMerge)
+            : [];
+        const blobs: Blob[] = [...rowBlobs, ...load.extras];
         lastBlobs = blobs;
-        drawFrame(blobs, necks, liveK);
+        updateHover(aligned);
+        drawFrame(blobs, [...necks, ...restNecks], liveK);
       };
 
       const switchFrame = () => {
         const parts = collectParts();
         const t = swT.value;
         const posT = smoother(t);
-        const merge = Math.sin(Math.PI * clamp01(t));
+        /* The transition envelope is zero at both ends of the switch and peaks in
+         * the middle. Necks floor at REST_MERGE so the row keeps its rest surface
+         * tension, but the centroid pull rides the raw envelope so it releases
+         * fully at t=1; a floored pull would leave the row compressed at rest and
+         * jump the moment loadFrame takes over. */
+        const transition = Math.sin(Math.PI * clamp01(t));
+        const merge = Math.max(REST_MERGE, transition);
         const vSwitch = t - pSwitch;
         pSwitch = t;
         const centroid =
@@ -375,6 +456,7 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
           Math.max(1, switchTo.length);
 
         const blobs: Blob[] = [];
+        const aligned: Array<Blob | undefined> = [];
         for (let i = 0; i < parts.length; i++) {
           const from = switchFrom[i];
           const to = switchTo[i];
@@ -383,9 +465,10 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
           const base = morphBlob(from, to, posT, switchProgress(t, role));
           const pulled: Blob = {
             ...base,
-            cx: base.cx + (centroid - to.cx) * PULL_FRAC * merge,
+            cx: base.cx + (centroid - to.cx) * PULL_FRAC * transition,
           };
           blobs.push(pulled);
+          aligned[i] = pulled;
           const node = parts[i];
           if (node) {
             node.style.transform = shift(pulled, to);
@@ -395,8 +478,11 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
 
         energy.bump(Math.abs(vSwitch));
         const liveK = mergeRadius + (K_ACTIVE - mergeRadius) * energy.value;
-        const necks = bridgeNecks(blobs, liveK, merge);
+        /* Same reach as the rest path, so when the switch spring's `.finished`
+         * hands off to loadFrame a beat after settle the necks do not resize. */
+        const necks = bridgeNecks(blobs, liveK * NECK_REACH, merge);
         lastBlobs = blobs;
+        updateHover(aligned);
         drawFrame(blobs, necks, liveK);
       };
 
@@ -414,7 +500,12 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
           dripStarted = true;
           run(dT, 1, dripRetract);
         }
-        if (running === 0 && energy.parked()) {
+        if (
+          running === 0 &&
+          energy.parked() &&
+          hoverIndex < 0 &&
+          hoverAmt < 0.02
+        ) {
           switching = false;
           return;
         }
@@ -542,6 +633,35 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
         beginReveal();
       }
 
+      /* Hovering a part wakes a broad wave at the pointer. The target updates on
+       * pointermove while updateHover eases the rendered point toward it. */
+      const hoverNodes = collectParts();
+      const hoverHandlers = hoverNodes.map((node, index) => {
+        const move = (event: PointerEvent) => {
+          if (!stageBox) return;
+          hoverTarget = {
+            x: event.clientX - stageBox.left,
+            y: event.clientY - stageBox.top,
+          };
+          if (!hasHoverPoint) {
+            hoverPoint = hoverTarget;
+            hasHoverPoint = true;
+          }
+          wake();
+        };
+        const enter = (event: PointerEvent) => {
+          hoverIndex = index;
+          move(event);
+        };
+        const leave = () => {
+          if (hoverIndex === index) hoverIndex = -1;
+        };
+        node.addEventListener("pointerenter", enter);
+        node.addEventListener("pointermove", move);
+        node.addEventListener("pointerleave", leave);
+        return { node, enter, move, leave };
+      });
+
       const remeasure = () => {
         if (switching) {
           measureQueued = true;
@@ -577,6 +697,11 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
         for (const control of controls) control.stop();
         switchRef.current = () => {};
         setSidesRef.current = () => {};
+        for (const { node, enter, move, leave } of hoverHandlers) {
+          node.removeEventListener("pointerenter", enter);
+          node.removeEventListener("pointermove", move);
+          node.removeEventListener("pointerleave", leave);
+        }
         window.removeEventListener("resize", remeasure);
         observer?.disconnect();
         themeObserver?.disconnect();

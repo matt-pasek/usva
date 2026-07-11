@@ -18,6 +18,8 @@ export const sideSpring = {
   stiffness: 70,
   damping: 16,
   mass: 2.1,
+  restDelta: 0.00075,
+  restSpeed: 0.0015,
 } as const;
 /** The whole row reshapes as one mass during a view switch. */
 export const switchSpring = {

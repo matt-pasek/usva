@@ -5,6 +5,7 @@ export interface EnergyTracker {
 }
 
 export interface EnergyOptions {
+  attack?: number;
   decay?: number;
   gain?: number;
   parkBelow?: number;
@@ -20,6 +21,7 @@ export interface EnergyOptions {
 export function createEnergyTracker(
   options: EnergyOptions = {},
 ): EnergyTracker {
+  const attack = options.attack ?? 0.18;
   const decay = options.decay ?? 0.9;
   const gain = options.gain ?? 40;
   const parkBelow = options.parkBelow ?? 0.02;
@@ -29,7 +31,11 @@ export function createEnergyTracker(
       return energy;
     },
     bump(speed: number): number {
-      energy = Math.max(energy * decay, Math.min(1, speed * gain));
+      const target = Math.min(1, speed * gain);
+      energy =
+        target > energy
+          ? energy + (target - energy) * attack
+          : energy + (target - energy) * (1 - decay);
       return energy;
     },
     parked(): boolean {

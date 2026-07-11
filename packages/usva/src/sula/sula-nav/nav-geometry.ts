@@ -1,3 +1,4 @@
+import { type Blob, NECK_MIN, type Neck } from "../sula-core/geometry.js";
 import {
   c1Settle,
   clamp01,
@@ -7,56 +8,6 @@ import {
   smoothstep,
 } from "../sula-motion/curves.js";
 
-/** Brand + up to five views + the drip's transient reservoir/bead. */
-export const MAX_BLOBS = 8;
-/** Neighbour bridges while a switch fuses the row, or the drip tether on load. */
-export const MAX_NECKS = 5;
-
-/** A rounded box in canvas space: centre, half-extents, corner radius. */
-export interface Blob {
-  cx: number;
-  cy: number;
-  hw: number;
-  hh: number;
-  r: number;
-}
-
-/** A capsule from a to b. Round caps read as surface tension; square ones do not. */
-export interface Neck {
-  ax: number;
-  ay: number;
-  bx: number;
-  by: number;
-  r: number;
-  /**
-   * How much of the neck's smooth-min bridge is applied, 0 to 1. The visible
-   * bridge width is set by the merge radius, not by `r`, so a neck cannot be
-   * melted by thinning it; fading strength to 0 recedes the bridge from the
-   * surface inward instead, which is the only way it melts without snapping.
-   * Absent means a solid bridge (1).
-   */
-  strength?: number;
-}
-
-export interface Field {
-  blobs: Blob[];
-  necks: Neck[];
-  k: number;
-}
-
-export interface Rect {
-  left: number;
-  top: number;
-  width: number;
-  height: number;
-}
-
-/** Default snap distance, as a multiple of the merge radius. */
-const BREAK_FACTOR = 0.9;
-/** Neck radius at zero separation, as a multiple of the merge radius. A fat neck
- * reads as surface tension; a thin one reads as a stray thread. */
-const NECK_THICKNESS = 1.15;
-
 /** The drop separates from the edge across this window of the fall, while its
  * neck is still short, then falls the rest of the way free. Pinching early is
  * what keeps a long thread from ever spanning the gap. */
@@ -64,83 +15,6 @@ const SEPARATE_START = 0.5;
 const SEPARATE_END = 0.9;
 /** The leftover top mass has fully recoiled into the edge by here in the retract. */
 const EDGE_HIDE_START = 0.7;
-
-export function neckBreakDistance(k: number): number {
-  return k * BREAK_FACTOR;
-}
-
-export function neckRadius(
-  distance: number,
-  k: number,
-  breakDistance: number = neckBreakDistance(k),
-): number {
-  if (breakDistance <= 0 || distance >= breakDistance) return 0;
-  const t = Math.max(0, distance) / breakDistance;
-  return k * NECK_THICKNESS * (1 - t) ** 1.1;
-}
-
-export function toCanvasSpace(rect: Rect, canvas: Rect): Blob {
-  const hw = rect.width / 2;
-  const hh = rect.height / 2;
-  return {
-    cx: rect.left - canvas.left + hw,
-    cy: rect.top - canvas.top + hh,
-    hw,
-    hh,
-    r: Math.min(hw, hh),
-  };
-}
-
-/**
- * Measures each part at its CSS rest position without exposing the temporary
- * transform reset to the next paint. The liquid field owns the inline transform
- * while it animates, but its target geometry must stay transform-free.
- */
-export function measureRestBlobs(
-  parts: Array<{
-    style: { transform: string };
-    getBoundingClientRect(): Rect;
-  }>,
-  canvas: Rect,
-): Blob[] {
-  const transforms = parts.map((part) => part.style.transform);
-  for (const part of parts) part.style.transform = "";
-  try {
-    return parts.map((part) =>
-      toCanvasSpace(part.getBoundingClientRect(), canvas),
-    );
-  } finally {
-    for (const [index, part] of parts.entries()) {
-      part.style.transform = transforms[index] ?? "";
-    }
-  }
-}
-
-export function lerpBlob(a: Blob, b: Blob, t: number): Blob {
-  return {
-    cx: mix(a.cx, b.cx, t),
-    cy: mix(a.cy, b.cy, t),
-    hw: mix(a.hw, b.hw, t),
-    hh: mix(a.hh, b.hh, t),
-    r: mix(a.r, b.r, t),
-  };
-}
-
-/**
- * A spring hands back values past 1. Position may overshoot, because that is the
- * bounce; half-extents may not, because a blob wider than its DOM box paints
- * glass out from under the text.
- */
-export function springToBlob(from: Blob, to: Blob, s: number): Blob {
-  const clamped = Math.min(1, Math.max(0, s));
-  return {
-    cx: mix(from.cx, to.cx, s),
-    cy: mix(from.cy, to.cy, s),
-    hw: mix(from.hw, to.hw, clamped),
-    hh: mix(from.hh, to.hh, clamped),
-    r: mix(from.r, to.r, clamped),
-  };
-}
 
 export interface LoadShape {
   bar: Blob;
@@ -234,8 +108,6 @@ const SIDE_TRAVEL_START = 0.3;
 /** The side is already home when its tether pinches free. */
 const SIDE_PINCH_START = 0.84;
 const SIDE_PINCH_END = 0.94;
-/** A neck never falls below this before the snap, or the eye misses the tether. */
-const NECK_MIN = 1.5;
 
 /**
  * A side emerges the way a drop separates from a larger one. At rest it is fully
@@ -248,7 +120,7 @@ export function revealSide(
   bar: Blob,
   rest: Blob,
   t: number,
-  _k: number,
+  k: number,
 ): { blob: Blob; neck: Neck | null } {
   const p = clamp01(t);
   const dir = Math.sign(rest.cx - bar.cx) || 1;
@@ -266,14 +138,30 @@ export function revealSide(
   const hh = rest.hh * scale;
 
   const startCx = barEnd - dir * rest.hw * 0.62;
-  const cx = mix(startCx, rest.cx, travel);
+  const rawCx = mix(startCx, rest.cx, travel);
+  /* Keep the spring's outer turn inside the standing bridge's safe reach. At
+   * the turning point velocity briefly hits zero, so the live merge radius also
+   * relaxes; an uncapped overshoot can otherwise disconnect for one frame and
+   * reconnect on the rebound. */
+  const maxOvershoot = k * 0.25;
+  const cx =
+    dir > 0
+      ? Math.min(rawCx, rest.cx + maxOvershoot)
+      : Math.max(rawCx, rest.cx - maxOvershoot);
   const cy = mix(bar.cy, rest.cy, travel);
   const blob: Blob = { cx, cy, hw, hh, r: Math.min(hw, hh) };
 
   if (p >= SIDE_PINCH_END || travel <= 0) return { blob, neck: null };
   const inner = cx - dir * hw;
   const r = Math.max(rest.hh * mix(0.86, 0.08, pinch), NECK_MIN);
-  const neck: Neck = { ax: barEnd, ay: bar.cy, bx: inner, by: cy, r };
+  const neck: Neck = {
+    ax: barEnd,
+    ay: bar.cy,
+    bx: inner,
+    by: cy,
+    r,
+    strength: 1 - pinch,
+  };
   return { blob, neck };
 }
 
@@ -291,49 +179,6 @@ export function revealPhase(
     (neck): neck is Neck => neck !== null,
   );
   return { lead: lead.blob, trail: trail.blob, necks };
-}
-
-export function activePillRect(
-  items: Blob[],
-  activeIndex: number,
-): Blob | null {
-  return items[activeIndex] ?? null;
-}
-
-/** How far past the merge radius the goo will still bridge two neighbours. */
-const BRIDGE_REACH = 1.6;
-
-/**
- * While a switch is live the whole row reads as one liquid mass: each pair of
- * adjacent blobs gets a neck whose thickness grows with `merge` (0 at rest, 1 at
- * the peak of the transition) and with how close the two already sit. At rest, or
- * for a pair further apart than the reach, no neck is emitted and the pills stay
- * cleanly separate. Blobs must be handed in left-to-right order.
- */
-export function bridgeNecks(blobs: Blob[], k: number, merge: number): Neck[] {
-  const m = clamp01(merge);
-  if (m <= 0.001 || k <= 0) return [];
-  const reach = k * BRIDGE_REACH;
-  const necks: Neck[] = [];
-  for (let i = 0; i < blobs.length - 1; i++) {
-    const a = blobs[i] as Blob;
-    const b = blobs[i + 1] as Blob;
-    const ax = a.cx + a.hw;
-    const bx = b.cx - b.hw;
-    const gap = bx - ax;
-    if (gap > reach) continue;
-    const closeness = 1 - clamp01(gap / reach);
-    const thickness = Math.min(a.hh, b.hh) * mix(0.15, 0.85, m) * closeness;
-    necks.push({
-      ax,
-      ay: a.cy,
-      bx,
-      by: b.cy,
-      r: Math.max(thickness, NECK_MIN),
-      strength: m,
-    });
-  }
-  return necks;
 }
 
 export type SwitchRole = "hide" | "show" | "keep";
@@ -363,27 +208,6 @@ export function switchProgress(t: number, role: SwitchRole): number {
 }
 
 /**
- * Position and size move on separate clocks. The whole row glides to its new
- * layout on one shared `posT` so it stays coherent and never tears a gap, while
- * each part's width follows its own staggered `sizeT` so a collapsing bar can
- * shed width fast without the row lagging behind it.
- */
-export function morphBlob(
-  from: Blob,
-  to: Blob,
-  posT: number,
-  sizeT: number,
-): Blob {
-  return {
-    cx: mix(from.cx, to.cx, posT),
-    cy: mix(from.cy, to.cy, posT),
-    hw: mix(from.hw, to.hw, sizeT),
-    hh: mix(from.hh, to.hh, sizeT),
-    r: mix(from.r, to.r, sizeT),
-  };
-}
-
-/**
  * Content is swapped in the DOM the instant the view changes, so each changing
  * part already holds its target label. A monotonic fade-in materialises that new
  * label as the part reshapes; the old 1 to 0 to 1 dip flashed already-correct
@@ -392,81 +216,4 @@ export function morphBlob(
  */
 export function switchFade(t: number, role: SwitchRole): number {
   return role === "keep" ? 1 : smoother(roleSpan(t, role));
-}
-
-/**
- * True when any part moved or resized past the tolerance. A webfont swap or
- * rounding jitter re-measures within it, and applying that would twitch a bar
- * that already looks settled.
- */
-export function restDiffers(a: Blob[], b: Blob[], eps = 0.5): boolean {
-  if (a.length !== b.length) return true;
-  return a.some((blob, i) => {
-    const other = b[i];
-    if (!other) return true;
-    return (
-      Math.abs(blob.cx - other.cx) > eps ||
-      Math.abs(blob.cy - other.cy) > eps ||
-      Math.abs(blob.hw - other.hw) > eps ||
-      Math.abs(blob.hh - other.hh) > eps
-    );
-  });
-}
-
-export interface PackedField {
-  blobs: number[];
-  radii: number[];
-  necks: number[];
-  neckRadii: number[];
-  neckStrengths: number[];
-  blobCount: number;
-  neckCount: number;
-}
-
-/**
- * Flattens to device pixels and flips Y, because `gl_FragCoord` counts up from the
- * bottom. These stay plain arrays, not Float32Arrays: ogl gates array uniforms on
- * `Array.isArray`, and a typed array fails it and uploads nothing at all.
- */
-export function packUniforms(
-  field: Field,
-  dpr: number,
-  canvasHeight: number,
-): PackedField {
-  const blobs = new Array<number>(MAX_BLOBS * 4).fill(0);
-  const radii = new Array<number>(MAX_BLOBS).fill(0);
-  const necks = new Array<number>(MAX_NECKS * 4).fill(0);
-  const neckRadii = new Array<number>(MAX_NECKS).fill(0);
-  const neckStrengths = new Array<number>(MAX_NECKS).fill(0);
-
-  const blobCount = Math.min(field.blobs.length, MAX_BLOBS);
-  for (let i = 0; i < blobCount; i++) {
-    const b = field.blobs[i] as Blob;
-    blobs[i * 4] = b.cx * dpr;
-    blobs[i * 4 + 1] = (canvasHeight - b.cy) * dpr;
-    blobs[i * 4 + 2] = b.hw * dpr;
-    blobs[i * 4 + 3] = b.hh * dpr;
-    radii[i] = b.r * dpr;
-  }
-
-  const neckCount = Math.min(field.necks.length, MAX_NECKS);
-  for (let i = 0; i < neckCount; i++) {
-    const n = field.necks[i] as Neck;
-    necks[i * 4] = n.ax * dpr;
-    necks[i * 4 + 1] = (canvasHeight - n.ay) * dpr;
-    necks[i * 4 + 2] = n.bx * dpr;
-    necks[i * 4 + 3] = (canvasHeight - n.by) * dpr;
-    neckRadii[i] = n.r * dpr;
-    neckStrengths[i] = n.strength ?? 1;
-  }
-
-  return {
-    blobs,
-    radii,
-    necks,
-    neckRadii,
-    neckStrengths,
-    blobCount,
-    neckCount,
-  };
 }

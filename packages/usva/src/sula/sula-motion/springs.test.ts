@@ -27,6 +27,11 @@ describe("sula springs", () => {
     );
   });
 
+  it("settles side motion closely enough to avoid a visible endpoint correction", () => {
+    expect(sideSpring.restDelta).toBeLessThanOrEqual(0.001);
+    expect(sideSpring.restSpeed).toBeLessThanOrEqual(0.002);
+  });
+
   it("declares each spring as a spring", () => {
     for (const spring of [barSpring, sideSpring, switchSpring]) {
       expect(spring.type).toBe("spring");

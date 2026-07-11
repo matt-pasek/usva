@@ -1,23 +1,16 @@
 import { describe, expect, it } from "vitest";
 import {
-  activePillRect,
   type Blob,
   bridgeNecks,
   lerpBlob,
-  loadPhase,
-  MAX_BLOBS,
-  MAX_NECKS,
-  measureRestBlobs,
-  morphBlob,
-  neckBreakDistance,
-  neckRadius,
   packUniforms,
-  restDiffers,
-  revealPhase,
   springToBlob,
+} from "../sula-core/geometry.js";
+import {
+  loadPhase,
+  revealPhase,
   switchFade,
   switchProgress,
-  toCanvasSpace,
 } from "./nav-geometry.js";
 
 const blob = (over: Partial<Blob> = {}): Blob => ({
@@ -30,156 +23,6 @@ const blob = (over: Partial<Blob> = {}): Blob => ({
 });
 
 const K = 26;
-
-describe("toCanvasSpace", () => {
-  it("centres a DOM rect in canvas space", () => {
-    const rect = { left: 120, top: 30, width: 200, height: 48 };
-    const canvas = { left: 20, top: 10, width: 800, height: 120 };
-    expect(toCanvasSpace(rect, canvas)).toEqual({
-      cx: 200,
-      cy: 44,
-      hw: 100,
-      hh: 24,
-      r: 24,
-    });
-  });
-});
-
-describe("measureRestBlobs", () => {
-  it("reads untransformed geometry without clearing a visible transform", () => {
-    const part = {
-      style: { transform: "translateX(-48px)" },
-      getBoundingClientRect() {
-        return {
-          left: this.style.transform ? 72 : 120,
-          top: 30,
-          width: 200,
-          height: 48,
-        };
-      },
-    };
-
-    expect(
-      measureRestBlobs([part], { left: 20, top: 10, width: 800, height: 120 }),
-    ).toEqual([{ cx: 200, cy: 44, hw: 100, hh: 24, r: 24 }]);
-    expect(part.style.transform).toBe("translateX(-48px)");
-  });
-});
-
-describe("packUniforms", () => {
-  const field = { blobs: [blob()], necks: [], k: K };
-
-  it("flips Y, because gl_FragCoord counts up from the bottom", () => {
-    const packed = packUniforms(field, 1, 120);
-    expect(packed.blobs[1]).toBe(80);
-  });
-
-  it("scales every dimension by the device pixel ratio", () => {
-    const packed = packUniforms(field, 2, 120);
-    expect(Array.from(packed.blobs.slice(0, 4))).toEqual([200, 160, 160, 48]);
-    expect(packed.radii[0]).toBe(48);
-  });
-
-  it("pads the unused slots and reports the true counts", () => {
-    const packed = packUniforms(
-      { blobs: [blob()], necks: [{ ax: 1, ay: 2, bx: 3, by: 4, r: 5 }], k: K },
-      1,
-      120,
-    );
-    expect(packed.blobCount).toBe(1);
-    expect(packed.neckCount).toBe(1);
-    expect(packed.blobs).toHaveLength(MAX_BLOBS * 4);
-    expect(packed.necks).toHaveLength(MAX_NECKS * 4);
-    expect(packed.blobs[4]).toBe(0);
-  });
-
-  it("never emits more than the shader has slots for", () => {
-    const packed = packUniforms(
-      {
-        blobs: Array.from({ length: 9 }, () => blob()),
-        necks: Array.from({ length: 5 }, () => ({
-          ax: 0,
-          ay: 0,
-          bx: 1,
-          by: 1,
-          r: 2,
-        })),
-        k: K,
-      },
-      1,
-      120,
-    );
-    expect(packed.blobCount).toBe(MAX_BLOBS);
-    expect(packed.neckCount).toBe(MAX_NECKS);
-  });
-
-  it("keeps the top tether and both side tethers in one frame", () => {
-    const packed = packUniforms(
-      {
-        blobs: [blob()],
-        necks: Array.from({ length: 3 }, (_, index) => ({
-          ax: index,
-          ay: 0,
-          bx: index + 1,
-          by: 1,
-          r: 2,
-        })),
-        k: K,
-      },
-      1,
-      120,
-    );
-    expect(packed.neckCount).toBe(3);
-  });
-
-  it("defaults an unmarked neck to a solid bridge", () => {
-    const packed = packUniforms(
-      { blobs: [blob()], necks: [{ ax: 0, ay: 0, bx: 10, by: 0, r: 2 }], k: K },
-      1,
-      120,
-    );
-    expect(packed.neckStrengths[0]).toBe(1);
-  });
-});
-
-describe("bridgeNecks melt", () => {
-  const pair = (): Blob[] => [
-    blob({ cx: 0, hw: 20 }),
-    blob({ cx: 60, hw: 20 }),
-  ];
-
-  it("ties bridge strength to merge so it recedes to nothing at rest", () => {
-    expect(bridgeNecks(pair(), K, 1)[0]?.strength).toBe(1);
-    expect(bridgeNecks(pair(), K, 0.5)[0]?.strength).toBe(0.5);
-    expect(bridgeNecks(pair(), K, 0)).toEqual([]);
-  });
-});
-
-describe("lerpBlob", () => {
-  it("interpolates centre, half-extents and the corner radius", () => {
-    const a = blob({ cx: 0, cy: 0, hw: 10, hh: 10, r: 2 });
-    const b = blob({ cx: 100, cy: 50, hw: 20, hh: 30, r: 12 });
-    expect(lerpBlob(a, b, 0.5)).toEqual({
-      cx: 50,
-      cy: 25,
-      hw: 15,
-      hh: 20,
-      r: 7,
-    });
-  });
-});
-
-describe("springToBlob", () => {
-  it("lets the centre overshoot but never the half-extents", () => {
-    const from = blob({ cx: 0, hw: 0, hh: 0, r: 0 });
-    const to = blob({ cx: 100, hw: 80, hh: 24, r: 24 });
-    const result = springToBlob(from, to, 1.15);
-    expect(result.cx).toBeCloseTo(115);
-    expect(result.hw).toBe(80);
-    expect(result.hh).toBe(24);
-    expect(result.r).toBe(24);
-  });
-});
 
 describe("loadPhase", () => {
   const rest = blob({ cx: 400, cy: 60, hw: 200, hh: 24, r: 24 });
@@ -309,6 +152,34 @@ describe("revealPhase", () => {
     expect(revealPhase(bar, left, right, 0.96, K).necks).toHaveLength(0);
   });
 
+  it("fades both side necks before handing off to the rest bridge", () => {
+    const early = revealPhase(bar, left, right, 0.84, K).necks;
+    const late = revealPhase(bar, left, right, 0.92, K).necks;
+
+    expect(early[0]?.strength).toBeCloseTo(1, 6);
+    expect(late[0]?.strength ?? 1).toBeLessThan(0.15);
+    expect(late[1]?.strength ?? 1).toBeLessThan(0.15);
+  });
+
+  it("keeps settled side pills within bridge reach through overshoot", () => {
+    const restK = 14;
+    const connectedLeft = blob({ cx: 150, cy: 40, hw: 36, hh: 22, r: 22 });
+    const connectedRight = blob({ cx: 650, cy: 40, hw: 36, hh: 22, r: 22 });
+    const settled = revealPhase(bar, connectedLeft, connectedRight, 1, restK);
+    const overshot = revealPhase(
+      bar,
+      connectedLeft,
+      connectedRight,
+      1.2,
+      restK,
+    );
+    const bridges = (lead: Blob, trail: Blob) =>
+      bridgeNecks([lead, bar, trail], restK * 1.15, 0.32);
+
+    expect(bridges(settled.lead, settled.trail)).toHaveLength(2);
+    expect(bridges(overshot.lead, overshot.trail)).toHaveLength(2);
+  });
+
   it("carries position past the rest line for a settle wobble, size stays put", () => {
     const result = revealPhase(bar, left, right, 1.2, K);
     // Each side overshoots outward past its rest centre, then the spring pulls back.
@@ -381,67 +252,6 @@ describe("switchFade", () => {
       }
     }
     expect(switchFade(0.2, "show")).toBe(0);
-  });
-});
-
-describe("morphBlob", () => {
-  it("drives position and size on independent progresses", () => {
-    const a = blob({ cx: 0, cy: 0, hw: 10, hh: 10, r: 5 });
-    const b = blob({ cx: 100, cy: 40, hw: 60, hh: 20, r: 15 });
-    const m = morphBlob(a, b, 1, 0);
-    expect(m.cx).toBe(100);
-    expect(m.cy).toBe(40);
-    expect(m.hw).toBe(10);
-    expect(m.hh).toBe(10);
-  });
-});
-
-describe("restDiffers", () => {
-  const current = [blob(), blob({ cx: 300 })];
-
-  it("ignores subpixel jitter", () => {
-    const next = [blob({ cx: 100.3 }), blob({ cx: 300, hh: 24.4 })];
-    expect(restDiffers(current, next)).toBe(false);
-  });
-
-  it("flags a real reflow", () => {
-    expect(restDiffers(current, [blob(), blob({ cx: 306 })])).toBe(true);
-    expect(restDiffers(current, [blob({ hw: 88 }), blob({ cx: 300 })])).toBe(
-      true,
-    );
-  });
-
-  it("flags a changed part count", () => {
-    expect(restDiffers(current, [blob()])).toBe(true);
-  });
-});
-
-describe("neckRadius", () => {
-  it("thins monotonically and reaches zero at the break distance", () => {
-    const span = neckBreakDistance(K);
-    const radii = [0, 0.25, 0.5, 0.75].map((f) => neckRadius(span * f, K));
-    for (let i = 1; i < radii.length; i++) {
-      expect(radii[i]).toBeLessThan(radii[i - 1] as number);
-    }
-    expect(neckRadius(span, K)).toBe(0);
-    expect(neckRadius(span * 2, K)).toBe(0);
-  });
-
-  it("is thickest when the blobs still overlap", () => {
-    expect(neckRadius(-40, K)).toBe(neckRadius(0, K));
-  });
-});
-
-describe("activePillRect", () => {
-  const items = [blob({ cx: 10 }), blob({ cx: 20 })];
-
-  it("returns the active item's blob", () => {
-    expect(activePillRect(items, 1)?.cx).toBe(20);
-  });
-
-  it("returns null outside the list", () => {
-    expect(activePillRect(items, -1)).toBeNull();
-    expect(activePillRect(items, 5)).toBeNull();
   });
 });
 

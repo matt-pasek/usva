@@ -11,7 +11,7 @@ vi.mock("motion/react", async (importOriginal) => ({
   useReducedMotion: () => reducedMotion.current,
 }));
 
-vi.mock("./nav-field.js", () => ({
+vi.mock("../sula-core/field.js", () => ({
   resolveColor: () => [0, 0, 0],
   shineForBackdrop: () => 1,
   createField: () => ({

@@ -1,4 +1,4 @@
-import { MAX_BLOBS, MAX_NECKS } from "./nav-geometry.js";
+import { MAX_BLOBS, MAX_NECKS } from "./geometry.js";
 
 export const vertexShader = `#version 300 es
 in vec2 position;
@@ -36,20 +36,12 @@ uniform vec3 uAccent;
 uniform float uAlpha;
 uniform float uWobble;
 uniform float uShine;
+uniform float uDpr;
+uniform vec2 uHoverPoint;
+uniform float uHoverAmt;
+uniform float uHoverSpread;
 
 out vec4 outColor;
-
-float hash(vec2 p){ return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123); }
-
-float vnoise(vec2 p){
-  vec2 i = floor(p); vec2 f = fract(p);
-  vec2 u = f * f * (3.0 - 2.0 * f);
-  float a = hash(i);
-  float b = hash(i + vec2(1.0, 0.0));
-  float c = hash(i + vec2(0.0, 1.0));
-  float d = hash(i + vec2(1.0, 1.0));
-  return mix(mix(a, b, u.x), mix(c, d, u.x), u.y);
-}
 
 float sdRoundBox(vec2 p, vec2 b, float r){
   vec2 q = abs(p) - b + r;
@@ -79,7 +71,23 @@ float field(vec2 p){
     float sd = sdSegment(p, uNecks[i].xy, uNecks[i].zw, uNeckR[i]);
     d = mix(d, smin(d, sd, uK), clamp(uNeckStr[i], 0.0, 1.0));
   }
-  return d + (vnoise(p * 0.012 + uTime * 0.1) - 0.5) * 2.0 * uWobble;
+  /* Two long travelling waves replace value noise: the edge bends in coherent
+     runs instead of accumulating small random bumps. Work in CSS pixels so the
+     wavelength stays the same on standard and retina displays. */
+  vec2 cssP = p / max(uDpr, 1.0);
+  float flow = sin(cssP.x * 0.024 + uTime * 1.25) * 0.62
+             + sin((cssP.x + cssP.y) * 0.012 - uTime * 0.8) * 0.38;
+
+  /* Hover follows the live pointer with a broad elliptical falloff. Its target
+     position is eased on the CPU, so quick cursor movement pushes a responsive
+     wave through the surface without teleporting the deformation. */
+  vec2 delta = p - uHoverPoint;
+  vec2 local = delta / vec2(max(uHoverSpread * 1.25, 1.0), max(uHoverSpread, 1.0));
+  float hoverFall = exp(-dot(local, local) * 2.4);
+  vec2 cssDelta = delta / max(uDpr, 1.0);
+  float cursorWave = sin(cssDelta.x * 0.042 - uTime * 2.2) * 0.72
+                   + sin((cssDelta.x + cssDelta.y) * 0.021 + uTime * 1.1) * 0.28;
+  return d + flow * uWobble + cursorWave * uHoverAmt * hoverFall;
 }
 
 void main(){

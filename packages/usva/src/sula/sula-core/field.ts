@@ -1,6 +1,11 @@
 import { Mesh, Program, Renderer, Triangle } from "ogl";
-import { MAX_BLOBS, MAX_NECKS, type PackedField } from "./nav-geometry.js";
-import { fragmentShader, vertexShader } from "./nav-shader.js";
+import {
+  MAX_BLOBS,
+  MAX_NECKS,
+  type PackedField,
+  type PackedHover,
+} from "./geometry.js";
+import { fragmentShader, vertexShader } from "./shader.js";
 
 export type Rgb = [number, number, number];
 
@@ -28,6 +33,8 @@ export interface FieldFrame {
   time: number;
   wobble: number;
   alpha: number;
+  /** Localized hover ripple around one blob; null leaves the field calm. */
+  hover?: PackedHover | null;
 }
 
 export interface NavField {
@@ -109,6 +116,10 @@ export function createField(options: CreateFieldOptions): NavField | null {
       uAlpha: { value: 1 },
       uWobble: { value: 0 },
       uShine: { value: colors.shine },
+      uDpr: { value: 1 },
+      uHoverPoint: { value: [0, 0] },
+      uHoverAmt: { value: 0 },
+      uHoverSpread: { value: 1 },
     },
   });
   const mesh = new Mesh(gl, { geometry: new Triangle(gl), program });
@@ -122,6 +133,7 @@ export function createField(options: CreateFieldOptions): NavField | null {
 
   return {
     resize(width, height, dpr) {
+      u.uDpr.value = dpr;
       renderer.dpr = dpr;
       renderer.setSize(width, height);
     },
@@ -131,11 +143,14 @@ export function createField(options: CreateFieldOptions): NavField | null {
       u.uAccent.value = next.accent;
       u.uShine.value = next.shine;
     },
-    draw({ packed, k, time, wobble, alpha }) {
+    draw({ packed, k, time, wobble, alpha, hover }) {
       u.uTime.value = time;
       u.uK.value = k;
       u.uWobble.value = wobble;
       u.uAlpha.value = alpha;
+      u.uHoverPoint.value = hover?.point ?? [0, 0];
+      u.uHoverAmt.value = hover?.amount ?? 0;
+      u.uHoverSpread.value = hover?.spread ?? 1;
       u.uBlobCount.value = packed.blobCount;
       u.uBlobs.value = packed.blobs;
       u.uRadius.value = packed.radii;
