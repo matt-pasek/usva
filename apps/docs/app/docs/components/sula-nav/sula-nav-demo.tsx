@@ -1,5 +1,5 @@
 "use client";
-import { FloatingNav, type FloatingNavView } from "@matt-pasek/usva";
+import { SulaNav, type SulaNavView } from "@matt-pasek/usva";
 import type { ComponentProps } from "react";
 import { useState } from "react";
 
@@ -46,7 +46,7 @@ function Spark() {
   );
 }
 
-const VIEWS: FloatingNavView[] = [
+const VIEWS: SulaNavView[] = [
   {
     href: "/",
     label: "Site",
@@ -98,7 +98,7 @@ function Nav({
   const [view, setView] = useState("/");
   const [item, setItem] = useState("#home");
   return (
-    <FloatingNav
+    <SulaNav
       fluid={fluid}
       sidesOpen={sidesOpen}
       linkComponent={DemoLink}
@@ -120,7 +120,7 @@ function Nav({
 const controlClass =
   "rounded-full border border-border px-4 py-2 text-sm text-muted transition-tint hover:text-ink";
 
-export function FloatingNavDemo({ fluid = true }: { fluid?: boolean }) {
+export function SulaNavDemo({ fluid = true }: { fluid?: boolean }) {
   const [run, setRun] = useState(0);
   const [sidesOpen, setSidesOpen] = useState(true);
   return (

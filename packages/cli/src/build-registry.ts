@@ -19,6 +19,7 @@ export interface RegistryItem {
 const here = dirname(fileURLToPath(import.meta.url));
 export const PRIMITIVES = resolve(here, "../../usva/src/primitives");
 export const PATTERNS = resolve(here, "../../usva/src/patterns");
+export const SULA = resolve(here, "../../usva/src/sula");
 const OUT = resolve(here, "../../../registry/r");
 
 export const NAMES = [
@@ -65,7 +66,6 @@ export const PATTERN_NAMES = [
   "entity-card",
   "feature-carousel",
   "field-group",
-  "floating-nav",
   "footer",
   "hero-split",
   "mockup-showcase",
@@ -84,6 +84,8 @@ export const PATTERN_NAMES = [
   "stripe-card",
   "toolbar",
 ] as const;
+
+export const SULA_NAMES = ["sula-motion", "sula-nav"] as const;
 
 async function emit(dir: string, name: string): Promise<void> {
   const mod = (await import(`${dir}/${name}/registry.ts`)) as Record<
@@ -106,6 +108,7 @@ export async function buildRegistry(): Promise<void> {
   mkdirSync(OUT, { recursive: true });
   for (const name of NAMES) await emit(PRIMITIVES, name);
   for (const name of PATTERN_NAMES) await emit(PATTERNS, name);
+  for (const name of SULA_NAMES) await emit(SULA, name);
 }
 
 if (import.meta.main) await buildRegistry();

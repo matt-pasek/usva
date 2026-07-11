@@ -2,18 +2,18 @@ import { Card, CardBody, CardHeader } from "@matt-pasek/usva";
 import type { Metadata } from "next";
 import { InstallBlock } from "@/components/install-block";
 import { SourceView } from "@/components/source-view";
-import { FloatingNavDemo } from "./floating-nav-demo";
+import { SulaNavDemo } from "./sula-nav-demo";
 
 export const metadata: Metadata = {
-  title: "Floating Nav",
+  title: "Sula Nav",
   description:
-    "A liquid-glass navigation bar. The parts merge and separate like drops of water, painted by one WebGL distance field.",
+    "Sula Nav: a liquid-glass navigation bar. The parts merge and separate like drops of water, painted by one WebGL distance field.",
 };
 
 const props = [
   {
     name: "views",
-    type: "FloatingNavView[]",
+    type: "SulaNavView[]",
     desc: "Each entry is { href, label, icon, items? }. One is expanded to its bar of items; the rest collapse to icon pills on the right.",
   },
   {
@@ -98,11 +98,11 @@ const props = [
   },
 ];
 
-const usage = `import { FloatingNav } from "@matt-pasek/usva";
+const usage = `import { SulaNav } from "@matt-pasek/usva";
 import Link from "next/link";
 
 <header className="fixed inset-x-0 top-0 z-50 flex justify-center p-4">
-  <FloatingNav
+  <SulaNav
     linkComponent={Link}
     brand={<span>usva.</span>}
     brandLabel="usva home"
@@ -155,11 +155,11 @@ function PropsTable() {
   );
 }
 
-export default function FloatingNavPage() {
+export default function SulaNavPage() {
   return (
     <main className="mx-auto flex max-w-5xl flex-col gap-8 p-10">
       <div className="flex flex-col gap-2">
-        <h1 className="text-3xl font-semibold text-ink">Floating Nav</h1>
+        <h1 className="text-3xl font-semibold text-ink">Sula Nav</h1>
         <p className="text-muted">
           A row of views that behaves like one body of liquid. One view is
           expanded into its bar of section tabs; the others sit collapsed to
@@ -172,7 +172,7 @@ export default function FloatingNavPage() {
       <Card>
         <CardHeader>Demo</CardHeader>
         <CardBody className="bg-bg pt-0!">
-          <FloatingNavDemo />
+          <SulaNavDemo />
         </CardBody>
       </Card>
 
@@ -231,7 +231,7 @@ export default function FloatingNavPage() {
             afterwards, and it is decorative.
           </p>
           <div className="rounded-lg border border-border bg-bg p-4">
-            <FloatingNavDemo fluid={false} />
+            <SulaNavDemo fluid={false} />
           </div>
         </CardBody>
       </Card>
@@ -251,7 +251,7 @@ export default function FloatingNavPage() {
       <Card>
         <CardHeader>Install</CardHeader>
         <CardBody className="flex flex-col gap-3">
-          <InstallBlock registryName="floating-nav" />
+          <InstallBlock registryName="sula-nav" />
           <p className="text-sm text-muted">
             Pulls in <code>ogl</code>, which ships untranspiled ESM. Bundlers
             are fine with it; a bare CommonJS <code>require</code> is not.
@@ -271,10 +271,10 @@ export default function FloatingNavPage() {
       <Card>
         <CardHeader>Source</CardHeader>
         <CardBody className="flex flex-col gap-4">
-          <SourceView filePath="packages/usva/src/patterns/floating-nav/floating-nav.tsx" />
-          <SourceView filePath="packages/usva/src/patterns/floating-nav/nav-geometry.ts" />
-          <SourceView filePath="packages/usva/src/patterns/floating-nav/nav-shader.ts" />
-          <SourceView filePath="packages/usva/src/patterns/floating-nav/nav-field.ts" />
+          <SourceView filePath="packages/usva/src/sula/sula-nav/sula-nav.tsx" />
+          <SourceView filePath="packages/usva/src/sula/sula-nav/nav-geometry.ts" />
+          <SourceView filePath="packages/usva/src/sula/sula-nav/nav-shader.ts" />
+          <SourceView filePath="packages/usva/src/sula/sula-nav/nav-field.ts" />
         </CardBody>
       </Card>
 

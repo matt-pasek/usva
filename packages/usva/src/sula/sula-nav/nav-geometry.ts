@@ -1,3 +1,12 @@
+import {
+  c1Settle,
+  clamp01,
+  easeOutCubic,
+  mix,
+  smoother,
+  smoothstep,
+} from "../sula-motion/curves.js";
+
 /** Brand + up to five views + the drip's transient reservoir/bead. */
 export const MAX_BLOBS = 8;
 /** Neighbour bridges while a switch fuses the row, or the drip tether on load. */
@@ -107,15 +116,6 @@ export function measureRestBlobs(
   }
 }
 
-const mix = (a: number, b: number, t: number): number => a + (b - a) * t;
-const clamp01 = (t: number): number => Math.min(1, Math.max(0, t));
-/** Hermite ramp between edges; 0 below `a`, 1 above `b`, eased in between. */
-const smoothstep = (a: number, b: number, x: number): number => {
-  if (a === b) return x < a ? 0 : 1;
-  const t = clamp01((x - a) / (b - a));
-  return t * t * (3 - 2 * t);
-};
-
 export function lerpBlob(a: Blob, b: Blob, t: number): Blob {
   return {
     cx: mix(a.cx, b.cx, t),
@@ -173,8 +173,7 @@ export function loadPhase(
    * line and back as one motion, instead of the bar easing to a dead stop at the
    * line and only then starting a separate dip. `t` is the raw spring value and
    * carries the overshoot; f is its delayed, unit-landing fall time. */
-  const f = Math.max(0, (t - 0.1) / 0.9);
-  const fall = f < 1 ? f * f * (2 - f) : f;
+  const fall = c1Settle(t, 0.1);
   const cy = mix(startCy, barRest.cy, fall);
   const hw = barRest.hw * mix(0.3, 1, smoothstep(0.3, 0.85, p));
   const hh = barRest.hh * mix(0.42, 1, smoothstep(0.2, 0.8, p));
@@ -259,8 +258,7 @@ export function revealSide(
   /* Travel reaches the rest line at t=1 still moving (slope 1), so an underdamped
    * SIDE_SPRING carries a small settle wobble past the line and back instead of the
    * pill landing hard. Raw t, not clamped p, so the overshoot is not flattened. */
-  const g = Math.max(0, (t - SIDE_TRAVEL_START) / (1 - SIDE_TRAVEL_START));
-  const travel = g < 1 ? g * g * (2 - g) : g;
+  const travel = c1Settle(t, SIDE_TRAVEL_START);
   const pinch = smoothstep(SIDE_PINCH_START, SIDE_PINCH_END, p);
 
   const scale = mix(0.5, 1, swell);
@@ -345,18 +343,6 @@ const HIDE_SPAN = 0.62;
 /** The expanding pill holds until this fraction, then fills. */
 const SHOW_LAG = 0.24;
 
-const quintic = (t: number): number => {
-  const x = clamp01(t);
-  return x * x * x * (x * (x * 6 - 15) + 10);
-};
-
-/** Decelerating: a wide bar sheds most of its width in the first frames rather
- * than lingering as a long empty slab, which reads as goofy sizing. */
-const easeOutCubic = (t: number): number => {
-  const inv = 1 - clamp01(t);
-  return 1 - inv * inv * inv;
-};
-
 const roleSpan = (t: number, role: SwitchRole): number => {
   const x = clamp01(t);
   if (role === "hide") return clamp01(x / HIDE_SPAN);
@@ -373,7 +359,7 @@ const roleSpan = (t: number, role: SwitchRole): number => {
  */
 export function switchProgress(t: number, role: SwitchRole): number {
   const s = roleSpan(t, role);
-  return role === "hide" ? easeOutCubic(s) : quintic(s);
+  return role === "hide" ? easeOutCubic(s) : smoother(s);
 }
 
 /**
@@ -405,7 +391,7 @@ export function morphBlob(
  * quintic so the label never snaps in. Unchanged parts stay lit.
  */
 export function switchFade(t: number, role: SwitchRole): number {
-  return role === "keep" ? 1 : quintic(roleSpan(t, role));
+  return role === "keep" ? 1 : smoother(roleSpan(t, role));
 }
 
 /**

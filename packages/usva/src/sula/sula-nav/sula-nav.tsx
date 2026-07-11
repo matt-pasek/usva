@@ -2,6 +2,16 @@
 import { animate, useReducedMotion } from "motion/react";
 import * as React from "react";
 import { cn } from "../../cn.js";
+import { clamp01, smoother } from "../sula-motion/curves.js";
+import { createEnergyTracker } from "../sula-motion/energy.js";
+import {
+  barSpring,
+  dripRetract,
+  type SulaMotionSpec,
+  sideSpring,
+  switchSpring,
+  textFade,
+} from "../sula-motion/springs.js";
 import {
   createField,
   type FieldColors,
@@ -24,23 +34,23 @@ import {
 } from "./nav-geometry.js";
 
 /** A section-indicator tab shown inside an expanded view. */
-export interface FloatingNavItem {
+export interface SulaNavItem {
   href: string;
   label: string;
   icon?: React.ReactNode;
 }
 
 /** A navigable view: collapsed to an icon pill, expanded to a bar of its items. */
-export interface FloatingNavView {
+export interface SulaNavView {
   href: string;
   label: string;
   icon: React.ReactNode;
-  items?: FloatingNavItem[];
+  items?: SulaNavItem[];
 }
 
-export interface FloatingNavProps
+export interface SulaNavProps
   extends Omit<React.HTMLAttributes<HTMLElement>, "children"> {
-  views: FloatingNavView[];
+  views: SulaNavView[];
   /** href of the expanded view. Controlled. Defaults to the first view. */
   activeView?: string;
   onViewChange?: (href: string) => void;
@@ -85,32 +95,6 @@ const CANVAS_SLACK = 64;
 const SLACK_X = 104;
 const MAX_DPR = 2;
 
-/** Underdamped on purpose: the bar lands with one soft dip and a faint second
- * bob, which loadPhase maps into pixels from the overshoot past 1. */
-const BAR_SPRING = {
-  type: "spring",
-  stiffness: 68,
-  damping: 19,
-  mass: 2.9,
-} as const;
-const SIDE_SPRING = {
-  type: "spring",
-  stiffness: 70,
-  damping: 16,
-  mass: 2.1,
-} as const;
-/** Slower and heavier than a reveal: the whole row reshapes as one mass. */
-const SWITCH_SPRING = {
-  type: "spring",
-  stiffness: 115,
-  damping: 22,
-  mass: 1.45,
-} as const;
-/** The remaining top tether pulls upward after the bar has landed. */
-const DRIP_RETRACT = { duration: 1.05, ease: [0.3, 1.12, 0.36, 1] } as const;
-/** The bar's labels come up once, promptly, as it lands. */
-const TEXT_FADE = { duration: 0.22, ease: [0.22, 1, 0.36, 1] } as const;
-
 /** The bar's labels start fading in at this much of the drop, not on settle. */
 const TEXT_AT = 0.75;
 /** The tether lets go the moment the bar first reaches its line, mid-settle,
@@ -151,20 +135,13 @@ function readColors(
 const shift = (blob: Blob, rest: Blob): string =>
   `translate3d(${blob.cx - rest.cx}px, ${blob.cy - rest.cy}px, 0)`;
 
-const clamp01 = (t: number): number => Math.min(1, Math.max(0, t));
-/** Symmetric flat-start-flat-end ease, so the whole row glides to its new layout
- * as one coherent mass during a switch. */
-const smoother = (t: number): number => {
-  const x = clamp01(t);
-  return x * x * x * (x * (x * 6 - 15) + 10);
-};
 /** The pills and brand fade up once the sides are most of the way out. */
 const labelFade = (t: number): number => {
   const s = clamp01((t - 0.82) / 0.16);
   return s * s * (3 - 2 * s);
 };
 
-export const FloatingNav = React.forwardRef<HTMLElement, FloatingNavProps>(
+export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
   (
     {
       views,
@@ -270,7 +247,7 @@ export const FloatingNav = React.forwardRef<HTMLElement, FloatingNavProps>(
       let dpr = 1;
       let raf = 0;
       let running = 0;
-      let energy = 0;
+      const energy = createEnergyTracker();
       const start = performance.now();
 
       const bT = { value: 0 };
@@ -334,7 +311,7 @@ export const FloatingNav = React.forwardRef<HTMLElement, FloatingNavProps>(
           packed: packUniforms({ blobs, necks, k: liveK }, dpr, canvasH),
           k: liveK * dpr,
           time: (performance.now() - start) / 1000,
-          wobble: WOBBLE_MAX * energy,
+          wobble: WOBBLE_MAX * energy.value,
           alpha: 1,
         });
       };
@@ -376,13 +353,12 @@ export const FloatingNav = React.forwardRef<HTMLElement, FloatingNavProps>(
           }
         }
 
-        /* Energy tracks measured velocity, not the springs' finished promises:
-         * a spring reports done long after visible rest, and releasing k and
-         * wobble that late reads as a phantom width shift a second after the
-         * bar has settled. */
+        /* Energy is measured velocity, not a spring's finished promise: a
+         * spring reports done long after visible rest, so releasing k and
+         * wobble on it reads as a phantom width shift a second late. */
         const speed = Math.abs(vBar) + Math.abs(vSide) + Math.abs(vDrip);
-        energy = Math.max(energy * 0.9, Math.min(1, speed * 40));
-        const liveK = mergeRadius + (K_ACTIVE - mergeRadius) * energy;
+        energy.bump(speed);
+        const liveK = mergeRadius + (K_ACTIVE - mergeRadius) * energy.value;
         lastBlobs = blobs;
         drawFrame(blobs, necks, liveK);
       };
@@ -417,8 +393,8 @@ export const FloatingNav = React.forwardRef<HTMLElement, FloatingNavProps>(
           }
         }
 
-        energy = Math.max(energy * 0.9, Math.min(1, Math.abs(vSwitch) * 40));
-        const liveK = mergeRadius + (K_ACTIVE - mergeRadius) * energy;
+        energy.bump(Math.abs(vSwitch));
+        const liveK = mergeRadius + (K_ACTIVE - mergeRadius) * energy.value;
         const necks = bridgeNecks(blobs, liveK, merge);
         lastBlobs = blobs;
         drawFrame(blobs, necks, liveK);
@@ -432,13 +408,13 @@ export const FloatingNav = React.forwardRef<HTMLElement, FloatingNavProps>(
 
         if (!textStarted && bT.value >= TEXT_AT) {
           textStarted = true;
-          run(barText, 1, TEXT_FADE);
+          run(barText, 1, textFade);
         }
         if (!dripStarted && bT.value >= DRIP_AT) {
           dripStarted = true;
-          run(dT, 1, DRIP_RETRACT);
+          run(dT, 1, dripRetract);
         }
-        if (running === 0 && energy < 0.02) {
+        if (running === 0 && energy.parked()) {
           switching = false;
           return;
         }
@@ -453,12 +429,7 @@ export const FloatingNav = React.forwardRef<HTMLElement, FloatingNavProps>(
       const run = (
         target: { value: number },
         to: number | [number, number],
-        opts:
-          | typeof BAR_SPRING
-          | typeof SIDE_SPRING
-          | typeof SWITCH_SPRING
-          | typeof DRIP_RETRACT
-          | typeof TEXT_FADE,
+        opts: SulaMotionSpec,
       ) => {
         running += 1;
         const control = animate(target, { value: to }, opts);
@@ -485,7 +456,7 @@ export const FloatingNav = React.forwardRef<HTMLElement, FloatingNavProps>(
         const to = open ? 1 : 0;
         if (sT.value === to) return;
         sideControl?.stop();
-        sideControl = run(sT, to, SIDE_SPRING);
+        sideControl = run(sT, to, sideSpring);
       };
       setSidesRef.current = setSides;
 
@@ -515,7 +486,7 @@ export const FloatingNav = React.forwardRef<HTMLElement, FloatingNavProps>(
          * next "from" out of it, so a bare swT.value reset is invisible to it.
          * The explicit [0, 1] keyframes are what make the second and every
          * later switch animate instead of snapping. */
-        swControl = run(swT, [0, 1], SWITCH_SPRING);
+        swControl = run(swT, [0, 1], switchSpring);
         void swControl.finished.then(
           () => {
             if (disposed || currentSwitchId !== switchId) return;
@@ -541,7 +512,7 @@ export const FloatingNav = React.forwardRef<HTMLElement, FloatingNavProps>(
         revealed = true;
         window.clearTimeout(fontTimer);
         measure();
-        const barControl = run(bT, 1, BAR_SPRING);
+        const barControl = run(bT, 1, barSpring);
         void barControl.finished
           .then(() => {
             if (disposed) return;
@@ -799,4 +770,4 @@ export const FloatingNav = React.forwardRef<HTMLElement, FloatingNavProps>(
     );
   },
 );
-FloatingNav.displayName = "FloatingNav";
+SulaNav.displayName = "SulaNav";

@@ -1,15 +1,15 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
 import { Button } from "../../primitives/button/index.js";
-import { FloatingNav, type FloatingNavView } from "./floating-nav.js";
+import { SulaNav, type SulaNavView } from "./sula-nav.js";
 
-const meta: Meta<typeof FloatingNav> = {
-  title: "Patterns/FloatingNav",
-  component: FloatingNav,
+const meta: Meta<typeof SulaNav> = {
+  title: "Sula/Nav",
+  component: SulaNav,
 };
 export default meta;
 
-type Story = StoryObj<typeof FloatingNav>;
+type Story = StoryObj<typeof SulaNav>;
 
 const Spark = () => (
   <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
@@ -28,7 +28,7 @@ const Dot = () => (
   </svg>
 );
 
-const VIEWS: FloatingNavView[] = [
+const VIEWS: SulaNavView[] = [
   {
     href: "/",
     label: "Site",
@@ -58,14 +58,14 @@ function Demo({
   offset = 0,
 }: {
   fluid?: boolean;
-  views?: FloatingNavView[];
+  views?: SulaNavView[];
   offset?: number;
 }) {
   const [view, setView] = useState(views[0]?.href);
   const [item, setItem] = useState(views[0]?.items?.[0]?.href);
   return (
     <div className="flex min-h-72 justify-center bg-bg pt-4">
-      <FloatingNav
+      <SulaNav
         fluid={fluid}
         views={views}
         activeView={view}

@@ -3,7 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { axe } from "jest-axe";
 import type * as React from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { FloatingNav, type FloatingNavView } from "./floating-nav.js";
+import { SulaNav, type SulaNavView } from "./sula-nav.js";
 
 const reducedMotion = { current: false };
 vi.mock("motion/react", async (importOriginal) => ({
@@ -22,7 +22,7 @@ vi.mock("./nav-field.js", () => ({
   }),
 }));
 
-const views: FloatingNavView[] = [
+const views: SulaNavView[] = [
   {
     href: "/",
     label: "Site",
@@ -64,9 +64,9 @@ afterEach(() => {
 
 const canvasOf = (container: HTMLElement) => container.querySelector("canvas");
 
-describe("FloatingNav", () => {
+describe("SulaNav", () => {
   it("is a labelled landmark holding the active view's section links", () => {
-    render(<FloatingNav views={views} activeView="/" ariaLabel="Site" />);
+    render(<SulaNav views={views} activeView="/" ariaLabel="Site" />);
     const nav = screen.getByRole("navigation", { name: "Site" });
     expect(nav).toBeInTheDocument();
     expect(screen.getAllByRole("listitem")).toHaveLength(3);
@@ -74,7 +74,7 @@ describe("FloatingNav", () => {
   });
 
   it("shows inactive views as collapsed pills named by their label", () => {
-    render(<FloatingNav views={views} activeView="/" />);
+    render(<SulaNav views={views} activeView="/" />);
     expect(screen.getByRole("link", { name: "Writing" })).toBeInTheDocument();
     expect(
       screen.getByRole("link", { name: "Playground" }),
@@ -82,7 +82,7 @@ describe("FloatingNav", () => {
   });
 
   it("expands whichever view is active into its section bar", () => {
-    render(<FloatingNav views={views} activeView="/writing" />);
+    render(<SulaNav views={views} activeView="/writing" />);
     expect(screen.getByRole("link", { name: "Latest" })).toBeInTheDocument();
     // The now-inactive first view collapses to its pill.
     expect(screen.getByRole("link", { name: "Site" })).toBeInTheDocument();
@@ -94,7 +94,7 @@ describe("FloatingNav", () => {
   it("calls onViewChange with the clicked collapsed view's href", async () => {
     const onViewChange = vi.fn();
     render(
-      <FloatingNav
+      <SulaNav
         views={views}
         activeView="/"
         onViewChange={onViewChange}
@@ -106,7 +106,7 @@ describe("FloatingNav", () => {
   });
 
   it("marks the active section tab with aria-current", () => {
-    render(<FloatingNav views={views} activeView="/" activeItem="#work" />);
+    render(<SulaNav views={views} activeView="/" activeItem="#work" />);
     expect(screen.getByRole("link", { name: "Work" })).toHaveAttribute(
       "aria-current",
       "page",
@@ -119,7 +119,7 @@ describe("FloatingNav", () => {
   it("calls onNavigate with the clicked section href", async () => {
     const onNavigate = vi.fn();
     render(
-      <FloatingNav
+      <SulaNav
         views={views}
         activeView="/"
         onNavigate={onNavigate}
@@ -132,7 +132,7 @@ describe("FloatingNav", () => {
 
   it("renders the brand slot named by brandLabel", () => {
     render(
-      <FloatingNav
+      <SulaNav
         views={views}
         brand={<span>usva.</span>}
         brandLabel="usva home"
@@ -146,13 +146,13 @@ describe("FloatingNav", () => {
     const Link = ({ href, ...rest }: React.ComponentProps<"a">) => (
       <a data-testid="custom" href={href} {...rest} />
     );
-    render(<FloatingNav views={views} activeView="/" linkComponent={Link} />);
+    render(<SulaNav views={views} activeView="/" linkComponent={Link} />);
     // three section tabs + two collapsed view pills
     expect(screen.getAllByTestId("custom")).toHaveLength(5);
   });
 
   it("mounts a decorative canvas once it is on the client", () => {
-    const { container } = render(<FloatingNav views={views} />);
+    const { container } = render(<SulaNav views={views} />);
     expect(canvasOf(container)?.parentElement).toHaveAttribute(
       "aria-hidden",
       "true",
@@ -160,20 +160,20 @@ describe("FloatingNav", () => {
   });
 
   it("mounts no canvas when fluid is off", () => {
-    const { container } = render(<FloatingNav views={views} fluid={false} />);
+    const { container } = render(<SulaNav views={views} fluid={false} />);
     expect(canvasOf(container)).toBeNull();
     expect(screen.getByRole("navigation")).toHaveAttribute("data-fluid", "off");
   });
 
   it("mounts no canvas when the user asked for reduced motion", () => {
     reducedMotion.current = true;
-    const { container } = render(<FloatingNav views={views} />);
+    const { container } = render(<SulaNav views={views} />);
     expect(canvasOf(container)).toBeNull();
   });
 
   it("pulls the melted-in sides out of the tab order", () => {
     const { rerender } = render(
-      <FloatingNav
+      <SulaNav
         views={views}
         activeView="/"
         fluid={false}
@@ -186,7 +186,7 @@ describe("FloatingNav", () => {
     expect(brand.closest("[inert]")).not.toBeNull();
 
     rerender(
-      <FloatingNav
+      <SulaNav
         views={views}
         activeView="/"
         fluid={false}
@@ -202,7 +202,7 @@ describe("FloatingNav", () => {
   // motion's per-subject visual element cache, which a mocked animate never hits.
   it("runs the liquid switch on every view change, not only the first", async () => {
     const { rerender } = render(
-      <FloatingNav views={views} activeView="/" revealDelay={0} />,
+      <SulaNav views={views} activeView="/" revealDelay={0} />,
     );
     const pill = (name: string) =>
       screen.getByRole("link", { name }).closest("div") as HTMLDivElement;
@@ -213,9 +213,7 @@ describe("FloatingNav", () => {
       timeout: 10_000,
     });
 
-    rerender(
-      <FloatingNav views={views} activeView="/writing" revealDelay={0} />,
-    );
+    rerender(<SulaNav views={views} activeView="/writing" revealDelay={0} />);
     await vi.waitFor(() => expect(dipped("Site")).toBe(true), {
       timeout: 4_000,
     });
@@ -223,7 +221,7 @@ describe("FloatingNav", () => {
       timeout: 10_000,
     });
 
-    rerender(<FloatingNav views={views} activeView="/play" revealDelay={0} />);
+    rerender(<SulaNav views={views} activeView="/play" revealDelay={0} />);
     await vi.waitFor(() => expect(dipped("Writing")).toBe(true), {
       timeout: 4_000,
     });
@@ -231,7 +229,7 @@ describe("FloatingNav", () => {
 
   it("has no axe violations, fluid or not", async () => {
     const fluid = render(
-      <FloatingNav
+      <SulaNav
         views={views}
         activeView="/"
         activeItem="#work"
@@ -242,7 +240,7 @@ describe("FloatingNav", () => {
     expect(await axe(fluid.container)).toHaveNoViolations();
     fluid.unmount();
 
-    const plain = render(<FloatingNav views={views} fluid={false} />);
+    const plain = render(<SulaNav views={views} fluid={false} />);
     expect(await axe(plain.container)).toHaveNoViolations();
   });
 });
