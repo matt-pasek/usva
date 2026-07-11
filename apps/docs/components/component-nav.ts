@@ -79,6 +79,9 @@ export const componentNav: NavGroup[] = [
   },
   {
     label: "Sula · Fluid Motion",
-    items: [{ slug: "sula-nav", label: "Sula Nav" }],
+    items: [
+      { slug: "sula-nav", label: "Sula Nav" },
+      { slug: "sula-segmented", label: "Sula Segmented" },
+    ],
   },
 ];

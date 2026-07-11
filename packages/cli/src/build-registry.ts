@@ -85,7 +85,12 @@ export const PATTERN_NAMES = [
   "toolbar",
 ] as const;
 
-export const SULA_NAMES = ["sula-core", "sula-motion", "sula-nav"] as const;
+export const SULA_NAMES = [
+  "sula-core",
+  "sula-motion",
+  "sula-nav",
+  "sula-segmented",
+] as const;
 
 async function emit(dir: string, name: string): Promise<void> {
   const mod = (await import(`${dir}/${name}/registry.ts`)) as Record<
