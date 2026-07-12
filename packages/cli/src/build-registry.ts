@@ -20,6 +20,7 @@ const here = dirname(fileURLToPath(import.meta.url));
 export const PRIMITIVES = resolve(here, "../../usva/src/primitives");
 export const PATTERNS = resolve(here, "../../usva/src/patterns");
 export const SULA = resolve(here, "../../usva/src/sula");
+export const EFFECTS = resolve(here, "../../usva/src/effects");
 const OUT = resolve(here, "../../../registry/r");
 
 export const NAMES = [
@@ -96,6 +97,8 @@ export const SULA_NAMES = [
   "sula-segmented",
 ] as const;
 
+export const EFFECT_NAMES = ["utu-sphere"] as const;
+
 async function emit(dir: string, name: string): Promise<void> {
   const mod = (await import(`${dir}/${name}/registry.ts`)) as Record<
     string,
@@ -118,6 +121,7 @@ export async function buildRegistry(): Promise<void> {
   for (const name of NAMES) await emit(PRIMITIVES, name);
   for (const name of PATTERN_NAMES) await emit(PATTERNS, name);
   for (const name of SULA_NAMES) await emit(SULA, name);
+  for (const name of EFFECT_NAMES) await emit(EFFECTS, name);
 }
 
 if (import.meta.main) await buildRegistry();

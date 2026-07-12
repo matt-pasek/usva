@@ -2,6 +2,8 @@ import { readdirSync, readFileSync } from "node:fs";
 import { beforeAll, describe, expect, it } from "vitest";
 import {
   buildRegistry,
+  EFFECT_NAMES,
+  EFFECTS,
   NAMES,
   PATTERN_NAMES,
   PATTERNS,
@@ -32,6 +34,10 @@ describe("buildRegistry", () => {
 
   it("ships every sula component through the registry", () => {
     expect([...SULA_NAMES].sort()).toEqual(dirsIn(SULA));
+  });
+
+  it("ships every effect through the registry", () => {
+    expect([...EFFECT_NAMES].sort()).toEqual(dirsIn(EFFECTS));
   });
 
   it("emits button.json with embedded source", () => {
@@ -90,10 +96,27 @@ describe("buildRegistry", () => {
     });
   });
 
+  describe.each(EFFECT_NAMES)("%s effect parity", (name) => {
+    it("registry source matches package source once imports are flattened", () => {
+      const json = JSON.parse(
+        readFileSync(`../../registry/r/${name}.json`, "utf8"),
+      );
+      expect(json.files.length).toBeGreaterThan(0);
+      for (const file of json.files as { path: string; content: string }[]) {
+        const src = readFileSync(
+          `../usva/src/effects/${name}/${file.path}`,
+          "utf8",
+        );
+        expect(file.content).toBe(rewriteImports(src));
+      }
+    });
+  });
+
   describe.each([
     ...NAMES,
     ...PATTERN_NAMES,
     ...SULA_NAMES,
+    ...EFFECT_NAMES,
   ])("%s is self-contained", (name) => {
     it("emits no import that escapes components/ui", () => {
       const json = JSON.parse(
@@ -105,7 +128,12 @@ describe("buildRegistry", () => {
   });
 
   it("declares a registryDependency for every sibling it imports", () => {
-    const allNames = [...NAMES, ...PATTERN_NAMES, ...SULA_NAMES];
+    const allNames = [
+      ...NAMES,
+      ...PATTERN_NAMES,
+      ...SULA_NAMES,
+      ...EFFECT_NAMES,
+    ];
     const read = (name: string) =>
       JSON.parse(readFileSync(`../../registry/r/${name}.json`, "utf8"));
     const provides = new Map<string, Set<string>>();
