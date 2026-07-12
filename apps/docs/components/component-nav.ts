@@ -90,6 +90,9 @@ export const componentNav: NavGroup[] = [
   },
   {
     label: "Effects",
-    items: [{ slug: "utu-sphere", label: "Utu Sphere" }],
+    items: [
+      { slug: "utu-sphere", label: "Utu Sphere" },
+      { slug: "vako", label: "Vako" },
+    ],
   },
 ];

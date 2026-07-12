@@ -1,5 +1,6 @@
 export { cn } from "./cn.js";
 export * from "./effects/utu-sphere/index.js";
+export * from "./effects/vako/index.js";
 export {
   PageTransition,
   type PageTransitionProps,
