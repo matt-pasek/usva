@@ -99,6 +99,7 @@ export const SULA_NAMES = [
 
 export const EFFECT_NAMES = [
   "effects-core",
+  "hehku",
   "holvi",
   "utu-sphere",
   "vako",
