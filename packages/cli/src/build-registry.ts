@@ -97,7 +97,12 @@ export const SULA_NAMES = [
   "sula-segmented",
 ] as const;
 
-export const EFFECT_NAMES = ["effects-core", "utu-sphere", "vako"] as const;
+export const EFFECT_NAMES = [
+  "effects-core",
+  "holvi",
+  "utu-sphere",
+  "vako",
+] as const;
 
 async function emit(dir: string, name: string): Promise<void> {
   const mod = (await import(`${dir}/${name}/registry.ts`)) as Record<
