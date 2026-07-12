@@ -27,6 +27,26 @@ export function shineForBackdrop(backdrop: Rgb): number {
   return 0.32 + 0.68 * (1 - luminance) ** 1.4;
 }
 
+/**
+ * Pulls a fill off the backdrop toward the accent hue and up in lightness, so an
+ * actor blob reads as violet-charcoal glass rather than a bg-adjacent grey lump.
+ * `amount` biases toward the accent; the small lift raises absolute lightness so
+ * even a dark accent still separates from a near-black bg.
+ */
+export function liftTint(
+  tint: Rgb,
+  accent: Rgb,
+  amount = 0.18,
+  lift = 0.03,
+): Rgb {
+  const clamp = (v: number) => Math.min(1, Math.max(0, v));
+  return [
+    clamp(tint[0] + (accent[0] - tint[0]) * amount + lift),
+    clamp(tint[1] + (accent[1] - tint[1]) * amount + lift),
+    clamp(tint[2] + (accent[2] - tint[2]) * amount + lift),
+  ];
+}
+
 export interface FieldFrame {
   packed: PackedField;
   k: number;
@@ -35,6 +55,9 @@ export interface FieldFrame {
   alpha: number;
   /** Localized hover ripple around one blob; null leaves the field calm. */
   hover?: PackedHover | null;
+  /** false composites this frame over the last without clearing, so a back and a
+   * front pass can share one context and one canvas. Defaults to true. */
+  clear?: boolean;
 }
 
 export interface NavField {
@@ -143,7 +166,7 @@ export function createField(options: CreateFieldOptions): NavField | null {
       u.uAccent.value = next.accent;
       u.uShine.value = next.shine;
     },
-    draw({ packed, k, time, wobble, alpha, hover }) {
+    draw({ packed, k, time, wobble, alpha, hover, clear }) {
       u.uTime.value = time;
       u.uK.value = k;
       u.uWobble.value = wobble;
@@ -158,6 +181,9 @@ export function createField(options: CreateFieldOptions): NavField | null {
       u.uNecks.value = packed.necks;
       u.uNeckR.value = packed.neckRadii;
       u.uNeckStr.value = packed.neckStrengths;
+      /* A back pass renders first and clears; a front pass rides over it with
+       * clear=false so the two glass layers alpha-composite in one context. */
+      renderer.autoClear = clear ?? true;
       renderer.render({ scene: mesh });
     },
     dispose() {

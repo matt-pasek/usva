@@ -10,13 +10,16 @@ rules any new one holds to. The motion is defined once in `sula-motion` and the 
 
 ## The family
 
-Three components today, on two shared modules.
+Five components today, on two shared modules.
 
 - SulaNav, a liquid-glass navigation bar whose parts merge and separate as you move between views.
 - SulaSegmented, a segmented control whose indicator pinches a droplet off the old segment and merges
   it into the new one. This is the brand-surface segmented control; the plain `SegmentedControl` is
   the one for dense UI.
 - SulaFab, a floating action button whose actions emerge as liquid beads and pinch back on close.
+- SulaLoader, a metaball spinner for a felt loading moment, where a droplet splits off and merges
+  back on a loop. It is the brand loading beat; the plain `Spinner` is the one for buttons and dense UI.
+- SulaField, an ambient background of blobs that drift and merge slowly behind content.
 
 `sula-motion` holds the springs, curves and energy, how things move. `sula-core` holds the geometry,
 shader, field and the `emergeDroplet` primitive, what things are made of and how they are drawn. A
@@ -76,6 +79,12 @@ as flowing glass rather than a grainy coastline, and the waves are measured in C
 wavelength holds the same on standard and retina displays. At rest a sula field is a calm sheet of
 glass: fully still, not animated, but carrying a faint standing tension between neighbours where the
 rest necks hold.
+
+Two members never come to rest, and say so. A loader and an ambient field are alive the whole time
+they are shown, so instead of parking they run a bounded, pausable loop: SulaLoader loops only while
+it is mounted and unmounts when the wait ends, SulaField pauses the moment it scrolls offscreen or
+the tab is backgrounded. Everything else about the material is unchanged; they melt, neck and settle
+their surface exactly like the rest, they just never reach the still frame.
 
 The field reacts to the pointer. Hovering a part sends a broad wave across the surface that follows
 the cursor, with an elliptical falloff around the live pointer position so the pull is strongest

@@ -100,14 +100,28 @@ void main(){
   vec2 g = vec2(dFdx(d), dFdy(d));
   vec2 n = length(g) > 1e-5 ? normalize(g) : vec2(0.0, 1.0);
 
+  /* Curvature: how fast the surface normal turns across one pixel. It is near
+     zero on the flat flank of a large blob and spikes at necks, cusps and small
+     beads, so surface tension lights up brightest exactly where the goo is
+     pinching. Scaled by uK so a fat-merge field and a tight one read alike. */
+  float curv = clamp(
+    (abs(dFdx(n.x)) + abs(dFdy(n.x)) + abs(dFdx(n.y)) + abs(dFdy(n.y)))
+      * uK * 0.6,
+    0.0, 1.2);
+
   float rim = smoothstep(-11.0, 0.0, d) * alpha;
   float fres = pow(1.0 - abs(dot(n, vec2(0.0, 1.0))), 3.0);
   float spec = pow(max(dot(n, normalize(vec2(0.35, 0.94))), 0.0), 18.0);
   float hairline = exp(-pow((d + 1.1) / 1.4, 2.0)) * alpha;
+  /* A broader inner band the curvature glow bleeds into, so a lit neck reads as
+     a soft waist of light rather than a single-pixel wire. */
+  float edge = exp(-pow((d + 2.4) / 2.8, 2.0)) * alpha;
 
   vec3 glass = mix(uBackdrop, uTint, 0.92);
-  glass += uAccent * (fres * 0.22 + spec * 0.5) * rim * uShine;
-  glass += (uAccent * 0.16  * uShine + vec3(0.05) * mix(0.3, 1.0, uShine)) * hairline;
+  glass += uAccent * (fres * 0.22 + spec * 0.5) * (1.0 + curv * 0.8) * rim * uShine;
+  glass += uAccent * (0.16 + curv * 1.0) * hairline * uShine;
+  glass += uAccent * curv * edge * 0.55 * uShine;
+  glass += vec3(0.05) * mix(0.3, 1.0, uShine) * hairline;
 
   vec3 chroma = vec3(
     1.0 - smoothstep(-aa, aa, d - 0.8),

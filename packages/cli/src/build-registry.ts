@@ -88,6 +88,8 @@ export const PATTERN_NAMES = [
 export const SULA_NAMES = [
   "sula-core",
   "sula-fab",
+  "sula-field",
+  "sula-loader",
   "sula-motion",
   "sula-nav",
   "sula-segmented",

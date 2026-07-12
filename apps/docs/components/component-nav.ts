@@ -83,6 +83,8 @@ export const componentNav: NavGroup[] = [
       { slug: "sula-nav", label: "Sula Nav" },
       { slug: "sula-segmented", label: "Sula Segmented" },
       { slug: "sula-fab", label: "Sula Fab" },
+      { slug: "sula-loader", label: "Sula Loader" },
+      { slug: "sula-field", label: "Sula Field" },
     ],
   },
 ];
