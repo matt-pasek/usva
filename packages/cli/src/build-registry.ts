@@ -89,6 +89,7 @@ export const SULA_NAMES = [
   "sula-core",
   "sula-fab",
   "sula-field",
+  "sula-frame",
   "sula-loader",
   "sula-motion",
   "sula-nav",

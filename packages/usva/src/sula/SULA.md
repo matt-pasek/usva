@@ -10,7 +10,7 @@ rules any new one holds to. The motion is defined once in `sula-motion` and the 
 
 ## The family
 
-Five components today, on two shared modules.
+Six components today, on two shared modules.
 
 - SulaNav, a liquid-glass navigation bar whose parts merge and separate as you move between views.
 - SulaSegmented, a segmented control whose indicator pinches a droplet off the old segment and merges
@@ -20,6 +20,9 @@ Five components today, on two shared modules.
 - SulaLoader, a metaball spinner for a felt loading moment, where a droplet splits off and merges
   back on a loop. It is the brand loading beat; the plain `Spinner` is the one for buttons and dense UI.
 - SulaField, an ambient background of blobs that drift and merge slowly behind content.
+- SulaFrame, a liquid border that hugs a rounded rectangle and leans its nearest edge toward the
+  cursor. It wraps a card or, set fixed, frames the whole viewport. Descended from the liquid border
+  on the project owner's own site, rebuilt on `sula-core` so it is the same material as the rest.
 
 `sula-motion` holds the springs, curves and energy, how things move. `sula-core` holds the geometry,
 shader, field and the `emergeDroplet` primitive, what things are made of and how they are drawn. A
@@ -80,11 +83,13 @@ wavelength holds the same on standard and retina displays. At rest a sula field 
 glass: fully still, not animated, but carrying a faint standing tension between neighbours where the
 rest necks hold.
 
-Two members never come to rest, and say so. A loader and an ambient field are alive the whole time
-they are shown, so instead of parking they run a bounded, pausable loop: SulaLoader loops only while
-it is mounted and unmounts when the wait ends, SulaField pauses the moment it scrolls offscreen or
-the tab is backgrounded. Everything else about the material is unchanged; they melt, neck and settle
-their surface exactly like the rest, they just never reach the still frame.
+Three members never come to rest, and say so. A loader, an ambient field and a frame are alive the
+whole time they are shown, so instead of parking they run a bounded, pausable loop: SulaLoader loops
+only while it is mounted and unmounts when the wait ends; SulaField and SulaFrame pause the moment
+they scroll offscreen or the tab is backgrounded. A frame frozen until you touch it reads as dead, so
+it keeps a faint idle wobble in view and wakes fully under the pointer or a focus within. Everything
+else about the material is unchanged; they melt, neck and settle their surface exactly like the rest,
+they just never reach the still frame.
 
 The field reacts to the pointer. Hovering a part sends a broad wave across the surface that follows
 the cursor, with an elliptical falloff around the live pointer position so the pull is strongest

@@ -8,5 +8,7 @@ export const sulaCoreRegistry = {
     { path: "shader.ts", target: "components/ui/shader.ts" },
     { path: "field.ts", target: "components/ui/field.ts" },
     { path: "emerge.ts", target: "components/ui/emerge.ts" },
+    { path: "border-shader.ts", target: "components/ui/border-shader.ts" },
+    { path: "border.ts", target: "components/ui/border.ts" },
   ],
 } as const;
