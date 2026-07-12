@@ -9,13 +9,12 @@ vi.mock("motion/react", async (importOriginal) => ({
   useReducedMotion: () => reducedMotion.current,
 }));
 
-vi.mock("./sphere.js", () => ({
-  resolveColor: () => [0, 0, 0],
-  createSphere: () => ({
+vi.mock("../effects-core/effects-gl.js", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("../effects-core/effects-gl.js")>()),
+  createGlSurface: ({ uniforms }: { uniforms: Record<string, unknown> }) => ({
+    uniforms,
     resize: vi.fn(),
-    setColors: vi.fn(),
-    setParams: vi.fn(),
-    draw: vi.fn(),
+    render: vi.fn(),
     dispose: vi.fn(),
   }),
 }));
