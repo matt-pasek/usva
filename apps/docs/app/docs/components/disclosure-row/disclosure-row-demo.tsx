@@ -26,7 +26,7 @@ export function SingleDemo() {
       aside={
         <span className="font-mono text-sm tabular-nums">
           <span className="font-bold text-accent">45</span>
-          <span className="text-faint"> / 60 cr</span>
+          <span className="text-muted"> / 60 cr</span>
         </span>
       }
     >

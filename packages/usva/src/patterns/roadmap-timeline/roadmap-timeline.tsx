@@ -40,7 +40,7 @@ const cardTones: Record<RoadmapTone, string> = {
 const statusTones: Record<RoadmapTone, string> = {
   done: "bg-ink/[0.06] text-muted before:bg-muted",
   current: "bg-accent/15 text-accent before:bg-accent",
-  planned: "bg-ink/[0.04] text-faint before:bg-faint",
+  planned: "bg-ink/[0.04] text-muted before:bg-faint",
 };
 
 const nodeTones: Record<RoadmapTone, string> = {
@@ -59,13 +59,13 @@ const titleTones: Record<RoadmapTone, string> = {
 const bodyTones: Record<RoadmapTone, string> = {
   done: "text-muted",
   current: "text-muted",
-  planned: "text-faint",
+  planned: "text-muted",
 };
 
 const itemTones: Record<RoadmapTone, string> = {
   done: "text-muted",
   current: "text-muted",
-  planned: "text-faint",
+  planned: "text-muted",
 };
 
 const markerTones: Record<RoadmapTone, string> = {

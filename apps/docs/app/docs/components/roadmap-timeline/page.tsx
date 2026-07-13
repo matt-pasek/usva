@@ -135,7 +135,10 @@ export default function RoadmapTimelinePage() {
             <code>tone</code> is a three-way union, not a color. It says where a
             milestone stands, and the component decides how that looks: the
             current card is accented and slightly larger, planned items lose
-            their tick and drop to <code>faint</code>.
+            their tick and their title drops to <code>muted</code>. A planned
+            card recedes through its title, its border and its hollow node,
+            never through its body copy: <code>faint</code> sits near 2:1 and
+            cannot carry a sentence.
           </p>
         </CardBody>
       </Card>
