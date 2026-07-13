@@ -6,6 +6,9 @@ registry/r/
 storybook-static/
 captures/
 *.log
+
+packages/*/scripts/**/*.js
+packages/*/.storybook/*.js
 .DS_Store
 *.tsbuildinfo
 

@@ -9,6 +9,9 @@
       "!**/node_modules",
       "!**/.turbo",
       "!**/storybook-static",
+      "!**/captures",
+      "!**/scripts/**/*.js",
+      "!**/.storybook/*.js",
       "!**/*.css"
     ]
   },
