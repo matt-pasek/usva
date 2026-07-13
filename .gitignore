@@ -4,6 +4,7 @@ dist/
 registry/r/
 .next/
 storybook-static/
+captures/
 *.log
 .DS_Store
 *.tsbuildinfo

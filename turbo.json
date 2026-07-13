@@ -11,6 +11,10 @@
       "dependsOn": ["^build"],
       "outputs": ["storybook-static/**"]
     },
+    "capture": {
+      "dependsOn": ["build-storybook"],
+      "outputs": ["captures/**"]
+    },
     "lint": {},
     "typecheck": { "dependsOn": ["^build"] },
     "test": { "dependsOn": ["^build"] }

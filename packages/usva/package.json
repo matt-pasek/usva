@@ -24,7 +24,8 @@
     "test": "vitest run",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "chromatic": "chromatic --exit-zero-on-changes"
+    "chromatic": "chromatic --exit-zero-on-changes",
+    "capture": "bun run scripts/capture/index.ts"
   },
   "peerDependencies": {
     "react": ">=18",
@@ -49,11 +50,15 @@
     "@testing-library/react": "^16.1.0",
     "@testing-library/user-event": "^14.5.0",
     "@types/jest-axe": "^3.5.9",
+    "@types/pngjs": "^6.0.5",
     "@types/react": "^19",
     "bunchee": "^6.0.0",
     "chromatic": "^18.0.1",
+    "gifenc": "^1.0.3",
     "jest-axe": "^9.0.0",
     "jsdom": "^29.1.1",
+    "playwright": "^1.49.0",
+    "pngjs": "^7.0.0",
     "react": "^19",
     "react-dom": "^19",
     "storybook": "^9",
