@@ -2,6 +2,7 @@
 @import "@matt-pasek/usva-tokens/theme.css";
 @import "@matt-pasek/usva-tokens/themes/kajo.css";
 @import "@matt-pasek/usva-tokens/themes/sisu.css";
+@import "@matt-pasek/usva-tokens/themes/savi.css";
 @source "../src";
 
 body {

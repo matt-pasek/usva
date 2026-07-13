@@ -30,6 +30,7 @@ const preview: Preview = {
         items: [
           { value: "kajo", title: "kajo" },
           { value: "sisu", title: "sisu" },
+          { value: "savi", title: "savi" },
         ],
         dynamicTitle: true,
       },
