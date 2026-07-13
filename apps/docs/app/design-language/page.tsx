@@ -32,6 +32,83 @@ const principles = [
   },
 ];
 
+/**
+ * Every name in usva is a Finnish noun for a thing that happens, never for an
+ * object. They fall into three families, and each theme sits in one.
+ */
+const vocabulary = [
+  {
+    family: "the system",
+    words: [
+      {
+        word: "usva",
+        gloss:
+          "mist; fog. the one that hangs low and close, softening every edge without hiding anything behind it. you can still walk through it and still see where you're going. that's the whole thesis of the system in one word: beauty that stays usable; a veil that never becomes a wall.",
+      },
+      {
+        word: "kajo",
+        gloss:
+          "a faint glimmer, shimmer, or gleam of light. never the source, only the trace of one: the glow left on the sky by something you can't see yet. it is the least light that still carries, and it asks you to look before it gives anything up. that restraint is the presentational pole; kajo is loud the way a held breath is loud.",
+      },
+      {
+        word: "sisu",
+        gloss:
+          "stoic determination, grit, bravery, and resilience. extraordinary inner strength and willpower that allows individuals to push through extreme adversity and keep going when they feel they have absolutely nothing left.",
+      },
+      {
+        word: "savi",
+        gloss:
+          "clay. earth that takes a shape from the hand and holds it. wet, workable, unglamorous ground that only becomes form under pressure; and once fired, keeps that form for a thousand years. it's the material counterpart to sisu: both are about what withstands.",
+      },
+    ],
+  },
+  {
+    family: "light",
+    words: [
+      {
+        word: "kajastus",
+        gloss:
+          "the glow spreading along the horizon; light reflected onto the sky. it shares its root with kajo, and it is the kajo showpiece.",
+      },
+      {
+        word: "kuulto",
+        gloss:
+          "translucency or the state of being dimly visible. something that light passes through or reflects softly, like a shimmer, glow, or gleam.",
+      },
+      {
+        word: "hehku",
+        gloss:
+          "glow, radiance, or incandescence. a warm, vibrant emission of light or heat, such as the embers in a fireplace, a person's complexion, or a general feeling of vitality.",
+      },
+      {
+        word: "loimu",
+        gloss:
+          "blaze, flame or glow. bright flicker of a campfire, the northern lights, or a radiating heat.",
+      },
+      {
+        word: "väre",
+        gloss:
+          "ripple, shimmer, or glimmer. slight, sparkling movement or wave on the surface of a liquid, or a soft, vibrating light.",
+      },
+    ],
+  },
+  {
+    family: "water and earth",
+    words: [
+      {
+        word: "utu",
+        gloss:
+          "light water vapor suspended in the air, especially in the early morning or lingering over lakes and fields.",
+      },
+      {
+        word: "kynnös",
+        gloss:
+          "freshly turned earth; land newly broken by the plough. the savi background.",
+      },
+    ],
+  },
+];
+
 const voicePoints = [
   "first-person, lowercase-leaning — usva. speaks as itself, not as marketing copy",
   "confident but unshowy: a belief stated plainly, then earned with the work that follows",
@@ -76,6 +153,35 @@ export default function DesignLanguagePage() {
                 )}
               </CardHeader>
               <CardBody className="text-sm text-muted">{p.body}</CardBody>
+            </Card>
+          ))}
+        </div>
+      </section>
+
+      <section className="flex flex-col gap-4">
+        <h2 className="text-xl font-semibold text-ink">the vocabulary</h2>
+        <p className="max-w-xl text-sm text-muted">
+          every name is a finnish word for something that <em>happens</em>, not
+          for an object: a gleam, a glow along the horizon, turned earth. a
+          background is an environment, so it is never named after a thing you
+          could point at.
+        </p>
+        <div className="flex flex-col gap-4">
+          {vocabulary.map((group) => (
+            <Card key={group.family}>
+              <CardHeader>{group.family}</CardHeader>
+              <CardBody>
+                <dl className="flex flex-col gap-3">
+                  {group.words.map((entry) => (
+                    <div key={entry.word} className="flex flex-col gap-1">
+                      <dt className="font-mono text-accent text-sm">
+                        {entry.word}
+                      </dt>
+                      <dd className="text-muted text-sm">{entry.gloss}</dd>
+                    </div>
+                  ))}
+                </dl>
+              </CardBody>
             </Card>
           ))}
         </div>

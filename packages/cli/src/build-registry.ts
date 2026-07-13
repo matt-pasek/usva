@@ -100,11 +100,11 @@ export const SULA_NAMES = [
 export const EFFECT_NAMES = [
   "effects-core",
   "hehku",
-  "holvi",
+  "kajastus",
+  "kuulto",
+  "kynnos",
   "loimu",
-  "poimu",
-  "utu-sphere",
-  "vako",
+  "utu",
   "vare",
 ] as const;
 

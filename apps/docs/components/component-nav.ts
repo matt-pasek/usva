@@ -91,13 +91,13 @@ export const componentNav: NavGroup[] = [
   {
     label: "Effects",
     items: [
-      { slug: "utu-sphere", label: "Utu Sphere" },
-      { slug: "vako", label: "Vako" },
-      { slug: "holvi", label: "Holvi" },
+      { slug: "utu", label: "Utu" },
+      { slug: "kynnos", label: "Kynnös" },
+      { slug: "kajastus", label: "Kajastus" },
       { slug: "hehku", label: "Hehku" },
       { slug: "loimu", label: "Loimu" },
       { slug: "vare", label: "Väre" },
-      { slug: "poimu", label: "Poimu" },
+      { slug: "kuulto", label: "Kuulto" },
     ],
   },
 ];
