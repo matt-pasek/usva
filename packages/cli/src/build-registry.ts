@@ -102,6 +102,7 @@ export const EFFECT_NAMES = [
   "hehku",
   "holvi",
   "loimu",
+  "poimu",
   "utu-sphere",
   "vako",
   "vare",

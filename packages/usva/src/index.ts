@@ -2,6 +2,7 @@ export { cn } from "./cn.js";
 export * from "./effects/hehku/index.js";
 export * from "./effects/holvi/index.js";
 export * from "./effects/loimu/index.js";
+export * from "./effects/poimu/index.js";
 export * from "./effects/utu-sphere/index.js";
 export * from "./effects/vako/index.js";
 export * from "./effects/vare/index.js";
