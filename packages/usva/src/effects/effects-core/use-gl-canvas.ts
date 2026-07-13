@@ -194,9 +194,13 @@ export function useGlCanvas(options: UseGlCanvasOptions): GlCanvas {
       raf = requestAnimationFrame(tick);
     };
 
+    let box = container.getBoundingClientRect();
+    const remeasure = () => {
+      box = container.getBoundingClientRect();
+    };
+
     const onMove = (event: PointerEvent) => {
       if (!trackPointer) return;
-      const box = container.getBoundingClientRect();
       pointer.x = event.clientX - box.left - box.width / 2;
       pointer.y = box.height / 2 - (event.clientY - box.top);
       pointer.inside = true;
@@ -207,8 +211,12 @@ export function useGlCanvas(options: UseGlCanvasOptions): GlCanvas {
       pointerTarget = 0;
     };
     if (trackPointer) {
-      container.addEventListener("pointermove", onMove);
-      container.addEventListener("pointerleave", onLeave);
+      container.addEventListener("pointermove", onMove, { passive: true });
+      container.addEventListener("pointerleave", onLeave, { passive: true });
+      window.addEventListener("scroll", remeasure, {
+        passive: true,
+        capture: true,
+      });
     }
 
     let visible = true;
@@ -231,7 +239,10 @@ export function useGlCanvas(options: UseGlCanvasOptions): GlCanvas {
     const observer =
       typeof ResizeObserver === "undefined"
         ? null
-        : new ResizeObserver(() => measure());
+        : new ResizeObserver(() => {
+            measure();
+            remeasure();
+          });
     observer?.observe(container);
 
     run();
@@ -242,6 +253,7 @@ export function useGlCanvas(options: UseGlCanvasOptions): GlCanvas {
       if (trackPointer) {
         container.removeEventListener("pointermove", onMove);
         container.removeEventListener("pointerleave", onLeave);
+        window.removeEventListener("scroll", remeasure, { capture: true });
       }
       io?.disconnect();
       document.removeEventListener("visibilitychange", onVisibility);

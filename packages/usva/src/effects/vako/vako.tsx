@@ -99,6 +99,7 @@ export const Vako = React.forwardRef<HTMLDivElement, VakoProps>(
     const canvas = useGlCanvas({
       fragment: vakoFragmentShader,
       stillTime: STILL_TIME,
+      maxDpr: 1.5,
       uniforms: () =>
         vakoUniforms(colorsRef.current, paramsRef.current, lightRef.current),
       onFrame: (u, frame) => {

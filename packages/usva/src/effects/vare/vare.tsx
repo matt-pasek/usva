@@ -109,6 +109,8 @@ export const Vare = React.forwardRef<HTMLDivElement, VareProps>(
       pointer: true,
       pointerEase: POINTER_EASE,
       stillTime: STILL_TIME,
+      maxDpr: 1.5,
+      renderScale: 0.8,
       onFrame: (u, frame) => {
         const half = Math.max(frame.height, 1) / 2;
         if (interactiveRef.current) {

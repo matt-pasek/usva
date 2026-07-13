@@ -121,6 +121,8 @@ export const UtuSphere = React.forwardRef<HTMLDivElement, UtuSphereProps>(
       uniforms: () => sphereUniforms(rampRef.current, paramsRef.current),
       pointer: true,
       pointerEase: LEAN_EASE,
+      maxDpr: 1.5,
+      renderScale: 0.8,
       onFrame: (u, frame) => {
         const p = paramsRef.current;
         const elapsed = frame.time;

@@ -25,7 +25,9 @@ import { glsl } from "../effects-core/effects-glsl.js";
  * violet above it. kajo's accent-alt is green and its accent is violet.
  */
 
-const STEPS = 48;
+/** The march is jittered per pixel per frame, so the dither buys back the bands
+ * a coarser step would otherwise show. 48 was paying for detail nobody could see. */
+const STEPS = 32;
 const H_LOW = 1.2;
 const H_HIGH = 6.0;
 const T_MAX = 90.0;

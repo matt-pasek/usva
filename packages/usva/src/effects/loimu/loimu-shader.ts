@@ -70,6 +70,10 @@ void main() {
   vec3 col = vec3(0.0);
   float acc = 0.0;
 
+  vec3 sheetPoint = dir * hit;
+  vec3 vel = curl(sheetPoint * uCurlScale + vec3(0.0, 0.0, uTime * 0.05), 0.35);
+  vec2 baseVel = vec2(dot(vel, flowAxis), dot(vel, crossAxis));
+
   for (int i = 0; i < ${TAPS}; i++) {
     float t = hit - uSheetSpan + (float(i) + jitter) * stepLen;
     vec3 p = dir * t;
@@ -78,12 +82,11 @@ void main() {
     float s = dot(p, nrm) - uSheetDist - bend * uFold;
     float shell = exp(-(s * s) / (uSigma * uSigma));
 
-    vec3 vel = curl(p * uCurlScale + vec3(0.0, 0.0, uTime * 0.05), 0.35);
-    vec2 sheetVel = vec2(dot(vel, flowAxis), dot(vel, crossAxis));
+    if (shell < 0.002) continue;
 
     vec3 toMouse = p - mouse;
     vec2 mAB = vec2(dot(toMouse, flowAxis), dot(toMouse, crossAxis));
-    sheetVel += clamp(
+    vec2 sheetVel = baseVel + clamp(
       uPointer * uOmega * vec2(-mAB.y, mAB.x) / (1.0 + dot(mAB, mAB)),
       vec2(-0.65),
       vec2(0.65)

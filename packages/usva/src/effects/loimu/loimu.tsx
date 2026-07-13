@@ -108,6 +108,8 @@ export const Loimu = React.forwardRef<HTMLDivElement, LoimuProps>(
       pointer: true,
       pointerEase: POINTER_EASE,
       stillTime: STILL_TIME,
+      maxDpr: 1.5,
+      renderScale: 0.7,
       onFrame: (u, frame) => {
         const half = Math.max(frame.height, 1) / 2;
         if (interactiveRef.current) {
