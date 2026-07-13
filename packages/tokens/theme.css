@@ -51,27 +51,33 @@
      tint     colour only            — hover/focus recolour
      control  colour + depth + scale — interactive feedback
      layout   size and position      — travelling indicators
-     enter    popup enter/exit       — opacity + lift + blur */
+     enter    popup enter/exit       — opacity + lift + blur
+   Each self-guards reduced motion, so no call site has to remember
+   `motion-reduce:transition-none`. */
 @utility transition-tint {
   transition-property: color, background-color, border-color;
   transition-duration: var(--usva-duration-fast, 150ms);
   transition-timing-function: var(--usva-ease-soft, cubic-bezier(0.22, 1, 0.36, 1));
+  @media (prefers-reduced-motion: reduce) { transition: none; }
 }
 @utility transition-control {
   transition-property: color, background-color, border-color, box-shadow,
     transform, translate, scale, filter;
   transition-duration: var(--usva-duration-base, 200ms);
   transition-timing-function: var(--usva-ease-soft, cubic-bezier(0.22, 1, 0.36, 1));
+  @media (prefers-reduced-motion: reduce) { transition: none; }
 }
 @utility transition-layout {
   transition-property: translate, transform, width, height, gap;
   transition-duration: var(--usva-duration-slow, 300ms);
   transition-timing-function: var(--usva-ease-soft, cubic-bezier(0.22, 1, 0.36, 1));
+  @media (prefers-reduced-motion: reduce) { transition: none; }
 }
 @utility transition-enter {
   transition-property: opacity, translate, scale, filter;
   transition-duration: var(--usva-duration-base, 200ms);
   transition-timing-function: var(--usva-ease-soft, cubic-bezier(0.22, 1, 0.36, 1));
+  @media (prefers-reduced-motion: reduce) { transition: none; }
 }
 
 @utility z-base { z-index: var(--usva-z-base); }
@@ -174,9 +180,6 @@
     linear-gradient(#000 0 0) content-box,
     linear-gradient(#000 0 0);
   mask-composite: exclude;
-  filter: drop-shadow(
-    0 0 6px color-mix(in srgb, var(--usva-accent) 45%, transparent)
-  );
   transition: opacity 220ms var(--usva-ease-soft, ease);
 }
 @media (prefers-reduced-motion: reduce) {
@@ -215,20 +218,30 @@
 }
 
 /* Live pulse — the green heartbeat. Reserved for things that are actually
-   alive right now (live status, current step); never decorative. */
+   alive right now (live status, current step); never decorative.
+   The halo is a scaled-and-faded pseudo behind the dot rather than an animated
+   box-shadow spread: same ring, but transform/opacity only, so a list of live
+   dots does not repaint every frame. The negative z-index keeps it under the
+   dot's own fill, which is what made the box-shadow read as a ring. */
 @keyframes usva-live-pulse {
-  0% {
-    box-shadow: 0 0 0 0
-      color-mix(in srgb, var(--usva-live, var(--usva-accent)) 60%, transparent);
-  }
-  70% { box-shadow: 0 0 0 6px transparent; }
-  100% { box-shadow: 0 0 0 0 transparent; }
+  0% { transform: scale(1); opacity: 1; }
+  70%, 100% { transform: scale(2.2); opacity: 0; }
 }
 @utility animate-live-pulse {
-  animation: usva-live-pulse 2s var(--usva-ease-soft, cubic-bezier(0.22, 1, 0.36, 1)) infinite;
+  position: relative;
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    pointer-events: none;
+    background: color-mix(in srgb, var(--usva-live, var(--usva-accent)) 60%, transparent);
+    animation: usva-live-pulse 2s var(--usva-ease-soft, cubic-bezier(0.22, 1, 0.36, 1)) infinite;
+  }
 }
 @media (prefers-reduced-motion: reduce) {
-  .animate-live-pulse { animation: none; }
+  .animate-live-pulse::after { animation: none; display: none; }
 }
 
 /* Toast countdown — a bar that drains over the toast's lifetime. scaleX on the

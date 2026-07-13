@@ -9,9 +9,10 @@ describe("Skeleton", () => {
     expect(container.firstChild).toHaveAttribute("aria-hidden", "true");
   });
 
-  it("is static under prefers-reduced-motion", () => {
+  it("carries one animation, the sheen, which the stylesheet stops under prefers-reduced-motion", () => {
     const { container } = render(<Skeleton />);
-    expect(container.firstChild).toHaveClass("motion-reduce:animate-none");
+    expect(container.firstChild).toHaveClass("skeleton-sheen");
+    expect(container.firstChild).not.toHaveClass("animate-shimmer");
   });
 
   it("applies variant shape classes", () => {

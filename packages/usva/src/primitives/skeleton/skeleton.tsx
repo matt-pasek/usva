@@ -2,8 +2,11 @@ import { cva, type VariantProps } from "class-variance-authority";
 import * as React from "react";
 import { cn } from "../../cn.js";
 
+/* One animation, not two: the sheen alone. `content-visibility` lets the
+ * browser skip a skeleton that has scrolled out of view, animation included —
+ * a full-page skeleton is dozens of these. */
 export const skeletonVariants = cva(
-  "skeleton-sheen relative block bg-sunken animate-shimmer motion-reduce:animate-none",
+  "skeleton-sheen relative block bg-sunken [content-visibility:auto]",
   {
     variants: {
       variant: {

@@ -36,22 +36,58 @@ export const BentoGrid = React.forwardRef<HTMLDivElement, BentoGridProps>(
       let frame = 0;
       let pending: { x: number; y: number } | null = null;
 
+      /* Measuring inside the frame would force a synchronous layout on every
+       * pointer move, since the previous frame already wrote inline styles.
+       * The geometry only changes on resize or scroll, so it is cached and the
+       * reads happen up front, never interleaved with the writes. */
+      type Measured = { grid: DOMRect; cards: [HTMLElement, DOMRect][] };
+      let cache: Measured | null = null;
+      let observed: HTMLElement[] = [];
+
+      const resizeObserver =
+        typeof ResizeObserver === "undefined"
+          ? null
+          : new ResizeObserver(() => {
+              cache = null;
+            });
+      resizeObserver?.observe(grid);
+
+      const measure = (): Measured => {
+        const cards = Array.from(
+          grid.querySelectorAll<HTMLElement>("[data-bento-card]"),
+        );
+        const same =
+          cards.length === observed.length &&
+          cards.every((card, i) => card === observed[i]);
+        if (!same && resizeObserver) {
+          for (const card of observed) resizeObserver.unobserve(card);
+          for (const card of cards) resizeObserver.observe(card);
+          observed = cards;
+        }
+        return {
+          grid: grid.getBoundingClientRect(),
+          cards: cards.map((card) => [card, card.getBoundingClientRect()]),
+        };
+      };
+
       const paint = () => {
         frame = 0;
         const point = pending;
         if (!point) return;
-        const gridRect = grid.getBoundingClientRect();
-        grid.style.setProperty("--bento-x", `${point.x - gridRect.left}px`);
-        grid.style.setProperty("--bento-y", `${point.y - gridRect.top}px`);
+        if (!cache) cache = measure();
+        const rects = cache;
+        grid.style.setProperty("--bento-x", `${point.x - rects.grid.left}px`);
+        grid.style.setProperty("--bento-y", `${point.y - rects.grid.top}px`);
         grid.style.setProperty("--bento-fill-o", "1");
         grid.style.setProperty("--edge-o", "1");
-        for (const card of grid.querySelectorAll<HTMLElement>(
-          "[data-bento-card]",
-        )) {
-          const r = card.getBoundingClientRect();
+        for (const [card, r] of rects.cards) {
           card.style.setProperty("--edge-x", `${point.x - r.left}px`);
           card.style.setProperty("--edge-y", `${point.y - r.top}px`);
         }
+      };
+
+      const invalidate = () => {
+        cache = null;
       };
 
       const onMove = (e: PointerEvent) => {
@@ -66,11 +102,17 @@ export const BentoGrid = React.forwardRef<HTMLDivElement, BentoGridProps>(
         grid.style.setProperty("--edge-o", "0");
       };
 
-      grid.addEventListener("pointermove", onMove);
-      grid.addEventListener("pointerleave", onLeave);
+      grid.addEventListener("pointermove", onMove, { passive: true });
+      grid.addEventListener("pointerleave", onLeave, { passive: true });
+      window.addEventListener("scroll", invalidate, {
+        passive: true,
+        capture: true,
+      });
       return () => {
         grid.removeEventListener("pointermove", onMove);
         grid.removeEventListener("pointerleave", onLeave);
+        window.removeEventListener("scroll", invalidate, { capture: true });
+        resizeObserver?.disconnect();
         if (frame) cancelAnimationFrame(frame);
       };
     }, []);

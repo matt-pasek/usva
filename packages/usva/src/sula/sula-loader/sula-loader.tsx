@@ -162,8 +162,19 @@ export const SulaLoader = React.forwardRef<HTMLDivElement, SulaLoaderProps>(
         stop();
         raf = requestAnimationFrame(tick);
       };
+      let visible = true;
+      const io =
+        typeof IntersectionObserver === "undefined"
+          ? null
+          : new IntersectionObserver((entries) => {
+              visible = entries[0]?.isIntersecting ?? true;
+              if (visible && !document.hidden) run();
+              else stop();
+            });
+      io?.observe(root);
+
       const onVisibility = () => {
-        if (document.hidden) stop();
+        if (document.hidden || !visible) stop();
         else run();
       };
       document.addEventListener("visibilitychange", onVisibility);
@@ -183,6 +194,7 @@ export const SulaLoader = React.forwardRef<HTMLDivElement, SulaLoaderProps>(
 
       return () => {
         killed = true;
+        io?.disconnect();
         document.removeEventListener("visibilitychange", onVisibility);
         themeObserver?.disconnect();
         stop();
