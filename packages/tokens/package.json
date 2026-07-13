@@ -20,6 +20,7 @@
     "./themes/sisu.css": "./themes/sisu.css",
     "./themes/savi.css": "./themes/savi.css",
     "./tokens.dtcg.json": "./dist/tokens.dtcg.json",
+    "./tokens.studio.json": "./dist/tokens.studio.json",
     "./roles-safelist.css": "./dist/roles-safelist.css"
   },
   "scripts": {
