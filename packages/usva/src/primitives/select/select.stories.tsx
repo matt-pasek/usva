@@ -4,6 +4,13 @@ import { Select } from "./select.js";
 const meta: Meta<typeof Select> = {
   title: "Primitives/Select",
   component: Select,
+  tags: ["autodocs"],
+  argTypes: {
+    defaultOpen: { control: { type: "boolean" } },
+    disabled: { control: { type: "boolean" } },
+    modal: { control: { type: "boolean" } },
+  },
+  args: { defaultOpen: true, disabled: false },
 };
 export default meta;
 

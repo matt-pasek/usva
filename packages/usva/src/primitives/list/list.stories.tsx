@@ -4,6 +4,18 @@ import { List, ListItem } from "./list.js";
 const meta: Meta<typeof List> = {
   title: "Primitives/List",
   component: List,
+  tags: ["autodocs"],
+  argTypes: {
+    as: {
+      control: { type: "select" },
+      options: ["ul", "ol"],
+    },
+    divided: { control: { type: "boolean" } },
+  },
+  args: {
+    as: "ul",
+    divided: false,
+  },
 };
 export default meta;
 

@@ -15,6 +15,19 @@ import {
 const meta: Meta<typeof Card> = {
   title: "Primitives/Card",
   component: Card,
+  tags: ["autodocs"],
+  argTypes: {
+    highlight: {
+      control: { type: "select" },
+      options: ["none", "wash", "edge", "ring"],
+    },
+    surface: {
+      control: { type: "select" },
+      options: ["elevated", "flat", "glass", "outline"],
+    },
+    interactive: { control: { type: "boolean" } },
+  },
+  args: { highlight: "none", surface: "elevated", interactive: false },
 };
 
 export default meta;
@@ -127,6 +140,29 @@ export const BodyOnly: Story = {
         </p>
       </CardBody>
     </Card>
+  ),
+};
+
+export const Surfaces: Story = {
+  render: () => (
+    <div className="flex flex-wrap gap-4">
+      {(["elevated", "flat", "glass", "outline"] as const).map((s) => (
+        <Card key={s} surface={s} className="w-64">
+          <CardHeader>
+            <CardEyebrow>surface</CardEyebrow>
+            <CardTitle>{s}</CardTitle>
+          </CardHeader>
+          <CardBody>
+            <p className="text-sm text-muted">
+              {s === "elevated" && "Lit from above, rim light and shadow."}
+              {s === "flat" && "Quiet surface fill, no lift."}
+              {s === "glass" && "Translucent, blurs what sits behind it."}
+              {s === "outline" && "Transparent, carried by its border alone."}
+            </p>
+          </CardBody>
+        </Card>
+      ))}
+    </div>
   ),
 };
 

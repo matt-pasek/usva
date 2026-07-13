@@ -5,8 +5,26 @@ const meta: Meta<typeof Badge> = {
   title: "Primitives/Badge",
   component: Badge,
   tags: ["autodocs"],
+  argTypes: {
+    tone: {
+      control: { type: "select" },
+      options: [
+        "neutral",
+        "accent",
+        "accent-alt",
+        "success",
+        "warning",
+        "danger",
+      ],
+    },
+    mono: { control: { type: "boolean" } },
+    live: { control: { type: "boolean" } },
+  },
   args: {
     children: "Badge",
+    tone: "neutral",
+    mono: false,
+    live: false,
   },
 };
 
@@ -31,4 +49,25 @@ export const Warning: Story = {
 
 export const Danger: Story = {
   args: { tone: "danger" },
+};
+
+export const Tones: Story = {
+  render: (args) => (
+    <div className="flex flex-wrap items-center gap-3">
+      {(
+        [
+          "neutral",
+          "accent",
+          "accent-alt",
+          "success",
+          "warning",
+          "danger",
+        ] as const
+      ).map((tone) => (
+        <Badge {...args} key={tone} tone={tone}>
+          {tone}
+        </Badge>
+      ))}
+    </div>
+  ),
 };

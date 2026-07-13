@@ -4,6 +4,15 @@ import { Radio, RadioGroup } from "./radio.js";
 const meta: Meta<typeof RadioGroup> = {
   title: "Primitives/Radio",
   component: RadioGroup,
+  tags: ["autodocs"],
+  argTypes: {
+    orientation: {
+      control: { type: "select" },
+      options: ["horizontal", "vertical"],
+    },
+    disabled: { control: { type: "boolean" } },
+  },
+  args: { orientation: "vertical", disabled: false },
 };
 export default meta;
 
@@ -46,5 +55,44 @@ export const Horizontal: Story = {
       <Radio value="b" label="Pro" />
       <Radio value="c" label="Enterprise" />
     </RadioGroup>
+  ),
+};
+
+export const Sizes: Story = {
+  render: () => (
+    <div className="flex flex-wrap items-start gap-8">
+      {(["sm", "md"] as const).map((size) => (
+        <RadioGroup
+          key={size}
+          name={`plan-${size}`}
+          aria-label={`Plan ${size}`}
+          defaultValue="a"
+        >
+          <Radio value="a" size={size} label={size} />
+          <Radio value="b" size={size} label="Unselected" />
+        </RadioGroup>
+      ))}
+    </div>
+  ),
+};
+
+export const Orientations: Story = {
+  render: () => (
+    <div className="flex flex-wrap items-start gap-10">
+      {(["vertical", "horizontal"] as const).map((orientation) => (
+        <div key={orientation} className="flex flex-col gap-2">
+          <span className="font-mono text-xs text-muted">{orientation}</span>
+          <RadioGroup
+            name={`plan-${orientation}`}
+            aria-label={`Plan ${orientation}`}
+            orientation={orientation}
+            defaultValue="a"
+          >
+            <Radio value="a" label="Free" />
+            <Radio value="b" label="Pro" />
+          </RadioGroup>
+        </div>
+      ))}
+    </div>
   ),
 };

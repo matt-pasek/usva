@@ -2,20 +2,31 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import * as React from "react";
 import { SegmentedControl } from "./segmented-control.js";
 
-const meta: Meta<typeof SegmentedControl> = {
-  title: "Patterns/SegmentedControl",
-  component: SegmentedControl,
-  tags: ["autodocs"],
-};
-
-export default meta;
-type Story = StoryObj<typeof SegmentedControl>;
-
 const viewItems = [
   { value: "board", label: "Board" },
   { value: "list", label: "List" },
   { value: "timeline", label: "Timeline" },
 ];
+
+const meta: Meta<typeof SegmentedControl> = {
+  title: "Patterns/SegmentedControl",
+  component: SegmentedControl,
+  tags: ["autodocs"],
+  argTypes: {
+    size: {
+      control: { type: "select" },
+      options: ["sm", "md"],
+    },
+  },
+  args: {
+    items: viewItems,
+    defaultValue: "board",
+    size: "md",
+  },
+};
+
+export default meta;
+type Story = StoryObj<typeof SegmentedControl>;
 
 export const Default: Story = {
   render: () => {
@@ -57,6 +68,23 @@ export const WithIcons: Story = {
         { value: "rows", label: "Rows", icon: <Dot /> },
       ]}
     />
+  ),
+};
+
+export const Sizes: Story = {
+  render: () => (
+    <div className="flex flex-col items-start gap-4">
+      {(["sm", "md"] as const).map((size) => (
+        <div key={size} className="flex items-center gap-3">
+          <span className="w-8 font-mono text-xs text-muted">{size}</span>
+          <SegmentedControl
+            size={size}
+            items={viewItems}
+            defaultValue="board"
+          />
+        </div>
+      ))}
+    </div>
   ),
 };
 

@@ -5,7 +5,13 @@ const meta: Meta<typeof Announcement> = {
   title: "Primitives/Announcement",
   component: Announcement,
   tags: ["autodocs"],
-  args: { badge: "NEW", children: "v2.0.1 just shipped" },
+  argTypes: {
+    tone: {
+      control: { type: "select" },
+      options: ["live", "accent", "accent-alt", "success", "warning", "danger"],
+    },
+  },
+  args: { badge: "NEW", children: "v2.0.1 just shipped", tone: "live" },
 };
 
 export default meta;

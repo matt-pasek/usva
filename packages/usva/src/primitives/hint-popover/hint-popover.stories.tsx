@@ -7,6 +7,22 @@ const meta: Meta<typeof HintPopover> = {
   title: "Primitives/HintPopover",
   component: HintPopover,
   tags: ["autodocs"],
+  argTypes: {
+    tone: {
+      control: { type: "select" },
+      options: ["neutral", "accent", "success", "warning", "danger", "info"],
+    },
+    side: {
+      control: { type: "select" },
+      options: ["top", "right", "bottom", "left"],
+    },
+  },
+  args: {
+    tone: "neutral",
+    side: "top",
+    trigger: <Button variant="ghost">What counts as active?</Button>,
+    children: "A student who has logged in during the last 30 days.",
+  },
 };
 
 export default meta;

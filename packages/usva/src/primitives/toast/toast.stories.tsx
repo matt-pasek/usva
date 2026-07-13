@@ -1,17 +1,24 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Toaster, toast } from "./toast.js";
+import { useEffect } from "react";
+import { Toaster, type ToastType, toast, toastManager } from "./toast.js";
 
 const meta: Meta<typeof Toaster> = {
   title: "Primitives/Toast",
   component: Toaster,
+  tags: ["autodocs"],
+  argTypes: {
+    limit: { control: { type: "number" } },
+    timeout: { control: { type: "number" } },
+  },
   decorators: [
-    (Story) => (
+    (Story, { args }) => (
       <>
         <Story />
-        <Toaster />
+        <Toaster {...args} />
       </>
     ),
   ],
+  args: { limit: 4 },
 };
 export default meta;
 
@@ -112,4 +119,27 @@ export const WithAction: Story = {
       Show toast with action
     </TriggerButton>
   ),
+};
+
+const TYPES: readonly [ToastType, string][] = [
+  ["success", "Saved"],
+  ["warning", "Storage almost full"],
+  ["danger", "Upload failed"],
+  ["info", "New version available"],
+];
+
+function AllTypes() {
+  useEffect(() => {
+    const ids = TYPES.map(([type, title]) =>
+      toast({ title, description: type, type, duration: 0 }),
+    );
+    return () => {
+      for (const id of ids) toastManager.close(id);
+    };
+  }, []);
+  return null;
+}
+
+export const Types: Story = {
+  render: () => <AllTypes />,
 };

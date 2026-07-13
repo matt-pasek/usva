@@ -2,20 +2,37 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Chip } from "../../primitives/chip/chip.js";
 import { CaseStudyHero } from "./case-study-hero.js";
 
-const meta: Meta<typeof CaseStudyHero> = {
-  title: "Patterns/CaseStudyHero",
-  component: CaseStudyHero,
-};
-export default meta;
-
-type Story = StoryObj<typeof CaseStudyHero>;
-
 const metaPairs = [
   { label: "Role", value: "Design engineer" },
   { label: "Timeline", value: "6 weeks" },
   { label: "Surface", value: "Web, extension" },
   { label: "Users", value: "2,400" },
 ];
+
+const meta: Meta<typeof CaseStudyHero> = {
+  title: "Patterns/CaseStudyHero",
+  component: CaseStudyHero,
+  tags: ["autodocs"],
+  argTypes: {
+    headingLevel: {
+      control: { type: "select" },
+      options: ["h1", "h2", "h3"],
+    },
+  },
+  args: {
+    eyebrow: "Case study",
+    kicker: "Acme University · 2026",
+    headline: "Students could not see",
+    headlineAccent: "their whole degree.",
+    tagline:
+      "Four registries, one planner. Reconciling the systems nobody wanted to own.",
+    link: { href: "https://example.com", label: "Visit site", external: true },
+    meta: metaPairs,
+  },
+};
+export default meta;
+
+type Story = StoryObj<typeof CaseStudyHero>;
 
 export const Default: Story = {
   args: {

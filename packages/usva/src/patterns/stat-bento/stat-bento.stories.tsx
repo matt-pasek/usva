@@ -2,23 +2,29 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { RevealGroup } from "../../motion/reveal.js";
 import { StatBento } from "./stat-bento.js";
 
-const meta: Meta<typeof StatBento> = {
-  title: "Patterns/StatBento",
-  component: StatBento,
-};
-export default meta;
-
-type Story = StoryObj<typeof StatBento>;
-
 const stats = [
   { value: "40", suffix: "%", label: "faster builds" },
   { value: "2.4", suffix: "k", label: "active users" },
   { value: "99.9", suffix: "%", label: "uptime" },
 ];
 
-export const Default: Story = {
-  args: { stats },
+const meta: Meta<typeof StatBento> = {
+  title: "Patterns/StatBento",
+  component: StatBento,
+  tags: ["autodocs"],
+  argTypes: {
+    animate: { control: { type: "boolean" } },
+  },
+  args: {
+    stats,
+    animate: false,
+  },
 };
+export default meta;
+
+type Story = StoryObj<typeof StatBento>;
+
+export const Default: Story = {};
 
 export const WithoutSuffixes: Story = {
   args: {

@@ -5,6 +5,12 @@ import { ToggleChip, ToggleChipGroup } from "./toggle-chip.js";
 const meta: Meta<typeof ToggleChipGroup> = {
   title: "Primitives/ToggleChip",
   component: ToggleChipGroup,
+  tags: ["autodocs"],
+  argTypes: {
+    type: { control: { type: "select" }, options: ["single", "multiple"] },
+    disabled: { control: { type: "boolean" } },
+  },
+  args: { type: "multiple", disabled: false, value: [] },
 };
 export default meta;
 
@@ -88,6 +94,31 @@ export const Single: Story = {
       </ToggleChipGroup>
     );
   },
+};
+
+export const Types: Story = {
+  render: () => (
+    <div className="flex flex-wrap items-start gap-6">
+      <ToggleChipGroup type="single" value="progress-ring" label="single">
+        {PANELS.slice(0, 3).map(([id, label]) => (
+          <ToggleChip key={id} value={id}>
+            {label}
+          </ToggleChip>
+        ))}
+      </ToggleChipGroup>
+      <ToggleChipGroup
+        type="multiple"
+        value={["grade-avg", "credits-left"]}
+        label="multiple"
+      >
+        {STATS.slice(0, 3).map(([id, label]) => (
+          <ToggleChip key={id} value={id}>
+            {label}
+          </ToggleChip>
+        ))}
+      </ToggleChipGroup>
+    </div>
+  ),
 };
 
 export const Disabled: Story = {

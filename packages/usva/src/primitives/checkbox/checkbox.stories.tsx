@@ -4,7 +4,14 @@ import { Checkbox } from "./checkbox.js";
 const meta: Meta<typeof Checkbox> = {
   title: "Primitives/Checkbox",
   component: Checkbox,
-  args: { label: "Accept terms" },
+  tags: ["autodocs"],
+  argTypes: {
+    size: { control: { type: "select" }, options: ["sm", "md"] },
+    disabled: { control: { type: "boolean" } },
+    defaultChecked: { control: { type: "boolean" } },
+    indeterminate: { control: { type: "boolean" } },
+  },
+  args: { label: "Accept terms", size: "md", disabled: false },
 };
 export default meta;
 
@@ -28,4 +35,14 @@ export const WithDescription: Story = {
   args: {
     description: "You agree to our terms of service and privacy policy.",
   },
+};
+
+export const Sizes: Story = {
+  render: (args) => (
+    <div className="flex flex-wrap items-center gap-6">
+      {(["sm", "md"] as const).map((size) => (
+        <Checkbox {...args} key={size} size={size} label={size} />
+      ))}
+    </div>
+  ),
 };

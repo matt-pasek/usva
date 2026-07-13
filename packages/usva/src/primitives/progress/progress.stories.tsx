@@ -5,7 +5,13 @@ const meta: Meta<typeof Progress> = {
   title: "Primitives/Progress",
   component: Progress,
   tags: ["autodocs"],
-  args: { value: 60 },
+  argTypes: {
+    size: { control: { type: "select" }, options: ["sm", "md", "lg"] },
+    glow: { control: { type: "boolean" } },
+    value: { control: { type: "number" } },
+    max: { control: { type: "number" } },
+  },
+  args: { value: 60, max: 100, size: "md", glow: false },
 };
 
 export default meta;

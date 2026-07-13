@@ -18,6 +18,17 @@ const meta: Meta<typeof NotificationBadge> = {
   title: "Primitives/NotificationBadge",
   component: NotificationBadge,
   tags: ["autodocs"],
+  argTypes: {
+    tone: {
+      control: { type: "select" },
+      options: ["accent", "accent-alt", "danger", "warning"],
+    },
+    dot: { control: { type: "boolean" } },
+    showZero: { control: { type: "boolean" } },
+    count: { control: { type: "number" } },
+    max: { control: { type: "number" } },
+  },
+  args: { count: 3, max: 9, tone: "danger", dot: false, showZero: false },
 };
 
 export default meta;
@@ -41,6 +52,23 @@ export const Default: Story = {
           <Bell />
         </IconButton>
       </NotificationBadge>
+    </div>
+  ),
+};
+
+export const Tones: Story = {
+  render: () => (
+    <div className="flex flex-wrap items-start gap-8">
+      {(["accent", "accent-alt", "danger", "warning"] as const).map((tone) => (
+        <div key={tone} className="flex flex-col items-center gap-2">
+          <NotificationBadge count={5} tone={tone}>
+            <IconButton aria-label="Notifications">
+              <Bell />
+            </IconButton>
+          </NotificationBadge>
+          <span className="font-mono text-xs text-muted">{tone}</span>
+        </div>
+      ))}
     </div>
   ),
 };

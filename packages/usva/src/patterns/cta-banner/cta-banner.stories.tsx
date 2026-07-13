@@ -6,6 +6,17 @@ import { CtaBanner } from "./cta-banner.js";
 const meta: Meta<typeof CtaBanner> = {
   title: "Patterns/CtaBanner",
   component: CtaBanner,
+  tags: ["autodocs"],
+  argTypes: {
+    headingLevel: {
+      control: { type: "select" },
+      options: ["h2", "h3", "h4"],
+    },
+  },
+  args: {
+    title: "Add it to Chrome",
+    body: "Nothing to configure. Sign in once and the planner fills itself in.",
+  },
 };
 export default meta;
 

@@ -5,6 +5,17 @@ const meta: Meta<typeof Input> = {
   title: "Primitives/Input",
   component: Input,
   tags: ["autodocs"],
+  argTypes: {
+    disabled: { control: { type: "boolean" } },
+    required: { control: { type: "boolean" } },
+    readOnly: { control: { type: "boolean" } },
+  },
+  args: {
+    placeholder: "you@example.com",
+    disabled: false,
+    required: false,
+    readOnly: false,
+  },
 };
 
 export default meta;

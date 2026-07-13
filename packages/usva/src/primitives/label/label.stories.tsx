@@ -5,6 +5,16 @@ const meta: Meta<typeof Label> = {
   title: "Primitives/Label",
   component: Label,
   tags: ["autodocs"],
+  argTypes: {
+    disabled: { control: { type: "boolean" } },
+    mono: { control: { type: "boolean" } },
+  },
+  args: {
+    htmlFor: "email",
+    children: "Email address",
+    disabled: false,
+    mono: false,
+  },
 };
 
 export default meta;

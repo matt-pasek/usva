@@ -2,14 +2,6 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import type { RoadmapMilestone } from "./roadmap-timeline.js";
 import { RoadmapTimeline } from "./roadmap-timeline.js";
 
-const meta: Meta<typeof RoadmapTimeline> = {
-  title: "Patterns/RoadmapTimeline",
-  component: RoadmapTimeline,
-};
-export default meta;
-
-type Story = StoryObj<typeof RoadmapTimeline>;
-
 const milestones: RoadmapMilestone[] = [
   {
     version: "0.1",
@@ -45,9 +37,28 @@ const milestones: RoadmapMilestone[] = [
   },
 ];
 
-export const Default: Story = {
-  args: { milestones },
+const meta: Meta<typeof RoadmapTimeline> = {
+  title: "Patterns/RoadmapTimeline",
+  component: RoadmapTimeline,
+  tags: ["autodocs"],
+  argTypes: {
+    headingLevel: {
+      control: { type: "select" },
+      options: ["h2", "h3", "h4"],
+    },
+    hideTrack: { control: { type: "boolean" } },
+  },
+  args: {
+    milestones,
+    headingLevel: "h3",
+    hideTrack: false,
+  },
 };
+export default meta;
+
+type Story = StoryObj<typeof RoadmapTimeline>;
+
+export const Default: Story = {};
 
 export const FourColumns: Story = {
   args: {
@@ -76,4 +87,17 @@ export const NothingShippedYet: Story = {
 
 export const WithoutTrack: Story = {
   args: { milestones, hideTrack: true },
+};
+
+export const Tones: Story = {
+  args: {
+    milestones: (["done", "current", "planned"] as const).map((tone) => ({
+      version: tone,
+      status: tone,
+      title: `Milestone (${tone})`,
+      body: "Every tone keeps the body at the same weight. The tone speaks through the title, the border and the node.",
+      tone,
+      items: [{ label: "First item" }, { label: "Second item" }],
+    })),
+  },
 };

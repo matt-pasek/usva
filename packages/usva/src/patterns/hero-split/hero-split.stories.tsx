@@ -8,6 +8,19 @@ const meta: Meta<typeof HeroSplit> = {
   title: "Patterns/HeroSplit",
   component: HeroSplit,
   parameters: { layout: "fullscreen" },
+  tags: ["autodocs"],
+  argTypes: {
+    headingLevel: {
+      control: { type: "select" },
+      options: ["h1", "h2"],
+    },
+  },
+  args: {
+    title: "Your whole degree,",
+    titleAccent: "in one place.",
+    body: "Four registries reconciled into one planner. Nothing to configure.",
+    headingLevel: "h1",
+  },
 };
 export default meta;
 

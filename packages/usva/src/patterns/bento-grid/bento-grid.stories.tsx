@@ -5,11 +5,18 @@ import {
   CardHeader,
   CardTitle,
 } from "../../primitives/card/card.js";
-import { BentoCard, BentoGrid } from "./bento-grid.js";
+import { BentoCard, BentoGrid, BentoMetric } from "./bento-grid.js";
 
 const meta: Meta<typeof BentoGrid> = {
   title: "Patterns/BentoGrid",
   component: BentoGrid,
+  tags: ["autodocs"],
+  argTypes: {
+    columns: { control: { type: "number" } },
+  },
+  args: {
+    columns: 4,
+  },
 };
 
 export default meta;
@@ -59,6 +66,35 @@ export const Responsive: Story = {
       {["01", "02", "03", "04", "05", "06"].map((i) => (
         <BentoCard key={i}>
           <Cell index={i} title="Auto fit" />
+        </BentoCard>
+      ))}
+    </BentoGrid>
+  ),
+};
+
+export const Highlights: Story = {
+  render: () => (
+    <BentoGrid columns={4} className="max-w-3xl">
+      {(["none", "wash", "edge", "ring"] as const).map((highlight) => (
+        <BentoCard key={highlight} highlight={highlight}>
+          <Cell index="highlight" title={highlight} />
+        </BentoCard>
+      ))}
+    </BentoGrid>
+  ),
+};
+
+export const Sizes: Story = {
+  render: () => (
+    <BentoGrid columns={4} className="max-w-3xl">
+      {(["md", "lg"] as const).map((size) => (
+        <BentoCard key={size} span={2}>
+          <BentoMetric
+            value="128"
+            suffix="k"
+            label={`size ${size}`}
+            size={size}
+          />
         </BentoCard>
       ))}
     </BentoGrid>

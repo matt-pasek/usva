@@ -16,6 +16,26 @@ import {
 const meta: Meta<typeof PageHeader> = {
   title: "Patterns/PageHeader",
   component: PageHeader,
+  tags: ["autodocs"],
+  argTypes: {
+    size: {
+      control: { type: "select" },
+      options: ["default", "compact"],
+    },
+    headingLevel: {
+      control: { type: "select" },
+      options: ["h1", "h2", "h3"],
+    },
+    controlsOpen: { control: { type: "boolean" } },
+  },
+  args: {
+    eyebrow: "Lut University · Summer 2026",
+    title: "Good afternoon,",
+    titleAccent: "Mateusz.",
+    size: "default",
+    headingLevel: "h1",
+    controlsOpen: false,
+  },
 };
 export default meta;
 
@@ -226,5 +246,59 @@ export const WithBackground: Story = {
       }
       aside={<PageHeaderMetric value="1" caption="prop" />}
     />
+  ),
+};
+
+export const Sizes: Story = {
+  render: () => (
+    <div className="flex flex-col gap-8">
+      {(["default", "compact"] as const).map((size) => (
+        <div key={size} className="flex flex-col gap-2">
+          <span className="font-mono text-xs text-muted">{size}</span>
+          <PageHeader
+            size={size}
+            eyebrow="Lut University · Summer 2026"
+            title="Good afternoon,"
+            titleAccent="Mateusz."
+            meta="2024 to 2028 · modified on 3 Jul 2026"
+            aside={<PageHeaderMetric value="42%" caption="Credit trajectory" />}
+          />
+        </div>
+      ))}
+    </div>
+  ),
+};
+
+export const StatTones: Story = {
+  render: () => (
+    <PageHeaderStats>
+      {(["default", "accent", "warning", "danger"] as const).map((tone) => (
+        <PageHeaderStat
+          key={tone}
+          variant="featured"
+          tone={tone}
+          label={tone}
+          value="4.1"
+          sub="4 graded"
+        />
+      ))}
+    </PageHeaderStats>
+  ),
+};
+
+export const StatVariants: Story = {
+  render: () => (
+    <PageHeaderStats>
+      {(["plain", "featured", "panel"] as const).map((variant) => (
+        <PageHeaderStat
+          key={variant}
+          variant={variant}
+          tone="accent"
+          label={variant}
+          value="4.1"
+          sub="4 graded"
+        />
+      ))}
+    </PageHeaderStats>
   ),
 };

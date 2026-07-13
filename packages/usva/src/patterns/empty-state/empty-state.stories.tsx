@@ -6,9 +6,16 @@ const meta: Meta<typeof EmptyState> = {
   component: EmptyState,
   tags: ["autodocs"],
   parameters: { layout: "padded" },
+  argTypes: {
+    variant: {
+      control: { type: "select" },
+      options: ["solid", "dashed"],
+    },
+  },
   args: {
     title: "No projects yet",
     description: "Create your first project to see it here.",
+    variant: "solid",
   },
 };
 
@@ -19,6 +26,21 @@ export const Solid: Story = {};
 
 export const Dashed: Story = {
   args: { variant: "dashed" },
+};
+
+export const Variants: Story = {
+  render: () => (
+    <div className="flex flex-col gap-4">
+      {(["solid", "dashed"] as const).map((variant) => (
+        <EmptyState
+          key={variant}
+          variant={variant}
+          title={`variant: ${variant}`}
+          description="Create your first project to see it here."
+        />
+      ))}
+    </div>
+  ),
 };
 
 export const WithIconAndAction: Story = {

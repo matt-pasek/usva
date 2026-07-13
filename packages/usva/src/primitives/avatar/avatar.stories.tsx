@@ -4,7 +4,19 @@ import { Avatar } from "./avatar.js";
 const meta: Meta<typeof Avatar> = {
   title: "Primitives/Avatar",
   component: Avatar,
-  args: { alt: "Jane Doe", fallback: "JD" },
+  tags: ["autodocs"],
+  argTypes: {
+    size: { control: { type: "select" }, options: ["sm", "md", "lg"] },
+    tone: {
+      control: { type: "select" },
+      options: ["solid", "accent", "neutral"],
+    },
+    status: {
+      control: { type: "select" },
+      options: ["online", "away", "busy", "offline"],
+    },
+  },
+  args: { alt: "Jane Doe", fallback: "JD", size: "md", tone: "solid" },
 };
 export default meta;
 
@@ -24,6 +36,32 @@ export const Sizes: Story = {
       <Avatar {...args} size="sm" />
       <Avatar {...args} size="md" />
       <Avatar {...args} size="lg" />
+    </div>
+  ),
+};
+
+export const Tones: Story = {
+  render: (args) => (
+    <div className="flex flex-wrap items-center gap-6">
+      {(["solid", "accent", "neutral"] as const).map((tone) => (
+        <div key={tone} className="flex flex-col items-center gap-2">
+          <Avatar {...args} tone={tone} />
+          <span className="text-xs text-muted">{tone}</span>
+        </div>
+      ))}
+    </div>
+  ),
+};
+
+export const Statuses: Story = {
+  render: (args) => (
+    <div className="flex flex-wrap items-center gap-6">
+      {(["online", "away", "busy", "offline"] as const).map((status) => (
+        <div key={status} className="flex flex-col items-center gap-2">
+          <Avatar {...args} status={status} />
+          <span className="text-xs text-muted">{status}</span>
+        </div>
+      ))}
     </div>
   ),
 };

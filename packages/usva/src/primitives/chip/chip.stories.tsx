@@ -5,7 +5,22 @@ const meta: Meta<typeof Chip> = {
   title: "Primitives/Chip",
   component: Chip,
   tags: ["autodocs"],
-  args: { children: "React" },
+  argTypes: {
+    tone: {
+      control: { type: "select" },
+      options: [
+        "default",
+        "accent",
+        "accent-alt",
+        "success",
+        "warning",
+        "danger",
+      ],
+    },
+    size: { control: { type: "select" }, options: ["sm", "md"] },
+    selected: { control: { type: "boolean" } },
+  },
+  args: { children: "React", tone: "default", size: "md", selected: false },
 };
 
 export default meta;
@@ -19,6 +34,18 @@ export const WithValue: Story = {
 
 export const Removable: Story = {
   args: { children: "TypeScript", tone: "accent-alt", onRemove: () => {} },
+};
+
+export const Sizes: Story = {
+  render: (args) => (
+    <div className="flex flex-wrap items-center gap-2">
+      {(["sm", "md"] as const).map((size) => (
+        <Chip {...args} key={size} size={size}>
+          {size}
+        </Chip>
+      ))}
+    </div>
+  ),
 };
 
 export const Tones: Story = {

@@ -9,6 +9,11 @@ import {
 const meta: Meta<typeof Tooltip> = {
   title: "Primitives/Tooltip",
   component: Tooltip,
+  tags: ["autodocs"],
+  argTypes: {
+    defaultOpen: { control: { type: "boolean" } },
+  },
+  args: { defaultOpen: true },
 };
 
 export default meta;

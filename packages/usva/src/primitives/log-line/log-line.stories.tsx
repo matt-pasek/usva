@@ -5,6 +5,17 @@ const meta: Meta<typeof LogLine> = {
   title: "Primitives/LogLine",
   component: LogLine,
   tags: ["autodocs"],
+  argTypes: {
+    level: {
+      control: { type: "select" },
+      options: ["error", "warn", "info", "debug", "success"],
+    },
+  },
+  args: {
+    level: "info",
+    source: "sync",
+    children: "Reconciled 128 records",
+  },
 };
 
 export default meta;
@@ -58,6 +69,20 @@ export const Timestamped: Story = {
         Skipped 3 malformed rows
       </LogLine>
     </LogList>
+  ),
+};
+
+export const Levels: Story = {
+  render: () => (
+    <div className="flex flex-wrap gap-4">
+      {(["error", "warn", "info", "debug", "success"] as const).map((level) => (
+        <LogList key={level} className="w-64">
+          <LogLine level={level} source="sync">
+            {level}
+          </LogLine>
+        </LogList>
+      ))}
+    </div>
   ),
 };
 

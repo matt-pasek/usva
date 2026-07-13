@@ -70,3 +70,19 @@ export const LegendAndCounts: Story = {
     </Toolbar>
   ),
 };
+
+export const CountTones: Story = {
+  render: () => (
+    <Toolbar>
+      <ToolbarGroup>
+        {(
+          ["accent", "accent-alt", "success", "warning", "danger"] as const
+        ).map((tone) => (
+          <ToolbarCount key={tone} tone={tone} count={3}>
+            {tone}
+          </ToolbarCount>
+        ))}
+      </ToolbarGroup>
+    </Toolbar>
+  ),
+};

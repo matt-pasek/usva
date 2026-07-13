@@ -5,6 +5,7 @@ import {
   EntityActions,
   EntityBody,
   EntityCard,
+  EntityContent,
   EntityMedia,
   EntityMeta,
   EntityTitle,
@@ -13,6 +14,25 @@ import {
 const meta: Meta<typeof EntityCard> = {
   title: "Patterns/EntityCard",
   component: EntityCard,
+  tags: ["autodocs"],
+  argTypes: {
+    variant: {
+      control: { type: "select" },
+      options: ["stack", "row", "showcase"],
+    },
+    highlight: {
+      control: { type: "select" },
+      options: ["none", "wash", "edge", "ring"],
+    },
+    surface: {
+      control: { type: "select" },
+      options: ["elevated", "flat", "glass", "outline"],
+    },
+    interactive: { control: { type: "boolean" } },
+  },
+  args: {
+    variant: "stack",
+  },
 };
 
 export default meta;
@@ -43,6 +63,32 @@ export const Project: Story = {
         </Button>
       </EntityActions>
     </EntityCard>
+  ),
+};
+
+export const Variants: Story = {
+  render: () => (
+    <div className="flex flex-col gap-6">
+      {(["stack", "row", "showcase"] as const).map((variant) => (
+        <EntityCard key={variant} variant={variant} className="w-96">
+          <EntityMedia>
+            <div className="h-full w-full bg-gradient-to-br from-accent/30 to-accent-2/20" />
+          </EntityMedia>
+          <EntityContent>
+            <EntityMeta>
+              <Badge tone="accent" mono>
+                {variant}
+              </Badge>
+            </EntityMeta>
+            <EntityTitle>usva. design language</EntityTitle>
+            <EntityBody>
+              One card, three layouts: a gallery tile, a compact list row, and a
+              numbered showcase.
+            </EntityBody>
+          </EntityContent>
+        </EntityCard>
+      ))}
+    </div>
   ),
 };
 

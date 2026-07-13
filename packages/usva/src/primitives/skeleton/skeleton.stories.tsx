@@ -4,7 +4,15 @@ import { Skeleton } from "./skeleton.js";
 const meta: Meta<typeof Skeleton> = {
   title: "Primitives/Skeleton",
   component: Skeleton,
+  tags: ["autodocs"],
   parameters: { chromatic: { pauseAnimationAtEnd: true } },
+  argTypes: {
+    variant: {
+      control: { type: "select" },
+      options: ["text", "circle", "rect"],
+    },
+  },
+  args: { variant: "text" },
 };
 export default meta;
 
@@ -20,6 +28,23 @@ export const Circle: Story = {
 
 export const Rect: Story = {
   render: () => <Skeleton variant="rect" width={240} height={120} />,
+};
+
+export const Variants: Story = {
+  render: () => (
+    <div className="flex flex-wrap items-start gap-6">
+      {(["text", "circle", "rect"] as const).map((variant) => (
+        <div key={variant} className="flex w-60 flex-col gap-2">
+          <span className="font-mono text-xs text-muted">{variant}</span>
+          <Skeleton
+            variant={variant}
+            width={variant === "circle" ? 48 : 240}
+            height={variant === "rect" ? 120 : undefined}
+          />
+        </div>
+      ))}
+    </div>
+  ),
 };
 
 export const CardComposed: Story = {

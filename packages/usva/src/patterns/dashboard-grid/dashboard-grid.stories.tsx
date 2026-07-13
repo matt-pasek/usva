@@ -8,6 +8,14 @@ import { addItem, findOpenSlot, type GridItem } from "./grid-layout.js";
 const meta: Meta<typeof DashboardGrid> = {
   title: "Patterns/DashboardGrid",
   component: DashboardGrid,
+  tags: ["autodocs"],
+  argTypes: {
+    editing: { control: { type: "boolean" } },
+    columns: { control: { type: "number" } },
+    rows: { control: { type: "number" } },
+    rowHeight: { control: { type: "number" } },
+    gap: { control: { type: "number" } },
+  },
 };
 export default meta;
 

@@ -6,6 +6,15 @@ import { DisclosureRow } from "./disclosure-row.js";
 const meta: Meta<typeof DisclosureRow> = {
   title: "Patterns/DisclosureRow",
   component: DisclosureRow,
+  tags: ["autodocs"],
+  argTypes: {
+    open: { control: { type: "boolean" } },
+    defaultOpen: { control: { type: "boolean" } },
+    disabled: { control: { type: "boolean" } },
+  },
+  args: {
+    summary: "Core studies",
+  },
 };
 export default meta;
 
