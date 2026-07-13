@@ -4,6 +4,7 @@ export * from "./effects/holvi/index.js";
 export * from "./effects/loimu/index.js";
 export * from "./effects/utu-sphere/index.js";
 export * from "./effects/vako/index.js";
+export * from "./effects/vare/index.js";
 export {
   PageTransition,
   type PageTransitionProps,

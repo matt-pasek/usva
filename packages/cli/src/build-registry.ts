@@ -104,6 +104,7 @@ export const EFFECT_NAMES = [
   "loimu",
   "utu-sphere",
   "vako",
+  "vare",
 ] as const;
 
 async function emit(dir: string, name: string): Promise<void> {
