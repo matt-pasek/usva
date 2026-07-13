@@ -37,7 +37,9 @@ const ACTIONS: SulaFabAction[] = [
   { icon: <Glyph d="M12 5v14M5 12h14" />, label: "New note" },
   { icon: <Glyph d="M4 7h16M4 12h16M4 17h10" />, label: "New list" },
   {
-    icon: <Glyph d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />,
+    icon: (
+      <Glyph d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
+    ),
     label: "Message",
   },
 ];

@@ -110,8 +110,8 @@ export default function SulaSegmentedPage() {
         <p className="text-muted">
           A segmented control whose active indicator is a liquid droplet. Pick a
           new segment and a drop pinches off the old pill, travels across on a
-          thinning neck, and merges into the new one. The segments themselves are
-          crisp DOM buttons; only the indicator is painted by the field.
+          thinning neck, and merges into the new one. The segments themselves
+          are crisp DOM buttons; only the indicator is painted by the field.
         </p>
       </div>
 
@@ -126,13 +126,13 @@ export default function SulaSegmentedPage() {
         <CardHeader>This is the brand-surface control</CardHeader>
         <CardBody>
           <p className="text-sm text-muted">
-            I reach for this on a brand surface: a theme switcher on a portfolio,
-            a view toggle on a hero. It mirrors the plain{" "}
-            <code>SegmentedControl</code> exactly, keyboard and semantics and all,
-            so it stays a segmented control first and a liquid effect second. For
-            dense or task-bound UI, a dashboard filter or a settings row, use the
-            plain <code>SegmentedControl</code>. That is where the effect would be
-            noise, not delight.
+            I reach for this on a brand surface: a theme switcher on a
+            portfolio, a view toggle on a hero. It mirrors the plain{" "}
+            <code>SegmentedControl</code> exactly, keyboard and semantics and
+            all, so it stays a segmented control first and a liquid effect
+            second. For dense or task-bound UI, a dashboard filter or a settings
+            row, use the plain <code>SegmentedControl</code>. That is where the
+            effect would be noise, not delight.
           </p>
         </CardBody>
       </Card>
@@ -143,10 +143,10 @@ export default function SulaSegmentedPage() {
           <p className="text-sm text-muted">
             With <code>fluid={"{false}"}</code>, a{" "}
             <code>prefers-reduced-motion</code> preference, or a machine with no
-            WebGL2, no canvas mounts and the indicator becomes a plain absolutely
-            positioned pill that slides on a transition. Fully usable with zero
-            WebGL, and the server always renders this path so there is no
-            hydration mismatch.
+            WebGL2, no canvas mounts and the indicator becomes a plain
+            absolutely positioned pill that slides on a transition. Fully usable
+            with zero WebGL, and the server always renders this path so there is
+            no hydration mismatch.
           </p>
           <div className="rounded-lg border border-border bg-bg p-4">
             <SulaSegmentedDemo fluid={false} />
@@ -158,9 +158,10 @@ export default function SulaSegmentedPage() {
         <CardHeader>It costs nothing at rest</CardHeader>
         <CardBody>
           <p className="text-sm text-muted">
-            The render loop parks itself the moment the switch settles, and wakes
-            on a resize, a font swap, or the next selection. At rest the field
-            paints a single firm pill under the active segment and then stops.
+            The render loop parks itself the moment the switch settles, and
+            wakes on a resize, a font swap, or the next selection. At rest the
+            field paints a single firm pill under the active segment and then
+            stops.
           </p>
         </CardBody>
       </Card>

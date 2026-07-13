@@ -18,8 +18,17 @@ beforeAll(() => {
   );
 });
 
+const trajectory: GridItem = {
+  id: "trajectory",
+  x: 0,
+  y: 0,
+  w: 4,
+  h: 2,
+  minW: 2,
+};
+
 const initial: GridItem[] = [
-  { id: "trajectory", x: 0, y: 0, w: 4, h: 2, minW: 2 },
+  trajectory,
   { id: "upcoming", x: 4, y: 0, w: 3, h: 2 },
 ];
 
@@ -165,7 +174,7 @@ describe("DashboardGrid", () => {
     it("widens without growing taller", async () => {
       const user = userEvent.setup();
       const onLayoutChange = vi.fn();
-      render(<Grid layout={[initial[0]!]} onLayoutChange={onLayoutChange} />);
+      render(<Grid layout={[trajectory]} onLayoutChange={onLayoutChange} />);
 
       screen.getByLabelText("Resize Credit trajectory horizontally").focus();
       await user.keyboard("{ArrowRight}");
@@ -179,7 +188,7 @@ describe("DashboardGrid", () => {
     it("grows taller without widening", async () => {
       const user = userEvent.setup();
       const onLayoutChange = vi.fn();
-      render(<Grid layout={[initial[0]!]} onLayoutChange={onLayoutChange} />);
+      render(<Grid layout={[trajectory]} onLayoutChange={onLayoutChange} />);
 
       screen.getByLabelText("Resize Credit trajectory vertically").focus();
       await user.keyboard("{ArrowDown}");
@@ -192,7 +201,7 @@ describe("DashboardGrid", () => {
     it("ignores the cross-axis key on an axis handle", async () => {
       const user = userEvent.setup();
       const onLayoutChange = vi.fn();
-      render(<Grid layout={[initial[0]!]} onLayoutChange={onLayoutChange} />);
+      render(<Grid layout={[trajectory]} onLayoutChange={onLayoutChange} />);
 
       screen.getByLabelText("Resize Credit trajectory horizontally").focus();
       await user.keyboard("{ArrowDown}");
@@ -202,7 +211,7 @@ describe("DashboardGrid", () => {
     it("takes both axes on the corner handle", async () => {
       const user = userEvent.setup();
       const onLayoutChange = vi.fn();
-      render(<Grid layout={[initial[0]!]} onLayoutChange={onLayoutChange} />);
+      render(<Grid layout={[trajectory]} onLayoutChange={onLayoutChange} />);
 
       screen.getByLabelText("Resize Credit trajectory").focus();
       await user.keyboard("{ArrowRight}{ArrowDown}");

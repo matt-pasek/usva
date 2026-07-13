@@ -66,8 +66,7 @@ export function orbitFrame(phase: number, { size }: LoaderOpts): LoaderFrame {
   /* Reach toward the returning bead, then let go once it is swallowed. The
    * release must finish before the loop seam, or the stretched width snaps back
    * to rest in a single frame at the wrap. */
-  const reach =
-    smoothstep(0.78, 0.88, p) * (1 - smoothstep(0.9, 0.98, p));
+  const reach = smoothstep(0.78, 0.88, p) * (1 - smoothstep(0.9, 0.98, p));
   const lean = smoothstep(0.3, 0.6, p) * (1 - smoothstep(0.76, 0.88, p));
 
   const coreScale = 1 - 0.12 * beadPresent + 0.14 * swallow;

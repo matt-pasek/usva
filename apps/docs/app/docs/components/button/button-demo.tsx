@@ -45,10 +45,7 @@ function StatefulRow() {
 
   React.useEffect(() => () => clearTimeout(timer.current), []);
 
-  const run = (
-    set: (s: ButtonStatus) => void,
-    outcome: ButtonStatus,
-  ) => {
+  const run = (set: (s: ButtonStatus) => void, outcome: ButtonStatus) => {
     set("loading");
     timer.current = setTimeout(() => set(outcome), 1400);
   };

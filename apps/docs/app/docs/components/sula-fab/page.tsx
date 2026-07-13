@@ -151,12 +151,12 @@ export default function SulaFabPage() {
         <CardHeader>This is a brand-surface primary action</CardHeader>
         <CardBody>
           <p className="text-sm text-muted">
-            I reach for this when a page has one clear thing to do and I want the
-            doing of it to feel good: a compose button on a writing app, a create
-            button on a portfolio dashboard. It is a single primary action with a
-            few close relatives. It is not for dense toolbars or a drawer of a
-            dozen commands, where a plain menu reads faster and the liquid becomes
-            noise.
+            I reach for this when a page has one clear thing to do and I want
+            the doing of it to feel good: a compose button on a writing app, a
+            create button on a portfolio dashboard. It is a single primary
+            action with a few close relatives. It is not for dense toolbars or a
+            drawer of a dozen commands, where a plain menu reads faster and the
+            liquid becomes noise.
           </p>
         </CardBody>
       </Card>
@@ -166,10 +166,10 @@ export default function SulaFabPage() {
         <CardBody>
           <p className="text-sm text-muted">
             Each action is a real <code>button</code> (or an <code>a</code> when
-            you pass <code>href</code>), positioned at its slot and moved to match
-            its blob every frame. While the dial is closed the beads are{" "}
-            <code>inert</code> and hidden from assistive tech, so they never land
-            in the tab order. Open it and focus moves to the first action;{" "}
+            you pass <code>href</code>), positioned at its slot and moved to
+            match its blob every frame. While the dial is closed the beads are{" "}
+            <code>inert</code> and hidden from assistive tech, so they never
+            land in the tab order. Open it and focus moves to the first action;{" "}
             <code>Escape</code> closes it and returns focus to the trigger.
           </p>
         </CardBody>
@@ -181,10 +181,10 @@ export default function SulaFabPage() {
           <p className="text-sm text-muted">
             With <code>fluid={"{false}"}</code>, a{" "}
             <code>prefers-reduced-motion</code> preference, or a machine with no
-            WebGL2, no canvas mounts. The actions become a plain stacked menu that
-            fades and slides in along <code>direction</code>. Fully operable with
-            zero WebGL, and the server always renders this path so there is no
-            hydration mismatch.
+            WebGL2, no canvas mounts. The actions become a plain stacked menu
+            that fades and slides in along <code>direction</code>. Fully
+            operable with zero WebGL, and the server always renders this path so
+            there is no hydration mismatch.
           </p>
           <div className="rounded-lg border border-border bg-bg p-4">
             <SulaFabDemo fluid={false} />
@@ -196,18 +196,18 @@ export default function SulaFabPage() {
         <CardHeader>Line or arc</CardHeader>
         <CardBody className="flex flex-col gap-3">
           <p className="text-sm text-muted">
-            A line stacks the beads along <code>direction</code>; an arc fans them
-            across a span around it. Spacing is a constant edge gap: the{" "}
-            <code>gap</code> prop is the px between the trigger and the first bead,
-            and between each bead, whatever their sizes. The slot geometry is
-            derived from the count, never authored per action, so adding an action
-            just reflows the fan.
+            A line stacks the beads along <code>direction</code>; an arc fans
+            them across a span around it. Spacing is a constant edge gap: the{" "}
+            <code>gap</code> prop is the px between the trigger and the first
+            bead, and between each bead, whatever their sizes. The slot geometry
+            is derived from the count, never authored per action, so adding an
+            action just reflows the fan.
           </p>
           <p className="text-sm text-muted">
             Bead size comes from the action button classes, and the trigger from
-            its own, so the field measures the real elements and lays them out to
-            match. For touch, raise <code>gap</code> and enlarge those targets;
-            this demo widens the gap on small, coarse-pointer screens.
+            its own, so the field measures the real elements and lays them out
+            to match. For touch, raise <code>gap</code> and enlarge those
+            targets; this demo widens the gap on small, coarse-pointer screens.
           </p>
           <div className="rounded-lg border border-border bg-bg p-4">
             <SulaFabDemo layout="arc" />

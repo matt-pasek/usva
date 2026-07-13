@@ -79,7 +79,6 @@ interface Spec {
 
 function place(spec: Spec, time: number, opts: DriftOpts, id: number): Blob {
   const { width, height, seed } = opts;
-  const short = Math.min(width, height);
   const px = hash(id * 16 + 6, seed) * TAU;
   const py = hash(id * 16 + 7, seed) * TAU;
   const breathe =
