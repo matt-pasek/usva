@@ -95,6 +95,7 @@ export const componentNav: NavGroup[] = [
       { slug: "vako", label: "Vako" },
       { slug: "holvi", label: "Holvi" },
       { slug: "hehku", label: "Hehku" },
+      { slug: "loimu", label: "Loimu" },
     ],
   },
 ];

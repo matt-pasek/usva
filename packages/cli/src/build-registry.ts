@@ -101,6 +101,7 @@ export const EFFECT_NAMES = [
   "effects-core",
   "hehku",
   "holvi",
+  "loimu",
   "utu-sphere",
   "vako",
 ] as const;
