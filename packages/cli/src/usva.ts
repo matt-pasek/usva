@@ -1,12 +1,12 @@
 #!/usr/bin/env node
-export {};
+import { registryUrl } from "./config.js";
 
 const [cmd, name] = process.argv.slice(2);
 if (cmd !== "add" || !name) {
   console.error("usage: usva add <name>");
   process.exit(1);
 }
-const url = `https://usva.dev/r/${name}.json`;
+const url = registryUrl(name);
 const res = await fetch(url);
 if (!res.ok) {
   console.error(`not found: ${name}`);
