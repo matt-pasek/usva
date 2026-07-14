@@ -10,18 +10,26 @@ import {
   shineForBackdrop,
 } from "../sula-core/field.js";
 import { packHover, packUniforms } from "../sula-core/geometry.js";
+import { createPauseGate } from "../sula-core/pause.js";
 import {
-  BACK_K_FRACTION,
-  FRONT_K_FRACTION,
-  fieldFrame,
-  nearestBlob,
-  POINTER_EASE,
-  WAKE_EASE,
-} from "./field-geometry.js";
+  ambientDrift,
+  MAX_FIELD_BLOBS,
+  MAX_FIELD_NECKS,
+  resolveDriveFrame,
+  type SulaFieldDrive,
+} from "./drive.js";
+import { nearestBlob, POINTER_EASE, WAKE_EASE } from "./field-geometry.js";
 
 export interface SulaFieldProps extends React.HTMLAttributes<HTMLDivElement> {
   /** Drift-rate multiplier; higher drifts faster. Defaults to 1. */
   speed?: number;
+  /**
+   * The choreography: a pure function of time and the field's bounds, returning
+   * the bodies and necks for that instant. Defaults to the ambient drift. Each
+   * depth plane holds up to MAX_FIELD_BLOBS bodies and the frame up to
+   * MAX_FIELD_NECKS necks; anything past that is clamped away, so keep inside it.
+   */
+  drive?: SulaFieldDrive;
   /** When on, blobs lean toward the eased cursor. Defaults to false. */
   interactive?: boolean;
   /** Reproduces the same wander for a given value. Defaults to 0. */
@@ -76,6 +84,7 @@ export const SulaField = React.forwardRef<HTMLDivElement, SulaFieldProps>(
   (
     {
       speed = 1,
+      drive,
       interactive = false,
       seed = 0,
       fluid = true,
@@ -102,6 +111,8 @@ export const SulaField = React.forwardRef<HTMLDivElement, SulaFieldProps>(
     seedRef.current = seed;
     const interactiveRef = React.useRef(interactive);
     interactiveRef.current = interactive;
+    const driveRef = React.useRef<SulaFieldDrive>(drive ?? ambientDrift);
+    driveRef.current = drive ?? ambientDrift;
 
     const [failed, setFailed] = React.useState(false);
     const [mounted, setMounted] = React.useState(false);
@@ -143,8 +154,6 @@ export const SulaField = React.forwardRef<HTMLDivElement, SulaFieldProps>(
       let width = 0;
       let height = 0;
       let dpr = 1;
-      let kFront = 0;
-      let kBack = 0;
       const measure = () => {
         const box = container.getBoundingClientRect();
         const w = Math.ceil(box.width);
@@ -159,9 +168,6 @@ export const SulaField = React.forwardRef<HTMLDivElement, SulaFieldProps>(
         width = w;
         height = h;
         dpr = nextDpr;
-        const short = Math.min(w, h);
-        kFront = short * FRONT_K_FRACTION;
-        kBack = short * BACK_K_FRACTION;
         return true;
       };
 
@@ -173,12 +179,22 @@ export const SulaField = React.forwardRef<HTMLDivElement, SulaFieldProps>(
       /* Two passes into one context: a dark, soupy back cloud clears the frame,
        * then the lit actors composite over it (clear:false). Colors are set per
        * pass, so the back stays matte (shine 0) and the front carries the rim. */
+      let warned = false;
       const draw = (elapsed: number) => {
-        const { back, front, necks } = fieldFrame(elapsed * speedRef.current, {
-          width,
-          height,
-          seed: seedRef.current,
-        });
+        const bounds = { width, height, seed: seedRef.current };
+        const resolved = resolveDriveFrame(
+          driveRef.current(elapsed * speedRef.current, bounds),
+          bounds,
+        );
+        const { back, front, necks, kFront, kBack } = resolved;
+        if (resolved.clamped && !warned) {
+          warned = true;
+          if (process.env.NODE_ENV !== "production") {
+            console.warn(
+              `SulaField: the drive returned more than ${MAX_FIELD_BLOBS} bodies in a plane or ${MAX_FIELD_NECKS} necks. The surplus is not drawn.`,
+            );
+          }
+        }
         const short = Math.min(width, height);
         const focus = nearestBlob(front, pointer);
         if (interactiveRef.current && wakeAmt > 0.001) {
@@ -278,22 +294,11 @@ export const SulaField = React.forwardRef<HTMLDivElement, SulaFieldProps>(
       container.addEventListener("pointermove", onMove);
       container.addEventListener("pointerleave", onLeave);
 
-      let visible = true;
-      const io =
-        typeof IntersectionObserver === "undefined"
-          ? null
-          : new IntersectionObserver((entries) => {
-              visible = entries[0]?.isIntersecting ?? true;
-              if (visible && !document.hidden) run();
-              else stop();
-            });
-      io?.observe(container);
-
-      const onVisibility = () => {
-        if (document.hidden || !visible) stop();
-        else run();
-      };
-      document.addEventListener("visibilitychange", onVisibility);
+      const gate = createPauseGate({
+        target: container,
+        onPause: stop,
+        onResume: run,
+      });
 
       const observer =
         typeof ResizeObserver === "undefined"
@@ -316,8 +321,7 @@ export const SulaField = React.forwardRef<HTMLDivElement, SulaFieldProps>(
         killed = true;
         container.removeEventListener("pointermove", onMove);
         container.removeEventListener("pointerleave", onLeave);
-        io?.disconnect();
-        document.removeEventListener("visibilitychange", onVisibility);
+        gate.dispose();
         observer?.disconnect();
         themeObserver?.disconnect();
         stop();
