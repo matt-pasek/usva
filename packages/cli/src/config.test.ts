@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { SITE_ORIGIN, registryUrl } from "./config.js";
+import { registryUrl, SITE_ORIGIN } from "./config.js";
 
 describe("config", () => {
   it("reads the origin from usva.config.json", () => {
