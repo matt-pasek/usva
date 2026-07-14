@@ -1,16 +1,20 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
+import { SiteFooter } from "@/components/site-footer";
+import { SiteNav } from "@/components/site-nav";
+import { ThemeProvider, themeScript } from "@/components/theme-provider";
+import { SITE_ORIGIN } from "@/lib/site";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://usva.dev"),
+  metadataBase: new URL(SITE_ORIGIN),
   title: {
-    default: "usva. — beautiful, usable React components",
+    default: "usva. · beautiful, usable React components",
     template: "%s · usva.",
   },
   description:
     "An open-source React design system: dual-distributed as an npm package and a shadcn-compatible registry.",
-  openGraph: { type: "website", url: "https://usva.dev", siteName: "usva." },
+  openGraph: { type: "website", url: SITE_ORIGIN, siteName: "usva." },
   twitter: { card: "summary_large_image" },
 };
 
@@ -24,9 +28,20 @@ const jsonLd = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" data-theme="kajo">
+    /* The theme lands on <html> from a blocking script, so it is already right
+     * on the first paint and the server markup cannot match it. */
+    <html lang="en" suppressHydrationWarning>
       <body>
-        {children}
+        <script
+          // biome-ignore lint/security/noDangerouslySetInnerHtml: the theme must be set before the first paint, which rules out anything React runs
+          dangerouslySetInnerHTML={{ __html: themeScript }}
+        />
+        <ThemeProvider>
+          <SiteNav />
+          {/* The nav floats over the page, so the content starts below it. */}
+          <div className="pt-20 sm:pt-24">{children}</div>
+          <SiteFooter />
+        </ThemeProvider>
         <script
           type="application/ld+json"
           // biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD structured data must be injected as a raw script body

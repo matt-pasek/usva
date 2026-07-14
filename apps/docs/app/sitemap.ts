@@ -1,21 +1,30 @@
 import type { MetadataRoute } from "next";
+import { CATALOG, THEMES } from "@/lib/catalog";
+import { SITE_ORIGIN } from "@/lib/site";
 
-const routes = [
+const pages = [
   "",
   "/design-language",
-  "/docs/installation",
-  "/docs/theming",
-  "/docs/components/button",
-  "/docs/components/badge",
-  "/docs/components/card",
-  "/docs/components/input",
-  "/docs/components/tooltip",
+  "/docs/get-started",
+  "/docs/get-started/installation",
+  "/docs/get-started/theming",
+  "/docs/get-started/for-agents",
+  "/docs/get-started/index",
+  "/tokens",
+  "/recipes",
+  "/composer",
+];
+
+const routes = [
+  ...pages,
+  ...THEMES.map((theme) => `/themes/${theme}`),
+  ...CATALOG.map((entry) => `/docs/components/${entry.slug}`),
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  return routes.map((r) => ({
-    url: `https://usva.dev${r}`,
+  return routes.map((route) => ({
+    url: `${SITE_ORIGIN}${route}`,
     changeFrequency: "weekly",
-    priority: r === "" ? 1 : 0.7,
+    priority: route === "" ? 1 : 0.7,
   }));
 }

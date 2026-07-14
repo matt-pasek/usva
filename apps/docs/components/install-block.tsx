@@ -1,3 +1,5 @@
+import { PACKAGE_NAME, registryUrl } from "@/lib/site";
+
 export interface InstallBlockProps {
   /** Registry slug used to build the shadcn add URL, e.g. "checkbox". */
   registryName: string;
@@ -6,7 +8,7 @@ export interface InstallBlockProps {
 
 export function InstallBlock({
   registryName,
-  packageName = "@matt-pasek/usva",
+  packageName = PACKAGE_NAME,
 }: InstallBlockProps) {
   return (
     <div className="flex flex-col gap-4">
@@ -23,7 +25,7 @@ export function InstallBlock({
           Or copy the source into your project via shadcn:
         </p>
         <pre className="overflow-x-auto rounded-md border border-border bg-sunken p-3 text-xs text-on-sunken">
-          <code>npx shadcn add https://usva.dev/r/{registryName}.json</code>
+          <code>npx shadcn add {registryUrl(registryName)}</code>
         </pre>
       </div>
     </div>

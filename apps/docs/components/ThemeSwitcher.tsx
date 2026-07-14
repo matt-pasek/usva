@@ -1,42 +1,49 @@
 "use client";
-import { SegmentedControl } from "@matt-pasek/usva";
-import { useEffect, useState } from "react";
+import { cn } from "@matt-pasek/usva/cn";
+import { THEMES } from "@/lib/catalog";
+import { type ThemeId, useTheme } from "./theme-provider";
 
-const THEMES = [
-  { id: "kajo", label: "kajo", hint: "portfolio" },
-  { id: "sisu", label: "sisu", hint: "dashboard" },
-  { id: "savi", label: "savi", hint: "light / clay" },
-] as const;
+const HINT: Record<ThemeId, string> = {
+  kajo: "faint glow. the dark, expressive one.",
+  sisu: "grit. the dashboard one.",
+  savi: "clay. the light one.",
+};
 
-type ThemeId = (typeof THEMES)[number]["id"];
-
-const isThemeId = (value: string | null): value is ThemeId =>
-  THEMES.some((t) => t.id === value);
-
+/**
+ * The theme control, as it sits on the nav's glass. It paints no surface of its
+ * own: the pill under it is the nav's field, so this is only the type and the
+ * indicator.
+ */
 export function ThemeSwitcher() {
-  const [theme, setTheme] = useState<ThemeId>("kajo");
-
-  useEffect(() => {
-    const current = document.documentElement.getAttribute("data-theme");
-    if (isThemeId(current)) setTheme(current);
-  }, []);
-
-  const pick = (id: string) => {
-    if (!isThemeId(id)) return;
-    setTheme(id);
-    document.documentElement.setAttribute("data-theme", id);
-  };
+  const { theme, setTheme } = useTheme();
 
   return (
-    <SegmentedControl
-      size="sm"
+    <div
+      role="radiogroup"
       aria-label="Theme"
-      value={theme}
-      onValueChange={pick}
-      items={THEMES.map((t) => ({
-        value: t.id,
-        label: <span title={t.hint}>{t.label}</span>,
-      }))}
-    />
+      className="flex min-h-11 items-center gap-0.5 p-1.5"
+    >
+      {THEMES.map((id) => {
+        const active = id === theme;
+        return (
+          // biome-ignore lint/a11y/useSemanticElements: same as the library's SegmentedControl, this needs a button with a custom indicator that a native radio input cannot render
+          <button
+            key={id}
+            type="button"
+            role="radio"
+            aria-checked={active}
+            title={HINT[id]}
+            onClick={() => setTheme(id)}
+            className={cn(
+              "rounded-full px-2.5 py-1.5 font-mono text-xs whitespace-nowrap outline-none",
+              "transition-tint duration-fast ease-soft focus-visible:ring-focus",
+              active ? "bg-ink/6 text-ink" : "text-muted hover:text-ink",
+            )}
+          >
+            {id}
+          </button>
+        );
+      })}
+    </div>
   );
 }

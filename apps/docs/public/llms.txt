@@ -1,9 +1,0 @@
-# usva.
-> Open-source React design system. Beautiful yet usable. Dual-distributed: npm package (@matt-pasek/usva) and shadcn-compatible registry (usva.dev/r/<name>.json).
-
-## Install
-- Package: bun add @matt-pasek/usva
-- Registry: npx shadcn add https://usva.dev/r/button.json
-
-## Components
-Button, Badge, Card, Input, Tooltip (Phase 0).
