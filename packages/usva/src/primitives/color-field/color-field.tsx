@@ -32,8 +32,17 @@ export const ColorField = React.forwardRef<HTMLInputElement, ColorFieldProps>(
     const generatedId = React.useId();
     const fieldId = id ?? generatedId;
     const [draft, setDraft] = React.useState(value ?? defaultValue);
+    const [lastValue, setLastValue] = React.useState(value);
 
-    const text = value ?? draft;
+    // The draft has to outrank a controlled value while typing: "#5" is not a
+    // valid hex, so onValueChange never fires for it, so value never comes back
+    // and the field would be uneditable.
+    if (value !== undefined && value !== lastValue) {
+      setLastValue(value);
+      setDraft(value);
+    }
+
+    const text = draft;
     const invalid = !HEX.test(text);
     const swatch = HEX.test(text) ? text : defaultValue;
 

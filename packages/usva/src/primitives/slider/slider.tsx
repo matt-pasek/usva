@@ -5,7 +5,7 @@ import * as React from "react";
 import { cn } from "../../cn.js";
 
 const trackVariants = cva(
-  "relative w-full select-none overflow-hidden rounded-full border border-border bg-surface-2",
+  "relative w-full select-none rounded-full border border-border bg-surface-2",
   {
     variants: {
       size: {
@@ -18,7 +18,7 @@ const trackVariants = cva(
 );
 
 const thumbVariants = cva(
-  "rounded-full border border-accent bg-gradient-accent shadow-raised outline-none transition-control duration-base ease-soft hover:glow-ring focus-visible:ring-focus data-[dragging]:glow-ring",
+  "rounded-full border border-accent bg-gradient-accent shadow-raised outline-none transition-control duration-base ease-soft hover:glow-ring has-[:focus-visible]:ring-focus data-[dragging]:glow-ring",
   {
     variants: {
       size: {
