@@ -9,6 +9,7 @@ import {
 import {
   loadPhase,
   revealPhase,
+  revealSide,
   switchFade,
   switchProgress,
 } from "./nav-geometry.js";
@@ -252,6 +253,36 @@ describe("switchFade", () => {
       }
     }
     expect(switchFade(0.2, "show")).toBe(0);
+  });
+});
+
+describe("revealSide separation", () => {
+  const bar = blob({ cx: 400, cy: 60, hw: 200, hh: 24, r: 24 });
+  const neighbour = blob({ cx: 700, cy: 60, hw: 60, hh: 22, r: 22 });
+  const satellite = blob({ cx: 1300, cy: 60, hw: 60, hh: 22, r: 22 });
+
+  it("holds a neighbour's neck until it lands", () => {
+    expect(revealSide(bar, neighbour, 0.6, K).neck).not.toBeNull();
+    expect(revealSide(bar, neighbour, 1, K).neck).toBeNull();
+  });
+
+  it("pinches a far satellite off near the body, then lets it fly free", () => {
+    const midway = revealSide(bar, satellite, 0.6, K);
+    expect(midway.neck).toBeNull();
+    // Gone from the body, but nowhere near the corner yet: the rest of the
+    // travel happens as a separate field, not on the end of a long thread.
+    expect(midway.blob.cx).toBeGreaterThan(bar.cx + bar.hw);
+    expect(midway.blob.cx).toBeLessThan(satellite.cx - 300);
+  });
+
+  it("never stretches a neck past the break length", () => {
+    for (let i = 0; i <= 60; i++) {
+      const { neck } = revealSide(bar, satellite, i / 60, K);
+      if (!neck) continue;
+      expect(Math.hypot(neck.bx - neck.ax, neck.by - neck.ay)).toBeLessThan(
+        110,
+      );
+    }
   });
 });
 

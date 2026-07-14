@@ -130,6 +130,52 @@ describe("SulaNav", () => {
     expect(onNavigate).toHaveBeenCalledWith("#notes");
   });
 
+  it("renders satellites as labelled groups holding their own controls", () => {
+    render(
+      <SulaNav
+        views={views}
+        activeView="/"
+        satellites={[
+          {
+            id: "search",
+            align: "left",
+            label: "Search",
+            children: <button type="button">search</button>,
+          },
+          {
+            id: "theme",
+            align: "right",
+            label: "Theme",
+            children: <button type="button">kajo</button>,
+          },
+        ]}
+      />,
+    );
+    expect(screen.getByRole("group", { name: "Search" })).toBeInTheDocument();
+    expect(screen.getByRole("group", { name: "Theme" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "search" })).toBeInTheDocument();
+  });
+
+  it("melts satellites out of reach with the rest of the sides", () => {
+    render(
+      <SulaNav
+        views={views}
+        activeView="/"
+        sidesOpen={false}
+        satellites={[
+          {
+            id: "theme",
+            label: "Theme",
+            children: <button type="button">kajo</button>,
+          },
+        ]}
+      />,
+    );
+    expect(screen.getByRole("group", { name: "Theme" })).toHaveAttribute(
+      "inert",
+    );
+  });
+
   it("renders the brand slot named by brandLabel", () => {
     render(
       <SulaNav

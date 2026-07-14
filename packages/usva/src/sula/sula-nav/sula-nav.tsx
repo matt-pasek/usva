@@ -41,6 +41,9 @@ export interface SulaNavItem {
   href: string;
   label: string;
   icon?: React.ReactNode;
+  /** On the tab itself, so a dense route set can drop its secondary entries at a
+   * breakpoint rather than overflowing the bar. */
+  className?: string;
 }
 
 /** A navigable view: collapsed to an icon pill, expanded to a bar of its items. */
@@ -50,6 +53,36 @@ export interface SulaNavView {
   icon: React.ReactNode;
   items?: SulaNavItem[];
 }
+
+/**
+ * A field that separates off the nav's body and settles in a corner: a control
+ * that belongs to the nav but does not belong in the middle of it, like a search
+ * trigger or a theme control.
+ *
+ * It is not a second component. It is the same body, split. One renderer paints
+ * the whole bar, so a satellite is a disjoint field of the nav's own material
+ * rather than a widget parked beside it, and the separation is what the reveal
+ * animates. Peer components crammed into the bar would put several liquid fields
+ * in one region, competing for the same attention; a satellite adds none.
+ */
+export interface SulaNavSatellite {
+  id: string;
+  /** Which corner it flows out to. Defaults to the right. */
+  align?: "left" | "right";
+  /** Names the group for assistive tech, since the contents are yours. */
+  label: string;
+  children: React.ReactNode;
+}
+
+/** The width at which item labels unfold; below it the tabs are icon-only. */
+export type SulaNavLabelsFrom = "sm" | "md" | "lg" | "xl";
+
+const LABEL_COLLAPSE: Record<SulaNavLabelsFrom, string> = {
+  sm: "max-sm:max-w-0 max-sm:overflow-hidden max-sm:opacity-0",
+  md: "max-md:max-w-0 max-md:overflow-hidden max-md:opacity-0",
+  lg: "max-lg:max-w-0 max-lg:overflow-hidden max-lg:opacity-0",
+  xl: "max-xl:max-w-0 max-xl:overflow-hidden max-xl:opacity-0",
+};
 
 export interface SulaNavProps
   extends Omit<React.HTMLAttributes<HTMLElement>, "children"> {
@@ -65,6 +98,15 @@ export interface SulaNavProps
   brand?: React.ReactNode;
   brandHref?: string;
   brandLabel?: string;
+
+  /**
+   * Fields that split off the body and settle in a corner. Handing them here
+   * rather than rendering them beside the nav is what keeps them one material
+   * with it: they are measured, revealed and painted as parts of this field.
+   */
+  satellites?: SulaNavSatellite[];
+  /** Below this width the item labels fold away and the tabs are icons. */
+  labelsFrom?: SulaNavLabelsFrom;
 
   /** Vertical nudge in px from the nav's anchor: positive is down, negative up. */
   offset?: number;
@@ -170,6 +212,8 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
       brand,
       brandHref = "/",
       brandLabel,
+      satellites,
+      labelsFrom = "sm",
       offset = 0,
       ariaLabel = "Primary",
       fluid = true,
@@ -193,6 +237,19 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
     const brandRef = React.useRef<HTMLDivElement | null>(null);
     const viewRefs = React.useRef<Array<HTMLDivElement | null>>([]);
     const itemRefs = React.useRef<Record<string, HTMLLIElement | null>>({});
+    const satRefs = React.useRef<Record<string, HTMLDivElement | null>>({});
+
+    const leftSats = React.useMemo(
+      () => (satellites ?? []).filter((s) => s.align === "left"),
+      [satellites],
+    );
+    const rightSats = React.useMemo(
+      () => (satellites ?? []).filter((s) => s.align !== "left"),
+      [satellites],
+    );
+    const hasSatellites = leftSats.length > 0 || rightSats.length > 0;
+    const leftKey = leftSats.map((s) => s.id).join(" ");
+    const rightKey = rightSats.map((s) => s.id).join(" ");
 
     const [failed, setFailed] = React.useState(false);
     const [mounted, setMounted] = React.useState(false);
@@ -209,6 +266,8 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
 
     const activeIndexRef = React.useRef(activeViewIndex);
     activeIndexRef.current = activeViewIndex;
+    const leftCountRef = React.useRef(leftSats.length);
+    leftCountRef.current = leftSats.length;
     const switchRef = React.useRef<(previous: number) => void>(() => {});
     const setSidesRef = React.useRef<(open: boolean) => void>(() => {});
     const sidesOpenRef = React.useRef(sidesOpen);
@@ -220,21 +279,40 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
       ready: false,
     });
 
+    /* A tab the route set drops at this breakpoint measures zero wide, and an
+     * indicator pinned to it would read as the first tab being active. */
     React.useLayoutEffect(() => {
-      const el = activeItem ? itemRefs.current[activeItem] : null;
-      if (!el) {
-        setIndicator((current) => ({ ...current, ready: false }));
-        return;
-      }
-      setIndicator({ left: el.offsetLeft, width: el.offsetWidth, ready: true });
+      const place = () => {
+        const el = activeItem ? itemRefs.current[activeItem] : null;
+        if (!el || el.offsetWidth === 0) {
+          setIndicator((current) => ({ ...current, ready: false }));
+          return;
+        }
+        setIndicator({
+          left: el.offsetLeft,
+          width: el.offsetWidth,
+          ready: true,
+        });
+      };
+      place();
+      window.addEventListener("resize", place);
+      return () => window.removeEventListener("resize", place);
     }, [activeItem]);
 
+    /* Left to right, because bridgeNecks reads adjacency out of this order. */
     const collectParts = React.useCallback(
       () =>
-        [brandRef.current, ...viewRefs.current].filter(
-          (node): node is HTMLDivElement => node != null,
-        ),
-      [],
+        [
+          brandRef.current,
+          ...(leftKey ? leftKey.split(" ") : []).map(
+            (id) => satRefs.current[id] ?? null,
+          ),
+          ...viewRefs.current,
+          ...(rightKey ? rightKey.split(" ") : []).map(
+            (id) => satRefs.current[id] ?? null,
+          ),
+        ].filter((node): node is HTMLDivElement => node != null),
+      [leftKey, rightKey],
     );
 
     React.useEffect(() => {
@@ -344,7 +422,10 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
         return true;
       };
 
-      const brandOffset = () => (brandRef.current ? 1 : 0);
+      /* Parts run [left satellites, brand, views, right satellites], so the view
+       * block starts past whatever sits to its left. */
+      const brandOffset = () =>
+        leftCountRef.current + (brandRef.current ? 1 : 0);
       const activePart = () => activeIndexRef.current + brandOffset();
 
       const drawFrame = (blobs: Blob[], necks: Neck[], liveK: number) => {
@@ -736,18 +817,19 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
       if (isFluid) setSidesRef.current(sidesOpen);
     }, [sidesOpen, isFluid]);
 
-    // biome-ignore lint/correctness/useExhaustiveDependencies: brand/views gate which nodes exist
+    // biome-ignore lint/correctness/useExhaustiveDependencies: brand/views/satellites gate which nodes exist
     React.useEffect(() => {
       const nodes = [
         brandRef.current,
         ...viewRefs.current.filter((_, i) => i !== activeViewIndex),
+        ...Object.values(satRefs.current),
       ];
       for (const node of nodes) {
         if (!node) continue;
         if (sidesOpen) node.removeAttribute("inert");
         else node.setAttribute("inert", "");
       }
-    }, [sidesOpen, activeViewIndex, brand, views]);
+    }, [sidesOpen, activeViewIndex, brand, views, satellites]);
 
     const part = cn(
       "relative rounded-full",
@@ -760,6 +842,129 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
       ...(offset ? { transform: `translateY(${offset}px)` } : null),
     };
 
+    const brandNode = brand ? (
+      <div
+        ref={brandRef}
+        className={cn(part, !sidesOpen && !isFluid && "hidden")}
+      >
+        <Link
+          href={brandHref}
+          aria-label={brandLabel}
+          onClick={() => onNavigate?.(brandHref)}
+          className="flex min-h-11 items-center rounded-full px-4 text-sm font-medium text-ink outline-none focus-visible:ring-focus sm:px-5"
+        >
+          {brand}
+        </Link>
+      </div>
+    ) : null;
+
+    const satelliteNode = (satellite: SulaNavSatellite) => (
+      // biome-ignore lint/a11y/useSemanticElements: a fieldset is for form controls; this is a named grouping of nav controls inside a landmark
+      <div
+        key={satellite.id}
+        ref={(node) => {
+          satRefs.current[satellite.id] = node;
+        }}
+        role="group"
+        aria-label={satellite.label}
+        className={cn(part, !sidesOpen && !isFluid && "hidden")}
+      >
+        {satellite.children}
+      </div>
+    );
+
+    const viewNodes = views.map((view, index) => {
+      const isActive = index === activeViewIndex;
+      return (
+        <div
+          key={view.href}
+          ref={(node) => {
+            viewRefs.current[index] = node;
+          }}
+          className={cn(part, !isActive && !sidesOpen && !isFluid && "hidden")}
+          data-active={isActive || undefined}
+        >
+          {isActive ? (
+            <ul className="flex items-center gap-1 p-1.5">
+              <span
+                aria-hidden="true"
+                className={cn(
+                  "pointer-events-none absolute top-1.5 bottom-1.5 left-0 rounded-full bg-ink/6",
+                  "transition-layout duration-slow ease-spring motion-reduce:transition-none",
+                  !indicator.ready && "opacity-0",
+                )}
+                style={{
+                  width: indicator.width,
+                  transform: `translateX(${indicator.left}px)`,
+                }}
+              />
+              {activeItems.map((item) => (
+                <li
+                  key={item.href}
+                  ref={(node) => {
+                    itemRefs.current[item.href] = node;
+                  }}
+                  className={cn("relative z-10", item.className)}
+                >
+                  <Link
+                    href={item.href}
+                    aria-current={item.href === activeItem ? "page" : undefined}
+                    onClick={() => onNavigate?.(item.href)}
+                    className={cn(
+                      "flex min-h-11 items-center gap-2 rounded-full px-3 text-sm whitespace-nowrap outline-none sm:px-4",
+                      "text-muted transition-tint duration-fast ease-soft hover:text-ink",
+                      "aria-[current=page]:text-ink focus-visible:ring-focus",
+                    )}
+                  >
+                    {item.icon ? (
+                      <span aria-hidden="true" className="inline-flex shrink-0">
+                        {item.icon}
+                      </span>
+                    ) : null}
+                    <span
+                      className={cn(item.icon && LABEL_COLLAPSE[labelsFrom])}
+                    >
+                      {item.label}
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <Link
+              href={view.href}
+              aria-label={view.label}
+              onClick={(event: React.MouseEvent) => {
+                if (onViewChange) {
+                  event.preventDefault();
+                  onViewChange(view.href);
+                }
+              }}
+              className="grid size-11 place-items-center rounded-full text-ink outline-none focus-visible:ring-focus"
+            >
+              {view.icon}
+            </Link>
+          )}
+        </div>
+      );
+    });
+
+    const stage = isFluid ? (
+      <div
+        ref={stageRef}
+        aria-hidden="true"
+        className="pointer-events-none absolute overflow-hidden"
+        style={{
+          top: -DROP_HEIGHT,
+          bottom: -CANVAS_SLACK,
+          left: -SLACK_X,
+          right: -SLACK_X,
+        }}
+      >
+        <canvas ref={canvasRef} />
+      </div>
+    ) : null;
+
     return (
       <nav
         ref={(node) => {
@@ -769,128 +974,40 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
         }}
         aria-label={ariaLabel}
         data-fluid={isFluid ? "on" : "off"}
-        className={cn("relative flex items-center gap-4", className)}
+        className={cn(
+          "relative items-center",
+          /* Satellites need real corners to fly to, and the body needs to stay
+           * centred no matter how unbalanced the two ends are, which is what a
+           * flex row cannot give. */
+          hasSatellites
+            ? "grid w-full grid-cols-[1fr_auto_1fr] gap-2 sm:gap-4"
+            : "flex gap-4",
+          className,
+        )}
         style={navStyle}
         {...props}
       >
-        {isFluid ? (
-          <div
-            ref={stageRef}
-            aria-hidden="true"
-            className="pointer-events-none absolute overflow-hidden"
-            style={{
-              top: -DROP_HEIGHT,
-              bottom: -CANVAS_SLACK,
-              left: -SLACK_X,
-              right: -SLACK_X,
-            }}
-          >
-            <canvas ref={canvasRef} />
-          </div>
-        ) : null}
+        {stage}
 
-        {brand ? (
-          <div
-            ref={brandRef}
-            className={cn(part, !sidesOpen && !isFluid && "hidden")}
-          >
-            <Link
-              href={brandHref}
-              aria-label={brandLabel}
-              onClick={() => onNavigate?.(brandHref)}
-              className="flex min-h-11 items-center rounded-full px-5 text-sm font-medium text-ink outline-none focus-visible:ring-focus"
-            >
-              {brand}
-            </Link>
-          </div>
-        ) : null}
-
-        {views.map((view, index) => {
-          const isActive = index === activeViewIndex;
-          return (
-            <div
-              key={view.href}
-              ref={(node) => {
-                viewRefs.current[index] = node;
-              }}
-              className={cn(
-                part,
-                !isActive && !sidesOpen && !isFluid && "hidden",
-              )}
-              data-active={isActive || undefined}
-            >
-              {isActive ? (
-                <ul className="flex items-center gap-1 p-1.5">
-                  <span
-                    aria-hidden="true"
-                    className={cn(
-                      "pointer-events-none absolute top-1.5 bottom-1.5 left-0 rounded-full bg-ink/6",
-                      "transition-layout duration-slow ease-spring motion-reduce:transition-none",
-                      !indicator.ready && "opacity-0",
-                    )}
-                    style={{
-                      width: indicator.width,
-                      transform: `translateX(${indicator.left}px)`,
-                    }}
-                  />
-                  {activeItems.map((item) => (
-                    <li
-                      key={item.href}
-                      ref={(node) => {
-                        itemRefs.current[item.href] = node;
-                      }}
-                      className="relative z-10"
-                    >
-                      <Link
-                        href={item.href}
-                        aria-current={
-                          item.href === activeItem ? "page" : undefined
-                        }
-                        onClick={() => onNavigate?.(item.href)}
-                        className={cn(
-                          "flex min-h-11 items-center gap-2 rounded-full px-4 text-sm whitespace-nowrap outline-none",
-                          "text-muted transition-tint duration-fast ease-soft hover:text-ink",
-                          "aria-[current=page]:text-ink focus-visible:ring-focus",
-                        )}
-                      >
-                        {item.icon ? (
-                          <span
-                            aria-hidden="true"
-                            className="inline-flex shrink-0"
-                          >
-                            {item.icon}
-                          </span>
-                        ) : null}
-                        <span
-                          className={cn(
-                            item.icon &&
-                              "max-sm:max-w-0 max-sm:overflow-hidden max-sm:opacity-0",
-                          )}
-                        >
-                          {item.label}
-                        </span>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <Link
-                  href={view.href}
-                  aria-label={view.label}
-                  onClick={(event: React.MouseEvent) => {
-                    if (onViewChange) {
-                      event.preventDefault();
-                      onViewChange(view.href);
-                    }
-                  }}
-                  className="grid size-11 place-items-center rounded-full text-ink outline-none focus-visible:ring-focus"
-                >
-                  {view.icon}
-                </Link>
-              )}
+        {hasSatellites ? (
+          <>
+            <div className="flex items-center gap-2 justify-self-start sm:gap-4">
+              {brandNode}
+              {leftSats.map(satelliteNode)}
             </div>
-          );
-        })}
+            <div className="flex items-center gap-4 justify-self-center">
+              {viewNodes}
+            </div>
+            <div className="flex items-center gap-2 justify-self-end sm:gap-4">
+              {rightSats.map(satelliteNode)}
+            </div>
+          </>
+        ) : (
+          <>
+            {brandNode}
+            {viewNodes}
+          </>
+        )}
       </nav>
     );
   },

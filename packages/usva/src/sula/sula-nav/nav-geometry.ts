@@ -109,12 +109,28 @@ const SIDE_TRAVEL_START = 0.3;
 const SIDE_PINCH_START = 0.84;
 const SIDE_PINCH_END = 0.94;
 
+/** Past this much free length, in CSS px, a neck has stopped being surface
+ * tension and started being a thread, so it thins; by the break it is gone.
+ * This is what lets one part travel much further than its neighbours: a pill
+ * sitting next to the bar never stretches this far and keeps the travel-driven
+ * pinch above, while a satellite bound for a corner separates near the body it
+ * came from and covers the rest of the distance free. Without it, a part that
+ * flies 500px out drags a fat capsule behind it and the bar reads as one slab
+ * spanning the whole viewport. */
+const NECK_STRETCH_FREE = 40;
+const NECK_STRETCH_BREAK = 104;
+
 /**
  * A side emerges the way a drop separates from a larger one. At rest it is fully
  * absorbed inside the bar's end, so nothing pokes out and the closed nav has clean
  * edges. As it opens it first swells out past the end while still merged (the end
  * bulges), then travels out trailing a neck that thins until it snaps. Melting it
  * back runs the same path in reverse, ending flush inside the bar. It never pops.
+ *
+ * The neck pinches on whichever comes first: the end of the travel, or the neck
+ * stretching past what surface tension holds. A neighbouring pill lands still
+ * attached and lets go on arrival; a satellite bound for a corner lets go early
+ * and flies the rest of the way as a separate field.
  */
 export function revealSide(
   bar: Blob,
@@ -131,7 +147,6 @@ export function revealSide(
    * SIDE_SPRING carries a small settle wobble past the line and back instead of the
    * pill landing hard. Raw t, not clamped p, so the overshoot is not flattened. */
   const travel = c1Settle(t, SIDE_TRAVEL_START);
-  const pinch = smoothstep(SIDE_PINCH_START, SIDE_PINCH_END, p);
 
   const scale = mix(0.5, 1, swell);
   const hw = rest.hw * scale;
@@ -151,8 +166,14 @@ export function revealSide(
   const cy = mix(bar.cy, rest.cy, travel);
   const blob: Blob = { cx, cy, hw, hh, r: Math.min(hw, hh) };
 
-  if (p >= SIDE_PINCH_END || travel <= 0) return { blob, neck: null };
+  if (travel <= 0) return { blob, neck: null };
   const inner = cx - dir * hw;
+  const stretch = Math.abs(inner - barEnd);
+  const pinch = Math.max(
+    smoothstep(SIDE_PINCH_START, SIDE_PINCH_END, p),
+    smoothstep(NECK_STRETCH_FREE, NECK_STRETCH_BREAK, stretch),
+  );
+  if (pinch >= 1) return { blob, neck: null };
   const r = Math.max(rest.hh * mix(0.86, 0.08, pinch), NECK_MIN);
   const neck: Neck = {
     ax: barEnd,

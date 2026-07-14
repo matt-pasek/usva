@@ -103,8 +103,8 @@ describe("packUniforms", () => {
   it("never emits more than the shader has slots for", () => {
     const packed = packUniforms(
       {
-        blobs: Array.from({ length: 9 }, () => blob()),
-        necks: Array.from({ length: 5 }, () => ({
+        blobs: Array.from({ length: MAX_BLOBS + 3 }, () => blob()),
+        necks: Array.from({ length: MAX_NECKS + 3 }, () => ({
           ax: 0,
           ay: 0,
           bx: 1,

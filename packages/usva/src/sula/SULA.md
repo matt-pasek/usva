@@ -13,6 +13,11 @@ rules any new one holds to. The motion is defined once in `sula-motion` and the 
 Six components today, on two shared modules.
 
 - SulaNav, a liquid-glass navigation bar whose parts merge and separate as you move between views.
+  It can also carry satellites: fields that split off its body on reveal and settle in a corner, for
+  a control that belongs to the nav but not in the middle of it. A satellite is not a second
+  component. It is the same body, split, painted by the same renderer, and the separation is the
+  animation. Parking peer liquid widgets in the bar instead would put several fields in one region,
+  all pulling at the same attention; a satellite adds none.
 - SulaSegmented, a segmented control whose indicator pinches a droplet off the old segment and merges
   it into the new one. This is the brand-surface segmented control; the plain `SegmentedControl` is
   the one for dense UI.

@@ -1,9 +1,12 @@
 import { clamp01, mix, smoothstep } from "../sula-motion/curves.js";
 
-/** Brand + up to five views + the drip's transient reservoir/bead. */
-export const MAX_BLOBS = 8;
-/** Neighbour bridges while a switch fuses the row, or the drip tether on load. */
-export const MAX_NECKS = 5;
+/** Brand + views + detached satellite fields + the drip's transient reservoir.
+ * The shader loops break on the live count, so headroom here costs nothing per
+ * fragment; overflowing it silently drops parts, which is far worse. */
+export const MAX_BLOBS = 12;
+/** Neighbour bridges while a switch fuses the row, the drip tether on load, and
+ * one separation neck per part still pulling away from the body. */
+export const MAX_NECKS = 8;
 
 /** A rounded box in canvas space: centre, half-extents, corner radius. */
 export interface Blob {
