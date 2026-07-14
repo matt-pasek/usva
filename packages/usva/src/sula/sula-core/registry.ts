@@ -5,6 +5,7 @@ export const sulaCoreRegistry = {
   registryDependencies: ["sula-motion"],
   files: [
     { path: "geometry.ts", target: "components/ui/geometry.ts" },
+    { path: "pause.ts", target: "components/ui/pause.ts" },
     { path: "shader.ts", target: "components/ui/shader.ts" },
     { path: "field.ts", target: "components/ui/field.ts" },
     { path: "emerge.ts", target: "components/ui/emerge.ts" },

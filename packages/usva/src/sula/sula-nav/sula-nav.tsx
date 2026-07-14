@@ -18,6 +18,7 @@ import {
   packUniforms,
   restDiffers,
 } from "../sula-core/geometry.js";
+import { createPauseGate } from "../sula-core/pause.js";
 import { clamp01, smoother, smoothstep } from "../sula-motion/curves.js";
 import { createEnergyTracker } from "../sula-motion/energy.js";
 import {
@@ -712,10 +713,19 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
         }
         raf = requestAnimationFrame(tick);
       };
+      /* Resuming re-enters the same tick against live spring values, so a nav
+       * that scrolled away mid-reveal picks its drop up where it left it rather
+       * than dropping a second time. */
       const wake = () => {
+        if (!gate.awake()) return;
         cancelAnimationFrame(raf);
         raf = requestAnimationFrame(tick);
       };
+      const gate = createPauseGate({
+        target: nav,
+        onPause: () => cancelAnimationFrame(raf),
+        onResume: () => wake(),
+      });
 
       const controls = new Set<ReturnType<typeof animate>>();
       const run = (
@@ -924,6 +934,7 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
         window.removeEventListener("resize", remeasure);
         observer?.disconnect();
         themeObserver?.disconnect();
+        gate.dispose();
         cancelAnimationFrame(raf);
         field.dispose();
         for (const node of collectParts()) {

@@ -9,6 +9,7 @@ import {
   shineForBackdrop,
 } from "../sula-core/field.js";
 import { type Blob, type Neck, packUniforms } from "../sula-core/geometry.js";
+import { createPauseGate } from "../sula-core/pause.js";
 import { createEnergyTracker } from "../sula-motion/energy.js";
 import { switchSpring } from "../sula-motion/springs.js";
 import { indicatorPhase, pillFromRect } from "./segmented-geometry.js";
@@ -245,9 +246,15 @@ export const SulaSegmented = React.forwardRef<
         raf = requestAnimationFrame(tick);
       };
       const wake = () => {
+        if (!gate.awake()) return;
         cancelAnimationFrame(raf);
         raf = requestAnimationFrame(tick);
       };
+      const gate = createPauseGate({
+        target: root,
+        onPause: () => cancelAnimationFrame(raf),
+        onResume: () => wake(),
+      });
 
       const controls = new Set<ReturnType<typeof animate>>();
       const run = (
@@ -334,6 +341,7 @@ export const SulaSegmented = React.forwardRef<
         window.removeEventListener("resize", remeasure);
         observer?.disconnect();
         themeObserver?.disconnect();
+        gate.dispose();
         cancelAnimationFrame(raf);
         field.dispose();
         canvas.style.width = "";

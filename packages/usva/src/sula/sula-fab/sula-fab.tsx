@@ -14,6 +14,7 @@ import {
   packHover,
   packUniforms,
 } from "../sula-core/geometry.js";
+import { createPauseGate } from "../sula-core/pause.js";
 import { clamp01, smoothstep } from "../sula-motion/curves.js";
 import { createEnergyTracker } from "../sula-motion/energy.js";
 import { sideSpring } from "../sula-motion/springs.js";
@@ -381,9 +382,15 @@ export const SulaFab = React.forwardRef<HTMLDivElement, SulaFabProps>(
         raf = requestAnimationFrame(tick);
       };
       const wake = () => {
+        if (!gate.awake()) return;
         cancelAnimationFrame(raf);
         raf = requestAnimationFrame(tick);
       };
+      const gate = createPauseGate({
+        target: root,
+        onPause: () => cancelAnimationFrame(raf),
+        onResume: () => wake(),
+      });
 
       const controls = new Set<ReturnType<typeof animate>>();
       const run = (to: [number, number]) => {
@@ -466,6 +473,7 @@ export const SulaFab = React.forwardRef<HTMLDivElement, SulaFabProps>(
         window.removeEventListener("resize", remeasure);
         observer?.disconnect();
         themeObserver?.disconnect();
+        gate.dispose();
         cancelAnimationFrame(raf);
         field.dispose();
         canvas.style.width = "";
