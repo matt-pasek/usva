@@ -33,7 +33,7 @@ uniform vec3  uEdgeColor;
 
 out vec4 fragColor;
 
-${glsl("fbm", "dither")}
+${glsl("fbm", "dither", "composite")}
 
 const float TAU = 6.28318530718;
 
@@ -122,6 +122,6 @@ void main() {
   float alpha = mix(peak, amount * 0.85, uAbsorb) * uAlpha;
   alpha = ditherAlpha(alpha, gl_FragCoord.xy, 0.004);
 
-  fragColor = vec4(clamp(rgb, 0.0, 1.0), clamp(alpha, 0.0, 1.0));
+  fragColor = composite(rgb, alpha);
 }
 `;

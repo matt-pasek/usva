@@ -35,7 +35,7 @@ uniform vec3  uRimColor;
 
 out vec4 fragColor;
 
-${glsl("fbm", "dither")}
+${glsl("fbm", "dither", "composite")}
 
 /** One pleat. Odd in the signed distance to its axis, so the sheet lifts on one
  * side of the crease and drops on the other the way real cloth does. A Gaussian
@@ -122,6 +122,6 @@ void main() {
   float alpha = peak * uAlpha;
   alpha = ditherAlpha(alpha, gl_FragCoord.xy, 0.004);
 
-  fragColor = vec4(clamp(rgb, 0.0, 1.0), clamp(alpha, 0.0, 1.0));
+  fragColor = composite(rgb, alpha);
 }
 `;

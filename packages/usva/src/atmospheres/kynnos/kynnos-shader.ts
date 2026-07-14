@@ -41,7 +41,7 @@ uniform vec3  uKeyColor;
 
 out vec4 fragColor;
 
-${glsl("fbm", "worley", "dither")}
+${glsl("fbm", "worley", "dither", "composite")}
 
 const vec3 VIEW = vec3(0.0, 0.0, 1.0);
 
@@ -167,6 +167,6 @@ void main() {
   if (lum > uMaxLum) col *= uMaxLum / max(lum, 1e-4);
 
   col = dither(col, frag, uDither);
-  fragColor = vec4(clamp(col, 0.0, 1.0), uAlpha);
+  fragColor = composite(col, uAlpha);
 }
 `;

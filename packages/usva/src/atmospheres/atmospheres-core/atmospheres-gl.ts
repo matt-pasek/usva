@@ -56,7 +56,9 @@ export function createGlSurface(
       webgl: 2,
       dpr: 1,
       alpha: true,
-      premultipliedAlpha: false,
+      // Safari composites the buffer as premultiplied whatever this says, so the
+      // only value both browsers agree on is true. Shaders end in composite().
+      premultipliedAlpha: true,
       antialias: false,
     });
   } catch {

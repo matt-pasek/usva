@@ -5,7 +5,7 @@ describe("Utu fragment compositing", () => {
   it("normalizes emitted color before using its peak as alpha", () => {
     expect(utuFragmentShader).toContain("vec3 display = col / max(peak, 1e-4)");
     expect(utuFragmentShader).toContain(
-      "fragColor = vec4(display, peak * uAlpha)",
+      "fragColor = composite(display, peak * uAlpha)",
     );
     expect(utuFragmentShader).not.toContain("fragColor = vec4(col, a)");
   });

@@ -37,7 +37,7 @@ uniform float uBlend;
 
 out vec4 fragColor;
 
-${glsl("dither")}
+${glsl("dither", "composite")}
 
 const int MAX_SEGMENTS = ${MAX_KNOTS - 1};
 
@@ -109,6 +109,6 @@ void main() {
   display = mix(display, display * display, uBlend);
   display = dither(display, gl_FragCoord.xy, 1.0 / 255.0);
 
-  fragColor = vec4(clamp(display, 0.0, 1.0), peak * uAlpha);
+  fragColor = composite(display, peak * uAlpha);
 }
 `;

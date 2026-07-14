@@ -7,6 +7,8 @@
  * exact look this avoids). The one forbidden move is a fresnel silhouette rim.
  */
 
+import { glsl } from "../atmospheres-core/atmospheres-glsl.js";
+
 export const utuVertexShader = /* glsl */ `#version 300 es
 in vec2 position;
 void main() {
@@ -44,6 +46,8 @@ uniform vec2  uLean;
 uniform float uLeanAmt;
 
 out vec4 fragColor;
+
+${glsl("composite")}
 
 const int STEPS = ${STEPS};
 
@@ -155,6 +159,6 @@ void main() {
   col = vec3(1.0) - exp(-col);
   float peak = clamp(max(col.r, max(col.g, col.b)), 0.0, 1.0);
   vec3 display = col / max(peak, 1e-4);
-  fragColor = vec4(display, peak * uAlpha);
+  fragColor = composite(display, peak * uAlpha);
 }
 `;

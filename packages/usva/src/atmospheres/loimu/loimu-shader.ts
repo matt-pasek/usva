@@ -40,7 +40,7 @@ uniform vec3  uEdgeColor;
 
 out vec4 fragColor;
 
-${glsl("fbm", "curl", "isoband", "dither", "tonemap")}
+${glsl("fbm", "curl", "isoband", "dither", "tonemap", "composite")}
 
 /** Where a ray leaving the eye crosses the sheet plane. Grazing rays would run
  * to infinity, so the denominator is floored rather than discarded: the arrival
@@ -143,6 +143,6 @@ void main() {
   float alpha = mix(peak, amount * 0.85, uAbsorb) * uAlpha;
   alpha = ditherAlpha(alpha, gl_FragCoord.xy, 0.004);
 
-  fragColor = vec4(clamp(rgb, 0.0, 1.0), clamp(alpha, 0.0, 1.0));
+  fragColor = composite(rgb, alpha);
 }
 `;

@@ -209,6 +209,26 @@ vec3 tonemapACES(vec3 x) {
 }
 `;
 
+const composite = /* glsl */ `
+/**
+ * Safari ignores premultipliedAlpha: false and composites the drawing buffer as
+ * though it were premultiplied, so an unpremultiplied colour is effectively
+ * divided by its own alpha and blows out. The context is therefore premultiplied
+ * and every atmosphere ends here.
+ *
+ * The alpha is squared and the colour attenuated by it because the old pipeline
+ * did exactly that: SRC_ALPHA blending into a cleared buffer wrote rgb * a with
+ * alpha a * a, and the browser then premultiplied again on composite. Every
+ * atmosphere was tuned against that image, so it is the image, not a mistake to
+ * unwind.
+ */
+vec4 composite(vec3 rgb, float alpha) {
+  float a = clamp(alpha, 0.0, 1.0);
+  float cov = a * a;
+  return vec4(clamp(rgb, 0.0, 1.0) * a * cov, cov);
+}
+`;
+
 interface Chunk {
   needs: readonly GlslChunk[];
   source: string;
@@ -222,7 +242,8 @@ export type GlslChunk =
   | "worley"
   | "isoband"
   | "dither"
-  | "tonemap";
+  | "tonemap"
+  | "composite";
 
 const CHUNKS: Record<GlslChunk, Chunk> = {
   hash13: { needs: [], source: hash13 },
@@ -233,6 +254,7 @@ const CHUNKS: Record<GlslChunk, Chunk> = {
   isoband: { needs: [], source: isoband },
   dither: { needs: [], source: dither },
   tonemap: { needs: [], source: tonemap },
+  composite: { needs: [], source: composite },
 };
 
 export const GLSL_CHUNK_NAMES = Object.keys(CHUNKS) as GlslChunk[];
