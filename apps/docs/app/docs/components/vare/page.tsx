@@ -186,8 +186,9 @@ export default function VarePage() {
         <CardBody className="flex flex-col gap-3">
           <InstallBlock registryName="vare" />
           <p className="text-sm text-muted">
-            Pulls in <code>ogl</code> and the shared <code>effects-core</code>{" "}
-            shell, which the registry adds for you.
+            Pulls in <code>ogl</code> and the shared{" "}
+            <code>atmospheres-core</code> shell, which the registry adds for
+            you.
           </p>
         </CardBody>
       </Card>
@@ -204,10 +205,10 @@ export default function VarePage() {
       <Card>
         <CardHeader>Source</CardHeader>
         <CardBody className="flex flex-col gap-4">
-          <SourceView filePath="packages/usva/src/effects/vare/vare.tsx" />
-          <SourceView filePath="packages/usva/src/effects/vare/vare-field.ts" />
-          <SourceView filePath="packages/usva/src/effects/vare/vare-uniforms.ts" />
-          <SourceView filePath="packages/usva/src/effects/vare/vare-shader.ts" />
+          <SourceView filePath="packages/usva/src/atmospheres/vare/vare.tsx" />
+          <SourceView filePath="packages/usva/src/atmospheres/vare/vare-field.ts" />
+          <SourceView filePath="packages/usva/src/atmospheres/vare/vare-uniforms.ts" />
+          <SourceView filePath="packages/usva/src/atmospheres/vare/vare-shader.ts" />
         </CardBody>
       </Card>
 

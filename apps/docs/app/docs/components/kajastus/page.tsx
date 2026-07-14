@@ -88,7 +88,7 @@ export default function KajastusPage() {
           off past both edges, converging above you rather than standing in
           front of you. Ribbons folded like fabric seen edge-on, bright where a
           fold turns and you look through more of it. It is the kajo showpiece,
-          and the heaviest effect in the library.
+          and the heaviest atmosphere in the library.
         </p>
       </div>
 
@@ -191,8 +191,9 @@ export default function KajastusPage() {
         <CardBody className="flex flex-col gap-3">
           <InstallBlock registryName="kajastus" />
           <p className="text-sm text-muted">
-            Pulls in <code>ogl</code> and the shared <code>effects-core</code>{" "}
-            shell, which the registry adds for you.
+            Pulls in <code>ogl</code> and the shared{" "}
+            <code>atmospheres-core</code> shell, which the registry adds for
+            you.
           </p>
         </CardBody>
       </Card>
@@ -209,9 +210,9 @@ export default function KajastusPage() {
       <Card>
         <CardHeader>Source</CardHeader>
         <CardBody className="flex flex-col gap-4">
-          <SourceView filePath="packages/usva/src/effects/kajastus/kajastus.tsx" />
-          <SourceView filePath="packages/usva/src/effects/kajastus/kajastus-uniforms.ts" />
-          <SourceView filePath="packages/usva/src/effects/kajastus/kajastus-shader.ts" />
+          <SourceView filePath="packages/usva/src/atmospheres/kajastus/kajastus.tsx" />
+          <SourceView filePath="packages/usva/src/atmospheres/kajastus/kajastus-uniforms.ts" />
+          <SourceView filePath="packages/usva/src/atmospheres/kajastus/kajastus-shader.ts" />
         </CardBody>
       </Card>
 

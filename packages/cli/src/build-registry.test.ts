@@ -1,9 +1,9 @@
 import { readdirSync, readFileSync } from "node:fs";
 import { beforeAll, describe, expect, it } from "vitest";
 import {
+  ATMOSPHERE_NAMES,
+  ATMOSPHERES,
   buildRegistry,
-  EFFECT_NAMES,
-  EFFECTS,
   NAMES,
   PATTERN_NAMES,
   PATTERNS,
@@ -36,8 +36,8 @@ describe("buildRegistry", () => {
     expect([...SULA_NAMES].sort()).toEqual(dirsIn(SULA));
   });
 
-  it("ships every effect through the registry", () => {
-    expect([...EFFECT_NAMES].sort()).toEqual(dirsIn(EFFECTS));
+  it("ships every atmosphere through the registry", () => {
+    expect([...ATMOSPHERE_NAMES].sort()).toEqual(dirsIn(ATMOSPHERES));
   });
 
   it("emits button.json with embedded source", () => {
@@ -96,7 +96,7 @@ describe("buildRegistry", () => {
     });
   });
 
-  describe.each(EFFECT_NAMES)("%s effect parity", (name) => {
+  describe.each(ATMOSPHERE_NAMES)("%s atmosphere parity", (name) => {
     it("registry source matches package source once imports are flattened", () => {
       const json = JSON.parse(
         readFileSync(`../../registry/r/${name}.json`, "utf8"),
@@ -104,7 +104,7 @@ describe("buildRegistry", () => {
       expect(json.files.length).toBeGreaterThan(0);
       for (const file of json.files as { path: string; content: string }[]) {
         const src = readFileSync(
-          `../usva/src/effects/${name}/${file.path}`,
+          `../usva/src/atmospheres/${name}/${file.path}`,
           "utf8",
         );
         expect(file.content).toBe(rewriteImports(src));
@@ -116,7 +116,7 @@ describe("buildRegistry", () => {
     ...NAMES,
     ...PATTERN_NAMES,
     ...SULA_NAMES,
-    ...EFFECT_NAMES,
+    ...ATMOSPHERE_NAMES,
   ])("%s is self-contained", (name) => {
     it("emits no import that escapes components/ui", () => {
       const json = JSON.parse(
@@ -132,7 +132,7 @@ describe("buildRegistry", () => {
       ...NAMES,
       ...PATTERN_NAMES,
       ...SULA_NAMES,
-      ...EFFECT_NAMES,
+      ...ATMOSPHERE_NAMES,
     ];
     const read = (name: string) =>
       JSON.parse(readFileSync(`../../registry/r/${name}.json`, "utf8"));

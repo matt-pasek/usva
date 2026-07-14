@@ -209,7 +209,7 @@ export default function UtuPage() {
         <CardBody className="flex flex-col gap-3">
           <InstallBlock registryName="utu" />
           <p className="text-sm text-muted">
-            A standalone effect. It pulls in <code>ogl</code> and depends on
+            A standalone atmosphere. It pulls in <code>ogl</code> and depends on
             nothing else from the library, so it copies in clean.
           </p>
         </CardBody>
@@ -227,10 +227,10 @@ export default function UtuPage() {
       <Card>
         <CardHeader>Source</CardHeader>
         <CardBody className="flex flex-col gap-4">
-          <SourceView filePath="packages/usva/src/effects/utu/utu.tsx" />
-          <SourceView filePath="packages/usva/src/effects/utu/utu-shader.ts" />
-          <SourceView filePath="packages/usva/src/effects/utu/utu-uniforms.ts" />
-          <SourceView filePath="packages/usva/src/effects/utu/utu-field.ts" />
+          <SourceView filePath="packages/usva/src/atmospheres/utu/utu.tsx" />
+          <SourceView filePath="packages/usva/src/atmospheres/utu/utu-shader.ts" />
+          <SourceView filePath="packages/usva/src/atmospheres/utu/utu-uniforms.ts" />
+          <SourceView filePath="packages/usva/src/atmospheres/utu/utu-field.ts" />
         </CardBody>
       </Card>
 

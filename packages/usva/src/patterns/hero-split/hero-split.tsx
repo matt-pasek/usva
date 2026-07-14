@@ -24,7 +24,7 @@ export interface HeroSplitProps
   visual?: React.ReactNode;
   /**
    * Painted behind everything, under a scrim. sisu puts a WebGL Plasma here; that one
-   * is provenance-locked, so this is a slot rather than a built-in effect.
+   * is provenance-locked, so this is a slot rather than a built-in atmosphere.
    */
   background?: React.ReactNode;
 }

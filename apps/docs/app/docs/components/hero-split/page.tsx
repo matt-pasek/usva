@@ -59,7 +59,7 @@ const props = [
   {
     name: "background",
     type: "React.ReactNode",
-    desc: "Painted behind everything, under a scrim. A slot, not a built-in effect.",
+    desc: "Painted behind everything, under a scrim. A slot, not a built-in atmosphere.",
   },
 ];
 
@@ -126,9 +126,9 @@ export default function HeroSplitPage() {
           <p className="text-sm text-muted">
             sisu paints a WebGL <code>Plasma</code> behind this hero. That
             component is provenance-locked, so <code>background</code> is a slot
-            rather than a built-in effect. Whatever you pass sits under a scrim
-            built from the <code>bg</code> token, so the copy stays legible over
-            it. No background, no scrim.
+            rather than a built-in atmosphere. Whatever you pass sits under a
+            scrim built from the <code>bg</code> token, so the copy stays
+            legible over it. No background, no scrim.
           </p>
         </CardBody>
       </Card>

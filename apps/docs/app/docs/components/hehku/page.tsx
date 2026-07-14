@@ -186,8 +186,9 @@ export default function HehkuPage() {
         <CardBody className="flex flex-col gap-3">
           <InstallBlock registryName="hehku" />
           <p className="text-sm text-muted">
-            Pulls in <code>ogl</code> and the shared <code>effects-core</code>{" "}
-            shell, which the registry adds for you.
+            Pulls in <code>ogl</code> and the shared{" "}
+            <code>atmospheres-core</code> shell, which the registry adds for
+            you.
           </p>
         </CardBody>
       </Card>
@@ -204,10 +205,10 @@ export default function HehkuPage() {
       <Card>
         <CardHeader>Source</CardHeader>
         <CardBody className="flex flex-col gap-4">
-          <SourceView filePath="packages/usva/src/effects/hehku/hehku.tsx" />
-          <SourceView filePath="packages/usva/src/effects/hehku/filament-curve.ts" />
-          <SourceView filePath="packages/usva/src/effects/hehku/filament.ts" />
-          <SourceView filePath="packages/usva/src/effects/hehku/filament-shader.ts" />
+          <SourceView filePath="packages/usva/src/atmospheres/hehku/hehku.tsx" />
+          <SourceView filePath="packages/usva/src/atmospheres/hehku/filament-curve.ts" />
+          <SourceView filePath="packages/usva/src/atmospheres/hehku/filament.ts" />
+          <SourceView filePath="packages/usva/src/atmospheres/hehku/filament-shader.ts" />
         </CardBody>
       </Card>
 

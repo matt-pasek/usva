@@ -1,11 +1,11 @@
+export * from "./atmospheres/hehku/index.js";
+export * from "./atmospheres/kajastus/index.js";
+export * from "./atmospheres/kuulto/index.js";
+export * from "./atmospheres/kynnos/index.js";
+export * from "./atmospheres/loimu/index.js";
+export * from "./atmospheres/utu/index.js";
+export * from "./atmospheres/vare/index.js";
 export { cn } from "./cn.js";
-export * from "./effects/hehku/index.js";
-export * from "./effects/kajastus/index.js";
-export * from "./effects/kuulto/index.js";
-export * from "./effects/kynnos/index.js";
-export * from "./effects/loimu/index.js";
-export * from "./effects/utu/index.js";
-export * from "./effects/vare/index.js";
 export {
   PageTransition,
   type PageTransitionProps,

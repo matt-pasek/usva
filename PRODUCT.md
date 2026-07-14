@@ -72,7 +72,7 @@ For component docs specifically: say what the variant is for, and say what it is
 
 - **Radix / Base UI** for *component anatomy* and the accessibility contract: the slot and part vocabulary, headless correctness, keyboard behavior treated as an API. Reject their visual neutrality; usva has opinions.
 - **Linear / Vercel Geist** for *restraint with one confident signal*: dense, trustworthy product surfaces where accent color marks state and nothing else. This is the sisu pole.
-- **React Bits / originkit.dev** for *motion ambition*: proof that a component library can carry real visual effects without feeling like a toy. Take the ceiling, not the code. React Bits Pro material is licensed and must never be vendored into this MIT repo or its public registry; Pro-derived work stays in the private package.
+- **React Bits / originkit.dev** for *motion ambition*: proof that a component library can carry real atmosphere without feeling like a toy. Take the ceiling, not the code. React Bits Pro material is licensed and must never be vendored into this MIT repo or its public registry; Pro-derived work stays in the private package.
 
 **Pattern-level bans** (on top of the shared absolute bans):
 

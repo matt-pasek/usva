@@ -87,7 +87,7 @@ export default function KynnosPage() {
           than you first notice. Concentric thumb-drawn grooves wobble, thicken,
           break and re-form, each holding a crescent of warm shadow on one side
           and a dry pale ridge on the other. It is the savi background, and the
-          cheapest effect here: a screen-space heightfield, no raymarch.
+          cheapest atmosphere here: a screen-space heightfield, no raymarch.
         </p>
       </div>
 
@@ -175,7 +175,7 @@ export default function KynnosPage() {
             A <code>prefers-reduced-motion</code> preference paints one static
             frame, which for a surface turning this slowly loses almost nothing.
             The loop pauses offscreen and on a backgrounded tab. With no WebGL2
-            the canvas never mounts. Unlike the emissive effects there is no
+            the canvas never mounts. Unlike the emissive atmospheres there is no
             blend mode on the canvas: kynnos is the ground, not a stain on it,
             so it composites normally.
           </p>
@@ -187,8 +187,9 @@ export default function KynnosPage() {
         <CardBody className="flex flex-col gap-3">
           <InstallBlock registryName="kynnos" />
           <p className="text-sm text-muted">
-            Pulls in <code>ogl</code> and the shared <code>effects-core</code>{" "}
-            shell, which the registry adds for you.
+            Pulls in <code>ogl</code> and the shared{" "}
+            <code>atmospheres-core</code> shell, which the registry adds for
+            you.
           </p>
         </CardBody>
       </Card>
@@ -205,10 +206,10 @@ export default function KynnosPage() {
       <Card>
         <CardHeader>Source</CardHeader>
         <CardBody className="flex flex-col gap-4">
-          <SourceView filePath="packages/usva/src/effects/kynnos/kynnos.tsx" />
-          <SourceView filePath="packages/usva/src/effects/kynnos/kynnos-field.ts" />
-          <SourceView filePath="packages/usva/src/effects/kynnos/kynnos-uniforms.ts" />
-          <SourceView filePath="packages/usva/src/effects/kynnos/kynnos-shader.ts" />
+          <SourceView filePath="packages/usva/src/atmospheres/kynnos/kynnos.tsx" />
+          <SourceView filePath="packages/usva/src/atmospheres/kynnos/kynnos-field.ts" />
+          <SourceView filePath="packages/usva/src/atmospheres/kynnos/kynnos-uniforms.ts" />
+          <SourceView filePath="packages/usva/src/atmospheres/kynnos/kynnos-shader.ts" />
         </CardBody>
       </Card>
 

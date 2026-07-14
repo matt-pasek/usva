@@ -159,8 +159,8 @@ export default function KuultoPage() {
           <p className="text-sm text-muted">
             <code>opacity</code> and <code>speed</code> pull it back, and{" "}
             <code>colors</code> replaces the lamps. Because the hues are lamps
-            rather than a two-colour ramp, the effect is native to no theme and
-            at home in all of them.
+            rather than a two-colour ramp, the atmosphere is native to no theme
+            and at home in all of them.
           </p>
           <KuultoDemo
             opacity={0.75}
@@ -189,8 +189,9 @@ export default function KuultoPage() {
         <CardBody className="flex flex-col gap-3">
           <InstallBlock registryName="kuulto" />
           <p className="text-sm text-muted">
-            Pulls in <code>ogl</code> and the shared <code>effects-core</code>{" "}
-            shell, which the registry adds for you.
+            Pulls in <code>ogl</code> and the shared{" "}
+            <code>atmospheres-core</code> shell, which the registry adds for
+            you.
           </p>
         </CardBody>
       </Card>
@@ -207,10 +208,10 @@ export default function KuultoPage() {
       <Card>
         <CardHeader>Source</CardHeader>
         <CardBody className="flex flex-col gap-4">
-          <SourceView filePath="packages/usva/src/effects/kuulto/kuulto.tsx" />
-          <SourceView filePath="packages/usva/src/effects/kuulto/kuulto-field.ts" />
-          <SourceView filePath="packages/usva/src/effects/kuulto/kuulto-uniforms.ts" />
-          <SourceView filePath="packages/usva/src/effects/kuulto/kuulto-shader.ts" />
+          <SourceView filePath="packages/usva/src/atmospheres/kuulto/kuulto.tsx" />
+          <SourceView filePath="packages/usva/src/atmospheres/kuulto/kuulto-field.ts" />
+          <SourceView filePath="packages/usva/src/atmospheres/kuulto/kuulto-uniforms.ts" />
+          <SourceView filePath="packages/usva/src/atmospheres/kuulto/kuulto-shader.ts" />
         </CardBody>
       </Card>
 

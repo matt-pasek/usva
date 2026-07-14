@@ -107,11 +107,11 @@ export default function LoimuPage() {
         <CardHeader>Demo, with the scrim on</CardHeader>
         <CardBody className="flex flex-col gap-3 bg-bg pt-0!">
           <p className="text-sm text-muted">
-            This effect is designed to sit under a three-layer CSS scrim, and it
-            is meant to be looked at that way. The scrim keeps a diagonal wedge
-            and destroys the rest of the frame, so the shader's job is not to
-            fill it: it is to be at its best in the wedge and fall off into void
-            everywhere else. Toggle it to see both.
+            This atmosphere is designed to sit under a three-layer CSS scrim,
+            and it is meant to be looked at that way. The scrim keeps a diagonal
+            wedge and destroys the rest of the frame, so the shader's job is not
+            to fill it: it is to be at its best in the wedge and fall off into
+            void everywhere else. Toggle it to see both.
           </p>
           <LoimuScrimDemo />
         </CardBody>
@@ -201,10 +201,10 @@ export default function LoimuPage() {
         <CardBody className="flex flex-col gap-3">
           <InstallBlock registryName="loimu" />
           <p className="text-sm text-muted">
-            Pulls in <code>ogl</code> and the shared <code>effects-core</code>{" "}
-            shell, which the registry adds for you. The scrim is yours to write;
-            it is four lines of CSS and it belongs to the page, not to the
-            effect.
+            Pulls in <code>ogl</code> and the shared{" "}
+            <code>atmospheres-core</code> shell, which the registry adds for
+            you. The scrim is yours to write; it is four lines of CSS and it
+            belongs to the page, not to the atmosphere.
           </p>
         </CardBody>
       </Card>
@@ -221,10 +221,10 @@ export default function LoimuPage() {
       <Card>
         <CardHeader>Source</CardHeader>
         <CardBody className="flex flex-col gap-4">
-          <SourceView filePath="packages/usva/src/effects/loimu/loimu.tsx" />
-          <SourceView filePath="packages/usva/src/effects/loimu/loimu-field.ts" />
-          <SourceView filePath="packages/usva/src/effects/loimu/loimu-uniforms.ts" />
-          <SourceView filePath="packages/usva/src/effects/loimu/loimu-shader.ts" />
+          <SourceView filePath="packages/usva/src/atmospheres/loimu/loimu.tsx" />
+          <SourceView filePath="packages/usva/src/atmospheres/loimu/loimu-field.ts" />
+          <SourceView filePath="packages/usva/src/atmospheres/loimu/loimu-uniforms.ts" />
+          <SourceView filePath="packages/usva/src/atmospheres/loimu/loimu-shader.ts" />
         </CardBody>
       </Card>
 
