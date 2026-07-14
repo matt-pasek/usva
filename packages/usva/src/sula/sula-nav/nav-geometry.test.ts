@@ -10,6 +10,8 @@ import {
   loadPhase,
   revealPhase,
   revealSide,
+  swellFade,
+  swellPanel,
   switchFade,
   switchProgress,
 } from "./nav-geometry.js";
@@ -283,6 +285,44 @@ describe("revealSide separation", () => {
         110,
       );
     }
+  });
+});
+
+describe("swellPanel", () => {
+  const droplet = blob({ cx: 340, cy: 28, hw: 22, hh: 22, r: 22 });
+  const rest = blob({ cx: 188, cy: 250, hw: 180, hh: 190, r: 28 });
+
+  it("is nothing but the droplet at rest, so a closed menu shows no leftover", () => {
+    const { blob: shut } = swellPanel(droplet, rest, 0);
+    expect(shut.hh).toBeLessThan(1);
+    expect(shut.cy - shut.hh).toBeCloseTo(droplet.cy + droplet.hh * 0.35, 4);
+    expect(swellFade(0)).toBe(0);
+  });
+
+  it("lands on the panel box, so the material and the DOM agree", () => {
+    const { blob: open } = swellPanel(droplet, rest, 1);
+    expect(open.hw).toBeCloseTo(rest.hw, 1);
+    expect(open.cx).toBeCloseTo(rest.cx, 1);
+    expect(open.cy + open.hh).toBeCloseTo(rest.cy + rest.hh, 1);
+    expect(swellFade(1)).toBeCloseTo(1, 5);
+  });
+
+  it("keeps its top edge inside the droplet the whole way, so it never detaches", () => {
+    const top = droplet.cy + droplet.hh * 0.35;
+    for (let t = 0; t <= 1.2; t += 0.05) {
+      const { blob: live, neck } = swellPanel(droplet, rest, t);
+      expect(live.cy - live.hh).toBeCloseTo(top, 4);
+      if (neck) expect(neck.strength).toBe(1);
+    }
+  });
+
+  it("deepens before it spreads", () => {
+    const half = swellPanel(droplet, rest, 0.5).blob;
+    const depth =
+      (half.hh * 2) / (rest.hh * 2 + (rest.cy - rest.hh - droplet.cy));
+    const spread =
+      (half.hw - droplet.hw * 0.72) / (rest.hw - droplet.hw * 0.72);
+    expect(depth).toBeGreaterThan(spread);
   });
 });
 

@@ -202,6 +202,70 @@ export function revealPhase(
   return { lead: lead.blob, trail: trail.blob, necks };
 }
 
+/** The panel deepens first and only then spreads, so it reads as the body being
+ * pulled down and then letting go sideways, not as a box scaling up. */
+const SWELL_SPREAD_START = 0.16;
+/** How far into the droplet the panel's top edge starts, as a fraction of the
+ * droplet's half-height. Overlapping means the two are one surface from the
+ * first frame: the panel is never a second shape that flies in and docks. */
+const SWELL_ROOT = 0.35;
+
+/**
+ * The menu panel grows out of the collapsed nav's own body. Where `revealSide`
+ * splits a droplet off and sends it away, this is the same material moving the
+ * other way: the body swells downward and stretches open, staying attached the
+ * whole time. Its top edge is pinned inside the droplet it came from, so it
+ * cannot read as a drawer arriving from somewhere else; only the bottom edge
+ * travels. Closing runs the identical path in reverse and ends flush inside the
+ * droplet, at which point nothing of it is left to see.
+ *
+ * `t` carries the spring's overshoot past 1: the bottom edge dips past the rest
+ * line and comes back, which is the panel landing with weight.
+ */
+export function swellPanel(
+  source: Blob,
+  rest: Blob,
+  t: number,
+): { blob: Blob; neck: Neck | null } {
+  const p = clamp01(t);
+  const deep = c1Settle(t, 0);
+  const wide = smoothstep(SWELL_SPREAD_START, 1, p);
+
+  const top = source.cy + source.hh * SWELL_ROOT;
+  const bottom = mix(top, rest.cy + rest.hh, deep);
+  const hh = Math.max((bottom - top) / 2, 0.5);
+  const hw = Math.max(mix(source.hw * 0.72, rest.hw, wide), 0.5);
+  const cx = mix(source.cx, rest.cx, wide);
+  const blob: Blob = {
+    cx,
+    cy: top + hh,
+    hw,
+    hh,
+    r: Math.min(rest.r, hw, hh),
+  };
+
+  if (deep <= 0.001) return { blob, neck: null };
+  /* A fat, short column between the droplet and the panel's shoulder. It never
+   * pinches: the panel is not separating, it is still the nav. */
+  const r = Math.max(mix(source.hh * 0.9, source.hw * 0.62, wide), NECK_MIN);
+  const neck: Neck = {
+    ax: source.cx,
+    ay: source.cy,
+    bx: cx,
+    by: Math.min(top + hh, top + source.hh),
+    r,
+    strength: 1,
+  };
+  return { blob, neck };
+}
+
+/** The panel's own contents arrive only once there is material to hold them.
+ * Late on purpose: the row nearest the bottom edge is the last thing the swell
+ * reaches, and a label lit before the glass is under it floats in mid air. */
+export function swellFade(t: number): number {
+  return smoother(smoothstep(0.62, 0.96, clamp01(t)));
+}
+
 export type SwitchRole = "hide" | "show" | "keep";
 
 /** The collapsing pill's whole morph fits inside this fraction of the switch. */

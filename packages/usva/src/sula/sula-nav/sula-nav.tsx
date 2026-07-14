@@ -23,6 +23,8 @@ import { createEnergyTracker } from "../sula-motion/energy.js";
 import {
   barSpring,
   dripRetract,
+  menuRetract,
+  menuSwell,
   type SulaMotionSpec,
   sideSpring,
   switchSpring,
@@ -32,6 +34,8 @@ import {
   loadPhase,
   revealSide,
   type SwitchRole,
+  swellFade,
+  swellPanel,
   switchFade,
   switchProgress,
 } from "./nav-geometry.js";
@@ -77,6 +81,33 @@ export interface SulaNavSatellite {
 /** The width at which item labels unfold; below it the tabs are icon-only. */
 export type SulaNavLabelsFrom = "sm" | "md" | "lg" | "xl";
 
+/** The width below which the bar folds into a menu droplet. */
+export type SulaNavCollapseBelow = "sm" | "md" | "lg";
+
+const BREAKPOINT_PX: Record<SulaNavCollapseBelow, number> = {
+  sm: 640,
+  md: 768,
+  lg: 1024,
+};
+
+function useBelow(breakpoint?: SulaNavCollapseBelow): boolean {
+  const [below, setBelow] = React.useState(false);
+  React.useEffect(() => {
+    if (!breakpoint) {
+      setBelow(false);
+      return;
+    }
+    const query = window.matchMedia(
+      `(max-width: ${BREAKPOINT_PX[breakpoint] - 0.02}px)`,
+    );
+    const sync = () => setBelow(query.matches);
+    sync();
+    query.addEventListener("change", sync);
+    return () => query.removeEventListener("change", sync);
+  }, [breakpoint]);
+  return below;
+}
+
 const LABEL_COLLAPSE: Record<SulaNavLabelsFrom, string> = {
   sm: "max-sm:max-w-0 max-sm:overflow-hidden max-sm:opacity-0",
   md: "max-md:max-w-0 max-md:overflow-hidden max-md:opacity-0",
@@ -108,6 +139,18 @@ export interface SulaNavProps
   /** Below this width the item labels fold away and the tabs are icons. */
   labelsFrom?: SulaNavLabelsFrom;
 
+  /**
+   * Below this width the routes and the satellites fold into a single menu
+   * droplet, and the nav's own body swells open into a panel holding them. The
+   * nav becomes the menu: it is not a drawer arriving beside it, which would put
+   * a second liquid field in the nav's region. Nothing is hidden to make room,
+   * because hiding routes at the one width where the bar is most constrained is
+   * amputation, not responsiveness.
+   */
+  collapseBelow?: SulaNavCollapseBelow;
+  /** Accessible name of the menu droplet. */
+  menuLabel?: string;
+
   /** Vertical nudge in px from the nav's anchor: positive is down, negative up. */
   offset?: number;
 
@@ -136,6 +179,14 @@ export interface SulaNavProps
 const DROP_HEIGHT = 124;
 /** How far below the nav the canvas reaches, so a neck can hang past the pills. */
 const CANVAS_SLACK = 64;
+/** How far below the nav the canvas reaches while the bar is collapsed, so the
+ * swollen panel and its overshoot are inside the field. A constant, not the
+ * panel's measured height: resizing the canvas mid-swell would re-init the field
+ * in the middle of the animation. The panel caps its own height to stay under it. */
+const PANEL_REACH = 560;
+/** The panel's corner radius. Its blob carries the same one, so the painted
+ * material and the DOM box are the same shape. */
+const PANEL_RADIUS = 28;
 /** Horizontal room past the nav, so a pill's cap and neck are not clipped. */
 const SLACK_X = 104;
 const MAX_DPR = 2;
@@ -191,6 +242,20 @@ function readColors(
   };
 }
 
+/** `toCanvasSpace` gives every box a stadium radius, which is right for a pill and
+ * wrong for a panel: it would round a tall box into a lozenge. */
+const panelBlob = (rect: DOMRect, box: DOMRect): Blob => {
+  const hw = rect.width / 2;
+  const hh = rect.height / 2;
+  return {
+    cx: rect.left - box.left + hw,
+    cy: rect.top - box.top + hh,
+    hw,
+    hh,
+    r: Math.min(PANEL_RADIUS, hw, hh),
+  };
+};
+
 const shift = (blob: Blob, rest: Blob): string =>
   `translate3d(${blob.cx - rest.cx}px, ${blob.cy - rest.cy}px, 0)`;
 
@@ -214,6 +279,8 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
       brandLabel,
       satellites,
       labelsFrom = "sm",
+      collapseBelow,
+      menuLabel = "Menu",
       offset = 0,
       ariaLabel = "Primary",
       fluid = true,
@@ -238,6 +305,16 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
     const viewRefs = React.useRef<Array<HTMLDivElement | null>>([]);
     const itemRefs = React.useRef<Record<string, HTMLLIElement | null>>({});
     const satRefs = React.useRef<Record<string, HTMLDivElement | null>>({});
+    const panelRef = React.useRef<HTMLDivElement | null>(null);
+    const panelBodyRef = React.useRef<HTMLDivElement | null>(null);
+
+    const collapsed = useBelow(collapseBelow);
+    const panelId = React.useId();
+    const [menuOpen, setMenuOpen] = React.useState(false);
+    const setMenuRef = React.useRef<(open: boolean) => void>(() => {});
+    React.useEffect(() => {
+      if (!collapsed) setMenuOpen(false);
+    }, [collapsed]);
 
     const leftSats = React.useMemo(
       () => (satellites ?? []).filter((s) => s.align === "left"),
@@ -267,7 +344,7 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
     const activeIndexRef = React.useRef(activeViewIndex);
     activeIndexRef.current = activeViewIndex;
     const leftCountRef = React.useRef(leftSats.length);
-    leftCountRef.current = leftSats.length;
+    leftCountRef.current = collapsed ? 0 : leftSats.length;
     const switchRef = React.useRef<(previous: number) => void>(() => {});
     const setSidesRef = React.useRef<(open: boolean) => void>(() => {});
     const sidesOpenRef = React.useRef(sidesOpen);
@@ -300,6 +377,7 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
     }, [activeItem]);
 
     /* Left to right, because bridgeNecks reads adjacency out of this order. */
+    // biome-ignore lint/correctness/useExhaustiveDependencies: `collapsed` is not read here, it decides which of these nodes exist. Its identity change is what re-inits the field on a breakpoint cross.
     const collectParts = React.useCallback(
       () =>
         [
@@ -312,7 +390,10 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
             (id) => satRefs.current[id] ?? null,
           ),
         ].filter((node): node is HTMLDivElement => node != null),
-      [leftKey, rightKey],
+      /* `collapsed` changes which nodes exist, so it must give a new identity:
+       * the field effect re-inits on it, and the row order it reads is the DOM
+       * order it now has. */
+      [leftKey, rightKey, collapsed],
     );
 
     React.useEffect(() => {
@@ -334,6 +415,7 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
       }
 
       let rest: Blob[] = [];
+      let panelRest: Blob | null = null;
       /** Blob coordinates are relative to the stage box. A width change re-centres
        * the nav, so the box shifts on screen and the two ends of a switch would be
        * measured in different frames; the last box lets a switch reconcile them. */
@@ -373,6 +455,8 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
       const dT = { value: 0 };
       const sT = { value: 0 };
       const swT = { value: 1 };
+      const mT = { value: 0 };
+      let pMenu = 0;
       let switchFrom: Blob[] = [];
       let switchTo: Blob[] = [];
       let switchRoles: SwitchRole[] = [];
@@ -416,8 +500,18 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
         canvasH = height;
         dpr = nextDpr;
 
+        const panelNode = panelRef.current;
+        const nextPanel = panelNode
+          ? panelBlob(panelNode.getBoundingClientRect(), box)
+          : null;
+        const panelChanged = restDiffers(
+          panelRest ? [panelRest] : [],
+          nextPanel ? [nextPanel] : [],
+        );
+        panelRest = nextPanel;
+
         const next = measureRestBlobs(parts, box);
-        if (!sized && !restDiffers(rest, next)) return false;
+        if (!sized && !panelChanged && !restDiffers(rest, next)) return false;
         rest = next;
         return true;
       };
@@ -448,6 +542,27 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
         });
       };
 
+      /* The panel is not a part. It is the body itself, swollen, so it never
+       * joins the row: no index in a switch, no bridge from bridgeNecks, no
+       * hover slot. It carries the one neck that holds it to the droplet it grew
+       * out of, and that neck never pinches. */
+      const menuShape = (
+        source: Blob | undefined,
+      ): { blobs: Blob[]; necks: Neck[] } => {
+        const body = panelBodyRef.current;
+        if (!source || !panelRest || mT.value <= 0.0005) {
+          if (body) body.style.opacity = "0";
+          return { blobs: [], necks: [] };
+        }
+        const swell = swellPanel(source, panelRest, mT.value);
+        if (body) {
+          const fade = swellFade(mT.value);
+          body.style.opacity = `${fade}`;
+          body.style.transform = `translate3d(0, ${(1 - fade) * -10}px, 0)`;
+        }
+        return { blobs: [swell.blob], necks: swell.neck ? [swell.neck] : [] };
+      };
+
       const loadFrame = () => {
         const parts = collectParts();
         const barIndex = activePart();
@@ -457,9 +572,11 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
         const vBar = bT.value - pBar;
         const vSide = sT.value - pSide;
         const vDrip = dT.value - pDrip;
+        const vMenu = mT.value - pMenu;
         pBar = bT.value;
         pSide = sT.value;
         pDrip = dT.value;
+        pMenu = mT.value;
 
         const load = loadPhase(barRest, bT.value, 0, dT.value);
         const barBlob = squash(load.bar, vBar, true);
@@ -498,7 +615,8 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
         /* Energy is measured velocity, not a spring's finished promise: a
          * spring reports done long after visible rest, so releasing k and
          * wobble on it reads as a phantom width shift a second late. */
-        const speed = Math.abs(vBar) + Math.abs(vSide) + Math.abs(vDrip);
+        const speed =
+          Math.abs(vBar) + Math.abs(vSide) + Math.abs(vDrip) + Math.abs(vMenu);
         energy.bump(speed);
         const liveK = mergeRadius + (K_ACTIVE - mergeRadius) * energy.value;
         /* Rest tension necks between adjacent row parts. The reach uses a
@@ -513,10 +631,11 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
           restMerge > 0.001
             ? bridgeNecks(rowBlobs, liveK * NECK_REACH, restMerge)
             : [];
-        const blobs: Blob[] = [...rowBlobs, ...load.extras];
+        const menu = menuShape(barBlob);
+        const blobs: Blob[] = [...rowBlobs, ...load.extras, ...menu.blobs];
         lastBlobs = blobs;
         updateHover(aligned);
-        drawFrame(blobs, [...necks, ...restNecks], liveK);
+        drawFrame(blobs, [...necks, ...restNecks, ...menu.necks], liveK);
       };
 
       const switchFrame = () => {
@@ -562,9 +681,10 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
         /* Same reach as the rest path, so when the switch spring's `.finished`
          * hands off to loadFrame a beat after settle the necks do not resize. */
         const necks = bridgeNecks(blobs, liveK * NECK_REACH, merge);
+        const menu = menuShape(aligned[activePart()]);
         lastBlobs = blobs;
         updateHover(aligned);
-        drawFrame(blobs, necks, liveK);
+        drawFrame([...blobs, ...menu.blobs], [...necks, ...menu.necks], liveK);
       };
 
       let textStarted = false;
@@ -631,6 +751,18 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
         sideControl = run(sT, to, sideSpring);
       };
       setSidesRef.current = setSides;
+
+      let menuControl: ReturnType<typeof animate> | null = null;
+      const setMenu = (open: boolean) => {
+        const to = open ? 1 : 0;
+        if (mT.value === to) return;
+        menuControl?.stop();
+        /* Explicit keyframes from the live value: motion caches one visual
+         * element per subject, so a reversal mid-swell must be told where it is
+         * starting from or it snaps to 0 and re-runs. */
+        menuControl = run(mT, [mT.value, to], open ? menuSwell : menuRetract);
+      };
+      setMenuRef.current = setMenu;
 
       const doSwitch = (previousIndex: number) => {
         if (!loaded) return;
@@ -755,6 +887,7 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
           ? null
           : new ResizeObserver(remeasure);
       observer?.observe(nav);
+      if (panelRef.current) observer?.observe(panelRef.current);
 
       window.addEventListener("resize", remeasure);
       void document.fonts?.ready.then(remeasure).catch(() => undefined);
@@ -778,6 +911,11 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
         for (const control of controls) control.stop();
         switchRef.current = () => {};
         setSidesRef.current = () => {};
+        setMenuRef.current = () => {};
+        if (panelBodyRef.current) {
+          panelBodyRef.current.style.opacity = "";
+          panelBodyRef.current.style.transform = "";
+        }
         for (const { node, enter, move, leave } of hoverHandlers) {
           node.removeEventListener("pointerenter", enter);
           node.removeEventListener("pointermove", move);
@@ -817,6 +955,29 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
       if (isFluid) setSidesRef.current(sidesOpen);
     }, [sidesOpen, isFluid]);
 
+    React.useEffect(() => {
+      if (isFluid) setMenuRef.current(menuOpen);
+    }, [menuOpen, isFluid]);
+
+    React.useEffect(() => {
+      if (!menuOpen) return;
+      const onKey = (event: KeyboardEvent) => {
+        if (event.key === "Escape") setMenuOpen(false);
+      };
+      const onPointer = (event: PointerEvent) => {
+        const target = event.target as Node | null;
+        if (!target) return;
+        if (navRef.current?.contains(target)) return;
+        setMenuOpen(false);
+      };
+      document.addEventListener("keydown", onKey);
+      document.addEventListener("pointerdown", onPointer);
+      return () => {
+        document.removeEventListener("keydown", onKey);
+        document.removeEventListener("pointerdown", onPointer);
+      };
+    }, [menuOpen]);
+
     // biome-ignore lint/correctness/useExhaustiveDependencies: brand/views/satellites gate which nodes exist
     React.useEffect(() => {
       const nodes = [
@@ -830,6 +991,17 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
         else node.setAttribute("inert", "");
       }
     }, [sidesOpen, activeViewIndex, brand, views, satellites]);
+
+    /* A closed panel is still laid out, because the field has to know the shape
+     * it is growing toward. Laid out but not reachable: inert, or the whole menu
+     * is in the tab order behind a bar that shows no sign of it. */
+    // biome-ignore lint/correctness/useExhaustiveDependencies: `collapsed` is what mounts the panel, so the attribute has to be set again on the render that creates it.
+    React.useEffect(() => {
+      const node = panelRef.current;
+      if (!node) return;
+      if (menuOpen) node.removeAttribute("inert");
+      else node.setAttribute("inert", "");
+    }, [menuOpen, collapsed]);
 
     const part = cn(
       "relative rounded-full",
@@ -873,8 +1045,68 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
       </div>
     );
 
+    const itemLink = (item: SulaNavItem, inPanel: boolean) => (
+      <Link
+        href={item.href}
+        aria-current={item.href === activeItem ? "page" : undefined}
+        onClick={() => {
+          onNavigate?.(item.href);
+          if (inPanel) setMenuOpen(false);
+        }}
+        className={cn(
+          "flex min-h-11 items-center gap-2 rounded-full text-sm whitespace-nowrap outline-none",
+          "text-muted transition-tint duration-fast ease-soft hover:text-ink",
+          "aria-[current=page]:text-ink focus-visible:ring-focus",
+          inPanel
+            ? "w-full gap-3 px-4 aria-[current=page]:bg-ink/6"
+            : "px-3 sm:px-4",
+        )}
+      >
+        {item.icon ? (
+          <span aria-hidden="true" className="inline-flex shrink-0">
+            {item.icon}
+          </span>
+        ) : null}
+        <span
+          className={cn(!inPanel && item.icon && LABEL_COLLAPSE[labelsFrom])}
+        >
+          {item.label}
+        </span>
+      </Link>
+    );
+
+    const menuDroplet = (
+      <button
+        type="button"
+        aria-expanded={menuOpen}
+        aria-controls={panelId}
+        aria-label={menuLabel}
+        onClick={() => setMenuOpen((open) => !open)}
+        className="grid size-11 place-items-center rounded-full text-ink outline-none focus-visible:ring-focus"
+      >
+        <span
+          aria-hidden="true"
+          className="relative flex h-4 w-5 flex-col justify-between"
+        >
+          {[0, 1, 2].map((line) => (
+            <span
+              key={line}
+              className={cn(
+                "h-px w-full origin-center rounded-full bg-current",
+                "transition-layout duration-base ease-spring motion-reduce:transition-none",
+                menuOpen && line === 0 && "translate-y-[7.5px] rotate-45",
+                menuOpen && line === 1 && "scale-x-0 opacity-0",
+                menuOpen && line === 2 && "-translate-y-[7.5px] -rotate-45",
+              )}
+            />
+          ))}
+        </span>
+      </button>
+    );
+
     const viewNodes = views.map((view, index) => {
       const isActive = index === activeViewIndex;
+      const isMenu = isActive && collapsed;
       return (
         <div
           key={view.href}
@@ -884,7 +1116,9 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
           className={cn(part, !isActive && !sidesOpen && !isFluid && "hidden")}
           data-active={isActive || undefined}
         >
-          {isActive ? (
+          {isMenu ? (
+            menuDroplet
+          ) : isActive ? (
             <ul className="flex items-center gap-1 p-1.5">
               <span
                 aria-hidden="true"
@@ -906,27 +1140,7 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
                   }}
                   className={cn("relative z-10", item.className)}
                 >
-                  <Link
-                    href={item.href}
-                    aria-current={item.href === activeItem ? "page" : undefined}
-                    onClick={() => onNavigate?.(item.href)}
-                    className={cn(
-                      "flex min-h-11 items-center gap-2 rounded-full px-3 text-sm whitespace-nowrap outline-none sm:px-4",
-                      "text-muted transition-tint duration-fast ease-soft hover:text-ink",
-                      "aria-[current=page]:text-ink focus-visible:ring-focus",
-                    )}
-                  >
-                    {item.icon ? (
-                      <span aria-hidden="true" className="inline-flex shrink-0">
-                        {item.icon}
-                      </span>
-                    ) : null}
-                    <span
-                      className={cn(item.icon && LABEL_COLLAPSE[labelsFrom])}
-                    >
-                      {item.label}
-                    </span>
-                  </Link>
+                  {itemLink(item, false)}
                 </li>
               ))}
             </ul>
@@ -956,12 +1170,49 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
         className="pointer-events-none absolute overflow-hidden"
         style={{
           top: -DROP_HEIGHT,
-          bottom: -CANVAS_SLACK,
+          bottom: collapsed ? -PANEL_REACH : -CANVAS_SLACK,
           left: -SLACK_X,
           right: -SLACK_X,
         }}
       >
         <canvas ref={canvasRef} />
+      </div>
+    ) : null;
+
+    const panelNode = collapsed ? (
+      <div
+        ref={panelRef}
+        id={panelId}
+        className={cn(
+          "absolute top-full right-0 left-0 z-10 mt-3 max-h-[440px] overflow-y-auto rounded-[28px] p-2",
+          isFluid
+            ? "transition-opacity duration-fast motion-reduce:transition-none"
+            : "border border-border bg-surface/95 shadow-raised backdrop-blur-xl",
+          !menuOpen && (isFluid ? "pointer-events-none" : "hidden"),
+        )}
+      >
+        <div ref={panelBodyRef} className={cn(isFluid && "opacity-0")}>
+          <ul className="flex flex-col gap-0.5">
+            {activeItems.map((item) => (
+              <li key={item.href}>{itemLink(item, true)}</li>
+            ))}
+          </ul>
+          {hasSatellites ? (
+            <div className="mt-2 flex flex-col gap-1 border-border border-t pt-2">
+              {[...leftSats, ...rightSats].map((satellite) => (
+                // biome-ignore lint/a11y/useSemanticElements: a fieldset is for form controls; this is a named grouping of nav controls inside a landmark
+                <div
+                  key={satellite.id}
+                  role="group"
+                  aria-label={satellite.label}
+                  className="flex min-h-11 items-center px-2"
+                >
+                  {satellite.children}
+                </div>
+              ))}
+            </div>
+          ) : null}
+        </div>
       </div>
     ) : null;
 
@@ -979,17 +1230,25 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
           /* Satellites need real corners to fly to, and the body needs to stay
            * centred no matter how unbalanced the two ends are, which is what a
            * flex row cannot give. */
-          hasSatellites
+          hasSatellites && !collapsed
             ? "grid w-full grid-cols-[1fr_auto_1fr] gap-2 sm:gap-4"
-            : "flex gap-4",
+            : collapsed
+              ? "flex w-full justify-between gap-2"
+              : "flex gap-4",
           className,
         )}
         style={navStyle}
         {...props}
       >
         {stage}
+        {panelNode}
 
-        {hasSatellites ? (
+        {collapsed ? (
+          <>
+            {brandNode}
+            {viewNodes}
+          </>
+        ) : hasSatellites ? (
           <>
             <div className="flex items-center gap-2 justify-self-start sm:gap-4">
               {brandNode}

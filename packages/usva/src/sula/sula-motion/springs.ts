@@ -28,6 +28,23 @@ export const switchSpring = {
   damping: 22,
   mass: 1.45,
 } as const;
+/** The nav's body swelling open into the menu panel: heavy, underdamped, so the
+ * bottom edge dips past its line and comes back. Same register, more mass: a
+ * panel is more material than a pill. */
+export const menuSwell = {
+  type: "spring",
+  stiffness: 90,
+  damping: 27,
+  mass: 3.9,
+} as const;
+/** Pulling the panel back in. Critically damped: material recoiling into a body
+ * it never left does not bounce. */
+export const menuRetract = {
+  type: "spring",
+  stiffness: 120,
+  damping: 49,
+  mass: 5.2,
+} as const;
 /** The leftover top tether pulls upward after the bar has landed. */
 export const dripRetract = {
   duration: 1.05,
@@ -39,6 +56,8 @@ export const textFade = { duration: 0.22, ease: [0.22, 1, 0.36, 1] } as const;
 export type SulaMotionSpec =
   | typeof barSpring
   | typeof sideSpring
+  | typeof menuSwell
+  | typeof menuRetract
   | typeof switchSpring
   | typeof dripRetract
   | typeof textFade;
