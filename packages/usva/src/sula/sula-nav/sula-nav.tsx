@@ -91,9 +91,12 @@ const BREAKPOINT_PX: Record<SulaNavCollapseBelow, number> = {
   lg: 1024,
 };
 
+const useIsomorphicLayoutEffect =
+  typeof window === "undefined" ? React.useEffect : React.useLayoutEffect;
+
 function useBelow(breakpoint?: SulaNavCollapseBelow): boolean {
   const [below, setBelow] = React.useState(false);
-  React.useEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     if (!breakpoint) {
       setBelow(false);
       return;

@@ -3,6 +3,8 @@ import {
   crestApex,
   crestLine,
   crestPath,
+  KUOHU_ARGUMENT,
+  KUOHU_NAMING,
   KUOHU_SCENE,
   PROPORTION_DIM,
   PROPORTION_SCENE,
@@ -23,32 +25,30 @@ describe("kuohu scene", () => {
     }
   });
 
-  test("the lamp is alone before any copy climbs out", () => {
+  test("the lamp is alone before anything is said about it", () => {
     const [, watchEnd] = KUOHU_SCENE.watch;
-    for (const key of [
-      "eyebrow",
-      "title",
-      "lede",
-      "bodyA",
-      "bodyB",
-      "link",
-    ] as const) {
+    for (const key of [...KUOHU_NAMING, ...KUOHU_ARGUMENT]) {
       expect(KUOHU_SCENE[key][0]).toBeGreaterThanOrEqual(watchEnd);
     }
   });
 
+  test("the lamp is named before it is argued for", () => {
+    for (const naming of KUOHU_NAMING) {
+      for (const line of KUOHU_ARGUMENT) {
+        expect(KUOHU_SCENE[line][0]).toBeGreaterThan(KUOHU_SCENE[naming][0]);
+      }
+    }
+  });
+
+  test("the naming has cleared before the lamp reaches its column", () => {
+    expect(KUOHU_SCENE.recede[1]).toBeLessThanOrEqual(KUOHU_SCENE.glide[1]);
+    expect(KUOHU_SCENE.recede[0]).toBeGreaterThanOrEqual(KUOHU_SCENE.gloss[0]);
+  });
+
   test("the copy is dealt out in reading order", () => {
-    const order = [
-      "eyebrow",
-      "title",
-      "lede",
-      "bodyA",
-      "bodyB",
-      "link",
-    ] as const;
-    for (let i = 1; i < order.length; i++) {
-      const prev = order[i - 1] as (typeof order)[number];
-      const next = order[i] as (typeof order)[number];
+    for (let i = 1; i < KUOHU_ARGUMENT.length; i++) {
+      const prev = KUOHU_ARGUMENT[i - 1] as (typeof KUOHU_ARGUMENT)[number];
+      const next = KUOHU_ARGUMENT[i] as (typeof KUOHU_ARGUMENT)[number];
       expect(KUOHU_SCENE[next][0]).toBeGreaterThan(KUOHU_SCENE[prev][0]);
     }
   });

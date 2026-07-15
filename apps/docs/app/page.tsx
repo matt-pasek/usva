@@ -7,7 +7,6 @@ import { StandingIn } from "@/components/home/standing-in";
 import { Witnesses } from "@/components/home/witnesses";
 
 /**
- * Two pinned scenes hold the page up, and each is covered by the surface
  * after it: the negative margins pull the next surface over the last 100svh
  * of the pin, so the page arrives as masses sliding over each other on a
  * curved leading edge rather than as sections stacking.

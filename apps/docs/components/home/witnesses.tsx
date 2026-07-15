@@ -1,4 +1,5 @@
 "use client";
+import { MockupShowcase } from "@matt-pasek/usva";
 import {
   type MotionValue,
   motion,
@@ -8,7 +9,7 @@ import {
   useTransform,
 } from "motion/react";
 import Link from "next/link";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Scrub } from "./tiivistyma";
 
 const ink = "var(--usva-ink)";
@@ -63,26 +64,47 @@ function Part({
   );
 }
 
+function useCompact(): boolean {
+  const [compact, setCompact] = useState(false);
+
+  useEffect(() => {
+    const query = window.matchMedia("(max-width: 767.98px)");
+    const sync = () => setCompact(query.matches);
+    sync();
+    query.addEventListener("change", sync);
+    return () => query.removeEventListener("change", sync);
+  }, []);
+
+  return compact;
+}
+
 function Screen({
   theme,
+  url,
+  compact,
   children,
 }: {
   theme: "kajo" | "sisu";
+  url: string;
+  compact: boolean;
   children: React.ReactNode;
 }) {
   return (
-    <div
-      data-theme={theme}
+    <MockupShowcase
       aria-hidden="true"
-      className="h-80 overflow-hidden rounded-xl border p-4 sm:h-88"
-      style={{
-        background: "var(--usva-bg)",
-        borderColor: "var(--usva-border-strong)",
-        color: ink,
-      }}
+      frame={compact ? "device" : "browser"}
+      url={url}
+      aspect={compact ? "9/16" : "16/10"}
+      className={compact ? "mx-auto w-full max-w-[17rem]" : undefined}
     >
-      {children}
-    </div>
+      <div
+        data-theme={theme}
+        className="h-full overflow-hidden p-4"
+        style={{ background: "var(--usva-bg)", color: ink }}
+      >
+        {children}
+      </div>
+    </MockupShowcase>
   );
 }
 
@@ -91,7 +113,13 @@ const WORK = [
   { name: "usva.", kind: "design system", year: "2026" },
 ];
 
-function KajoScreen({ build }: { build: MotionValue<number> }) {
+function KajoScreen({
+  build,
+  compact,
+}: {
+  build: MotionValue<number>;
+  compact: boolean;
+}) {
   const navY = useStage(build, 0.04, 0.2, -64, 0);
   const titleY = useStage(build, 0.16, 0.36, "115%", "0%");
   const eyebrowY = useStage(build, 0.3, 0.42, "115%", "0%");
@@ -100,13 +128,16 @@ function KajoScreen({ build }: { build: MotionValue<number> }) {
   const cardScaleA = useStage(build, 0.34, 0.52, 0.9, 1);
   const cardScaleB = useStage(build, 0.4, 0.58, 0.9, 1);
   const barScale = useStage(build, 0.54, 0.72, 0, 1);
+  /* The bars grew out of nothing while their own caption sat there from the
+   * first frame, which read as a label waiting for its chart. */
+  const nowPlaying = useStage(build, 0.54, 0.72, 0, 1);
   const cards = [
     { y: cardA, scale: cardScaleA },
     { y: cardB, scale: cardScaleB },
   ];
 
   return (
-    <Screen theme="kajo">
+    <Screen theme="kajo" url="matt-pasek.dev" compact={compact}>
       <div
         className="relative flex h-full flex-col overflow-hidden rounded-lg p-4"
         style={{
@@ -177,7 +208,10 @@ function KajoScreen({ build }: { build: MotionValue<number> }) {
               </motion.div>
             ))}
           </div>
-          <div className="mt-1 flex items-center gap-2">
+          <motion.div
+            style={{ opacity: nowPlaying }}
+            className="mt-1 flex items-center gap-2"
+          >
             <span aria-hidden="true" className="flex items-end gap-0.5">
               {[3, 6, 4, 7].map((height, index) => (
                 <motion.span
@@ -191,7 +225,7 @@ function KajoScreen({ build }: { build: MotionValue<number> }) {
             <span className="font-mono text-[9px]" style={{ color: muted }}>
               now playing · sigur rós
             </span>
-          </div>
+          </motion.div>
         </div>
       </div>
     </Screen>
@@ -209,7 +243,13 @@ const DEADLINES = [
   { when: "thu", what: "enrolment closes", late: true },
 ];
 
-function SisuScreen({ build }: { build: MotionValue<number> }) {
+function SisuScreen({
+  build,
+  compact,
+}: {
+  build: MotionValue<number>;
+  compact: boolean;
+}) {
   /* sisu does not perform: it fills. The bar climbs to the real number and the
    * rows tick in like data arriving, which is exactly what they are. */
   const railX = useStage(build, 0.06, 0.24, -110, 0);
@@ -218,7 +258,7 @@ function SisuScreen({ build }: { build: MotionValue<number> }) {
   const shown = useTransform(ects, (v) => `${Math.round(v)} / 180 ects`);
 
   return (
-    <Screen theme="sisu">
+    <Screen theme="sisu" url="sisu-plus · extension" compact={compact}>
       <div className="flex h-full gap-3">
         <motion.div
           style={{ x: railX, borderColor: border }}
@@ -356,10 +396,11 @@ export function Witnesses() {
 
   const still = useSpring(1, { stiffness: 100, damping: 30 });
   const b = reduced ? still : build;
+  const compact = useCompact();
 
   return (
-    <section ref={ref} className="relative h-[280svh]">
-      <div className="sticky top-0 flex min-h-svh items-center overflow-hidden">
+    <section ref={ref} className="relative md:h-[280svh]">
+      <div className="flex items-center overflow-hidden md:sticky md:top-0 md:min-h-svh">
         <div className="mx-auto w-full max-w-7xl px-6 py-20 sm:px-10">
           <Scrub>
             <h2 className="max-w-3xl text-3xl font-extrabold tracking-tight text-ink sm:text-5xl">
@@ -375,7 +416,7 @@ export function Witnesses() {
 
           <div className="mt-12 grid min-w-0 gap-10 md:grid-cols-2 lg:gap-14">
             <div className="flex min-w-0 flex-col gap-5">
-              <KajoScreen build={b} />
+              <KajoScreen build={b} compact={compact} />
               <div className="flex flex-col gap-1">
                 <div className="flex items-baseline gap-3">
                   <h3 className="text-lg font-semibold text-ink">
@@ -396,7 +437,7 @@ export function Witnesses() {
             </div>
 
             <div className="flex min-w-0 flex-col gap-5">
-              <SisuScreen build={b} />
+              <SisuScreen build={b} compact={compact} />
               <div className="flex flex-col gap-1">
                 <div className="flex items-baseline gap-3">
                   <h3 className="text-lg font-semibold text-ink">sisu-plus</h3>

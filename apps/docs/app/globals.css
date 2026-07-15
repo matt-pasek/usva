@@ -19,6 +19,39 @@ body:has([data-home]) {
   overflow-x: clip;
 }
 
-/* No scroll-snap on the homepage: you cannot scrub a timeline the browser keeps
- * yanking to a stop, and the weight is supposed to come from what moves rather
- * than from confiscating the wheel. */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--usva-border) transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  border: 3px solid transparent;
+  border-radius: 999px;
+  background: var(--usva-border);
+  background-clip: content-box;
+  transition: background-color var(--usva-duration-base, 200ms)
+    var(--usva-ease-soft, ease);
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in oklab, var(--usva-accent) 55%, var(--usva-border));
+  background-clip: content-box;
+}
+
+*::-webkit-scrollbar-thumb:active {
+  background: var(--usva-accent);
+  background-clip: content-box;
+}
+
+*::-webkit-scrollbar-corner {
+  background: transparent;
+}

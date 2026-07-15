@@ -30,8 +30,8 @@ const GROUPS = [
 
 export function SiteFooter() {
   return (
-    <footer className="mt-24 border-t border-border">
-      <div className="mx-auto flex w-full max-w-6xl flex-col gap-10 px-4 py-12 md:px-8">
+    <footer className="relative z-30 border-t border-border bg-bg">
+      <div className="mx-auto flex w-full max-w-7xl flex-col gap-10 px-6 py-12 sm:px-10">
         <div className="flex flex-col gap-10 sm:flex-row sm:justify-between">
           <div className="flex flex-col gap-2">
             <Link

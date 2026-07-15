@@ -40,10 +40,7 @@ export interface CopyButtonProps {
   label?: string;
 }
 
-export function CopyButton({
-  value,
-  label = "copy the command",
-}: CopyButtonProps) {
+export function useCopy(value: string) {
   const [copied, setCopied] = useState(false);
   const timer = useRef(0);
 
@@ -60,6 +57,17 @@ export function CopyButton({
        * select by hand, and the button simply does not confirm. */
     }
   };
+
+  return { copied, copy };
+}
+
+export { CheckIcon, CopyIcon };
+
+export function CopyButton({
+  value,
+  label = "copy the command",
+}: CopyButtonProps) {
+  const { copied, copy } = useCopy(value);
 
   return (
     <IconButton

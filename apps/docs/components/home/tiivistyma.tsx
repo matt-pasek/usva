@@ -22,11 +22,6 @@ import { HEAVE, type Span, WEIGHT } from "./home-motion";
 
 const RISE_FROM = 112;
 
-/* Safari will not reliably repaint the clipped region of an overflow-hidden box
- * whose child is being transformed: a glyph that leaves the mask can leave a
- * one-pixel ghost behind, and the comma in "sula is a material, not a
- * component." does exactly that on the way back up. A real clip-path plus a
- * composited layer on each side gives the compositor something it will redraw. */
 const MASK = "overflow-hidden [clip-path:inset(0)] [transform:translateZ(0)]";
 const LAYER = "[backface-visibility:hidden] will-change-transform";
 
@@ -39,8 +34,8 @@ interface MaskProps {
   as?: "div" | "span";
 }
 
-function usePercentY(progress: MotionValue<number>) {
-  const y = useTransform(progress, [0, 1], [RISE_FROM, 0]);
+function usePercentY(progress: MotionValue<number>, from = RISE_FROM) {
+  const y = useTransform(progress, [0, 1], [from, 0]);
   return useMotionTemplate`${y}%`;
 }
 
@@ -72,6 +67,12 @@ function Static({ children, className, as = "div" }: MaskProps) {
 export interface RiseProps extends MaskProps {
   delay?: number;
   duration?: number;
+  /**
+   * How far below the mask the line starts, in % of its own box. Type set
+   * tighter than its glyphs (leading below 1) overflows its box, so 112 is
+   * not enough to hide it: the hero's display lines need more.
+   */
+  from?: number;
 }
 
 /** The hero's load gesture: a line of type climbing out from behind its edge. */
@@ -79,6 +80,7 @@ export function Rise({
   children,
   delay = 0,
   duration = 1.05,
+  from = RISE_FROM,
   bleed = "pb-[0.14em]",
   as = "div",
   className,
@@ -99,7 +101,7 @@ export function Rise({
   return (
     <Mask className={`${block} ${MASK} ${bleed} ${className ?? ""}`}>
       <Inner
-        initial={{ y: `${RISE_FROM}%` }}
+        initial={{ y: `${from}%` }}
         animate={{ y: "0%" }}
         transition={{ duration, ease: HEAVE, delay }}
         className={`${block} ${LAYER}`}
@@ -160,6 +162,8 @@ export interface StagedProps extends MaskProps {
   range: Span;
   /** Render statically, for reduced motion or a collapsed layout. */
   still?: boolean;
+  /** See {@link RiseProps.from}: display type needs more than 112. */
+  from?: number;
 }
 
 /** A masked line owned by a pinned scene rather than by its own position. */
@@ -167,6 +171,7 @@ export function Staged({
   progress,
   range,
   still = false,
+  from,
   children,
   className,
   bleed,
@@ -174,7 +179,7 @@ export function Staged({
 }: StagedProps) {
   const reduced = useReducedMotion();
   const local = useTransform(progress, range as [number, number], [0, 1]);
-  const y = usePercentY(local);
+  const y = usePercentY(local, from);
 
   if (reduced || still) {
     return (

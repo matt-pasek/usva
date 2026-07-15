@@ -11,6 +11,7 @@ import {
   ProgressRow,
 } from "@matt-pasek/usva";
 import {
+  type MotionStyle,
   type MotionValue,
   motion,
   useMotionTemplate,
@@ -23,7 +24,7 @@ import Link from "next/link";
 import { type ReactNode, useEffect, useRef, useState } from "react";
 import { counts, type Intensity } from "@/lib/catalog";
 import { ATMOSPHERE_LINKS } from "./descent-layout";
-import { KUOHU_SCENE } from "./home-motion";
+import { KUOHU_SCENE, WEIGHT } from "./home-motion";
 import { Kuohu } from "./kuohu";
 import { PrimitiveShowcase } from "./primitive-showcase";
 import { Drift, Scrub, Staged } from "./tiivistyma";
@@ -97,6 +98,119 @@ function useDescent() {
   return { active, inDescent, rootRef };
 }
 
+function Ground({ progress }: { progress: MotionValue<number> }) {
+  const reduced = useReducedMotion();
+
+  const lift = useTransform(progress, [0, 0.25, 0.6], [0.55, 0.35, 0]);
+  const deep = useTransform(progress, [0.15, 0.5], [0, 0.6]);
+  const lamp = useTransform(progress, [0.42, 0.72, 0.92], [0, 0.55, 0.15]);
+
+  return (
+    <div
+      aria-hidden="true"
+      className="pointer-events-none fixed inset-0 -z-10 overflow-hidden"
+    >
+      <motion.div
+        style={reduced ? { opacity: 0.3 } : { opacity: lift }}
+        className="absolute inset-0"
+      >
+        <div
+          className="absolute inset-0"
+          style={{
+            backgroundImage:
+              "radial-gradient(120% 80% at 50% -10%, color-mix(in oklab, var(--usva-surface) 70%, transparent), transparent 70%)",
+          }}
+        />
+      </motion.div>
+
+      <motion.div
+        style={reduced ? { opacity: 0.2 } : { opacity: deep }}
+        className="absolute inset-0"
+      >
+        <div
+          className="absolute inset-0"
+          style={{
+            backgroundImage:
+              "linear-gradient(180deg, transparent 0%, color-mix(in oklab, var(--usva-ink) 4%, transparent) 45%, transparent 100%)",
+          }}
+        />
+      </motion.div>
+
+      <motion.div
+        style={reduced ? { opacity: 0.25 } : { opacity: lamp }}
+        className="absolute inset-0"
+      >
+        <div
+          className="absolute inset-0"
+          style={{
+            backgroundImage:
+              "radial-gradient(90% 55% at 50% 108%, color-mix(in oklab, var(--usva-accent) 26%, transparent), transparent 68%)",
+          }}
+        />
+      </motion.div>
+    </div>
+  );
+}
+
+function Ghost({ word }: { word: string }) {
+  return (
+    <span
+      aria-hidden="true"
+      className="-z-10 pointer-events-none absolute right-0 bottom-0 select-none font-extrabold text-[clamp(5rem,16vw,14rem)] leading-[0.8] tracking-[-0.03em] text-ink/[0.035] mr-2"
+    >
+      {word}
+    </span>
+  );
+}
+
+/* The seam carries no position of its own: asserts is a full-bleed pinned
+ * section and the other strata are max-w-7xl containers, so a seam that
+ * anchored itself would draw a different length in each. The caller puts it on
+ * the same content box every time. */
+function Seam({ index, label }: { index: number; label: string }) {
+  return (
+    <div
+      aria-hidden="true"
+      className="pointer-events-none flex items-center gap-4"
+    >
+      <span className="font-mono text-[0.625rem] tracking-[0.2em] text-faint tabular-nums">
+        {String(index).padStart(2, "0")}
+      </span>
+      <span className="h-px flex-1 bg-linear-to-r from-border via-border/40 to-transparent" />
+      <span className="font-mono text-[0.625rem] uppercase tracking-[0.2em] text-faint">
+        {label}
+      </span>
+    </div>
+  );
+}
+
+/**
+ * The content box every seam is drawn on. A stratum that is already a max-w-7xl
+ * container only needs its own padding stepped over; the full-bleed pinned one
+ * has to build the same box from scratch, and both end up the same length.
+ */
+function SeamRow({
+  index,
+  label,
+  bleed = false,
+}: {
+  index: number;
+  label: string;
+  bleed?: boolean;
+}) {
+  return (
+    <div
+      className={`pointer-events-none absolute top-0 ${
+        bleed
+          ? "inset-x-0 mx-auto w-full max-w-7xl px-6 sm:px-10"
+          : "inset-x-6 sm:inset-x-10"
+      }`}
+    >
+      <Seam index={index} label={label} />
+    </div>
+  );
+}
+
 function Rail({ active, visible }: { active: number; visible: boolean }) {
   return (
     <>
@@ -140,7 +254,7 @@ function Rail({ active, visible }: { active: number; visible: boolean }) {
 
       <div
         aria-hidden="true"
-        className={`fixed inset-x-0 top-16 z-dropdown flex items-center gap-3 border-border border-b bg-bg/80 px-6 py-2 backdrop-blur transition-opacity duration-slow lg:hidden ${
+        className={`fixed inset-x-0 top-18 z-dropdown flex items-center gap-3 border-border border-b bg-bg/80 px-6 py-2 backdrop-blur transition-opacity duration-slow lg:hidden ${
           visible ? "opacity-100" : "pointer-events-none opacity-0"
         }`}
       >
@@ -203,10 +317,75 @@ function More({ href, children }: { href: string; children: ReactNode }) {
 }
 
 /**
+ * The word the lamp is named after, set enormous and standing behind the
+ * glass, which eclipses its middle. The glass is translucent, so the letters
+ * go on living dimly inside the fluid rather than being cut in half.
+ */
+function NameBehindGlass({
+  progress,
+  still,
+}: {
+  progress: MotionValue<number>;
+  still: boolean;
+}) {
+  const leave = useTransform(progress, [...KUOHU_SCENE.recede], [1, 0]);
+  const sink = useTransform(progress, [...KUOHU_SCENE.recede], [1, 0.94]);
+
+  return (
+    <motion.div
+      aria-hidden="true"
+      style={still ? undefined : { opacity: leave, scale: sink }}
+      className="-z-10 -translate-x-1/2 -translate-y-1/2 pointer-events-none absolute top-[46%] left-1/2 select-none"
+    >
+      <Staged
+        progress={progress}
+        range={KUOHU_SCENE.word}
+        still={still}
+        from={150}
+        bleed="pb-[0.16em]"
+      >
+        <span className="block whitespace-nowrap font-extrabold text-[clamp(6rem,22vw,20rem)] leading-[0.85] tracking-[-0.05em] text-ink/45">
+          sula
+        </span>
+      </Staged>
+    </motion.div>
+  );
+}
+
+/** The etymology, read under the lamp while the word still stands behind it. */
+function Etymology({
+  progress,
+  still,
+}: {
+  progress: MotionValue<number>;
+  still: boolean;
+}) {
+  const leave = useTransform(progress, [...KUOHU_SCENE.recede], [1, 0]);
+
+  return (
+    <motion.div
+      style={still ? undefined : { opacity: leave }}
+      className="-translate-x-1/2 absolute top-full left-1/2 mt-7 flex w-max max-w-[90vw] flex-col items-center gap-2 text-center"
+    >
+      <Staged progress={progress} range={KUOHU_SCENE.etymology} still={still}>
+        <p className="text-lg text-ink text-balance sm:text-xl">
+          molten. to melt. the state a solid gives up.
+        </p>
+      </Staged>
+      <Staged progress={progress} range={KUOHU_SCENE.gloss} still={still}>
+        <p className="max-w-md text-sm text-muted text-balance">
+          the psychology, not the physics.
+        </p>
+      </Staged>
+    </motion.div>
+  );
+}
+
+/**
  * The owner's cut for asserts: the lamp arrives alone and you just watch the
- * fluid. Keep scrolling and the scene hands the lamp to its column while the
- * copy climbs out, line by line, and the boil peaks exactly while the text is
- * making the argument the boil illustrates.
+ * fluid. Then it is introduced by name, the word standing behind the glass and
+ * the etymology read under it. Only once the naming has cleared does the scene
+ * hand the lamp to its column and let the argument climb out, line by line.
  */
 function AssertsScene() {
   const ref = useRef<HTMLElement>(null);
@@ -233,14 +412,15 @@ function AssertsScene() {
   /* Translate only, never scale: SulaField sizes its canvas off the measured
    * box, so a CSS scale on the lamp leaves the fluid drawn against bounds that
    * no longer match the glass and the pool spills out of it. */
-  const lampTransform = useMotionTemplate`translateX(calc(${glide} * var(--kuohu-reach, 0rem)))`;
+  const lampTransform = useMotionTemplate`translate(calc(${glide} * var(--kuohu-reach, 0rem)), var(--kuohu-lift, 0px))`;
 
   return (
     <section
       ref={ref}
       data-stratum="asserts"
-      className="relative h-[300svh] [--kuohu-reach:0rem] lg:[--kuohu-reach:max(-19rem,-24vw)]"
+      className="relative h-[420svh] [--kuohu-lift:-50%] [--kuohu-reach:0rem] lg:[--kuohu-lift:0px] lg:[--kuohu-reach:max(-19rem,-24vw)]"
     >
+      <SeamRow index={3} label="sula" bleed />
       <div className="sticky top-0 flex h-svh items-center overflow-hidden">
         <div
           className={`grid w-full items-center gap-8 lg:grid-cols-2 lg:gap-16 ${STRATUM}`}
@@ -289,17 +469,41 @@ function AssertsScene() {
               <Staged progress={scene} range={KUOHU_SCENE.link}>
                 <More href="/docs/components">meet the {counts.sula}</More>
               </Staged>
+              <Staged
+                progress={scene}
+                range={KUOHU_SCENE.credit}
+                className="lg:hidden"
+              >
+                <p className="font-mono text-[11px] text-faint">
+                  ↳ kuohu · the surge of a boiling liquid
+                </p>
+              </Staged>
             </div>
           </div>
 
           <motion.div
-            style={reduced ? undefined : { transform: lampTransform }}
-            className="order-1 flex flex-col items-center gap-4 lg:order-2"
+            style={
+              reduced
+                ? undefined
+                : ({
+                    transform: lampTransform,
+                    "--kuohu-glide": glide,
+                  } as MotionStyle)
+            }
+            className="-z-10 absolute inset-x-0 top-1/2 order-1 flex flex-col items-center gap-4 [opacity:calc(0.26+0.74*var(--kuohu-glide,1))] max-lg:-translate-y-1/2 lg:relative lg:top-auto lg:z-0 lg:order-2 lg:translate-y-0 lg:opacity-100"
           >
+            <NameBehindGlass progress={scene} still={!!reduced} />
             <Kuohu />
-            <p className="font-mono text-[11px] text-faint">
-              ↳ kuohu · the surge of a boiling liquid
-            </p>
+            <Etymology progress={scene} still={!!reduced} />
+            <Staged
+              progress={scene}
+              range={KUOHU_SCENE.credit}
+              className="max-lg:hidden"
+            >
+              <p className="font-mono text-[11px] text-faint">
+                ↳ kuohu · the surge of a boiling liquid
+              </p>
+            </Staged>
           </motion.div>
         </div>
       </div>
@@ -409,15 +613,23 @@ function Room() {
 
 export function Descent() {
   const { active, inDescent, rootRef } = useDescent();
+  const { scrollYProgress } = useScroll({
+    target: rootRef,
+    offset: ["start end", "end end"],
+  });
+  const depth = useSpring(scrollYProgress, WEIGHT);
 
   return (
-    <div ref={rootRef} className="relative">
+    <div ref={rootRef} className="relative isolate">
+      <Ground progress={depth} />
       <Rail active={active} visible={inDescent} />
 
       <section
         data-stratum="recedes"
-        className={`flex min-h-svh items-center ${STRATUM}`}
+        className={`relative flex min-h-svh items-center overflow-hidden ${STRATUM}`}
       >
+        <SeamRow index={1} label="core · primitives" />
+        <Ghost word="recedes" />
         <div className="w-full py-20 sm:py-24">
           <StratumHeading
             intensity="recedes"
@@ -440,8 +652,10 @@ export function Descent() {
 
       <section
         data-stratum="structures"
-        className={`flex min-h-svh items-center ${STRATUM}`}
+        className={`relative flex min-h-svh items-center overflow-hidden ${STRATUM}`}
       >
+        <SeamRow index={2} label="core · patterns" />
+        <Ghost word="structures" />
         <div className="w-full py-20 sm:py-24">
           <StratumHeading
             intensity="structures"

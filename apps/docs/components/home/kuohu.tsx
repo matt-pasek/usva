@@ -15,7 +15,7 @@ export function Kuohu() {
   return (
     <div
       aria-hidden="true"
-      className="pointer-events-none relative mx-auto w-[13rem] select-none sm:w-[15rem]"
+      className="pointer-events-none relative mx-auto w-[10rem] select-none sm:w-[13rem] lg:w-[15rem]"
     >
       <div
         className="-inset-20 absolute -z-10 rounded-full opacity-60 blur-3xl"
@@ -30,7 +30,7 @@ export function Kuohu() {
         drive={convection}
         stillTime={STILL_TIME}
         seed={12}
-        className="h-[22rem] w-full rounded-[7rem] border border-border bg-surface-2/40 shadow-floating sm:h-[28rem]"
+        className="h-[17rem] w-full rounded-[7rem] border border-border bg-surface-2/40 shadow-floating sm:h-[22rem] lg:h-[28rem]"
         style={{ backgroundImage: DEPTH }}
       />
       <div

@@ -12,12 +12,6 @@ import { counts } from "@/lib/catalog";
 import { HEAVE } from "./home-motion";
 import { Rise } from "./tiivistyma";
 
-/**
- * The hero is pinned for 240svh: 40 of them are yours, then the rest of the
- * page arrives over it on a crest (the -mt-[100svh] surface in page.tsx).
- * On load the väre atmosphere floods up out of the floor as one mass, and the
- * copy climbs out of its masks while the flood is still settling.
- */
 const FLOOD_S = 1.9;
 
 export function Hero() {
@@ -29,9 +23,6 @@ export function Hero() {
     offset: ["start start", "end end"],
   });
 
-  /* While the crest rides over it the hero recedes: it sinks a little,
-   * shrinks a little, and the light on it goes down. All of it scrubbed,
-   * so backing up brings it back. */
   const copyY = useTransform(scrollYProgress, [0.15, 0.6], [0, -70]);
   const copyScale = useTransform(scrollYProgress, [0.15, 0.6], [1, 0.965]);
   const dim = useTransform(scrollYProgress, [0.18, 0.55], [1, 0.4]);
@@ -69,53 +60,72 @@ export function Hero() {
           style={
             reduced ? undefined : { y: copyY, scale: copyScale, opacity: dim }
           }
-          className="mx-auto w-full max-w-6xl px-6 pt-[clamp(7rem,16vh,10rem)] pb-[clamp(4rem,10vh,7rem)] sm:px-10"
+          className="mx-auto w-full max-w-306 px-5 sm:px-10"
         >
-          <Rise delay={0.7}>
-            <p className="text-xl font-extrabold leading-none tracking-[-0.02em] text-ink sm:text-2xl">
-              usva<span className="text-accent-alt">.</span>
-            </p>
-          </Rise>
-
-          <h1 className="mt-6 max-w-[16ch] text-[clamp(2.75rem,13vw,6rem)] font-extrabold leading-[1.02] tracking-[-0.035em] text-ink">
-            <Rise as="span" delay={0.82}>
-              beauty that
+          <div className="@container relative mx-auto w-full max-w-6xl">
+            <Rise delay={0.7}>
+              <p className="text-xl font-extrabold leading-none tracking-[-0.02em] text-ink sm:text-3xl">
+                usva<span className="text-accent-alt">.</span>
+              </p>
             </Rise>
-            <Rise as="span" delay={0.94}>
-              stays <span className="text-accent">usable.</span>
+
+            <h1 className="mt-3 text-[clamp(3rem,15.5cqi,11.5rem)] leading-[0.9] tracking-[-0.04em] text-ink sm:mt-4">
+              <Rise as="span" delay={0.82} from={150}>
+                <span className="flex flex-wrap items-baseline gap-x-[0.06em] font-extrabold">
+                  beauty
+                  <span className="font-bold text-[0.53em] tracking-tighter">
+                    that stays
+                  </span>
+                </span>
+              </Rise>
+
+              <Rise
+                as="span"
+                delay={0.94}
+                from={150}
+                bleed="pr-[0.02em]"
+                className="mt-[-0.5em] text-right @3xl:mt-[-0.32em] @3xl:translate-x-[3%]"
+              >
+                <span className="font-bold text-accent">usable.</span>
+              </Rise>
+            </h1>
+
+            <Rise delay={1.34}>
+              <p className="mt-2 text-right font-mono text-xs tracking-wide text-muted tabular-nums">
+                {counts.total} components · {counts.themes} themes ·{" "}
+                {counts.atmospheres} atmospheres
+              </p>
             </Rise>
-          </h1>
 
-          <Rise delay={1.12}>
-            <p className="mt-8 max-w-[62ch] text-lg leading-relaxed text-muted">
-              a design system has one honest credential:{" "}
-              <span className="text-ink">what it already runs</span>. this one
-              runs{" "}
-              <span className="text-ink">
-                two apps that pull in opposite directions
-              </span>
-              , off one vocabulary. everything below is the evidence. none of it
-              is a pitch.
-            </p>
-          </Rise>
+            <Rise
+              delay={1.12}
+              className="mt-5 @3xl:absolute @3xl:right-[44.5%] @3xl:bottom-8 @3xl:mt-0 @3xl:w-[50%]"
+            >
+              <p className="max-w-[52ch] text-base leading-relaxed text-muted sm:text-lg @3xl:max-w-none @3xl:text-right">
+                a design system has one honest credential:{" "}
+                <span className="text-ink">what it already runs</span>. usva
+                runs{" "}
+                <span className="text-ink">
+                  two apps that pull in opposite directions
+                </span>
+                , off one vocabulary. everything below is the evidence, not a
+                pitch.
+              </p>
+            </Rise>
+          </div>
 
-          <Rise delay={1.24}>
-            <div className="mt-8 flex flex-wrap items-center gap-4">
-              <Button asChild variant="onSurface" size="lg">
-                <Link href="/docs/get-started">read the docs →</Link>
-              </Button>
-              <Button asChild variant="outline" size="lg">
-                <Link href="/design-language">the design language</Link>
-              </Button>
-            </div>
-          </Rise>
-
-          <Rise delay={1.34}>
-            <p className="mt-5 font-mono text-xs tracking-wide text-muted tabular-nums">
-              {counts.total} components · {counts.themes} themes ·{" "}
-              {counts.atmospheres} atmospheres
-            </p>
-          </Rise>
+          <div className="flex flex-col">
+            <Rise delay={1.24} bleed="pt-2">
+              <div className="mt-5 flex flex-wrap items-center justify-center gap-4">
+                <Button asChild variant="onSurface" size="lg">
+                  <Link href="/docs/get-started">read the docs →</Link>
+                </Button>
+                <Button asChild variant="outline" size="lg">
+                  <Link href="/design-language">the design language</Link>
+                </Button>
+              </div>
+            </Rise>
+          </div>
         </motion.div>
 
         <motion.div
