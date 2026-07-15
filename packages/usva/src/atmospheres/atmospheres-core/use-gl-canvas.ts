@@ -3,6 +3,9 @@ import { useReducedMotion } from "motion/react";
 import * as React from "react";
 import { createGlSurface, type Uniforms } from "./atmospheres-gl.js";
 
+/** How long the window has to hold still before the drawing buffer is rebuilt. */
+const RESIZE_SETTLE_MS = 150;
+
 export interface GlPointer {
   /** Pixels from the container centre, y up. */
   x: number;
@@ -120,6 +123,16 @@ export function useGlCanvas(options: UseGlCanvasOptions): GlCanvas {
     let height = 0;
     let dpr = 0;
 
+    const stretch = () => {
+      const box = container.getBoundingClientRect();
+      const w = Math.ceil(box.width);
+      const h = Math.ceil(box.height);
+      if (w <= 0 || h <= 0) return false;
+      canvas.style.width = `${w}px`;
+      canvas.style.height = `${h}px`;
+      return true;
+    };
+
     const measure = () => {
       const box = container.getBoundingClientRect();
       const w = Math.ceil(box.width);
@@ -135,6 +148,15 @@ export function useGlCanvas(options: UseGlCanvasOptions): GlCanvas {
       height = h;
       dpr = nextDpr;
       return true;
+    };
+
+    let settleTimer = 0;
+    const settle = (after: () => void) => {
+      stretch();
+      window.clearTimeout(settleTimer);
+      settleTimer = window.setTimeout(() => {
+        if (measure()) after();
+      }, RESIZE_SETTLE_MS);
     };
 
     const pointer: GlPointer = { x: 0, y: 0, amount: 0, inside: false };
@@ -164,11 +186,12 @@ export function useGlCanvas(options: UseGlCanvasOptions): GlCanvas {
         typeof ResizeObserver === "undefined"
           ? null
           : new ResizeObserver(() => {
-              if (measure()) draw(stillTime);
+              settle(() => draw(stillTime));
             });
       observer?.observe(container);
       return () => {
         redrawRef.current = () => {};
+        window.clearTimeout(settleTimer);
         observer?.disconnect();
         surface.dispose();
         canvas.style.width = "";
@@ -240,8 +263,7 @@ export function useGlCanvas(options: UseGlCanvasOptions): GlCanvas {
       typeof ResizeObserver === "undefined"
         ? null
         : new ResizeObserver(() => {
-            measure();
-            remeasure();
+            settle(remeasure);
           });
     observer?.observe(container);
 
@@ -250,6 +272,7 @@ export function useGlCanvas(options: UseGlCanvasOptions): GlCanvas {
     return () => {
       killed = true;
       redrawRef.current = () => {};
+      window.clearTimeout(settleTimer);
       if (trackPointer) {
         container.removeEventListener("pointermove", onMove);
         container.removeEventListener("pointerleave", onLeave);

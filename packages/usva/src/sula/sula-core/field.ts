@@ -188,8 +188,8 @@ export function createField(options: CreateFieldOptions): NavField | null {
     },
     dispose() {
       canvas.removeEventListener("webglcontextlost", handleLost);
-      const lose = gl.getExtension("WEBGL_lose_context");
-      lose?.loseContext();
+      program.remove();
+      mesh.geometry.remove();
     },
   };
 }

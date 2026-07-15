@@ -6,21 +6,21 @@ import { useCallback, useEffect, useState } from "react";
 import { CommandPalette } from "./command-palette";
 import { ThemeSwitcher } from "./ThemeSwitcher";
 
-const icon = (path: string) => (
+const icon = (children: React.ReactNode) => (
   <svg
-    viewBox="0 0 16 16"
+    viewBox="0 0 24 24"
+    width="20"
+    height="20"
     fill="none"
     stroke="currentColor"
-    strokeWidth="1.3"
+    strokeWidth="1.8"
     strokeLinecap="round"
     strokeLinejoin="round"
-    className="size-4"
+    className="size-5 shrink-0"
     aria-hidden="true"
   >
     <title>{""}</title>
-    {path.split("|").map((d) => (
-      <path key={d} d={d} />
-    ))}
+    {children}
   </svg>
 );
 
@@ -34,32 +34,75 @@ const ROUTES: SulaNavItem[] = [
   {
     href: "/docs",
     label: "docs",
-    icon: icon("M2 2h5v5H2z|M9 2h5v5H9z|M2 9h5v5H2z|M9 9h5v5H9z"),
+    icon: icon(
+      <>
+        <path d="M12 7.5v13" />
+        <path d="M12 7.5C12 5.6 10 4 7.5 4H3v12.5h4.5c2.5 0 4.5 1.6 4.5 4z" />
+        <path d="M12 7.5C12 5.6 14 4 16.5 4H21v12.5h-4.5c-2.5 0-4.5 1.6-4.5 4z" />
+      </>,
+    ),
   },
   {
     href: "/design-language",
     label: "design language",
-    icon: icon("M8 1.5 14 5v6l-6 3.5L2 11V5z|M8 1.5v13|M2 5l6 3.5L14 5"),
+    icon: icon(
+      <>
+        <path d="M3.5 13.5h7v7h-7z" />
+        <path d="M15 3.5 21 13h-12z" />
+      </>,
+    ),
   },
   {
     href: "/themes",
     label: "themes",
-    icon: icon("M8 1.5a6.5 6.5 0 1 0 0 13z|M8 1.5a6.5 6.5 0 0 1 0 13"),
+    icon: icon(
+      <>
+        <circle cx="12" cy="12" r="8.5" />
+        <path
+          d="M12 3.5a8.5 8.5 0 0 1 0 17z"
+          fill="currentColor"
+          stroke="none"
+        />
+      </>,
+    ),
   },
   {
     href: "/tokens",
     label: "tokens",
-    icon: icon("M8 1.5 14.5 8 8 14.5 1.5 8z"),
+    icon: icon(
+      <>
+        <path d="M12 3 21 9.5 12 21 3 9.5z" />
+        <path d="M3 9.5h18" />
+        <path d="M9 9.5 12 21l3-11.5" />
+      </>,
+    ),
   },
   {
     href: "/recipes",
     label: "recipes",
-    icon: icon("M3 3h10|M3 8h10|M3 13h6"),
+    icon: icon(
+      <>
+        <path d="M9.5 6.5H21" />
+        <path d="M9.5 12H21" />
+        <path d="M9.5 17.5H21" />
+        <circle cx="4.5" cy="6.5" r="1.4" />
+        <circle cx="4.5" cy="12" r="1.4" />
+        <circle cx="4.5" cy="17.5" r="1.4" />
+      </>,
+    ),
   },
   {
     href: "/composer",
     label: "composer",
-    icon: icon("M2 8h12|M8 2v12"),
+    icon: icon(
+      <>
+        <path d="M3.5 3.5h7v7h-7z" />
+        <path d="M13.5 3.5h7v7h-7z" />
+        <path d="M3.5 13.5h7v7h-7z" />
+        <path d="M17 14v6" />
+        <path d="M14 17h6" />
+      </>,
+    ),
   },
 ];
 
@@ -67,7 +110,7 @@ const VIEWS: SulaNavView[] = [
   {
     href: "/",
     label: "usva",
-    icon: icon("M2 8h12"),
+    icon: icon(<path d="M4 12h16" />),
     items: ROUTES,
   },
 ];
@@ -103,15 +146,10 @@ export function SiteNav({ onOpenSearch }: { onOpenSearch?: () => void }) {
   }, [openSearch]);
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 overflow-x-clip px-3 pt-3 sm:px-5 sm:pt-4">
-      {/* The nav floats, so scrolled content passes beneath it, and through it:
-          the glass is thin enough to read a paragraph through, which looks like
-          a collision. The band gives the chrome a ground of its own. It is
-          masked out at the bottom, so an atmosphere behind it goes soft rather
-          than getting a hard edge cut across it. */}
+    <header className="fixed inset-x-0 top-0 z-50 overflow-x-clip px-3 pt-6 sm:px-5 sm:pt-7">
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-24 bg-gradient-to-b from-bg/85 to-bg/0 backdrop-blur-sm [mask-image:linear-gradient(to_bottom,#000_55%,transparent)] sm:h-28"
+        className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-24 bg-linear-to-b from-bg/85 to-bg/0 backdrop-blur-sm [mask-image:linear-gradient(to_bottom,#000_55%,transparent)] sm:h-28"
       />
       <SulaNav
         ariaLabel="Primary"

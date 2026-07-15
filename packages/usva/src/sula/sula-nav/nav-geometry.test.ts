@@ -183,6 +183,27 @@ describe("revealPhase", () => {
     expect(bridges(overshot.lead, overshot.trail)).toHaveLength(2);
   });
 
+  it("spends the bridge's slack on the bounce, so a pill does not land dead", () => {
+    const restK = 14;
+    const near = blob({ cx: 630, cy: 40, hw: 22, hh: 22, r: 22 });
+    const settled = revealSide(bar, near, 1, restK).blob;
+    const overshot = revealSide(bar, near, 1.2, restK).blob;
+
+    expect(overshot.cx).toBeGreaterThan(settled.cx + 1);
+    expect(
+      bridgeNecks([bar, overshot], restK * 1.15, 0.32).length,
+    ).toBeGreaterThan(0);
+  });
+
+  it("lets a satellite bound past the bridge's reach overshoot freely", () => {
+    const restK = 14;
+    const corner = blob({ cx: 1200, cy: 40, hw: 30, hh: 22, r: 22 });
+    const settled = revealSide(bar, corner, 1, restK).blob;
+    const overshot = revealSide(bar, corner, 1.2, restK).blob;
+
+    expect(overshot.cx - settled.cx).toBeGreaterThan(10);
+  });
+
   it("carries position past the rest line for a settle wobble, size stays put", () => {
     const result = revealPhase(bar, left, right, 1.2, K);
     // Each side overshoots outward past its rest centre, then the spring pulls back.

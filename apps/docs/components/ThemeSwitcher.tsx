@@ -1,49 +1,27 @@
 "use client";
-import { cn } from "@matt-pasek/usva/cn";
+import { SulaSegmented } from "@matt-pasek/usva";
 import { THEMES } from "@/lib/catalog";
 import { type ThemeId, useTheme } from "./theme-provider";
 
-const HINT: Record<ThemeId, string> = {
-  kajo: "faint glow. the dark, expressive one.",
-  sisu: "grit. the dashboard one.",
-  savi: "clay. the light one.",
-};
+const ITEMS = THEMES.map((id) => ({ value: id, label: id }));
 
 /**
- * The theme control, as it sits on the nav's glass. It paints no surface of its
- * own: the pill under it is the nav's field, so this is only the type and the
- * indicator.
+ * The theme control is the library's own segmented control rather than a bespoke
+ * copy of it: it lives inside the nav's theme satellite, which is the nav's own
+ * body, so the fluid indicator here is that one body's material moving under the
+ * label it selects.
  */
 export function ThemeSwitcher() {
   const { theme, setTheme } = useTheme();
 
   return (
-    <div
-      role="radiogroup"
+    <SulaSegmented
       aria-label="Theme"
-      className="flex min-h-11 items-center gap-0.5 p-1.5"
-    >
-      {THEMES.map((id) => {
-        const active = id === theme;
-        return (
-          // biome-ignore lint/a11y/useSemanticElements: same as the library's SegmentedControl, this needs a button with a custom indicator that a native radio input cannot render
-          <button
-            key={id}
-            type="button"
-            role="radio"
-            aria-checked={active}
-            title={HINT[id]}
-            onClick={() => setTheme(id)}
-            className={cn(
-              "rounded-full px-2.5 py-1.5 font-mono text-xs whitespace-nowrap outline-none",
-              "transition-tint duration-fast ease-soft focus-visible:ring-focus",
-              active ? "bg-ink/6 text-ink" : "text-muted hover:text-ink",
-            )}
-          >
-            {id}
-          </button>
-        );
-      })}
-    </div>
+      className="m-1"
+      size="sm"
+      items={ITEMS}
+      value={theme}
+      onValueChange={(value) => setTheme(value as ThemeId)}
+    />
   );
 }

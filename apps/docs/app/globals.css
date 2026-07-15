@@ -11,4 +11,14 @@ body {
   background: var(--usva-bg);
   color: var(--usva-ink);
   font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
 }
+
+html:has([data-home]),
+body:has([data-home]) {
+  overflow-x: clip;
+}
+
+/* No scroll-snap on the homepage: you cannot scrub a timeline the browser keeps
+ * yanking to a stop, and the weight is supposed to come from what moves rather
+ * than from confiscating the wheel. */

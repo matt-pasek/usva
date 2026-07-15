@@ -1,4 +1,9 @@
-import { type Blob, NECK_MIN, type Neck } from "../sula-core/geometry.js";
+import {
+  type Blob,
+  BRIDGE_REACH,
+  NECK_MIN,
+  type Neck,
+} from "../sula-core/geometry.js";
 import {
   c1Settle,
   clamp01,
@@ -120,6 +125,11 @@ const SIDE_PINCH_END = 0.94;
 const NECK_STRETCH_FREE = 40;
 const NECK_STRETCH_BREAK = 104;
 
+/** How much of the bridge's remaining slack the settle wobble is allowed to
+ * spend. The rest is margin: the merge radius breathes with velocity, so a
+ * bounce that lands exactly on the reach would still flicker the neck. */
+const BOUNCE_OF_SLACK = 0.75;
+
 /**
  * A side emerges the way a drop separates from a larger one. At rest it is fully
  * absorbed inside the bar's end, so nothing pokes out and the closed nav has clean
@@ -154,26 +164,40 @@ export function revealSide(
 
   const startCx = barEnd - dir * rest.hw * 0.62;
   const rawCx = mix(startCx, rest.cx, travel);
-  /* Keep the spring's outer turn inside the standing bridge's safe reach. At
-   * the turning point velocity briefly hits zero, so the live merge radius also
-   * relaxes; an uncapped overshoot can otherwise disconnect for one frame and
-   * reconnect on the rebound. */
-  const maxOvershoot = k * 0.25;
-  const cx =
-    dir > 0
-      ? Math.min(rawCx, rest.cx + maxOvershoot)
-      : Math.max(rawCx, rest.cx - maxOvershoot);
-  const cy = mix(bar.cy, rest.cy, travel);
-  const blob: Blob = { cx, cy, hw, hh, r: Math.min(hw, hh) };
 
-  if (travel <= 0) return { blob, neck: null };
-  const inner = cx - dir * hw;
-  const stretch = Math.abs(inner - barEnd);
+  const rawInner = rawCx - dir * hw;
+  const stretch = Math.abs(rawInner - barEnd);
   const pinch = Math.max(
     smoothstep(SIDE_PINCH_START, SIDE_PINCH_END, p),
     smoothstep(NECK_STRETCH_FREE, NECK_STRETCH_BREAK, stretch),
   );
+
+  /* The spring's outer turn must not tear the standing bridge: at the turning
+   * point velocity hits zero, so the live merge radius relaxes too, and an
+   * overshoot past the bridge's reach disconnects the body for one frame and
+   * reconnects it on the rebound.
+   *
+   * But how far the pill may bounce is not a constant, it is whatever slack the
+   * bridge has left. A flat cap spent the same tiny budget on a pill sitting
+   * against the bar and on one thrown at a corner, so the throw landed dead on
+   * its rest line: the eye reads that as the spring hitting a wall, not as an
+   * underdamped body settling. A satellite that comes to rest beyond the reach
+   * has no bridge to protect at all, and is free to overshoot as far as the
+   * spring carries it. */
+  const restGap = Math.abs(rest.cx - bar.cx) - rest.hw - bar.hw;
+  const slack = k * BRIDGE_REACH - restGap;
+  const cx =
+    slack <= 0
+      ? rawCx
+      : dir > 0
+        ? Math.min(rawCx, rest.cx + slack * BOUNCE_OF_SLACK)
+        : Math.max(rawCx, rest.cx - slack * BOUNCE_OF_SLACK);
+  const cy = mix(bar.cy, rest.cy, travel);
+  const blob: Blob = { cx, cy, hw, hh, r: Math.min(hw, hh) };
+
+  if (travel <= 0) return { blob, neck: null };
   if (pinch >= 1) return { blob, neck: null };
+  const inner = cx - dir * hw;
   const r = Math.max(rest.hh * mix(0.86, 0.08, pinch), NECK_MIN);
   const neck: Neck = {
     ax: barEnd,

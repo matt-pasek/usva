@@ -178,6 +178,16 @@ export interface SulaNavProps
  * separates near it, rather than trailing a long thread down the whole card.
  */
 const DROP_HEIGHT = 124;
+/** The shortest fall worth drawing. The drop's edge is never pushed closer to the
+ * bar than this, so even a nav pinned tight to the top of the window pours rather
+ * than simply materialising. */
+const MIN_FALL = 50;
+/** How far above the visible edge the liquid is sourced. The gathering bulb is
+ * the ugly part of a drip: on screen it reads as a stray pill parked at the top
+ * of the window, with nothing holding it up. Sourced this far above the edge, the
+ * bulb forms out of frame and only the fall, the neck and the pinch are seen,
+ * which is the whole illusion: the material comes from somewhere off-page. */
+const EDGE_ABOVE = 32;
 /** How far below the nav the canvas reaches, so a neck can hang past the pills. */
 const CANVAS_SLACK = 64;
 /** How far below the nav the canvas reaches while the bar is collapsed, so the
@@ -524,6 +534,7 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
       const activePart = () => activeIndexRef.current + brandOffset();
 
       const drawFrame = (blobs: Blob[], necks: Neck[], liveK: number) => {
+        if (disposed) return;
         field.draw({
           packed: packUniforms({ blobs, necks, k: liveK }, dpr, canvasH),
           k: liveK * dpr,
@@ -564,6 +575,18 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
         return { blobs: [swell.blob], necks: swell.neck ? [swell.neck] : [] };
       };
 
+      /* The liquid has to come out of an edge the viewer can actually see. The
+       * stage hangs DROP_HEIGHT above the bar to give the drip room, but a nav
+       * pinned near the top of the window puts most of that room *above* the
+       * window: the bulb gathers, necks and pinches offscreen, and the bar simply
+       * appears already landed. So the edge is whichever is lower, the stage's own
+       * top or the top of the window, and the drop always pours into view. */
+      const visibleEdge = (barRest: Blob): number => {
+        const clipped = stageBox ? Math.max(0, -stageBox.top) : 0;
+        const latest = Math.max(0, barRest.cy - barRest.hh - MIN_FALL);
+        return Math.max(0, Math.min(clipped - EDGE_ABOVE, latest));
+      };
+
       const loadFrame = () => {
         const parts = collectParts();
         const barIndex = activePart();
@@ -579,7 +602,12 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
         pDrip = dT.value;
         pMenu = mT.value;
 
-        const load = loadPhase(barRest, bT.value, 0, dT.value);
+        const load = loadPhase(
+          barRest,
+          bT.value,
+          visibleEdge(barRest),
+          dT.value,
+        );
         const barBlob = squash(load.bar, vBar, true);
         /* The row in left-to-right part order (brand, active bar, side pills),
          * so bridgeNecks can hold a neck between each adjacent pair. */

@@ -1,311 +1,156 @@
-import { Badge, Card, CardBody, CardHeader } from "@matt-pasek/usva";
 import type { Metadata } from "next";
+import Link from "next/link";
+import { ColorRoles } from "@/components/language/color-roles";
+import { IntensityDial } from "@/components/language/intensity-dial";
+import { MotionTiers } from "@/components/language/motion-tiers";
+import { TypeScale } from "@/components/language/type-scale";
 import { buildTokenReference } from "@/lib/token-reference";
 
 export const metadata: Metadata = {
   title: "Design language",
   description:
-    "usva.'s principles, voice, and an auto-generated reference of every token — beauty that stays usable.",
+    "The rules behind usva.: one type family, the role tokens, three motion registers, and a dial that shows exactly how much attention a screen is allowed to ask for.",
 };
 
-const principles = [
+const PRINCIPLES = [
   {
-    title: "Beauty that stays usable",
-    body: "The thesis. Both consumer apps — the presentational kajo pole and the usable sisu pole — map onto one token vocabulary. Neither wins at the other's expense.",
+    title: "authored, not assembled",
+    body: "this is not a bag of components someone scraped together. it has a point of view, and the point of view is what you are taking on. if a choice here annoys you, it was still a choice.",
   },
   {
-    title: "Role-based tokens, never raw values",
-    body: "Every color, space, radius, and duration is consumed by semantic role — accent, surface, danger — never as a hardcoded hex or pixel. Themes swap; call sites don't change.",
+    title: "one grammar, three registers",
+    body: "kajo is loud, sisu is working, savi is quiet. they are not three design systems. they are one vocabulary spoken at three volumes, and every component speaks all three without knowing which one it is in.",
   },
   {
-    title: "Two accents, paired",
-    body: "usva pairs a design accent and a dev accent everywhere the language shows its own construction — never one alone.",
-    accentPair: true,
+    title: "reusable before impressive",
+    body: "a thing that only works in the demo is not a component, it is a screenshot. if it cannot survive a long label, a narrow column and a screen reader, it does not ship, however good it looked in the tweet.",
   },
   {
-    title: "A11y-first",
-    body: "Contrast, focus rings, and reduced-motion fallbacks are load-bearing, not polish passed at the end.",
+    title: "coherence beats proliferation",
+    body: "I would rather have fifteen components you can predict than ninety you have to check. every new one has to earn its place against the ones already here, and most candidates lose.",
   },
-  {
-    title: "Restrained spring motion",
-    body: "Motion earns its keep: soft entrances, snappy feedback, nothing bouncy enough to distract from the task underneath.",
-  },
-];
-
-/**
- * Every name in usva is a Finnish noun for a thing that happens, never for an
- * object. They fall into three families, and each theme sits in one.
- */
-const vocabulary = [
-  {
-    family: "the system",
-    words: [
-      {
-        word: "usva",
-        gloss:
-          "mist; fog. the one that hangs low and close, softening every edge without hiding anything behind it. you can still walk through it and still see where you're going. that's the whole thesis of the system in one word: beauty that stays usable; a veil that never becomes a wall.",
-      },
-      {
-        word: "kajo",
-        gloss:
-          "a faint glimmer, shimmer, or gleam of light. never the source, only the trace of one: the glow left on the sky by something you can't see yet. it is the least light that still carries, and it asks you to look before it gives anything up. that restraint is the presentational pole; kajo is loud the way a held breath is loud.",
-      },
-      {
-        word: "sisu",
-        gloss:
-          "stoic determination, grit, bravery, and resilience. extraordinary inner strength and willpower that allows individuals to push through extreme adversity and keep going when they feel they have absolutely nothing left.",
-      },
-      {
-        word: "savi",
-        gloss:
-          "clay. earth that takes a shape from the hand and holds it. wet, workable, unglamorous ground that only becomes form under pressure; and once fired, keeps that form for a thousand years. it's the material counterpart to sisu: both are about what withstands.",
-      },
-    ],
-  },
-  {
-    family: "light",
-    words: [
-      {
-        word: "kajastus",
-        gloss:
-          "the glow spreading along the horizon; light reflected onto the sky. it shares its root with kajo, and it is the kajo showpiece.",
-      },
-      {
-        word: "kuulto",
-        gloss:
-          "translucency or the state of being dimly visible. something that light passes through or reflects softly, like a shimmer, glow, or gleam.",
-      },
-      {
-        word: "hehku",
-        gloss:
-          "glow, radiance, or incandescence. a warm, vibrant emission of light or heat, such as the embers in a fireplace, a person's complexion, or a general feeling of vitality.",
-      },
-      {
-        word: "loimu",
-        gloss:
-          "blaze, flame or glow. bright flicker of a campfire, the northern lights, or a radiating heat.",
-      },
-      {
-        word: "väre",
-        gloss:
-          "ripple, shimmer, or glimmer. slight, sparkling movement or wave on the surface of a liquid, or a soft, vibrating light.",
-      },
-    ],
-  },
-  {
-    family: "water and earth",
-    words: [
-      {
-        word: "utu",
-        gloss:
-          "light water vapor suspended in the air, especially in the early morning or lingering over lakes and fields.",
-      },
-      {
-        word: "kynnös",
-        gloss:
-          "freshly turned earth; land newly broken by the plough. the savi background.",
-      },
-    ],
-  },
-];
-
-const voicePoints = [
-  "first-person, lowercase-leaning — usva. speaks as itself, not as marketing copy",
-  "confident but unshowy: a belief stated plainly, then earned with the work that follows",
-  "keywords get an accent tint, not bold — color carries weight the way tokens do",
-  "no emoji — the accent system already does the emphasis emoji would fake",
-  "→ over arrow words, when an affordance genuinely needs pointing at",
-  "numbers are honest: no invented precision, no rounding up",
 ];
 
 export default function DesignLanguagePage() {
-  const tokens = buildTokenReference();
+  const { color } = buildTokenReference();
 
   return (
-    <main className="mx-auto flex max-w-3xl flex-col gap-12 p-10">
-      <header className="flex flex-col gap-3">
-        <Badge tone="accent">design language</Badge>
-        <h1 className="text-3xl font-semibold text-ink">
-          beauty that stays usable
+    <main className="mx-auto flex max-w-5xl flex-col gap-20 px-6 py-16 sm:px-10">
+      <header className="@container flex max-w-2xl flex-col gap-4">
+        <span className="font-mono text-muted text-xs uppercase tracking-widest">
+          design language
+        </span>
+        <h1 className="font-extrabold text-[clamp(2.25rem,6cqi,3.5rem)] text-ink leading-[1.02] tracking-[-0.03em]">
+          the rules, and why they are the rules
         </h1>
-        <p className="max-w-xl text-muted">
-          usva. is a design <em>language</em> before it's a component library —
-          principles and voice, then tokens, then the primitives that carry
-          them. This page is the first written slice of it: the principles
-          below, a voice summary, and a token reference generated straight from
-          the tokens package, so it can never drift.
+        <p className="text-muted">
+          a component library tells you what exists. a design language tells you
+          what to do with it, and what not to. this page is the second one. the
+          last section is a dial you can drag, and it will refuse you.
         </p>
       </header>
 
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold text-ink">Principles</h2>
+      <section className="flex flex-col gap-6">
+        <h2 className="font-bold text-2xl text-ink tracking-tight">
+          principles
+        </h2>
         <div className="grid gap-4 sm:grid-cols-2">
-          {principles.map((p) => (
-            <Card key={p.title}>
-              <CardHeader>
-                {p.accentPair ? (
-                  <span>
-                    <span className="text-accent">Two</span> accents,{" "}
-                    <span className="text-accent-alt">paired</span>
-                  </span>
-                ) : (
-                  p.title
-                )}
-              </CardHeader>
-              <CardBody className="text-sm text-muted">{p.body}</CardBody>
-            </Card>
+          {PRINCIPLES.map((principle) => (
+            <article
+              key={principle.title}
+              className="flex flex-col gap-2 rounded-lg border border-border bg-surface p-5"
+            >
+              <h3 className="font-semibold text-ink">{principle.title}</h3>
+              <p className="text-muted text-sm">{principle.body}</p>
+            </article>
           ))}
         </div>
-      </section>
-
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold text-ink">the vocabulary</h2>
-        <p className="max-w-xl text-sm text-muted">
-          every name is a finnish word for something that <em>happens</em>, not
-          for an object: a gleam, a glow along the horizon, turned earth. a
-          background is an environment, so it is never named after a thing you
-          could point at.
-        </p>
-        <div className="flex flex-col gap-4">
-          {vocabulary.map((group) => (
-            <Card key={group.family}>
-              <CardHeader>{group.family}</CardHeader>
-              <CardBody>
-                <dl className="flex flex-col gap-3">
-                  {group.words.map((entry) => (
-                    <div key={entry.word} className="flex flex-col gap-1">
-                      <dt className="font-mono text-accent text-sm">
-                        {entry.word}
-                      </dt>
-                      <dd className="text-muted text-sm">{entry.gloss}</dd>
-                    </div>
-                  ))}
-                </dl>
-              </CardBody>
-            </Card>
-          ))}
-        </div>
-      </section>
-
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold text-ink">Voice summary</h2>
-        <Card>
-          <CardBody>
-            <ul className="flex flex-col gap-2 text-sm text-muted">
-              {voicePoints.map((point) => (
-                <li key={point} className="flex gap-2">
-                  <span className="text-accent">→</span>
-                  <span>{point}</span>
-                </li>
-              ))}
-            </ul>
-            <p className="mt-4 text-xs text-muted">
-              Full Voice &amp; Tone reference lands in Phase 4.
-            </p>
-          </CardBody>
-        </Card>
       </section>
 
       <section className="flex flex-col gap-6">
-        <div className="flex flex-col gap-2">
-          <h2 className="text-xl font-semibold text-ink">Token reference</h2>
-          <p className="text-sm text-muted">
-            Generated by <code>buildTokenReference()</code> from the tokens
-            package's own exports — nothing here is hand-transcribed.
+        <div className="flex max-w-2xl flex-col gap-3">
+          <h2 className="font-bold text-2xl text-ink tracking-tight">type</h2>
+          <p className="text-muted">
+            one family. Fira Sans carries the display line and the smallest
+            label, and a second sans would read as indecision, not range. the
+            personality comes from the weight extremes and from tracking that
+            gets tighter as the type gets bigger.
+          </p>
+          <p className="text-muted text-sm">
+            the mono is the only permitted second voice, and it has exactly one
+            job: structural annotation. indices, tags, metadata, code. never
+            prose. the moment a paragraph is set in mono it stops being a
+            document and starts being terminal cosplay.
           </p>
         </div>
+        <TypeScale />
+      </section>
 
-        <Card>
-          <CardHeader>Color roles</CardHeader>
-          <CardBody>
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-              {tokens.color.map(({ name }) => (
-                <div key={name} className="flex items-center gap-2">
-                  <div
-                    className={`h-8 w-8 shrink-0 rounded-md border border-border bg-${name}`}
-                  />
-                  <span className="font-mono text-xs text-muted">{name}</span>
-                </div>
-              ))}
-            </div>
-          </CardBody>
-        </Card>
-
-        <Card>
-          <CardHeader>Spacing scale</CardHeader>
-          <CardBody>
-            <div className="flex flex-col gap-1.5">
-              {tokens.spacing.map(({ name, value }) => (
-                <div key={name} className="flex items-center gap-3">
-                  <span className="w-10 shrink-0 font-mono text-xs text-muted">
-                    {name}
-                  </span>
-                  <div
-                    className="h-2 rounded-full bg-accent"
-                    style={{ width: value }}
-                  />
-                  <span className="font-mono text-xs text-ink">{value}</span>
-                </div>
-              ))}
-            </div>
-          </CardBody>
-        </Card>
-
-        <div className="grid gap-4 sm:grid-cols-2">
-          <Card>
-            <CardHeader>Radius</CardHeader>
-            <CardBody>
-              <div className="flex flex-col gap-3">
-                {tokens.radius.map(({ name, value }) => (
-                  <div key={name} className="flex items-center gap-3">
-                    <div
-                      className="h-8 w-8 shrink-0 border border-border-strong bg-surface-2"
-                      style={{ borderRadius: value }}
-                    />
-                    <span className="font-mono text-xs text-muted">{name}</span>
-                    <span className="font-mono text-xs text-ink">{value}</span>
-                  </div>
-                ))}
-              </div>
-            </CardBody>
-          </Card>
-
-          <Card>
-            <CardHeader>Motion durations</CardHeader>
-            <CardBody>
-              <div className="flex flex-col gap-2">
-                {tokens.motion.map(({ name, value }) => (
-                  <div
-                    key={name}
-                    className="flex items-center justify-between font-mono text-xs"
-                  >
-                    <span className="text-muted">{name}</span>
-                    <span className="text-ink">{value}</span>
-                  </div>
-                ))}
-              </div>
-            </CardBody>
-          </Card>
+      <section className="flex flex-col gap-6">
+        <div className="flex max-w-2xl flex-col gap-3">
+          <h2 className="font-bold text-2xl text-ink tracking-tight">color</h2>
+          <p className="text-muted">
+            {color.length} role tokens, and you never write a hex. you write a
+            role, the theme decides what it means, and the same call site works
+            in all three. two of these rules are worth saying out loud, because
+            they are the two people get wrong.
+          </p>
         </div>
+        <ColorRoles total={color.length} />
+        <Link
+          href="/tokens"
+          className="w-fit rounded-md font-mono text-accent text-xs underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-2"
+        >
+          all {color.length} roles, side by side →
+        </Link>
+      </section>
 
-        <Card>
-          <CardHeader>Type ramp</CardHeader>
-          <CardBody>
-            <div className="flex flex-col gap-3">
-              {tokens.type.map(({ name, value }) => (
-                <div key={name} className="flex items-baseline gap-4">
-                  <span className="w-10 shrink-0 font-mono text-xs text-muted">
-                    {name}
-                  </span>
-                  <span className="text-ink" style={{ fontSize: value }}>
-                    usva.
-                  </span>
-                  <span className="font-mono text-xs text-ink">{value}</span>
-                </div>
-              ))}
-            </div>
-          </CardBody>
-        </Card>
+      <section className="flex flex-col gap-6">
+        <div className="flex max-w-2xl flex-col gap-3">
+          <h2 className="font-bold text-2xl text-ink tracking-tight">motion</h2>
+          <p className="text-muted">
+            every theme ships the same four duration tiers and the same three
+            easings, and sets them to different values. that is the whole
+            mechanism. a component asks for{" "}
+            <code className="font-mono text-ink text-sm">duration-slow</code>{" "}
+            and gets kajo's long spring or sisu's short damped one, and never
+            knows the difference.
+          </p>
+        </div>
+        <MotionTiers />
+      </section>
+
+      <section className="flex flex-col gap-6">
+        <div className="flex max-w-2xl flex-col gap-3">
+          <h2 className="font-bold text-2xl text-ink tracking-tight">
+            the dial
+          </h2>
+          <p className="text-muted">
+            one screen, four stops. the skeleton is identical at every stop:
+            same header, same three stats, same toolbar, in the same places. all
+            that changes is how much energy is layered on top, and therefore how
+            much of your attention the screen is asking for.
+          </p>
+          <p className="text-muted text-sm">
+            drag it, click a stop, or focus the rail and use the arrow keys.
+            then try to add a second sula element, and read what happens.
+          </p>
+        </div>
+        <IntensityDial />
+
+        <div className="flex max-w-2xl flex-col gap-2 rounded-lg border border-border bg-surface p-5">
+          <h3 className="font-semibold text-ink text-sm">
+            the rule, stated once, in case you skipped the dial
+          </h3>
+          <p className="text-muted text-sm">
+            one sula element per region. a region is a bounded area competing
+            for a single focus: not a page, not a component. two liquid fields
+            in the same region cancel each other out. two in different regions,
+            one ambient at the boundary and one focal at the top, do not, and
+            that pairing ships on my own site. the interesting part of a rule is
+            always its edge.
+          </p>
+        </div>
       </section>
     </main>
   );

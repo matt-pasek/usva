@@ -36,6 +36,14 @@ export interface SulaFieldProps extends React.HTMLAttributes<HTMLDivElement> {
   seed?: number;
   /** false mounts no canvas; reduced-motion paints one static frame. */
   fluid?: boolean;
+  /**
+   * Which instant of the drive the reduced-motion still frame is taken from, in
+   * seconds. Defaults to 0, which is right for a drive that is already composed
+   * at rest, and wrong for one that has to run before there is anything to see:
+   * a cycle that lifts bodies out of a pool is an empty pool at t=0. Pick the
+   * moment that reads as the whole idea, held.
+   */
+  stillTime?: number;
   accentColor?: string;
   backdrop?: string;
   tint?: string;
@@ -88,6 +96,7 @@ export const SulaField = React.forwardRef<HTMLDivElement, SulaFieldProps>(
       interactive = false,
       seed = 0,
       fluid = true,
+      stillTime = 0,
       accentColor,
       backdrop,
       tint,
@@ -244,12 +253,12 @@ export const SulaField = React.forwardRef<HTMLDivElement, SulaFieldProps>(
       if (!measure()) return;
 
       if (still) {
-        draw(0);
+        draw(stillTime);
         const observer =
           typeof ResizeObserver === "undefined"
             ? null
             : new ResizeObserver(() => {
-                if (measure()) draw(0);
+                if (measure()) draw(stillTime);
               });
         observer?.observe(container);
         return () => {
@@ -329,7 +338,7 @@ export const SulaField = React.forwardRef<HTMLDivElement, SulaFieldProps>(
         canvas.style.width = "";
         canvas.style.height = "";
       };
-    }, [fieldOn, still, backdrop, tint, accentColor, shine]);
+    }, [fieldOn, still, stillTime, backdrop, tint, accentColor, shine]);
 
     return (
       <div

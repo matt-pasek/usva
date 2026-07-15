@@ -1,36 +1,36 @@
-import {
-  Badge,
-  Button,
-  Card,
-  CardBody,
-  CardHeader,
-  Input,
-} from "@matt-pasek/usva";
-import Link from "next/link";
-import { ThemeSwitcher } from "../components/ThemeSwitcher";
+import { Crest } from "@/components/home/crest";
+import { Descent } from "@/components/home/descent";
+import { Fork } from "@/components/home/fork";
+import { Hero } from "@/components/home/hero";
+import { Proportion } from "@/components/home/proportion";
+import { StandingIn } from "@/components/home/standing-in";
+import { Witnesses } from "@/components/home/witnesses";
 
+/**
+ * Two pinned scenes hold the page up, and each is covered by the surface
+ * after it: the negative margins pull the next surface over the last 100svh
+ * of the pin, so the page arrives as masses sliding over each other on a
+ * curved leading edge rather than as sections stacking.
+ */
 export default function Home() {
   return (
-    <main className="mx-auto flex max-w-2xl flex-col gap-6 p-10">
-      <h1 className="text-3xl font-semibold">usva.</h1>
-      <Link href="/design-language" className="text-sm text-accent">
-        design language →
-      </Link>
-      <ThemeSwitcher />
-      <Card>
-        <CardHeader>
-          <div className="flex items-center gap-2">
-            Primitives <Badge tone="accent">alpha</Badge>
-          </div>
-        </CardHeader>
-        <CardBody className="flex flex-col gap-3">
-          <div className="flex gap-2">
-            <Button>solid</Button>
-            <Button variant="ghost">ghost</Button>
-          </div>
-          <Input aria-label="demo" placeholder="type here" />
-        </CardBody>
-      </Card>
+    <main data-home>
+      <Hero />
+      <div className="-mt-[100svh] relative z-10">
+        <Crest />
+        <div className="bg-bg">
+          <Witnesses />
+          <Descent />
+        </div>
+      </div>
+      <div className="-mt-[100svh] relative z-20">
+        <Crest />
+        <div className="bg-bg">
+          <Proportion />
+          <StandingIn />
+          <Fork />
+        </div>
+      </div>
     </main>
   );
 }

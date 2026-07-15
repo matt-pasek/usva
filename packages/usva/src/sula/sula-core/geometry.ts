@@ -133,7 +133,7 @@ export function springToBlob(from: Blob, to: Blob, s: number): Blob {
 }
 
 /** How far past the merge radius the goo will still bridge two neighbours. */
-const BRIDGE_REACH = 1.6;
+export const BRIDGE_REACH = 1.6;
 /** Merge at or past this holds the bridge at full strength. Holding a partial
  * strength recedes the bridge into two sharp cusps (the mix of a thin capsule
  * into the round surface never crosses zero mid-gap), so a standing rest pull
