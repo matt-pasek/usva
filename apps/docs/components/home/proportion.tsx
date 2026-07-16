@@ -171,7 +171,7 @@ export function Proportion() {
                     "radial-gradient(70% 70% at 82% 45%, color-mix(in oklab, var(--usva-accent) 12%, transparent), transparent 72%)",
                 }}
               />
-              <ul className="grid grid-cols-8 gap-2 sm:grid-cols-12 lg:grid-cols-[repeat(12,minmax(0,1fr))] lg:gap-2.5 xl:grid-cols-[repeat(14,minmax(0,1fr))]">
+              <ul className="grid grid-cols-10 gap-1.5 min-[420px]:grid-cols-12 sm:gap-2 lg:grid-cols-[repeat(12,minmax(0,1fr))] lg:gap-2.5 xl:grid-cols-[repeat(14,minmax(0,1fr))]">
                 {SQUARES.map((entry, index) => (
                   <Square
                     key={entry.slug}

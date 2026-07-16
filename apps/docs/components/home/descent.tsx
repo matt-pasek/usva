@@ -420,14 +420,14 @@ function AssertsScene() {
     <section
       ref={ref}
       data-stratum="asserts"
-      className="relative h-[420svh] [--kuohu-lift:-50%] [--kuohu-reach:0rem] lg:[--kuohu-lift:0px] lg:[--kuohu-reach:max(-19rem,-24vw)]"
+      className="relative h-[420svh] [--kuohu-lift:-50%] [--kuohu-reach:0rem] md:[--kuohu-lift:0px] md:[--kuohu-reach:max(-19rem,-24vw)]"
     >
       <SeamRow index={3} label="sula" bleed />
       <div className="sticky top-0 flex h-svh items-center overflow-hidden">
         <div
-          className={`grid w-full items-center gap-8 lg:grid-cols-2 lg:gap-16 ${STRATUM}`}
+          className={`grid w-full items-center gap-8 md:grid-cols-2 md:gap-16 ${STRATUM}`}
         >
-          <div className="order-2 flex flex-col gap-6 lg:order-1">
+          <div className="order-2 flex flex-col gap-6 md:order-1">
             <div className="flex flex-col gap-3">
               <Staged progress={scene} range={KUOHU_SCENE.eyebrow}>
                 <div className="flex items-baseline gap-4">
@@ -474,7 +474,7 @@ function AssertsScene() {
               <Staged
                 progress={scene}
                 range={KUOHU_SCENE.credit}
-                className="lg:hidden"
+                className="md:hidden"
               >
                 <p className="font-mono text-[11px] text-faint">
                   ↳ kuohu · the surge of a boiling liquid
@@ -492,7 +492,7 @@ function AssertsScene() {
                     "--kuohu-glide": glide,
                   } as MotionStyle)
             }
-            className="-z-10 absolute inset-x-0 top-1/2 order-1 flex flex-col items-center gap-4 [opacity:calc(0.26+0.74*var(--kuohu-glide,1))] max-lg:-translate-y-1/2 lg:relative lg:top-auto lg:z-0 lg:order-2 lg:translate-y-0 lg:opacity-100"
+            className="-z-10 absolute inset-x-0 top-1/2 order-1 flex flex-col items-center gap-4 [opacity:calc(0.26+0.74*var(--kuohu-glide,1))] max-md:-translate-y-1/2 md:relative md:top-auto md:z-0 md:order-2 md:translate-y-0 md:opacity-100"
           >
             <NameBehindGlass progress={scene} still={!!reduced} />
             <Kuohu />
@@ -500,7 +500,7 @@ function AssertsScene() {
             <Staged
               progress={scene}
               range={KUOHU_SCENE.credit}
-              className="max-lg:hidden"
+              className="max-md:hidden"
             >
               <p className="font-mono text-[11px] text-faint">
                 ↳ kuohu · the surge of a boiling liquid

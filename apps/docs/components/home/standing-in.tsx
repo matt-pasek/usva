@@ -1,4 +1,5 @@
 "use client";
+import { SegmentedControl } from "@matt-pasek/usva";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import Link from "next/link";
 import { type ThemeId, useTheme } from "@/components/theme-provider";
@@ -18,6 +19,8 @@ interface ThemeNote {
 }
 
 const ORDER: ThemeId[] = ["kajo", "sisu", "savi"];
+
+const ITEMS = ORDER.map((id) => ({ value: id, label: id }));
 
 const NOTES: Record<ThemeId, ThemeNote> = {
   kajo: {
@@ -99,28 +102,24 @@ export function StandingIn() {
 
       <Drift className="mt-12">
         <div className="relative overflow-hidden border-border border-y bg-surface/20">
-          <div className="mx-auto grid max-w-[100rem] lg:grid-cols-[6.5rem_minmax(0,1fr)]">
-            <fieldset className="flex min-w-0 gap-2 border-border border-b px-6 py-4 sm:px-10 lg:flex-col lg:border-r lg:border-b-0 lg:px-4 lg:py-8">
-              <legend className="sr-only">choose theme</legend>
-              {ORDER.map((candidate) => {
-                const active = candidate === theme;
-                return (
-                  <button
-                    key={candidate}
-                    type="button"
-                    aria-pressed={active}
-                    onClick={() => setTheme(candidate)}
-                    className={`min-h-11 flex-1 rounded-lg border px-3 font-mono text-xs outline-none transition-[color,background-color,border-color,transform] duration-fast ease-soft active:scale-96 focus-visible:ring-focus lg:flex-none ${
-                      active
-                        ? "border-border-strong bg-surface-2 text-accent"
-                        : "border-transparent text-muted hover:border-border hover:text-ink"
-                    }`}
-                  >
-                    {candidate}
-                  </button>
-                );
-              })}
-            </fieldset>
+          <div className="mx-auto grid max-w-[100rem] lg:grid-cols-[auto_minmax(0,1fr)]">
+            <div className="flex items-center justify-center border-border border-b px-6 py-4 sm:px-10 lg:items-start lg:justify-center lg:border-r lg:border-b-0 lg:px-6 lg:py-8">
+              <SegmentedControl
+                aria-label="choose theme"
+                className="lg:hidden"
+                items={ITEMS}
+                value={theme}
+                onValueChange={(value) => setTheme(value as ThemeId)}
+              />
+              <SegmentedControl
+                aria-label="choose theme"
+                orientation="vertical"
+                className="hidden lg:inline-flex"
+                items={ITEMS}
+                value={theme}
+                onValueChange={(value) => setTheme(value as ThemeId)}
+              />
+            </div>
 
             <AnimatePresence mode="wait">
               <motion.article
