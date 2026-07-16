@@ -121,7 +121,7 @@ export const BentoGrid = React.forwardRef<HTMLDivElement, BentoGridProps>(
       <div
         ref={setRefs}
         className={cn(
-          "wash-accent group/bento relative isolate grid auto-rows-[minmax(9rem,auto)] grid-flow-dense gap-3 rounded-3xl p-3",
+          "wash-accent group/bento relative isolate grid auto-rows-[minmax(0,auto)] grid-flow-dense gap-3 rounded-3xl p-3 sm:auto-rows-[minmax(9rem,auto)]",
           columns == null &&
             "[grid-template-columns:repeat(auto-fit,minmax(min(100%,15rem),1fr))]",
           className,
