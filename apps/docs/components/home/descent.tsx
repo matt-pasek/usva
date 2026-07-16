@@ -344,7 +344,7 @@ function NameBehindGlass({
         from={150}
         bleed="pb-[0.16em]"
       >
-        <span className="block whitespace-nowrap font-extrabold text-[clamp(6rem,22vw,20rem)] leading-[0.85] tracking-[-0.05em] text-ink/45">
+        <span className="block whitespace-nowrap font-extrabold text-[clamp(6rem,22vw,20rem)] leading-[0.85] tracking-[-0.03em] text-ink/45 mr-2">
           sula
         </span>
       </Staged>

@@ -91,7 +91,7 @@ export function Hero() {
             </h1>
 
             <Rise delay={1.34}>
-              <p className="mt-2 text-right font-mono text-xs tracking-wide text-muted tabular-nums">
+              <p className="mt-2 text-right font-mono font-bold text-xs tracking-wide text-muted tabular-nums">
                 {counts.total} components · {counts.themes} themes ·{" "}
                 {counts.atmospheres} atmospheres
               </p>
