@@ -2,7 +2,7 @@
   "name": "@matt-pasek/usva-tokens",
   "version": "0.0.0",
   "type": "module",
-  "license": "MIT",
+  "license": "SEE LICENSE IN LICENSE.md",
   "sideEffects": [
     "*.css"
   ],

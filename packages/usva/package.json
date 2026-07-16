@@ -2,7 +2,7 @@
   "name": "@matt-pasek/usva",
   "version": "0.0.0",
   "type": "module",
-  "license": "MIT",
+  "license": "SEE LICENSE IN LICENSE.md",
   "sideEffects": false,
   "main": "./dist/index.js",
   "module": "./dist/index.js",

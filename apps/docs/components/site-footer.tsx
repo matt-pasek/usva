@@ -1,6 +1,9 @@
 import Link from "next/link";
 import { counts } from "@/lib/catalog";
 
+const footerLink =
+  "outline-none transition-tint duration-fast ease-soft hover:text-ink focus-visible:ring-focus";
+
 const GROUPS = [
   {
     heading: "library",
@@ -41,8 +44,8 @@ export function SiteFooter() {
               usva<span className="text-accent-alt">.</span>
             </Link>
             <p className="max-w-xs text-sm text-muted">
-              beauty that stays usable. {counts.total} components,{" "}
-              {counts.themes} themes, one grammar.
+              a highly opinionated design system and component library, free to
+              build with
             </p>
           </div>
 
@@ -72,8 +75,38 @@ export function SiteFooter() {
           </nav>
         </div>
 
-        <p className="font-mono text-xs text-faint">
-          MIT licensed · built by matt pasek
+        <p className="flex flex-wrap items-center gap-x-2 gap-y-1 font-mono text-xs text-faint">
+          <span>© 2026 usva</span>
+          <span aria-hidden="true">·</span>
+          <span>
+            built by{" "}
+            <a
+              href="https://matt-pasek.dev"
+              target="_blank"
+              rel="noreferrer"
+              className={footerLink}
+            >
+              matt pasek
+            </a>
+          </span>
+          <span aria-hidden="true">·</span>
+          <a
+            href="https://github.com/matt-pasek/usva/blob/main/LICENSE.md"
+            target="_blank"
+            rel="noreferrer"
+            className={footerLink}
+          >
+            license
+          </a>
+          <span aria-hidden="true">·</span>
+          <a
+            href="https://github.com/matt-pasek/usva"
+            target="_blank"
+            rel="noreferrer"
+            className={footerLink}
+          >
+            github
+          </a>
         </p>
       </div>
     </footer>
