@@ -18,6 +18,7 @@ export interface SegmentedControlProps
   defaultValue?: string;
   onValueChange?: (value: string) => void;
   size?: "sm" | "md";
+  orientation?: "horizontal" | "vertical";
 }
 
 const sizeClasses: Record<
@@ -39,11 +40,13 @@ export const SegmentedControl = React.forwardRef<
       defaultValue,
       onValueChange,
       size = "md",
+      orientation = "horizontal",
       className,
       ...props
     },
     ref,
   ) => {
+    const vertical = orientation === "vertical";
     const isControlled = value !== undefined;
     const [uncontrolled, setUncontrolled] = React.useState(
       () => defaultValue ?? items[0]?.value,
@@ -53,7 +56,9 @@ export const SegmentedControl = React.forwardRef<
     const segmentRefs = React.useRef<Array<HTMLButtonElement | null>>([]);
     const [indicator, setIndicator] = React.useState({
       left: 0,
+      top: 0,
       width: 0,
+      height: 0,
       ready: false,
     });
 
@@ -65,7 +70,13 @@ export const SegmentedControl = React.forwardRef<
     const measure = React.useCallback(() => {
       const el = segmentRefs.current[activeIndex];
       if (!el) return;
-      setIndicator({ left: el.offsetLeft, width: el.offsetWidth, ready: true });
+      setIndicator({
+        left: el.offsetLeft,
+        top: el.offsetTop,
+        width: el.offsetWidth,
+        height: el.offsetHeight,
+        ready: true,
+      });
     }, [activeIndex]);
 
     React.useLayoutEffect(() => {
@@ -126,8 +137,12 @@ export const SegmentedControl = React.forwardRef<
       <div
         ref={ref}
         role="radiogroup"
+        aria-orientation={orientation}
         className={cn(
-          "relative inline-flex items-center rounded-full border border-border bg-surface p-1",
+          "relative inline-flex border border-border bg-surface p-1",
+          vertical
+            ? "flex-col items-stretch rounded-3xl"
+            : "items-center rounded-full",
           className,
         )}
         {...props}
@@ -135,15 +150,25 @@ export const SegmentedControl = React.forwardRef<
         <span
           aria-hidden="true"
           className={cn(
-            "pointer-events-none absolute top-1 bottom-1 left-0 rounded-full bg-surface-2 shadow-raised",
+            "pointer-events-none absolute bg-surface-2 shadow-raised",
+            vertical
+              ? "top-0 right-1 left-1 rounded-2xl"
+              : "top-1 bottom-1 left-0 rounded-full",
             "[filter:drop-shadow(var(--usva-glow-accent))]",
             "transition-layout duration-slow ease-spring motion-reduce:transition-none",
             !indicator.ready && "opacity-0",
           )}
-          style={{
-            width: indicator.width,
-            transform: `translateX(${indicator.left}px)`,
-          }}
+          style={
+            vertical
+              ? {
+                  height: indicator.height,
+                  transform: `translateY(${indicator.top}px)`,
+                }
+              : {
+                  width: indicator.width,
+                  transform: `translateX(${indicator.left}px)`,
+                }
+          }
         />
         {items.map((item, index) => {
           const checked = item.value === current;
@@ -161,8 +186,9 @@ export const SegmentedControl = React.forwardRef<
               onClick={() => select(item.value)}
               onKeyDown={(event) => onKeyDown(event, index)}
               className={cn(
-                "relative z-10 inline-flex items-center justify-center gap-1.5 rounded-full text-sm whitespace-nowrap outline-none",
+                "relative z-10 inline-flex items-center justify-center gap-1.5 text-sm whitespace-nowrap outline-none",
                 sizeClasses[size],
+                vertical ? "w-full rounded-2xl" : "rounded-full",
                 "text-muted transition-tint duration-fast ease-soft",
                 "hover:text-ink aria-checked:text-ink",
                 "focus-visible:ring-focus",
