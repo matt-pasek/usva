@@ -557,6 +557,13 @@ const atmospheres = seed("atmosphere", [
     provenance: [],
   },
   {
+    slug: "routa",
+    name: "Routa",
+    summary:
+      "ground frost. low cells heave from underneath and split at their frozen seams.",
+    provenance: [],
+  },
+  {
     slug: "vare",
     name: "Väre",
     summary:

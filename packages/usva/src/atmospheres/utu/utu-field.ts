@@ -119,10 +119,15 @@ export function mixWhite(color: Rgb, amount: number): Rgb {
   ];
 }
 
-export interface UtuColors {
+export interface UtuEmissionColors {
   deep: Rgb;
   mid: Rgb;
   hot: Rgb;
+}
+
+export interface UtuColors extends UtuEmissionColors {
+  /** kosteus: the hue the clay takes where the damp is deepest. */
+  pigment: Rgb;
 }
 
 /**
@@ -130,14 +135,16 @@ export interface UtuColors {
  * valleys, magenta-rose through the body, warm gold at the hot cores, so the
  * sphere reads as a glow on the horizon rather than one flat tint.
  */
-export const DAWN: UtuColors = {
+export const DAWN: UtuEmissionColors = {
   deep: [0.2, 0.13, 0.42],
   mid: [0.8, 0.3, 0.72],
   hot: [1.0, 0.72, 0.52],
 };
 
 /** The dawn ramp with any stop overridden. Omitted stops keep the dawn colour. */
-export function buildRamp(overrides?: Partial<UtuColors>): UtuColors {
+export function buildRamp(
+  overrides?: Partial<UtuEmissionColors>,
+): UtuEmissionColors {
   return {
     deep: overrides?.deep ?? DAWN.deep,
     mid: overrides?.mid ?? DAWN.mid,
@@ -150,7 +157,7 @@ export function buildRamp(overrides?: Partial<UtuColors>): UtuColors {
  * brand colour instead of the dawn gradient. Deep sinks toward black, mid holds
  * the accent, hot blows toward white for the clipping cores.
  */
-export function monoRamp(accent: Rgb): UtuColors {
+export function monoRamp(accent: Rgb): UtuEmissionColors {
   return {
     deep: scaleRgb(accent, 0.3),
     mid: scaleRgb(accent, 0.95),

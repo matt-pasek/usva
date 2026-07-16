@@ -1,5 +1,6 @@
 import { Card, CardBody, CardHeader } from "@matt-pasek/usva";
 import type { Metadata } from "next";
+import { GroundNote } from "@/components/dark-stage";
 import { InstallBlock } from "@/components/install-block";
 import { SourceView } from "@/components/source-view";
 import { KuultoDemo } from "./kuulto-demo";
@@ -96,6 +97,8 @@ export default function KuultoPage() {
           because no light reaches it. Nothing is painted.
         </p>
       </div>
+
+      <GroundNote name="Kuulto" />
 
       <Card>
         <CardHeader>Demo</CardHeader>

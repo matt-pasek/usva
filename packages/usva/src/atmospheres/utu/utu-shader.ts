@@ -36,20 +36,25 @@ uniform float uDrift;
 uniform float uWispSigma;
 uniform float uWispAmt;
 uniform float uWispDrift;
+uniform float uExtinction;
 uniform float uAbsorb;
 uniform float uExposure;
 uniform vec3  uDeep;
 uniform vec3  uMid;
 uniform vec3  uHot;
+uniform vec3  uPigment;
+uniform float uStainFloor;
 uniform float uAlpha;
 uniform vec2  uLean;
 uniform float uLeanAmt;
 
 out vec4 fragColor;
 
-${glsl("composite")}
+${glsl("stain", "composite")}
 
 const int STEPS = ${STEPS};
+const float SIGMA = 1.05;
+const float SOAK = 0.32;
 
 float hash13(vec3 p) {
   p = fract(p * 0.1031);
@@ -123,6 +128,7 @@ void main() {
   float dphase = uDrift * uTime;
   vec3 col = vec3(0.0);
   float T = 1.0;
+  float depth = 0.0;
 
   for (int i = 0; i < STEPS; i++) {
     float z = zspan - (float(i) + 0.5) * stepLen;
@@ -144,6 +150,7 @@ void main() {
 
     float n = fbm(qn * uNoiseFreq);
     float density = max(shell * (uNoiseBase + uNoiseAmp * n), 0.0);
+    depth += density * stepLen;
 
     float b = density * uBands;
     float aa = fwidth(b) * 1.5 + 0.04;
@@ -152,13 +159,20 @@ void main() {
 
     float em = (rim * 1.6 + 0.18) * density;
     col += T * em * ramp(density) * (1.0 / float(STEPS));
-    T *= exp(-density * uAbsorb * stepLen);
+    T *= exp(-density * uExtinction * stepLen);
   }
 
   col *= uExposure;
   col = vec3(1.0) - exp(-col);
   float peak = clamp(max(col.r, max(col.g, col.b)), 0.0, 1.0);
   vec3 display = col / max(peak, 1e-4);
-  fragColor = composite(display, peak * uAlpha);
+  if (uAbsorb < 0.5) {
+    fragColor = composite(display, peak * uAlpha);
+    return;
+  }
+
+  vec3 absorbed = hold(uPigment, uStainFloor);
+  float alpha = clamp(soak(depth * SOAK, SIGMA) * uAlpha, 0.0, 1.0);
+  fragColor = vec4(absorbed * alpha, alpha);
 }
 `;

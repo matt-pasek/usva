@@ -76,3 +76,17 @@ export function blendStyleFor(mode: BlendMode): {
 export function blendUniform(mode: BlendMode): number {
   return mode === "absorptive" ? 1 : 0;
 }
+
+function mixRgb(a: Rgb, b: Rgb, t: number): Rgb {
+  return [
+    a[0] + (b[0] - a[0]) * t,
+    a[1] + (b[1] - a[1]) * t,
+    a[2] + (b[2] - a[2]) * t,
+  ];
+}
+
+export function pigmentFor(hue: Rgb, ink: Rgb): Rgb {
+  return mixRgb(ink, hue, 0.22);
+}
+
+export const MAX_STAIN = 0.62;

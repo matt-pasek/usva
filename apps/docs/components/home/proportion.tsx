@@ -141,63 +141,88 @@ export function Proportion() {
   const verdictY = useTransform(build, [...verdict], ["115%", "0%"]);
 
   return (
-    <section ref={ref} className="relative h-[220svh]">
-      <div className="sticky top-0 flex min-h-svh items-center overflow-hidden">
-        <div className="mx-auto w-full max-w-7xl px-6 py-20 sm:px-10">
-          <Scrub>
-            <h2 className="max-w-2xl text-3xl font-bold tracking-tight text-ink sm:text-4xl">
-              one square for every component I ship.
-            </h2>
-          </Scrub>
+    <section ref={ref} className="relative lg:h-[220svh]">
+      <div className="relative flex min-h-svh items-center overflow-x-hidden lg:sticky lg:top-0 lg:overflow-hidden">
+        <div className="mx-auto w-full max-w-[100rem] px-6 py-12 sm:px-10 sm:py-16 lg:py-20">
+          <div className="grid lg:grid-cols-[minmax(17rem,0.72fr)_minmax(0,1.65fr)] lg:grid-rows-[auto_1fr] lg:items-start lg:gap-x-[clamp(3rem,7vw,8rem)]">
+            <div className="lg:col-start-1 lg:row-start-1">
+              <Scrub>
+                <h2 className="max-w-xl text-3xl font-bold tracking-tight text-ink sm:text-4xl">
+                  one square for every component I ship.
+                </h2>
+              </Scrub>
 
-          <ul className="mt-12 grid grid-cols-8 gap-2 sm:grid-cols-12 lg:grid-cols-[repeat(18,minmax(0,1fr))] lg:gap-2.5">
-            {SQUARES.map((entry, index) => (
-              <Square
-                key={entry.slug}
-                entry={entry}
-                index={index}
-                build={build}
-                onFocus={setHeld}
-                onBlur={() => setHeld(null)}
-              />
-            ))}
-          </ul>
-
-          <Readout entry={held} />
-
-          <span className="mt-8 block overflow-hidden pb-[0.14em]">
-            <motion.span
-              style={reduced ? undefined : { y: verdictY }}
-              className="block max-w-2xl text-muted"
-            >
-              the loud ones are the accent squares. count them. that ratio is
-              the design system, and it is the part people get wrong: sula is
-              seasoning, not the diet.
-            </motion.span>
-          </span>
-
-          <dl className="mt-8 flex flex-wrap gap-x-10 gap-y-4">
-            {ORDER.map((layer) => (
-              <div key={layer} className="flex items-center gap-2.5">
+              <p className="mt-6 flex items-center gap-3 font-mono text-xs text-muted tabular-nums">
+                <span className="text-ink">{QUIET} quiet</span>
                 <span
                   aria-hidden="true"
-                  className={`h-2.5 w-2.5 rounded-[2px] ${CELL[layer]}`}
+                  className="h-px w-8 bg-border-strong"
                 />
-                <dt className="font-mono text-xs text-muted">
-                  {LAYER_LABEL[layer]}
-                </dt>
-                <dd className="font-mono text-sm text-ink tabular-nums">
-                  {SQUARES.filter((s) => s.layer === layer).length}
-                </dd>
-              </div>
-            ))}
-            <div className="flex items-center gap-2.5">
-              <dt className="font-mono text-xs text-muted">total</dt>
-              <dd className="font-mono text-sm text-ink tabular-nums">
-                {counts.total}
-              </dd>
+                <span className="text-accent">{LOUD} loud</span>
+              </p>
             </div>
-          </dl>
+
+            <div className="relative mt-12 min-w-0 lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:mt-0 lg:self-center">
+              <div
+                aria-hidden="true"
+                className="pointer-events-none absolute -inset-x-8 -inset-y-12 -z-10 opacity-50"
+                style={{
+                  backgroundImage:
+                    "radial-gradient(70% 70% at 82% 45%, color-mix(in oklab, var(--usva-accent) 12%, transparent), transparent 72%)",
+                }}
+              />
+              <ul className="grid grid-cols-8 gap-2 sm:grid-cols-12 lg:grid-cols-[repeat(12,minmax(0,1fr))] lg:gap-2.5 xl:grid-cols-[repeat(14,minmax(0,1fr))]">
+                {SQUARES.map((entry, index) => (
+                  <Square
+                    key={entry.slug}
+                    entry={entry}
+                    index={index}
+                    build={build}
+                    onFocus={setHeld}
+                    onBlur={() => setHeld(null)}
+                  />
+                ))}
+              </ul>
+
+              <Readout entry={held} />
+            </div>
+
+            <div className="mt-8 lg:col-start-1 lg:row-start-2 lg:mt-12">
+              <span className="block overflow-hidden pb-[0.14em]">
+                <motion.span
+                  style={reduced ? undefined : { y: verdictY }}
+                  className="block max-w-lg text-muted"
+                >
+                  the loud ones are the accent squares. count them. that ratio
+                  is the design system, and it is the part people get wrong:
+                  sula is seasoning, not the diet.
+                </motion.span>
+              </span>
+
+              <dl className="mt-8 grid grid-cols-2 gap-x-6 gap-y-4 sm:grid-cols-3 lg:grid-cols-2">
+                {ORDER.map((layer) => (
+                  <div key={layer} className="flex items-center gap-2.5">
+                    <span
+                      aria-hidden="true"
+                      className={`h-2.5 w-2.5 rounded-[2px] ${CELL[layer]}`}
+                    />
+                    <dt className="font-mono text-xs text-muted">
+                      {LAYER_LABEL[layer]}
+                    </dt>
+                    <dd className="font-mono text-sm text-ink tabular-nums">
+                      {SQUARES.filter((s) => s.layer === layer).length}
+                    </dd>
+                  </div>
+                ))}
+                <div className="flex items-center gap-2.5">
+                  <dt className="font-mono text-xs text-muted">total</dt>
+                  <dd className="font-mono text-sm text-ink tabular-nums">
+                    {counts.total}
+                  </dd>
+                </div>
+              </dl>
+            </div>
+          </div>
         </div>
       </div>
     </section>

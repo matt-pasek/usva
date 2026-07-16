@@ -42,6 +42,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           <div className="pt-20 sm:pt-24">{children}</div>
           <SiteFooter />
         </ThemeProvider>
+        <div aria-hidden id="grain" />
         <script
           type="application/ld+json"
           // biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD structured data must be injected as a raw script body

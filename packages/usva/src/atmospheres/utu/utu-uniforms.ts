@@ -1,3 +1,4 @@
+import { MAX_STAIN } from "../atmospheres-core/atmospheres-color.js";
 import {
   setUniform,
   type Uniforms,
@@ -17,6 +18,8 @@ export interface UtuFrame {
   /** Fades the lean in and out, 0..1. */
   leanAmt: number;
   alpha: number;
+  /** The house law: 1 stains the ground, 0 emits into it. */
+  absorb: number;
 }
 
 export function utuUniforms(colors: UtuColors, params: UtuParams): Uniforms {
@@ -34,11 +37,14 @@ export function utuUniforms(colors: UtuColors, params: UtuParams): Uniforms {
     uWispSigma: { value: params.wispSigma },
     uWispAmt: { value: params.wispAmt },
     uWispDrift: { value: params.wispDrift },
-    uAbsorb: { value: params.absorb },
+    uExtinction: { value: params.absorb },
+    uAbsorb: { value: 0 },
     uExposure: { value: params.exposure },
     uDeep: { value: colors.deep },
     uMid: { value: colors.mid },
     uHot: { value: colors.hot },
+    uPigment: { value: colors.pigment },
+    uStainFloor: { value: MAX_STAIN },
     uAlpha: { value: 1 },
     uLean: { value: [0, 0] },
     uLeanAmt: { value: 0 },
@@ -49,6 +55,7 @@ export function setUtuColors(u: Uniforms, colors: UtuColors): void {
   setUniform(u, "uDeep", colors.deep);
   setUniform(u, "uMid", colors.mid);
   setUniform(u, "uHot", colors.hot);
+  setUniform(u, "uPigment", colors.pigment);
 }
 
 export function setUtuParams(u: Uniforms, params: UtuParams): void {
@@ -61,7 +68,7 @@ export function setUtuParams(u: Uniforms, params: UtuParams): void {
   setUniform(u, "uWispSigma", params.wispSigma);
   setUniform(u, "uWispAmt", params.wispAmt);
   setUniform(u, "uWispDrift", params.wispDrift);
-  setUniform(u, "uAbsorb", params.absorb);
+  setUniform(u, "uExtinction", params.absorb);
   setUniform(u, "uExposure", params.exposure);
 }
 
@@ -72,4 +79,5 @@ export function setUtuFrame(u: Uniforms, frame: UtuFrame): void {
   setUniform(u, "uLean", frame.lean);
   setUniform(u, "uLeanAmt", frame.leanAmt);
   setUniform(u, "uAlpha", frame.alpha);
+  setUniform(u, "uAbsorb", frame.absorb);
 }

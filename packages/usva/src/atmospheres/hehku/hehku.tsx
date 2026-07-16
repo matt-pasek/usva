@@ -8,6 +8,7 @@ import {
   resolveBlendMode,
   resolveColor,
 } from "../atmospheres-core/atmospheres-color.js";
+import { hiddenOnGround } from "../atmospheres-core/atmospheres-ground.js";
 import { useGlCanvas } from "../atmospheres-core/use-gl-canvas.js";
 import { useTokenColors } from "../atmospheres-core/use-token-colors.js";
 import {
@@ -67,7 +68,8 @@ export const Hehku = React.forwardRef<HTMLDivElement, HehkuProps>(
     const cCool = colors?.cool;
     const cHot = colors?.hot;
 
-    const tokens = useTokenColors(ROLES);
+    const scopeRef = React.useRef<HTMLDivElement | null>(null);
+    const tokens = useTokenColors(ROLES, { scopeRef });
     const blend = resolveBlendMode(mode, tokens.bg);
 
     const heat = React.useMemo<FilamentColors>(
@@ -98,6 +100,7 @@ export const Hehku = React.forwardRef<HTMLDivElement, HehkuProps>(
       fragment: filamentFragmentShader,
       uniforms: () =>
         filamentUniforms(heatRef.current, curveRef.current, cameraRef.current),
+      enabled: !hiddenOnGround("hehku", blend),
       maxDpr: 1.5,
       stillTime: STILL_TIME,
       onFrame: (u, frame) => {
@@ -126,6 +129,7 @@ export const Hehku = React.forwardRef<HTMLDivElement, HehkuProps>(
       <div
         ref={(node) => {
           canvas.containerRef.current = node;
+          scopeRef.current = node;
           if (typeof forwardedRef === "function") forwardedRef(node);
           else if (forwardedRef) forwardedRef.current = node;
         }}

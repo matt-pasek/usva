@@ -67,6 +67,14 @@ describe("Utu", () => {
     expect(canvasOf(container)).not.toBeNull();
   });
 
+  it("exposes an explicit absorptive material override", () => {
+    const { container } = render(<Utu mode="absorptive">content</Utu>);
+    expect(container.firstElementChild).toHaveAttribute(
+      "data-blend",
+      "absorptive",
+    );
+  });
+
   it("has no axe violations", async () => {
     const { container } = render(
       <Utu>

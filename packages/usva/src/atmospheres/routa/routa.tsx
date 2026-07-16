@@ -3,6 +3,7 @@ import * as React from "react";
 import { cn } from "../../cn.js";
 import {
   type BlendMode,
+  blendStyleFor,
   blendUniform,
   resolveBlendMode,
   resolveColor,
@@ -12,43 +13,42 @@ import { useTokenColors } from "../atmospheres-core/use-token-colors.js";
 import {
   buildColors,
   DEFAULT_LIGHT,
-  KYNNOS_ROLES,
-  type KynnosParams,
+  ROUTA_ROLES,
+  type RoutaParams,
   resolveParams,
-} from "./kynnos-field.js";
-import { kynnosFragmentShader } from "./kynnos-shader.js";
+} from "./routa-field.js";
+import { routaFragmentShader } from "./routa-shader.js";
 import {
-  kynnosUniforms,
-  setKynnosColors,
-  setKynnosFrame,
-  setKynnosParams,
-} from "./kynnos-uniforms.js";
+  routaUniforms,
+  setRoutaColors,
+  setRoutaFrame,
+  setRoutaParams,
+} from "./routa-uniforms.js";
 
-export interface KynnosLight {
-  /** Raking is the point: keep z low or the grooves stop throwing shadows. */
+export interface RoutaLight {
+  /** Keep z low: the heave only reads when the key rakes across it. */
   direction?: [number, number, number];
-  /** Defaults to the theme: a warm daylight on clay, the accent on metal. */
+  /** Optional CSS colour for the dark-ground key. */
   color?: string;
 }
 
-export interface KynnosProps extends React.HTMLAttributes<HTMLDivElement> {
-  /** Wheel and drift rate multiplier. Defaults to 1, about 90s per revolution. */
+export interface RoutaProps extends React.HTMLAttributes<HTMLDivElement> {
+  /** Domain drift multiplier. Defaults to 1 and remains barely perceptible. */
   speed?: number;
-  /** Overrides the material. Defaults from the ground: light clay, dark metal. */
+  /** Force the material. By default the ground chooses frost-light or stain. */
   mode?: BlendMode;
-  /** The lighting dial. This is what a theme swap actually changes. */
-  light?: KynnosLight;
+  /** Raking light direction and optional dark-ground colour. */
+  light?: RoutaLight;
   /** Overall opacity, 0..1. Defaults to 1. */
   opacity?: number;
-  /** Escape hatch for the field parameters, for tuning demos. */
-  params?: Partial<KynnosParams>;
+  /** Escape hatch for frost cell, fissure, and relief parameters. */
+  params?: Partial<RoutaParams>;
   children?: React.ReactNode;
 }
 
-/** Enough seconds in that the still frame lands on structure, not on seed noise. */
-const STILL_TIME = 14;
+const STILL_TIME = 27;
 
-export const Kynnos = React.forwardRef<HTMLDivElement, KynnosProps>(
+export const Routa = React.forwardRef<HTMLDivElement, RoutaProps>(
   (
     {
       speed = 1,
@@ -63,15 +63,17 @@ export const Kynnos = React.forwardRef<HTMLDivElement, KynnosProps>(
     forwardedRef,
   ) => {
     const lightColor = light?.color;
-    const direction = light?.direction;
+    const direction = light?.direction ?? DEFAULT_LIGHT;
 
     const speedRef = React.useRef(speed);
     speedRef.current = speed;
     const opacityRef = React.useRef(opacity);
     opacityRef.current = opacity;
+    const lightRef = React.useRef(direction);
+    lightRef.current = direction;
 
     const scopeRef = React.useRef<HTMLDivElement | null>(null);
-    const tokens = useTokenColors(KYNNOS_ROLES, { scopeRef });
+    const tokens = useTokenColors(ROUTA_ROLES, { scopeRef });
     const blend = resolveBlendMode(mode, tokens.bg);
 
     const colors = React.useMemo(
@@ -90,36 +92,32 @@ export const Kynnos = React.forwardRef<HTMLDivElement, KynnosProps>(
     const paramsRef = React.useRef(resolved);
     paramsRef.current = resolved;
 
-    const lightDir = direction ?? DEFAULT_LIGHT;
-    const lightRef = React.useRef(lightDir);
-    lightRef.current = lightDir;
-
-    const absorbRef = React.useRef(blendUniform(blend));
-    absorbRef.current = blendUniform(blend);
+    const blendRef = React.useRef(blend);
+    blendRef.current = blend;
 
     const canvas = useGlCanvas({
-      fragment: kynnosFragmentShader,
+      fragment: routaFragmentShader,
       stillTime: STILL_TIME,
       maxDpr: 1.5,
       uniforms: () =>
-        kynnosUniforms(colorsRef.current, paramsRef.current, lightRef.current),
+        routaUniforms(colorsRef.current, paramsRef.current, lightRef.current),
       onFrame: (u, frame) => {
-        setKynnosColors(u, colorsRef.current);
-        setKynnosParams(u, paramsRef.current);
-        setKynnosFrame(u, {
+        setRoutaColors(u, colorsRef.current);
+        setRoutaParams(u, paramsRef.current);
+        setRoutaFrame(u, {
           time: frame.time * speedRef.current,
           alpha: opacityRef.current,
-          absorb: absorbRef.current,
+          absorb: blendUniform(blendRef.current),
           light: lightRef.current,
         });
       },
     });
 
     const { redraw } = canvas;
-    // biome-ignore lint/correctness/useExhaustiveDependencies: the still frame must repaint when the material or its light changes.
+    // biome-ignore lint/correctness/useExhaustiveDependencies: the still frame must repaint when the material, key, or ground changes.
     React.useEffect(() => {
       redraw();
-    }, [redraw, colors, lightDir, blend]);
+    }, [redraw, colors, direction, blend]);
 
     const on = canvas.active;
 
@@ -131,7 +129,7 @@ export const Kynnos = React.forwardRef<HTMLDivElement, KynnosProps>(
           if (typeof forwardedRef === "function") forwardedRef(node);
           else if (forwardedRef) forwardedRef.current = node;
         }}
-        data-material={blend === "absorptive" ? "clay" : "metal"}
+        data-blend={blend}
         className={cn("relative isolate overflow-hidden", className)}
         {...props}
       >
@@ -140,11 +138,11 @@ export const Kynnos = React.forwardRef<HTMLDivElement, KynnosProps>(
             aria-hidden="true"
             className="pointer-events-none absolute inset-0 -z-10"
           >
-            {/* No mix-blend-mode here, unlike the emissive atmospheres. A multiply
-                canvas can only darken, and a dry ridge has to sit above bg, up
-                to surface-2. kynnos is the ground rather than a stain on it, so it
-                composites normally and the mode flips the lighting model. */}
-            <canvas ref={canvas.canvasRef} className="block h-full w-full" />
+            <canvas
+              ref={canvas.canvasRef}
+              className="block h-full w-full"
+              style={blendStyleFor(blend)}
+            />
           </div>
         ) : null}
         {children}
@@ -152,4 +150,4 @@ export const Kynnos = React.forwardRef<HTMLDivElement, KynnosProps>(
     );
   },
 );
-Kynnos.displayName = "Kynnos";
+Routa.displayName = "Routa";

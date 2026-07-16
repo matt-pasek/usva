@@ -68,6 +68,8 @@ export interface VareColors {
   deep: Rgb;
   /** The freshest bands, closest to the source. */
   edge: Rgb;
+  /** kosteus: the hue the clay takes where the trough holds water. */
+  pigment: Rgb;
 }
 
 export const POINTER_EASE = 0.06;

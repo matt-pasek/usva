@@ -1,4 +1,4 @@
-import { Badge, Kajastus, Kuulto, Kynnos } from "@matt-pasek/usva";
+import { Badge, Kajastus, Kynnos, Loimu } from "@matt-pasek/usva";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -54,7 +54,7 @@ const THEME_DOCS: Record<ThemeId, ThemeDoc> = {
     gloss: "grit, stubborn resolve",
     etymology:
       "the untranslatable one. not courage in a moment, but the thing that keeps going after the courage runs out.",
-    atmosphere: "Kynnös",
+    atmosphere: "Loimu",
     lede: "the working one. built for a dashboard somebody has open for eight hours.",
     body: [
       "sisu came out of a browser extension and its landing page: real product surface, lists and toolbars and panels and counts. the palette pulls the accents back and pushes the borders forward, because a working screen is structured by its edges, not by its colour.",
@@ -87,7 +87,7 @@ const THEME_DOCS: Record<ThemeId, ThemeDoc> = {
     gloss: "clay",
     etymology:
       "the material before it is a thing. warm, matte, worked by hand, and it holds the shape you press into it.",
-    atmosphere: "Kuulto",
+    atmosphere: "Kynnös",
     lede: "the light one. built for reading, and for the times you cannot ship a dark UI.",
     body: [
       "savi is the light register, and it is not a colour inversion of kajo. it is warm and low in contrast at the surface level, with the accents doing more work because there is far less dark to lean on. a first-time visitor whose system asks for light gets this one.",
@@ -99,7 +99,7 @@ const THEME_DOCS: Record<ThemeId, ThemeDoc> = {
       "screenshots, decks, print. the one theme that survives leaving the browser",
     ],
     notThis: [
-      "an atmosphere at full strength. most of them were drawn against black",
+      "an atmosphere at full strength. kynnös was drawn for this light ground; the rest were drawn against black",
       "relying on faint. in a light theme it disappears even faster",
       "the loud hero. that is what kajo is for",
     ],
@@ -119,8 +119,8 @@ const THEME_DOCS: Record<ThemeId, ThemeDoc> = {
 
 const ATMOSPHERES = {
   kajo: Kajastus,
-  sisu: Kynnos,
-  savi: Kuulto,
+  sisu: Loimu,
+  savi: Kynnos,
 } as const;
 
 export function generateStaticParams(): { theme: string }[] {

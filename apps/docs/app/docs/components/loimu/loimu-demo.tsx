@@ -1,6 +1,7 @@
 "use client";
 import { Loimu, type LoimuParams } from "@matt-pasek/usva";
 import * as React from "react";
+import { DarkStage } from "@/components/dark-stage";
 
 /** The sisu-plus hero scrim: a vertical crush, a 105-degree diagonal kill, and
  * a radial hole at 24%/43% where the light is allowed to survive. */
@@ -28,31 +29,33 @@ export function LoimuDemo({
   caption?: string;
 }) {
   return (
-    <Loimu
-      speed={speed}
-      opacity={opacity}
-      interactive={interactive}
-      colors={colors}
-      params={params}
-      className="relative flex min-h-[30rem] items-center rounded-xl bg-bg p-8 sm:p-10"
-    >
-      {scrim ? (
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-0 rounded-xl"
-          style={{ backgroundImage: SCRIM }}
-        />
-      ) : null}
-      <div className="relative max-w-md">
-        <h2 className="text-3xl font-semibold text-ink">
-          light from off-frame
-        </h2>
-        <p className="mt-3 text-muted">
-          {caption ??
-            "move the pointer and the streamers bend toward it from a distance"}
-        </p>
-      </div>
-    </Loimu>
+    <DarkStage>
+      <Loimu
+        speed={speed}
+        opacity={opacity}
+        interactive={interactive}
+        colors={colors}
+        params={params}
+        className="relative flex min-h-[30rem] items-center rounded-xl bg-bg p-8 sm:p-10"
+      >
+        {scrim ? (
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 rounded-xl"
+            style={{ backgroundImage: SCRIM }}
+          />
+        ) : null}
+        <div className="relative max-w-md">
+          <h2 className="text-3xl font-semibold text-ink">
+            light from off-frame
+          </h2>
+          <p className="mt-3 text-muted">
+            {caption ??
+              "move the pointer and the streamers bend toward it from a distance"}
+          </p>
+        </div>
+      </Loimu>
+    </DarkStage>
   );
 }
 

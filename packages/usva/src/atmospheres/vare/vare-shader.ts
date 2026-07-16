@@ -30,32 +30,36 @@ uniform float uAbsorb;
 uniform vec3  uBody;
 uniform vec3  uDeep;
 uniform vec3  uEdgeColor;
+uniform vec3  uPigment;
+uniform float uStainFloor;
 
 out vec4 fragColor;
 
-${glsl("fbm", "dither", "composite")}
+${glsl("fbm", "dither", "stain", "composite")}
 
 const float TAU = 6.28318530718;
 
-void main() {
-  float aspect = uResolution.x / max(uResolution.y, 1.0);
-  vec2 ndc = (2.0 * gl_FragCoord.xy - uResolution) / uResolution.y;
+/** The raking key. Low and from the left, so a ridge one pixel high still casts. */
+const vec3 KEY = vec3(-0.62, -0.44, 0.36);
 
-  vec2 warp = vec2(
-    fbm2(ndc * uWarpScale + vec2(uTime * 0.03, 0.0), 2),
-    fbm2(ndc * uWarpScale + vec2(9.7, uTime * 0.024), 2)
-  ) - 0.5;
-  vec2 p = ndc + warp * uWarp;
+/** How hard the clay drinks. Tuned so a node is damp, not a bruise. */
+const float SIGMA = 1.15;
 
-  vec2 source = vec2(uSource.x * aspect, uSource.y);
-  vec2 travel = vec2(cos(uAngle), sin(uAngle));
+/** The wettest a ripple ever gets. Above this the ground stops being ground. */
+const float SOAK = 0.45;
 
+float phaseLens(vec2 p) {
   vec2 toMouse = p - uMouse;
-  float lens = uPointer * uLens
+  return uPointer * uLens
     * exp(-dot(toMouse, toMouse) / (uLensSigma * uLensSigma));
+}
 
+vec2 waves(vec2 p, vec2 source) {
+  float lens = phaseLens(p);
   float bands = 0.0;
   float squares = 0.0;
+  float basins = 0.0;
+  float basinSquares = 0.0;
 
   for (int i = 0; i < ${WAVES}; i++) {
     float fi = float(i);
@@ -90,17 +94,46 @@ void main() {
     // and a faint square-law fill keeps the space between from reading as a
     // diagram on black.
     float wave = 0.5 + 0.5 * cos(phase);
-    float crest = pow(wave, uSoft * (0.8 + 0.4 * hash11(fi * 2.3 + 0.7)));
+    float exponent = uSoft * (0.8 + 0.4 * hash11(fi * 2.3 + 0.7));
+    float crest = pow(wave, exponent);
+    float trough = pow(1.0 - wave, exponent);
     float band = (crest + 0.1 * wave * wave) * thickness * weight;
+    float basinBand = trough * thickness * weight;
 
     bands += band;
     squares += band * band;
+    basins += basinBand;
+    basinSquares += basinBand * basinBand;
   }
 
   float overlap = max(0.5 * (bands * bands - squares), 0.0);
   float nodes = smoothstep(0.3, 1.0, overlap);
   nodes *= nodes;
   float emission = bands + nodes * uNode;
+
+  float basinOverlap = max(0.5 * (basins * basins - basinSquares), 0.0);
+  float basinNodes = smoothstep(0.3, 1.0, basinOverlap);
+  basinNodes *= basinNodes;
+  float basin = basins + basinNodes * uNode;
+
+  return vec2(emission, basin);
+}
+
+void main() {
+  float aspect = uResolution.x / max(uResolution.y, 1.0);
+  vec2 ndc = (2.0 * gl_FragCoord.xy - uResolution) / uResolution.y;
+
+  vec2 warp = vec2(
+    fbm2(ndc * uWarpScale + vec2(uTime * 0.03, 0.0), 2),
+    fbm2(ndc * uWarpScale + vec2(9.7, uTime * 0.024), 2)
+  ) - 0.5;
+  vec2 p = ndc + warp * uWarp;
+
+  vec2 source = vec2(uSource.x * aspect, uSource.y);
+  vec2 travel = vec2(cos(uAngle), sin(uAngle));
+
+  vec2 field = waves(p, source);
+  float emission = field.x;
 
   float depth = clamp(dot(p - source, travel) / uSpan, 0.0, 1.0);
   vec3 hue = mix(uBody, uDeep, depth);
@@ -110,7 +143,6 @@ void main() {
   float arrival = 1.0 / (1.0 + uFalloff * reach * reach);
 
   vec3 col = hue * emission * arrival * uGain;
-  float amount = clamp(emission * arrival * uGain, 0.0, 1.0);
 
   // Tonemapped on luminance, not per channel, so a bright node saturates
   // toward the accent instead of washing to white. sisu must not bloom.
@@ -118,10 +150,29 @@ void main() {
   float peak = 1.0 - exp(-lum);
   vec3 tint = col / max(lum, 1e-4);
 
-  vec3 rgb = dither(mix(tint, tint * 0.78, uAbsorb), gl_FragCoord.xy, 0.006);
-  float alpha = mix(peak, amount * 0.85, uAbsorb) * uAlpha;
-  alpha = ditherAlpha(alpha, gl_FragCoord.xy, 0.004);
+  vec3 emissive = dither(tint, gl_FragCoord.xy, 0.006);
+  float emissiveAlpha = peak * uAlpha;
 
-  fragColor = composite(rgb, alpha);
+  if (uAbsorb < 0.5) {
+    float alpha = ditherAlpha(emissiveAlpha, gl_FragCoord.xy, 0.004);
+    fragColor = composite(emissive, alpha);
+    return;
+  }
+
+  float eps = 2.0 / max(uResolution.y, 1.0);
+  float heightX = waves(p + vec2(eps, 0.0), source).x;
+  float heightY = waves(p + vec2(0.0, eps), source).x;
+  vec3 normal = normalize(vec3(
+    emission - heightX,
+    emission - heightY,
+    eps * 5.0
+  ));
+  float key = clamp(dot(normal, normalize(KEY)), 0.0, 1.0);
+  float amount = clamp(field.y * arrival * uGain, 0.0, 1.0);
+  float wet = amount * SOAK * (1.0 - 0.62 * key);
+
+  vec3 absorbed = hold(uPigment, uStainFloor);
+  float alpha = clamp(soak(wet, SIGMA) * uAlpha, 0.0, 1.0);
+  fragColor = vec4(absorbed * alpha, alpha);
 }
 `;

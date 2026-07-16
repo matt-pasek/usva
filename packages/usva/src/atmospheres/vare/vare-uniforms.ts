@@ -1,3 +1,4 @@
+import { MAX_STAIN } from "../atmospheres-core/atmospheres-color.js";
 import {
   setUniform,
   type Uniforms,
@@ -42,6 +43,8 @@ export function vareUniforms(colors: VareColors, params: VareParams): Uniforms {
     uBody: { value: [...colors.body] },
     uDeep: { value: [...colors.deep] },
     uEdgeColor: { value: [...colors.edge] },
+    uPigment: { value: [...colors.pigment] },
+    uStainFloor: { value: MAX_STAIN },
   };
 }
 
@@ -49,6 +52,7 @@ export function setVareColors(u: Uniforms, colors: VareColors): void {
   setUniform(u, "uBody", [...colors.body]);
   setUniform(u, "uDeep", [...colors.deep]);
   setUniform(u, "uEdgeColor", [...colors.edge]);
+  setUniform(u, "uPigment", [...colors.pigment]);
 }
 
 export function setVareParams(u: Uniforms, params: VareParams): void {

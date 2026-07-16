@@ -29,7 +29,7 @@ export function VareDemo({
         <h2 className="text-3xl font-semibold text-ink">bands, not waves</h2>
         <p className="mt-3 text-muted">
           {caption ??
-            "the light sits on the iso-phase lines; the space between them is void"}
+            "on dark ground the crests emit; on savi the troughs hold damp pigment"}
         </p>
       </div>
     </Vare>

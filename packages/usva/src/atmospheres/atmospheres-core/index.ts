@@ -4,6 +4,8 @@ export {
   blendStyleFor,
   blendUniform,
   LIGHT_GROUND,
+  MAX_STAIN,
+  pigmentFor,
   type Rgb,
   relativeLuminance,
   resolveBlendMode,
@@ -23,6 +25,13 @@ export {
   type GlslChunk,
   glsl,
 } from "./atmospheres-glsl.js";
+export {
+  type AtmosphereName,
+  type GroundSupport,
+  hiddenOnGround,
+  LIGHT_GROUND_SUPPORT,
+  supportsGround,
+} from "./atmospheres-ground.js";
 export { atmospheresCoreRegistry } from "./registry.js";
 export {
   type GlCanvas,

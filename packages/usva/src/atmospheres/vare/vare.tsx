@@ -5,6 +5,7 @@ import {
   type BlendMode,
   blendStyleFor,
   blendUniform,
+  pigmentFor,
   type Rgb,
   resolveBlendMode,
   resolveColor,
@@ -29,7 +30,7 @@ import {
   vareUniforms,
 } from "./vare-uniforms.js";
 
-const ROLES = ["accent", "accent-2", "accent-alt"] as const;
+const ROLES = ["accent", "accent-2", "accent-alt", "ink"] as const;
 
 /** Far enough in that the fronts have separated in the still frame. */
 const STILL_TIME = 9;
@@ -82,17 +83,20 @@ export const Vare = React.forwardRef<HTMLDivElement, VareProps>(
     paramsRef.current = resolveParams(params);
 
     const themeVersion = useThemeVersion();
-    const tokens = useTokenColors(ROLES);
+    const scopeRef = React.useRef<HTMLDivElement | null>(null);
+    const tokens = useTokenColors(ROLES, { scopeRef });
     const blend = resolveBlendMode(mode, tokens.bg);
 
     // biome-ignore lint/correctness/useExhaustiveDependencies: a theme swap re-resolves the same colour strings to new channels.
     const ramp = React.useMemo<VareColors>(() => {
       const stop = (value: string | undefined, fallback: Rgb): Rgb =>
         value ? resolveColor(value) : fallback;
+      const body = stop(cBody, tokens.colors.accent);
       return {
-        body: stop(cBody, tokens.colors.accent),
+        body,
         deep: stop(cDeep, tokens.colors["accent-2"]),
         edge: stop(cEdge, tokens.colors["accent-alt"]),
+        pigment: pigmentFor(body, tokens.colors.ink),
       };
     }, [cBody, cDeep, cEdge, tokens, themeVersion]);
 
@@ -149,6 +153,7 @@ export const Vare = React.forwardRef<HTMLDivElement, VareProps>(
       <div
         ref={(node) => {
           canvas.containerRef.current = node;
+          scopeRef.current = node;
           if (typeof forwardedRef === "function") forwardedRef(node);
           else if (forwardedRef) forwardedRef.current = node;
         }}

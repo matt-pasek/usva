@@ -3,6 +3,7 @@ export * from "./atmospheres/kajastus/index.js";
 export * from "./atmospheres/kuulto/index.js";
 export * from "./atmospheres/kynnos/index.js";
 export * from "./atmospheres/loimu/index.js";
+export * from "./atmospheres/routa/index.js";
 export * from "./atmospheres/utu/index.js";
 export * from "./atmospheres/vare/index.js";
 export { cn } from "./cn.js";

@@ -1,5 +1,6 @@
 import { Card, CardBody, CardHeader } from "@matt-pasek/usva";
 import type { Metadata } from "next";
+import { GroundNote } from "@/components/dark-stage";
 import { InstallBlock } from "@/components/install-block";
 import { SourceView } from "@/components/source-view";
 import { KajastusDemo } from "./kajastus-demo";
@@ -91,6 +92,8 @@ export default function KajastusPage() {
           and the heaviest atmosphere in the library.
         </p>
       </div>
+
+      <GroundNote name="Kajastus" />
 
       <Card>
         <CardHeader>Demo</CardHeader>

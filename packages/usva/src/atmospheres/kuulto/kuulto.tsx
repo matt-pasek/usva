@@ -9,6 +9,7 @@ import {
   resolveBlendMode,
   resolveColor,
 } from "../atmospheres-core/atmospheres-color.js";
+import { hiddenOnGround } from "../atmospheres-core/atmospheres-ground.js";
 import { useGlCanvas } from "../atmospheres-core/use-gl-canvas.js";
 import {
   useThemeVersion,
@@ -83,7 +84,8 @@ export const Kuulto = React.forwardRef<HTMLDivElement, KuultoProps>(
     paramsRef.current = resolveParams(params);
 
     const themeVersion = useThemeVersion();
-    const tokens = useTokenColors(ROLES);
+    const scopeRef = React.useRef<HTMLDivElement | null>(null);
+    const tokens = useTokenColors(ROLES, { scopeRef });
     const blend = resolveBlendMode(mode, tokens.bg);
 
     // biome-ignore lint/correctness/useExhaustiveDependencies: a theme swap re-resolves the same colour strings to new channels.
@@ -107,6 +109,7 @@ export const Kuulto = React.forwardRef<HTMLDivElement, KuultoProps>(
     const canvas = useGlCanvas({
       fragment: kuultoFragmentShader,
       uniforms: () => kuultoUniforms(lampsRef.current, paramsRef.current),
+      enabled: !hiddenOnGround("kuulto", blend),
       pointer: true,
       pointerEase: POINTER_EASE,
       stillTime: STILL_TIME,
@@ -153,6 +156,7 @@ export const Kuulto = React.forwardRef<HTMLDivElement, KuultoProps>(
       <div
         ref={(node) => {
           canvas.containerRef.current = node;
+          scopeRef.current = node;
           if (typeof forwardedRef === "function") forwardedRef(node);
           else if (forwardedRef) forwardedRef.current = node;
         }}

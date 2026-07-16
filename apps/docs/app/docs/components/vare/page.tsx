@@ -7,7 +7,7 @@ import { VareDemo } from "./vare-demo";
 export const metadata: Metadata = {
   title: "Väre",
   description:
-    "Väre: drifting luminous iso-phase bands. Light sits on the boundaries of a few broad travelling wavefronts, never on the wave bodies.",
+    "Väre: travelling interference fronts that emit on dark ground and press damp troughs into savi clay.",
 };
 
 const props = [
@@ -39,7 +39,7 @@ const props = [
   {
     name: "colors",
     type: "{ body?; deep?; edge? }",
-    desc: "The front-to-back ramp: body reads accent, deep reads accent-2 on the oldest bands, edge reads accent-alt on the freshest. Omitted stops read their token.",
+    desc: "On dark ground, the front-to-back ramp. On savi, body combines with theme ink to make the trough pigment. Omitted stops read their token.",
   },
   {
     name: "params",
@@ -88,12 +88,12 @@ export default function VarePage() {
         <h1 className="text-3xl font-semibold text-ink">Väre</h1>
         <p className="text-muted">
           Väre is Finnish for a ripple. A few broad, near-parallel wavefronts
-          cross the frame from off-frame right and interfere, and the light is
-          emitted from narrow bands around their iso-phase lines rather than
-          from the wave bodies. What you see is a set of drifting luminous
-          boundaries: the folded edges of a curtain seen from very far away.
-          Where two fronts cross there is a brief brighter node. Between the
-          bands is void.
+          cross the frame from off-frame right and interfere. On a dark ground,
+          narrow iso-phase crests emit like folded edges of a curtain seen from
+          very far away. On savi, the same phases become relief pressed into
+          clay: the lamp-facing crests stay dry while literal phase troughs hold
+          a warm damp pigment. Where two fronts cross there is either a brighter
+          node or a deeper wet basin.
         </p>
       </div>
 
@@ -126,7 +126,8 @@ export default function VarePage() {
         <CardBody className="flex flex-col gap-3">
           <p className="text-sm text-muted">
             With <code>interactive</code> on, the cursor perturbs the phase
-            locally and the bands bend around it as it passes.{" "}
+            locally and the bands bend around it as it passes. On savi that
+            phase is also the relief, so the cursor rakes the clay.{" "}
             <code>params.lens</code> sets the strength and{" "}
             <code>lensSigma</code> its reach. Off, the fronts just travel.
           </p>

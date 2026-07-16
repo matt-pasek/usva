@@ -209,6 +209,17 @@ vec3 tonemapACES(vec3 x) {
 }
 `;
 
+const stain = /* glsl */ `
+float soak(float depth, float sigma) {
+  return clamp(1.0 - exp(-max(depth, 0.0) * sigma), 0.0, 1.0);
+}
+
+vec3 hold(vec3 pigment, float floorLevel) {
+  float lum = dot(pigment, vec3(0.2126, 0.7152, 0.0722));
+  return clamp(pigment * (max(lum, floorLevel) / max(lum, 1e-4)), 0.0, 1.0);
+}
+`;
+
 const composite = /* glsl */ `
 /**
  * Safari ignores premultipliedAlpha: false and composites the drawing buffer as
@@ -243,6 +254,7 @@ export type GlslChunk =
   | "isoband"
   | "dither"
   | "tonemap"
+  | "stain"
   | "composite";
 
 const CHUNKS: Record<GlslChunk, Chunk> = {
@@ -254,6 +266,7 @@ const CHUNKS: Record<GlslChunk, Chunk> = {
   isoband: { needs: [], source: isoband },
   dither: { needs: [], source: dither },
   tonemap: { needs: [], source: tonemap },
+  stain: { needs: [], source: stain },
   composite: { needs: [], source: composite },
 };
 

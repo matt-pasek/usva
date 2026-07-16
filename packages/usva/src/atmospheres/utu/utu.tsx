@@ -1,9 +1,19 @@
 "use client";
 import * as React from "react";
 import { cn } from "../../cn.js";
-import { resolveColor } from "../atmospheres-core/atmospheres-color.js";
+import {
+  type BlendMode,
+  blendStyleFor,
+  blendUniform,
+  pigmentFor,
+  resolveBlendMode,
+  resolveColor,
+} from "../atmospheres-core/atmospheres-color.js";
 import { useGlCanvas } from "../atmospheres-core/use-gl-canvas.js";
-import { useThemeVersion } from "../atmospheres-core/use-token-colors.js";
+import {
+  useThemeVersion,
+  useTokenColors,
+} from "../atmospheres-core/use-token-colors.js";
 import {
   approach,
   breathe,
@@ -12,6 +22,7 @@ import {
   monoRamp,
   resolveParams,
   type UtuColors,
+  type UtuEmissionColors,
   type UtuParams,
 } from "./utu-field.js";
 import { utuFragmentShader } from "./utu-shader.js";
@@ -21,6 +32,8 @@ import {
   setUtuParams,
   utuUniforms,
 } from "./utu-uniforms.js";
+
+const ROLES = ["ink"] as const;
 
 export interface UtuProps extends React.HTMLAttributes<HTMLDivElement> {
   /** Rotation and breath rate multiplier; higher turns faster. Defaults to 1. */
@@ -37,6 +50,9 @@ export interface UtuProps extends React.HTMLAttributes<HTMLDivElement> {
   /** Overall opacity of the fog, 0..1. Lower lets more of the page through.
    * Defaults to 1. */
   opacity?: number;
+  /** Force the material. Defaults to fog on a dark ground and damp pigment on
+   * a light one. */
+  mode?: BlendMode;
   /** Escape hatch for the field parameters, for tuning demos. */
   params?: Partial<UtuParams>;
   children?: React.ReactNode;
@@ -49,7 +65,7 @@ interface ColorOverrides {
   hot?: string;
 }
 
-function readColors(overrides: ColorOverrides): UtuColors {
+function readColors(overrides: ColorOverrides): UtuEmissionColors {
   const stop = (c?: string) => (c ? resolveColor(c) : undefined);
   const stops = {
     deep: stop(overrides.deep),
@@ -76,6 +92,7 @@ export const Utu = React.forwardRef<HTMLDivElement, UtuProps>(
       accentColor,
       colors,
       opacity = 1,
+      mode,
       params,
       className,
       children,
@@ -106,13 +123,26 @@ export const Utu = React.forwardRef<HTMLDivElement, UtuProps>(
     });
 
     const themeVersion = useThemeVersion();
+    const scopeRef = React.useRef<HTMLDivElement | null>(null);
+    const tokens = useTokenColors(ROLES, { scopeRef });
+    const blend = resolveBlendMode(mode, tokens.bg);
     // biome-ignore lint/correctness/useExhaustiveDependencies: a theme swap re-resolves the same colour strings to new channels.
-    const ramp = React.useMemo(
-      () => readColors({ accentColor, deep: cDeep, mid: cMid, hot: cHot }),
-      [accentColor, cDeep, cMid, cHot, themeVersion],
-    );
+    const ramp = React.useMemo<UtuColors>(() => {
+      const emission = readColors({
+        accentColor,
+        deep: cDeep,
+        mid: cMid,
+        hot: cHot,
+      });
+      return {
+        ...emission,
+        pigment: pigmentFor(emission.mid, tokens.colors.ink),
+      };
+    }, [accentColor, cDeep, cMid, cHot, tokens, themeVersion]);
     const rampRef = React.useRef(ramp);
     rampRef.current = ramp;
+    const blendRef = React.useRef(blend);
+    blendRef.current = blend;
 
     const lean = React.useRef<[number, number]>([0, 0]);
 
@@ -155,6 +185,7 @@ export const Utu = React.forwardRef<HTMLDivElement, UtuProps>(
           lean: lean.current,
           leanAmt: interactiveRef.current ? frame.pointer.amount : 0,
           alpha: opacityRef.current,
+          absorb: blendUniform(blendRef.current),
         });
       },
     });
@@ -163,7 +194,7 @@ export const Utu = React.forwardRef<HTMLDivElement, UtuProps>(
     // biome-ignore lint/correctness/useExhaustiveDependencies: the still frame must repaint when the ramp changes.
     React.useEffect(() => {
       redraw();
-    }, [redraw, ramp]);
+    }, [redraw, ramp, blend]);
 
     const sphereOn = canvas.active;
 
@@ -171,10 +202,12 @@ export const Utu = React.forwardRef<HTMLDivElement, UtuProps>(
       <div
         ref={(node) => {
           canvas.containerRef.current = node;
+          scopeRef.current = node;
           if (typeof forwardedRef === "function") forwardedRef(node);
           else if (forwardedRef) forwardedRef.current = node;
         }}
         data-fluid={sphereOn ? "on" : "off"}
+        data-blend={blend}
         className={cn("relative isolate overflow-hidden", className)}
         {...props}
       >
@@ -183,7 +216,11 @@ export const Utu = React.forwardRef<HTMLDivElement, UtuProps>(
             aria-hidden="true"
             className="pointer-events-none absolute inset-0 -z-10"
           >
-            <canvas ref={canvas.canvasRef} className="block h-full w-full" />
+            <canvas
+              ref={canvas.canvasRef}
+              className="block h-full w-full"
+              style={blendStyleFor(blend)}
+            />
           </div>
         ) : null}
         {children}

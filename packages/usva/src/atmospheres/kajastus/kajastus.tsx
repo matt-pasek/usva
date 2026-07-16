@@ -8,6 +8,7 @@ import {
   resolveBlendMode,
   resolveColor,
 } from "../atmospheres-core/atmospheres-color.js";
+import { hiddenOnGround } from "../atmospheres-core/atmospheres-ground.js";
 import { useGlCanvas } from "../atmospheres-core/use-gl-canvas.js";
 import { useTokenColors } from "../atmospheres-core/use-token-colors.js";
 import { kajastusFragmentShader } from "./kajastus-shader.js";
@@ -58,7 +59,8 @@ export const Kajastus = React.forwardRef<HTMLDivElement, KajastusProps>(
     const cHigh = colors?.high;
     const cStar = colors?.star;
 
-    const tokens = useTokenColors(ROLES);
+    const scopeRef = React.useRef<HTMLDivElement | null>(null);
+    const tokens = useTokenColors(ROLES, { scopeRef });
     const blend = resolveBlendMode(mode, tokens.bg);
 
     const ramp = React.useMemo<KajastusColors>(
@@ -86,6 +88,7 @@ export const Kajastus = React.forwardRef<HTMLDivElement, KajastusProps>(
     const canvas = useGlCanvas({
       fragment: kajastusFragmentShader,
       uniforms: () => kajastusUniforms(rampRef.current, paramsRef.current),
+      enabled: !hiddenOnGround("kajastus", blend),
       maxDpr: 1.5,
       renderScale: 0.5,
       stillTime: STILL_TIME,
@@ -112,6 +115,7 @@ export const Kajastus = React.forwardRef<HTMLDivElement, KajastusProps>(
       <div
         ref={(node) => {
           canvas.containerRef.current = node;
+          scopeRef.current = node;
           if (typeof forwardedRef === "function") forwardedRef(node);
           else if (forwardedRef) forwardedRef.current = node;
         }}

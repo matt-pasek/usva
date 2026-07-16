@@ -1,5 +1,6 @@
 import { Card, CardBody, CardHeader } from "@matt-pasek/usva";
 import type { Metadata } from "next";
+import { GroundNote } from "@/components/dark-stage";
 import { InstallBlock } from "@/components/install-block";
 import { SourceView } from "@/components/source-view";
 import { LoimuDemo, LoimuScrimDemo } from "./loimu-demo";
@@ -102,6 +103,8 @@ export default function LoimuPage() {
           travel. Then it decays to nothing well before the frame edge.
         </p>
       </div>
+
+      <GroundNote name="Loimu" />
 
       <Card>
         <CardHeader>Demo, with the scrim on</CardHeader>

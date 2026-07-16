@@ -7,7 +7,7 @@ import { UtuDemo } from "./utu-demo";
 export const metadata: Metadata = {
   title: "Utu",
   description:
-    "Utu: a luminous fog volume of stacked glowing contour-shells that slowly turns and breathes behind your content.",
+    "Utu: luminous contour fog on dark ground, reinterpreted as damp soaking into savi clay.",
 };
 
 const props = [
@@ -45,6 +45,11 @@ const props = [
     name: "opacity",
     type: "number",
     desc: "Overall opacity of the fog, 0 to 1. Lower lets more of the page through. Defaults to 1.",
+  },
+  {
+    name: "mode",
+    type: '"emissive" | "absorptive"',
+    desc: "Overrides the material. By default a dark ground emits fog and a light ground holds a damp stain.",
   },
 ];
 
@@ -89,10 +94,10 @@ export default function UtuPage() {
         <p className="text-muted">
           Utu is light water vapor suspended in the air, especially in the early
           morning or lingering over lakes and fields. This is that, made into a
-          hero: a single body of luminous fog, raymarched as stacked glowing
-          contour-shells you can see through, slowly turning and breathing. It
-          is emissive light, not glass, so it glows from within rather than
-          catching a highlight.
+          field. On dark ground it is a single body of luminous fog, raymarched
+          as stacked contour-shells you can see through. On savi the same
+          density becomes damp soaking into clay, darker where the fog was
+          thickest and exactly transparent where the ground stayed dry.
         </p>
       </div>
 
@@ -104,14 +109,29 @@ export default function UtuPage() {
       </Card>
 
       <Card>
-        <CardHeader>A brand beat, not a surface to work on</CardHeader>
+        <CardHeader>Fog in the dark, damp in daylight</CardHeader>
+        <CardBody className="flex flex-col gap-3">
+          <p className="text-sm text-muted">
+            The marcher already tracks how much light survives each density
+            sample. On savi that optical depth becomes stain coverage instead of
+            a radiance sum. There is no normal field and no relief because a
+            volume has no single surface to light.
+          </p>
+          <UtuDemo
+            mode="absorptive"
+            caption="the same density read as quiet damp, with no pale fog painted over the clay"
+          />
+        </CardBody>
+      </Card>
+
+      <Card>
+        <CardHeader>The luminous version is a brand beat</CardHeader>
         <CardBody>
           <p className="text-sm text-muted">
-            I reach for this on a landing hero, a splash, a moment meant to be
-            felt. It is the loudest wow the library has, so it gets one spot per
-            view and never sits behind a table, a form, or anything someone is
-            trying to read for long. It is decoration with no meaning of its
-            own; hide it and the page still works.
+            On a dark theme I reach for this on a landing hero, a splash, or a
+            moment meant to be felt. The glow gets one spot per view and never
+            sits behind a table or form. The savi stain is the quieter material
+            double, calm enough to sit behind longer reading.
           </p>
         </CardBody>
       </Card>
@@ -209,8 +229,9 @@ export default function UtuPage() {
         <CardBody className="flex flex-col gap-3">
           <InstallBlock registryName="utu" />
           <p className="text-sm text-muted">
-            A standalone atmosphere. It pulls in <code>ogl</code> and depends on
-            nothing else from the library, so it copies in clean.
+            Pulls in <code>ogl</code> and the shared{" "}
+            <code>atmospheres-core</code> shell, which the registry adds for
+            you.
           </p>
         </CardBody>
       </Card>

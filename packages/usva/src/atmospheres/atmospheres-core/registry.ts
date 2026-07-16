@@ -9,6 +9,10 @@ export const atmospheresCoreRegistry = {
       target: "components/ui/atmospheres-color.ts",
     },
     {
+      path: "atmospheres-ground.ts",
+      target: "components/ui/atmospheres-ground.ts",
+    },
+    {
       path: "atmospheres-glsl.ts",
       target: "components/ui/atmospheres-glsl.ts",
     },

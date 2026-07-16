@@ -7,6 +7,7 @@ import {
   BentoText,
   Button,
   Kajastus,
+  Kynnos,
   Panel,
   ProgressRow,
 } from "@matt-pasek/usva";
@@ -22,6 +23,7 @@ import {
 } from "motion/react";
 import Link from "next/link";
 import { type ReactNode, useEffect, useRef, useState } from "react";
+import { useTheme } from "@/components/theme-provider";
 import { counts, type Intensity } from "@/lib/catalog";
 import { ATMOSPHERE_LINKS } from "./descent-layout";
 import { KUOHU_SCENE, WEIGHT } from "./home-motion";
@@ -557,6 +559,9 @@ function Star({
  * the horizon handing over to the page rather than a hard edge.
  */
 function Room() {
+  const { theme } = useTheme();
+  const ground = theme === "savi";
+  const Atmosphere = ground ? Kynnos : Kajastus;
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -575,8 +580,9 @@ function Room() {
           aria-hidden="true"
           className="pointer-events-none absolute inset-0 -z-10"
         >
-          <Kajastus className="h-full w-full" opacity={0.85} />
+          <Atmosphere className="h-full w-full" opacity={0.85} />
           <div className="absolute inset-0 bg-bg/25" />
+          <div className="absolute inset-x-0 top-0 h-[22%] bg-linear-to-b from-bg to-transparent" />
           <div className="absolute inset-x-0 bottom-0 h-[30%] bg-linear-to-t from-bg to-transparent" />
         </div>
         <div className="mx-auto flex w-full max-w-5xl flex-col items-center px-6 py-20 text-center sm:px-10">
@@ -596,7 +602,8 @@ function Room() {
               standing in, and you are standing in one right now.
             </p>
             <p className="mt-3 font-mono text-xs text-ink/80">
-              ↳ {counts.atmospheres} of them. this one is kajastus.
+              ↳ {counts.atmospheres} of them. this one is{" "}
+              {ground ? "kynnös" : "kajastus"}.
             </p>
           </Scrub>
 

@@ -1,5 +1,6 @@
 import { Card, CardBody, CardHeader } from "@matt-pasek/usva";
 import type { Metadata } from "next";
+import { GroundNote } from "@/components/dark-stage";
 import { InstallBlock } from "@/components/install-block";
 import { SourceView } from "@/components/source-view";
 import { HehkuDemo } from "./hehku-demo";
@@ -95,6 +96,8 @@ export default function HehkuPage() {
           two kajo backgrounds.
         </p>
       </div>
+
+      <GroundNote name="Hehku" />
 
       <Card>
         <CardHeader>Demo</CardHeader>

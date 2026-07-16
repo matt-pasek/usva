@@ -106,6 +106,7 @@ export const ATMOSPHERE_NAMES = [
   "kuulto",
   "kynnos",
   "loimu",
+  "routa",
   "utu",
   "vare",
 ] as const;
