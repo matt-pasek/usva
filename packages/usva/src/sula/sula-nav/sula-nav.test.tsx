@@ -42,9 +42,9 @@ const views: SulaNavView[] = [
   { href: "/play", label: "Playground", icon: <svg aria-hidden="true" /> },
 ];
 
-const matchMedia = (reduced: boolean) =>
+const matchMedia = (reduced: boolean, below = false) =>
   vi.fn().mockImplementation((query: string) => ({
-    matches: reduced && query.includes("reduced-motion"),
+    matches: query.includes("reduced-motion") ? reduced : below,
     media: query,
     addEventListener: vi.fn(),
     removeEventListener: vi.fn(),
@@ -209,6 +209,28 @@ describe("SulaNav", () => {
     const { container } = render(<SulaNav views={views} fluid={false} />);
     expect(canvasOf(container)).toBeNull();
     expect(screen.getByRole("navigation")).toHaveAttribute("data-fluid", "off");
+  });
+
+  it("guards server-shaped desktop markup below the collapse breakpoint", () => {
+    render(<SulaNav views={views} collapseBelow="md" fluid={false} />);
+    expect(screen.getByRole("navigation")).toHaveClass("max-md:invisible");
+  });
+
+  it("hides closed-panel overflow and gives the open mobile menu viewport room", async () => {
+    vi.stubGlobal("matchMedia", matchMedia(false, true));
+    const user = userEvent.setup();
+    render(<SulaNav views={views} collapseBelow="md" />);
+
+    const trigger = screen.getByRole("button", { name: "Menu" });
+    const panel = document.getElementById(
+      trigger.getAttribute("aria-controls") ?? "",
+    );
+    expect(panel).toHaveClass("overflow-hidden");
+    expect(panel).toHaveClass("max-h-[min(520px,calc(100dvh-5rem))]");
+
+    await user.click(trigger);
+    expect(panel).toHaveClass("overflow-y-auto");
+    expect(panel).not.toHaveClass("overflow-hidden");
   });
 
   it("mounts no canvas when the user asked for reduced motion", () => {

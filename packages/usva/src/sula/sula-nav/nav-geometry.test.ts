@@ -315,8 +315,9 @@ describe("swellPanel", () => {
 
   it("is nothing but the droplet at rest, so a closed menu shows no leftover", () => {
     const { blob: shut } = swellPanel(droplet, rest, 0);
+    expect(shut.hw).toBeLessThan(1);
     expect(shut.hh).toBeLessThan(1);
-    expect(shut.cy - shut.hh).toBeCloseTo(droplet.cy + droplet.hh * 0.35, 4);
+    expect(shut.cy - shut.hh).toBeCloseTo(droplet.cy - droplet.hh * 0.35, 4);
     expect(swellFade(0)).toBe(0);
   });
 
@@ -329,12 +330,26 @@ describe("swellPanel", () => {
   });
 
   it("keeps its top edge inside the droplet the whole way, so it never detaches", () => {
-    const top = droplet.cy + droplet.hh * 0.35;
+    const top = droplet.cy - droplet.hh * 0.35;
     for (let t = 0; t <= 1.2; t += 0.05) {
       const { blob: live, neck } = swellPanel(droplet, rest, t);
       expect(live.cy - live.hh).toBeCloseTo(top, 4);
-      if (neck) expect(neck.strength).toBe(1);
+      if (neck) {
+        expect(neck.strength).toBeGreaterThan(0);
+        expect(neck.strength).toBeLessThanOrEqual(1);
+      }
     }
+  });
+
+  it("melts the shoulder neck through the closing tail before omitting it", () => {
+    const tail = swellPanel(droplet, rest, 0.05).neck;
+    const earlier = swellPanel(droplet, rest, 0.15).neck;
+
+    expect(tail).not.toBeNull();
+    expect(tail?.strength).toBeGreaterThan(0);
+    expect(tail?.strength).toBeLessThan(0.1);
+    expect(earlier?.strength).toBeGreaterThan(tail?.strength ?? 0);
+    expect(swellPanel(droplet, rest, 0).neck).toBeNull();
   });
 
   it("deepens before it spreads", () => {

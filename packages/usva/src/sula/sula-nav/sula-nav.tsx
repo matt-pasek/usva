@@ -119,6 +119,12 @@ const LABEL_COLLAPSE: Record<SulaNavLabelsFrom, string> = {
   xl: "max-xl:max-w-0 max-xl:overflow-hidden max-xl:opacity-0",
 };
 
+const COLLAPSE_GUARD: Record<SulaNavCollapseBelow, string> = {
+  sm: "max-sm:invisible",
+  md: "max-md:invisible",
+  lg: "max-lg:invisible",
+};
+
 export interface SulaNavProps
   extends Omit<React.HTMLAttributes<HTMLElement>, "children"> {
   views: SulaNavView[];
@@ -1226,11 +1232,13 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
         ref={panelRef}
         id={panelId}
         className={cn(
-          "absolute top-full right-0 left-0 z-10 mt-3 max-h-[440px] overflow-y-auto rounded-[28px] p-2",
+          "absolute top-full right-0 left-0 z-10 mt-3 max-h-[min(520px,calc(100dvh-5rem))] rounded-[28px] p-2",
           isFluid
             ? "transition-opacity duration-fast motion-reduce:transition-none"
             : "border border-border bg-surface/95 shadow-raised backdrop-blur-xl",
-          !menuOpen && (isFluid ? "pointer-events-none" : "hidden"),
+          menuOpen && "overflow-y-auto",
+          !menuOpen &&
+            (isFluid ? "pointer-events-none overflow-hidden" : "hidden"),
         )}
       >
         <div ref={panelBodyRef} className={cn(isFluid && "opacity-0")}>
@@ -1277,6 +1285,7 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
             : collapsed
               ? "flex w-full justify-between gap-2"
               : "flex gap-4",
+          collapseBelow && !collapsed && COLLAPSE_GUARD[collapseBelow],
           className,
         )}
         style={navStyle}

@@ -232,7 +232,7 @@ const SWELL_SPREAD_START = 0.16;
 /** How far into the droplet the panel's top edge starts, as a fraction of the
  * droplet's half-height. Overlapping means the two are one surface from the
  * first frame: the panel is never a second shape that flies in and docks. */
-const SWELL_ROOT = 0.35;
+const SWELL_ROOT = -0.35;
 
 /**
  * The menu panel grows out of the collapsed nav's own body. Where `revealSide`
@@ -258,7 +258,12 @@ export function swellPanel(
   const top = source.cy + source.hh * SWELL_ROOT;
   const bottom = mix(top, rest.cy + rest.hh, deep);
   const hh = Math.max((bottom - top) / 2, 0.5);
-  const hw = Math.max(mix(source.hw * 0.72, rest.hw, wide), 0.5);
+  const rootHw = mix(
+    0.5,
+    source.hw * 0.72,
+    smoothstep(0, SWELL_SPREAD_START, p),
+  );
+  const hw = Math.max(mix(rootHw, rest.hw, wide), 0.5);
   const cx = mix(source.cx, rest.cx, wide);
   const blob: Blob = {
     cx,
@@ -269,8 +274,9 @@ export function swellPanel(
   };
 
   if (deep <= 0.001) return { blob, neck: null };
-  /* A fat, short column between the droplet and the panel's shoulder. It never
-   * pinches: the panel is not separating, it is still the nav. */
+  /* A fat, short column between the droplet and the panel's shoulder. Its
+   * strength melts through the closing tail so the resting droplet never
+   * inherits a one-frame swollen outline. */
   const r = Math.max(mix(source.hh * 0.9, source.hw * 0.62, wide), NECK_MIN);
   const neck: Neck = {
     ax: source.cx,
@@ -278,7 +284,7 @@ export function swellPanel(
     bx: cx,
     by: Math.min(top + hh, top + source.hh),
     r,
-    strength: 1,
+    strength: smoothstep(0.02, 0.28, p),
   };
   return { blob, neck };
 }
