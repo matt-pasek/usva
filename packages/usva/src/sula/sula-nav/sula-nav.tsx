@@ -345,8 +345,8 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
       [satellites],
     );
     const hasSatellites = leftSats.length > 0 || rightSats.length > 0;
-    const leftKey = leftSats.map((s) => s.id).join(" ");
-    const rightKey = rightSats.map((s) => s.id).join(" ");
+    const leftKey = leftSats.map((s) => s.id).join(" ");
+    const rightKey = rightSats.map((s) => s.id).join(" ");
 
     const [failed, setFailed] = React.useState(false);
     const [mounted, setMounted] = React.useState(false);
