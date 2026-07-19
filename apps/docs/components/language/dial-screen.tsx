@@ -2,11 +2,11 @@
 
 import {
   Badge,
+  Button,
   Card,
   CardBody,
   CardHeader,
   Chip,
-  IconButton,
   PageHeader,
   Progress,
   Reveal,
@@ -145,9 +145,9 @@ export function DialScreen({ stop, chromeRef, refused }: DialScreenProps) {
             </ToolbarGroup>
             <ToolbarActions>
               <Chip>region: eu</Chip>
-              <IconButton aria-label="refresh" size="sm">
+              <Button variant="outline" iconOnly aria-label="refresh" size="sm">
                 <span aria-hidden>↻</span>
-              </IconButton>
+              </Button>
             </ToolbarActions>
           </Toolbar>
 

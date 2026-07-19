@@ -409,8 +409,12 @@ export function Witnesses() {
           </Scrub>
           <Scrub>
             <p className="mt-5 max-w-2xl text-muted">
-              two apps already use it, and neither of them is a demo. the system
-              was extracted, not invented. watch them build.
+              a design system has one honest credential:{" "}
+              <span className="text-ink">what it already runs</span>. usva runs{" "}
+              <span className="text-ink">
+                two apps that pull in opposite directions
+              </span>
+              , off one vocabulary. watch them build.
             </p>
           </Scrub>
 

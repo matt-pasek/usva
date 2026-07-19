@@ -175,11 +175,11 @@ function Seam({ index, label }: { index: number; label: string }) {
       aria-hidden="true"
       className="pointer-events-none flex items-center gap-4"
     >
-      <span className="font-mono text-[0.625rem] tracking-[0.2em] text-faint tabular-nums">
+      <span className="font-mono text-[0.625rem] tracking-[0.2em] text-muted tabular-nums">
         {String(index).padStart(2, "0")}
       </span>
       <span className="h-px flex-1 bg-linear-to-r from-border via-border/40 to-transparent" />
-      <span className="font-mono text-[0.625rem] uppercase tracking-[0.2em] text-faint">
+      <span className="font-mono text-[0.625rem] uppercase tracking-[0.2em] text-muted">
         {label}
       </span>
     </div>
@@ -292,7 +292,7 @@ function StratumHeading({
           <span className="font-mono text-xs uppercase tracking-[0.25em] text-accent">
             {intensity}
           </span>
-          <span className="font-mono text-xs text-faint">{count}</span>
+          <span className="font-mono text-xs text-muted">{count}</span>
         </div>
       </Scrub>
       <Scrub>
@@ -434,7 +434,7 @@ function AssertsScene() {
                   <span className="font-mono text-xs uppercase tracking-[0.25em] text-accent">
                     asserts
                   </span>
-                  <span className="font-mono text-xs text-faint">
+                  <span className="font-mono text-xs text-muted">
                     {counts.sula}, for now
                   </span>
                 </div>
@@ -476,7 +476,7 @@ function AssertsScene() {
                 range={KUOHU_SCENE.credit}
                 className="md:hidden"
               >
-                <p className="font-mono text-[11px] text-faint">
+                <p className="font-mono text-[11px] text-muted">
                   ↳ kuohu · the surge of a boiling liquid
                 </p>
               </Staged>
@@ -502,7 +502,7 @@ function AssertsScene() {
               range={KUOHU_SCENE.credit}
               className="max-md:hidden"
             >
-              <p className="font-mono text-[11px] text-faint">
+              <p className="font-mono text-[11px] text-muted">
                 ↳ kuohu · the surge of a boiling liquid
               </p>
             </Staged>

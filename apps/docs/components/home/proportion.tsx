@@ -22,12 +22,13 @@ import { Scrub } from "./tiivistyma";
 const CELL: Record<Layer, string> = {
   primitive: "bg-border-strong",
   pattern: "bg-muted",
+  motion: "bg-accent/50",
   sula: "bg-accent",
   atmosphere: "bg-accent-alt",
 };
 
 const LOUD_LAYERS: Layer[] = ["sula", "atmosphere"];
-const ORDER: Layer[] = ["primitive", "pattern", "sula", "atmosphere"];
+const ORDER: Layer[] = ["primitive", "pattern", "motion", "sula", "atmosphere"];
 
 /* Every square is a component, so the grid is the catalogue rather than a
  * picture of it: the ratio is still the argument, but you can now put your
@@ -112,10 +113,10 @@ function Readout({ entry }: { entry: CatalogEntry | null }) {
             className={`size-2.5 rounded-[2px] ${CELL[entry.layer]}`}
           />
           <span className="text-ink">{entry.name}</span>
-          <span className="text-faint">{LAYER_LABEL[entry.layer]}</span>
+          <span className="text-muted">{LAYER_LABEL[entry.layer]}</span>
         </>
       ) : (
-        <span className="text-faint">
+        <span className="text-muted">
           every square is a component. point at one.
         </span>
       )}
