@@ -3,6 +3,7 @@ import { Dialog as Base } from "@base-ui/react/dialog";
 import * as React from "react";
 import { cn } from "../../cn.js";
 import {
+  type CardHighlight,
   type CardSurface,
   SURFACE_ELEVATED,
   SURFACE_SKIN,
@@ -61,6 +62,8 @@ export type DrawerContentProps = React.ComponentPropsWithoutRef<
   backdropClassName?: string;
   /** How the panel sits above the scrim. Defaults to elevated. */
   surface?: CardSurface;
+  /** Accent treatment, shared with Card: a wash, an inner edge, or a glow ring. */
+  highlight?: CardHighlight;
 };
 
 /**
@@ -78,6 +81,7 @@ export const DrawerContent = React.forwardRef<
       side = "right",
       size = "md",
       surface = "elevated",
+      highlight = "none",
       children,
       ...props
     },
@@ -86,9 +90,11 @@ export const DrawerContent = React.forwardRef<
     <Base.Portal>
       <Base.Backdrop
         className={cn(
-          "fixed inset-0 z-overlay bg-scrim backdrop-blur-sm",
-          "transition-opacity duration-base motion-reduce:transition-none",
+          "fixed inset-0 z-overlay transition-opacity duration-base motion-reduce:transition-none",
           "data-[starting-style]:opacity-0 data-[ending-style]:opacity-0",
+          surface === "glass"
+            ? "bg-scrim/40 backdrop-blur-[3px]"
+            : "bg-scrim backdrop-blur-sm",
           backdropClassName,
         )}
       />
@@ -96,13 +102,19 @@ export const DrawerContent = React.forwardRef<
         ref={ref}
         data-side={side}
         data-surface={surface}
+        data-highlight={highlight !== "none" ? highlight : undefined}
         className={cn(
           "fixed z-overlay flex flex-col overflow-y-auto",
-          "wash-accent isolate border-border p-6 text-ink",
+          "isolate border-border p-6 text-ink",
           sideAnchor[side],
           sideSize[side][size],
           SURFACE_SKIN[surface],
-          SURFACE_ELEVATED[surface] && "shadow-overlay",
+          highlight === "ring"
+            ? "glow-ring"
+            : SURFACE_ELEVATED[surface] && "shadow-overlay",
+          highlight === "wash" && "wash-accent",
+          highlight === "edge" &&
+            "after:absolute after:inset-x-6 after:top-0 after:h-px after:hairline-accent",
           "transition-enter duration-[350ms] ease-spring",
           "motion-reduce:transition-none motion-reduce:transform-none",
           "data-[starting-style]:opacity-0 data-[ending-style]:opacity-0",

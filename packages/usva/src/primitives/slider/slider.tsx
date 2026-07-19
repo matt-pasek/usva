@@ -30,6 +30,16 @@ const thumbVariants = cva(
   },
 );
 
+const controlVariants = cva("flex w-full touch-none items-center py-1.5", {
+  variants: {
+    size: {
+      sm: "px-[7px]",
+      md: "px-2",
+    },
+  },
+  defaultVariants: { size: "md" },
+});
+
 export interface SliderProps
   extends Omit<SliderRootProps<number>, "render" | "className">,
     VariantProps<typeof trackVariants> {
@@ -72,7 +82,7 @@ export const Slider = React.forwardRef<HTMLDivElement, SliderProps>(
           ) : null}
         </div>
       ) : null}
-      <Base.Control className="flex w-full touch-none items-center py-1.5">
+      <Base.Control className={controlVariants({ size })}>
         <Base.Track className={trackVariants({ size })}>
           <Base.Indicator className="rounded-full bg-accent bg-gradient-accent" />
           <Base.Thumb className={thumbVariants({ size })} />

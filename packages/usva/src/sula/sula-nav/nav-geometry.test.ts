@@ -7,6 +7,7 @@ import {
   springToBlob,
 } from "../sula-core/geometry.js";
 import {
+  flowStretch,
   loadPhase,
   revealPhase,
   revealSide,
@@ -26,6 +27,33 @@ const blob = (over: Partial<Blob> = {}): Blob => ({
 });
 
 const K = 26;
+
+describe("flowStretch", () => {
+  const rest = blob({ hw: 80, hh: 24, r: 24 });
+
+  it("returns the exact authored shape at both motion boundaries", () => {
+    expect(flowStretch(rest, 0, false)).toEqual(rest);
+    expect(flowStretch(rest, 1, false)).toEqual(rest);
+  });
+
+  it("adds a restrained stretch along the direction of travel", () => {
+    const horizontal = flowStretch(rest, 0.5, false);
+    const vertical = flowStretch(rest, 0.5, true);
+
+    expect(horizontal.hw).toBeGreaterThan(rest.hw);
+    expect(horizontal.hh).toBeLessThan(rest.hh);
+    expect(vertical.hw).toBeLessThan(rest.hw);
+    expect(vertical.hh).toBeGreaterThan(rest.hh);
+  });
+
+  it("settles continuously into the exact rest shape", () => {
+    const almost = flowStretch(rest, 0.99, false);
+    const settled = flowStretch(rest, 1, false);
+
+    expect(Math.abs(almost.hw - settled.hw)).toBeLessThan(0.01);
+    expect(Math.abs(almost.hh - settled.hh)).toBeLessThan(0.01);
+  });
+});
 
 describe("loadPhase", () => {
   const rest = blob({ cx: 400, cy: 60, hw: 200, hh: 24, r: 24 });
@@ -89,6 +117,15 @@ describe("loadPhase", () => {
     expect(Math.abs(separated.extras[0]?.cy ?? 9)).toBeLessThan(
       Math.abs(early.extras[0]?.cy ?? 0),
     );
+  });
+
+  it("shrinks the edge mass to zero before removing it", () => {
+    const almostGone = loadPhase(deepRest, 0.899, 0, 0);
+    const gone = loadPhase(deepRest, 0.9, 0, 0);
+
+    expect(almostGone.extras[0]?.hw ?? 0).toBeLessThan(0.01);
+    expect(almostGone.extras[0]?.hh ?? 0).toBeLessThan(0.01);
+    expect(gone.extras).toEqual([]);
   });
 
   it("carries spring overshoot past the rest line before settling", () => {
@@ -156,12 +193,19 @@ describe("revealPhase", () => {
   });
 
   it("fades both side necks before handing off to the rest bridge", () => {
-    const early = revealPhase(bar, left, right, 0.84, K).necks;
+    const early = revealPhase(bar, left, right, 0.76, K).necks;
     const late = revealPhase(bar, left, right, 0.92, K).necks;
 
-    expect(early[0]?.strength).toBeCloseTo(1, 6);
+    expect(early[0]?.strength ?? 0).toBeGreaterThan(0.95);
     expect(late[0]?.strength ?? 1).toBeLessThan(0.15);
     expect(late[1]?.strength ?? 1).toBeLessThan(0.15);
+  });
+
+  it("tapers the departing neck to subpixel size instead of leaving a cusp", () => {
+    const nearlyDetached = revealSide(bar, right, 0.95, K).neck;
+
+    expect(nearlyDetached?.r ?? 0).toBeLessThan(0.5);
+    expect(nearlyDetached?.strength ?? 0).toBeLessThan(0.01);
   });
 
   it("keeps settled side pills within bridge reach through overshoot", () => {

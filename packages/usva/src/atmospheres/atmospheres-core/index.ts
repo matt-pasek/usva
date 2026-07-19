@@ -34,6 +34,8 @@ export {
 } from "./atmospheres-ground.js";
 export { atmospheresCoreRegistry } from "./registry.js";
 export {
+  type CaptureOptions,
+  captureAtmosphere,
   type GlCanvas,
   type GlFrame,
   type GlPointer,

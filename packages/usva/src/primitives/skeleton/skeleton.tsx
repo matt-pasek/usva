@@ -32,6 +32,7 @@ export const Skeleton = React.forwardRef<HTMLDivElement, SkeletonProps>(
     <div
       ref={ref}
       aria-hidden="true"
+      data-usva-skeleton=""
       className={cn(skeletonVariants({ variant }), className)}
       style={{
         width,

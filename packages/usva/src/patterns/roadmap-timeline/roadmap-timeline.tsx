@@ -117,7 +117,7 @@ export const RoadmapTimeline = React.forwardRef<
           <div
             data-roadmap-track=""
             aria-hidden="true"
-            className="relative -mb-3 hidden h-3 w-full @2xl:block"
+            className="relative mb-3 hidden h-3 w-full @2xl:block"
           >
             <div
               className="absolute top-1/2 h-0.5 -translate-y-1/2 bg-[repeating-linear-gradient(90deg,var(--color-border-strong)_0,var(--color-border-strong)_7px,transparent_7px,transparent_16px)]"

@@ -6,7 +6,7 @@ import * as React from "react";
 import { cn } from "../../cn.js";
 
 const rootVariants = cva(
-  "relative flex shrink-0 items-center justify-center rounded-md border border-border bg-surface outline-none transition-control duration-base ease-soft before:absolute before:content-[''] data-[unchecked]:hover:border-border-strong data-[checked]:border-accent data-[checked]:bg-accent data-[checked]:bg-gradient-accent data-[checked]:glow-ring data-[indeterminate]:border-accent data-[indeterminate]:bg-accent data-[indeterminate]:bg-gradient-accent data-[indeterminate]:glow-ring active:scale-[0.98] motion-reduce:transition-none motion-reduce:transform-none focus-visible:border-transparent focus-visible:ring-focus aria-invalid:border-danger disabled:cursor-not-allowed disabled:opacity-50",
+  "relative flex shrink-0 items-center justify-center rounded-md border border-border bg-surface outline-none transition-control duration-base ease-soft before:absolute before:content-[''] data-[unchecked]:hover:border-border-strong data-[checked]:border-accent data-[checked]:bg-accent data-[checked]:bg-gradient-accent data-[checked]:glow-ring data-[indeterminate]:border-accent data-[indeterminate]:bg-accent data-[indeterminate]:bg-gradient-accent data-[indeterminate]:glow-ring active:scale-[0.98] motion-reduce:transition-none motion-reduce:transform-none focus-visible:border-transparent focus-visible:ring-focus aria-invalid:border-danger data-[disabled]:cursor-not-allowed data-[disabled]:opacity-50",
   {
     variants: {
       size: {
@@ -23,6 +23,16 @@ const indicatorVariants = cva("text-on-accent", {
     size: {
       sm: "h-3 w-3",
       md: "h-3.5 w-3.5",
+    },
+  },
+  defaultVariants: { size: "md" },
+});
+
+const descriptionVariants = cva("text-xs text-muted", {
+  variants: {
+    size: {
+      sm: "pl-6",
+      md: "pl-7",
     },
   },
   defaultVariants: { size: "md" },
@@ -51,7 +61,7 @@ export const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>(
             ref={ref}
             id={checkboxId}
             disabled={disabled}
-            className={cn(rootVariants({ size }), className)}
+            className={cn("group", rootVariants({ size }), className)}
             {...props}
           >
             <Base.Indicator
@@ -60,20 +70,31 @@ export const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>(
                 "flex items-center justify-center transition-control duration-base ease-spring motion-reduce:transition-none motion-reduce:transform-none data-[unchecked]:scale-0 data-[checked]:scale-100 data-[indeterminate]:scale-100",
               )}
             >
-              <CheckIcon className={indicatorVariants({ size })} />
+              <CheckIcon
+                className={cn(
+                  indicatorVariants({ size }),
+                  "group-data-[indeterminate]:hidden",
+                )}
+              />
+              <MinusIcon
+                className={cn(
+                  indicatorVariants({ size }),
+                  "hidden group-data-[indeterminate]:block",
+                )}
+              />
             </Base.Indicator>
           </Base.Root>
           {label ? (
             <Field.Label
               htmlFor={checkboxId}
-              className="text-sm text-ink select-none"
+              className="text-sm text-ink select-none data-[disabled]:opacity-50"
             >
               {label}
             </Field.Label>
           ) : null}
         </div>
         {description ? (
-          <Field.Description className="pl-6 text-xs text-muted">
+          <Field.Description className={descriptionVariants({ size })}>
             {description}
           </Field.Description>
         ) : null}
@@ -96,6 +117,23 @@ function CheckIcon({ className }: { className?: string }) {
       aria-hidden="true"
     >
       <path d="M2.5 6.5 5 9l4.5-5.5" />
+    </svg>
+  );
+}
+
+function MinusIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 12 12"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      aria-hidden="true"
+    >
+      <path d="M2.5 6h7" />
     </svg>
   );
 }

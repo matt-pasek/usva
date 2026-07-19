@@ -367,16 +367,26 @@
   }
 }
 
-/* Skeleton sheen — a bright accent arc that swishes around the border while a
-   surface glimmer sweeps across. @property lets the conic angle animate; the
-   border-only mask keeps the arc a 1px edge. Loading UI that feels alive. */
+/* Skeleton sheen — standalone blocks spin one local arc. SkeletonGroup moves
+   one shared band across every block, still clipped to each 1px outer edge. */
 @property --usva-sheen-angle {
   syntax: "<angle>";
   initial-value: 0deg;
-  inherits: false;
+  inherits: true;
 }
 @keyframes usva-sheen-spin {
   to { --usva-sheen-angle: 360deg; }
+}
+@property --usva-sheen-position {
+  syntax: "<percentage>";
+  initial-value: -20%;
+  inherits: true;
+}
+@keyframes usva-sheen-travel {
+  to { --usva-sheen-position: 120%; }
+}
+@utility skeleton-group {
+  animation: usva-sheen-travel 2.2s linear infinite;
 }
 @utility skeleton-sheen {
   position: relative;
@@ -405,7 +415,92 @@
     mask-composite: exclude;
     animation: usva-sheen-spin 1.5s linear infinite;
   }
+  &[data-skeleton-grouped]::after {
+    background-image: linear-gradient(
+      105deg,
+      transparent calc(var(--usva-sheen-position) - 11%),
+      color-mix(in srgb, var(--usva-accent) 75%, transparent)
+        calc(var(--usva-sheen-position) - 3%),
+      color-mix(in srgb, var(--usva-accent-alt, var(--usva-accent)) 60%, transparent)
+        var(--usva-sheen-position),
+      transparent calc(var(--usva-sheen-position) + 11%)
+    );
+    background-size:
+      var(--usva-skeleton-group-width)
+      var(--usva-skeleton-group-height);
+    background-position:
+      calc(0px - var(--usva-skeleton-offset-x))
+      calc(0px - var(--usva-skeleton-offset-y));
+    background-repeat: no-repeat;
+    opacity: 1;
+    animation: none;
+  }
 }
 @media (prefers-reduced-motion: reduce) {
+  .skeleton-group { animation: none; }
   .skeleton-sheen::after { animation: none; opacity: 0; }
+}
+
+/* ---------------------------------------------------------------- *\
+   code: a highlight.js theme painted with the role tokens, so syntax
+   colour reskins with the theme. used by CodeSnippet; any highlight.js
+   output picks it up.
+\* ---------------------------------------------------------------- */
+.hljs {
+  color: var(--usva-on-sunken);
+  background: transparent;
+}
+
+.hljs-comment,
+.hljs-quote {
+  color: var(--usva-faint);
+  font-style: italic;
+}
+
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-meta,
+.hljs-built_in,
+.hljs-type {
+  color: var(--usva-accent);
+}
+
+.hljs-string,
+.hljs-regexp,
+.hljs-number,
+.hljs-literal,
+.hljs-symbol,
+.hljs-addition {
+  color: var(--usva-accent-alt);
+}
+
+.hljs-title,
+.hljs-title.function_,
+.hljs-title.class_,
+.hljs-section {
+  color: var(--usva-ink);
+  font-weight: 500;
+}
+
+.hljs-attr,
+.hljs-attribute,
+.hljs-property,
+.hljs-variable,
+.hljs-template-variable,
+.hljs-name,
+.hljs-selector-class,
+.hljs-selector-id {
+  color: var(--usva-muted);
+}
+
+.hljs-deletion {
+  color: var(--usva-danger);
+}
+
+.hljs-emphasis {
+  font-style: italic;
+}
+
+.hljs-strong {
+  font-weight: 700;
 }

@@ -20,6 +20,7 @@ const here = dirname(fileURLToPath(import.meta.url));
 export const PRIMITIVES = resolve(here, "../../usva/src/primitives");
 export const PATTERNS = resolve(here, "../../usva/src/patterns");
 export const SULA = resolve(here, "../../usva/src/sula");
+export const MOTION = resolve(here, "../../usva/src/motion");
 export const ATMOSPHERES = resolve(here, "../../usva/src/atmospheres");
 const OUT = resolve(here, "../../../registry/r");
 
@@ -31,12 +32,12 @@ export const NAMES = [
   "card",
   "checkbox",
   "chip",
+  "code-snippet",
   "color-field",
   "dialog",
   "drawer",
   "dropdown-menu",
   "hint-popover",
-  "icon-button",
   "input",
   "label",
   "list",
@@ -53,6 +54,7 @@ export const NAMES = [
   "stat-chip",
   "switch",
   "tabs",
+  "terminal",
   "toast",
   "toggle-chip",
   "tooltip",
@@ -99,6 +101,8 @@ export const SULA_NAMES = [
   "sula-segmented",
 ] as const;
 
+export const MOTION_NAMES = ["page-transition", "reveal"] as const;
+
 export const ATMOSPHERE_NAMES = [
   "atmospheres-core",
   "hehku",
@@ -133,6 +137,7 @@ export async function buildRegistry(): Promise<void> {
   for (const name of NAMES) await emit(PRIMITIVES, name);
   for (const name of PATTERN_NAMES) await emit(PATTERNS, name);
   for (const name of SULA_NAMES) await emit(SULA, name);
+  for (const name of MOTION_NAMES) await emit(MOTION, name);
   for (const name of ATMOSPHERE_NAMES) await emit(ATMOSPHERES, name);
 }
 

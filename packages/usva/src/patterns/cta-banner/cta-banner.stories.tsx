@@ -14,8 +14,8 @@ const meta: Meta<typeof CtaBanner> = {
     },
   },
   args: {
-    title: "Add it to Chrome",
-    body: "Nothing to configure. Sign in once and the planner fills itself in.",
+    title: "Have something in mind?",
+    body: "Design engineering for teams that sweat the details. A short call is the fastest way to start.",
   },
 };
 export default meta;
@@ -24,29 +24,28 @@ type Story = StoryObj<typeof CtaBanner>;
 
 export const Default: Story = {
   args: {
-    title: "Add it to Chrome",
-    body: "Nothing to configure. Sign in once and the planner fills itself in.",
-    action: <Button>Add to Chrome</Button>,
+    title: "Have something in mind?",
+    body: "Design engineering for teams that sweat the details. A short call is the fastest way to start.",
+    action: <Button>Start a project</Button>,
   },
 };
 
-export const WithSteps: Story = {
+export const TitleOnly: Story = {
   args: {
-    ...Default.args,
-    steps: ["Install the extension", "Sign in", "Done"],
-    stepsLabel: "Setup steps",
+    title: "Ready when you are.",
+    action: <Button>Get in touch</Button>,
   },
 };
 
 export const WithProofRow: Story = {
   args: {
-    ...WithSteps.args,
-    footerLabel: "Confirmed at",
+    ...Default.args,
+    footerLabel: "Recent work",
     footer: (
       <>
-        <Chip>Aalto</Chip>
-        <Chip>Helsinki</Chip>
-        <Chip>TUNI</Chip>
+        <Chip>Fintech</Chip>
+        <Chip>Health</Chip>
+        <Chip>Developer tools</Chip>
       </>
     ),
   },

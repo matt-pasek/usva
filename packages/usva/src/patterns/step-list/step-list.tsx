@@ -36,13 +36,24 @@ export const StepList = React.forwardRef<HTMLOListElement, StepListProps>(
                   />
                 )}
               </div>
-              <div className={cn(i < last ? "pb-8" : "pb-0")}>
+              <div
+                className={cn(
+                  "min-w-0",
+                  step.body == null && "flex min-h-11 flex-col justify-center",
+                  i < last ? "pb-8" : "pb-0",
+                )}
+              >
                 {step.icon != null && (
                   <p className="mb-1 font-mono text-[0.7rem] tabular-nums tracking-[0.16em] text-muted">
                     {ordinal}
                   </p>
                 )}
-                <h4 className="mb-1.5 text-base font-semibold tracking-[-0.01em] text-ink">
+                <h4
+                  className={cn(
+                    "text-base font-semibold tracking-[-0.01em] text-ink",
+                    step.body != null && "mb-1",
+                  )}
+                >
                   {step.title}
                 </h4>
                 {step.body != null && (

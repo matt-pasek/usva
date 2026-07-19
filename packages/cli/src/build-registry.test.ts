@@ -4,6 +4,8 @@ import {
   ATMOSPHERE_NAMES,
   ATMOSPHERES,
   buildRegistry,
+  MOTION,
+  MOTION_NAMES,
   NAMES,
   PATTERN_NAMES,
   PATTERNS,
@@ -34,6 +36,10 @@ describe("buildRegistry", () => {
 
   it("ships every sula component through the registry", () => {
     expect([...SULA_NAMES].sort()).toEqual(dirsIn(SULA));
+  });
+
+  it("ships every motion component through the registry", () => {
+    expect([...MOTION_NAMES].sort()).toEqual(dirsIn(MOTION));
   });
 
   it("ships every atmosphere through the registry", () => {
@@ -96,6 +102,22 @@ describe("buildRegistry", () => {
     });
   });
 
+  describe.each(MOTION_NAMES)("%s motion parity", (name) => {
+    it("registry source matches package source once imports are flattened", () => {
+      const json = JSON.parse(
+        readFileSync(`../../registry/r/${name}.json`, "utf8"),
+      );
+      expect(json.files.length).toBeGreaterThan(0);
+      for (const file of json.files as { path: string; content: string }[]) {
+        const src = readFileSync(
+          `../usva/src/motion/${name}/${file.path}`,
+          "utf8",
+        );
+        expect(file.content).toBe(rewriteImports(src));
+      }
+    });
+  });
+
   describe.each(ATMOSPHERE_NAMES)("%s atmosphere parity", (name) => {
     it("registry source matches package source once imports are flattened", () => {
       const json = JSON.parse(
@@ -116,6 +138,7 @@ describe("buildRegistry", () => {
     ...NAMES,
     ...PATTERN_NAMES,
     ...SULA_NAMES,
+    ...MOTION_NAMES,
     ...ATMOSPHERE_NAMES,
   ])("%s is self-contained", (name) => {
     it("emits no import that escapes components/ui", () => {
@@ -132,6 +155,7 @@ describe("buildRegistry", () => {
       ...NAMES,
       ...PATTERN_NAMES,
       ...SULA_NAMES,
+      ...MOTION_NAMES,
       ...ATMOSPHERE_NAMES,
     ];
     const read = (name: string) =>

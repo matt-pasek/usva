@@ -6,7 +6,7 @@ import * as React from "react";
 import { cn } from "../../cn.js";
 
 const trackVariants = cva(
-  "relative inline-flex shrink-0 items-center rounded-full border border-border bg-surface-2 outline-none transition-control duration-base ease-soft before:absolute before:content-[''] data-[unchecked]:hover:border-border-strong data-[checked]:border-accent data-[checked]:bg-accent data-[checked]:bg-gradient-accent data-[checked]:glow-ring focus-visible:border-transparent focus-visible:ring-focus aria-invalid:border-danger disabled:cursor-not-allowed disabled:opacity-50",
+  "relative inline-flex shrink-0 items-center rounded-full border border-border bg-surface-2 outline-none transition-control duration-base ease-soft before:absolute before:content-[''] data-[unchecked]:hover:border-border-strong data-[checked]:border-accent data-[checked]:bg-accent data-[checked]:bg-gradient-accent data-[checked]:glow-ring focus-visible:border-transparent focus-visible:ring-focus aria-invalid:border-danger data-[disabled]:cursor-not-allowed data-[disabled]:opacity-50",
   {
     variants: {
       size: {
@@ -31,6 +31,12 @@ const thumbVariants = cva(
   },
 );
 
+// Indent the description to line up under the label: track width + the row gap.
+const descIndent: Record<NonNullable<SwitchProps["size"]>, string> = {
+  sm: "pl-12",
+  md: "pl-14",
+};
+
 export interface SwitchProps
   extends Omit<
       React.ComponentPropsWithoutRef<typeof Base.Root>,
@@ -49,7 +55,7 @@ export const Switch = React.forwardRef<HTMLButtonElement, SwitchProps>(
 
     return (
       <Field.Root className="flex flex-col gap-1" disabled={disabled}>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
           <Base.Root
             ref={ref}
             id={switchId}
@@ -62,14 +68,16 @@ export const Switch = React.forwardRef<HTMLButtonElement, SwitchProps>(
           {label ? (
             <Field.Label
               htmlFor={switchId}
-              className="text-sm text-ink select-none"
+              className="text-sm text-ink select-none data-[disabled]:opacity-50"
             >
               {label}
             </Field.Label>
           ) : null}
         </div>
         {description ? (
-          <Field.Description className="pl-2 text-xs text-muted">
+          <Field.Description
+            className={cn("text-xs text-muted", descIndent[size ?? "md"])}
+          >
             {description}
           </Field.Description>
         ) : null}

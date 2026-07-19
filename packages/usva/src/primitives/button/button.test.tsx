@@ -180,4 +180,64 @@ describe("Button status", () => {
     const { container } = render(<Button status="loading">Save</Button>);
     expect(await axe(container)).toHaveNoViolations();
   });
+
+  it("renders square when icon-only", () => {
+    render(
+      <Button iconOnly aria-label="Close">
+        <svg aria-hidden="true">
+          <title>{""}</title>
+        </svg>
+      </Button>,
+    );
+    expect(screen.getByRole("button", { name: "Close" }).className).toContain(
+      "w-10",
+    );
+  });
+
+  it("throws in dev when icon-only has no label", () => {
+    const spy = vi.spyOn(console, "error").mockImplementation(() => {});
+    expect(() => render(<Button iconOnly>x</Button>)).toThrow(/aria-label/);
+    spy.mockRestore();
+  });
+
+  it("shows a tooltip that the button is described by", () => {
+    render(
+      <Button iconOnly aria-label="Copy" tooltip="copy">
+        x
+      </Button>,
+    );
+    const button = screen.getByRole("button", { name: "Copy" });
+    const tip = screen.getByRole("tooltip");
+    expect(tip).toHaveTextContent("copy");
+    expect(button).toHaveAttribute("aria-describedby", tip.id);
+  });
+
+  it("applies the active look", () => {
+    render(
+      <Button iconOnly active aria-label="Copied">
+        x
+      </Button>,
+    );
+    expect(screen.getByRole("button").className).toContain("glow-ring");
+  });
+
+  it("icon-only loading shows the spinner without a label", () => {
+    render(
+      <Button iconOnly aria-label="Copy" status="loading">
+        x
+      </Button>,
+    );
+    const button = screen.getByRole("button", { name: "Copy" });
+    expect(button).toHaveAttribute("aria-busy", "true");
+    expect(button).not.toHaveTextContent("Loading");
+  });
+
+  it("icon-only with a tooltip has no a11y violations", async () => {
+    const { container } = render(
+      <Button iconOnly aria-label="Copy" tooltip="copy">
+        x
+      </Button>,
+    );
+    expect(await axe(container)).toHaveNoViolations();
+  });
 });

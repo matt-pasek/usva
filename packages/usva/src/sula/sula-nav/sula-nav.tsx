@@ -32,6 +32,7 @@ import {
   textFade,
 } from "../sula-motion/springs.js";
 import {
+  flowStretch,
   loadPhase,
   revealSide,
   type SwitchRole,
@@ -216,12 +217,6 @@ const TEXT_AT = 0.75;
 /** The tether lets go the moment the bar first reaches its line, mid-settle,
  * instead of waiting out the spring's long formal tail. */
 const DRIP_AT = 0.97;
-/** Merge radius while a transition is live; things read gooey, then firm. */
-const K_ACTIVE = 24;
-/** Signed elastic deformation: stretch along the travel, squash against it on
- * the rebound, capped so it never tears. */
-const SQUASH_GAIN = 3.4;
-const SQUASH_MAX = 0.11;
 /** Peak surface undulation, in px of edge displacement. Kept below the authored
  * stretch/squash motion so long bars read as fluid glass, not a noisy coastline. */
 const WOBBLE_MAX = 0.24;
@@ -350,9 +345,10 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
 
     const [failed, setFailed] = React.useState(false);
     const [mounted, setMounted] = React.useState(false);
-    React.useEffect(() => setMounted(true), []);
+    useIsomorphicLayoutEffect(() => setMounted(true), []);
 
     const isFluid = fluid && !reduced && !failed && mounted;
+    const fluidShell = fluid && !failed && (!mounted || !reduced);
 
     const resolvedActiveView = activeView ?? views[0]?.href;
     const activeViewIndex = Math.max(
@@ -416,7 +412,7 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
       [leftKey, rightKey, collapsed],
     );
 
-    React.useEffect(() => {
+    useIsomorphicLayoutEffect(() => {
       if (!isFluid) return;
       const canvas = canvasRef.current;
       const stage = stageRef.current;
@@ -489,14 +485,6 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
       let pDrip = 0;
       let pSwitch = 1;
       const barText = { value: 0 };
-
-      const squash = (b: Blob, v: number, vertical: boolean): Blob => {
-        const s = Math.max(-SQUASH_MAX, Math.min(SQUASH_MAX, v * SQUASH_GAIN));
-        if (Math.abs(s) <= 0.001) return b;
-        const hw = vertical ? b.hw * (1 - s * 0.5) : b.hw * (1 + s);
-        const hh = vertical ? b.hh * (1 + s) : b.hh * (1 - s * 0.5);
-        return { ...b, hw, hh, r: Math.min(b.r, Math.abs(hw), Math.abs(hh)) };
-      };
 
       let lastW = 0;
       let lastH = 0;
@@ -617,7 +605,7 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
           visibleEdge(barRest),
           dT.value,
         );
-        const barBlob = squash(load.bar, vBar, true);
+        const barBlob = flowStretch(load.bar, bT.value, true);
         /* The row in left-to-right part order (brand, active bar, side pills),
          * so bridgeNecks can hold a neck between each adjacent pair. */
         const rowBlobs: Blob[] = [];
@@ -639,7 +627,7 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
           const restI = rest[i];
           if (!restI) continue;
           const side = revealSide(load.bar, restI, sT.value, mergeRadius);
-          const sideBlob = squash(side.blob, vSide, false);
+          const sideBlob = flowStretch(side.blob, sT.value, false);
           rowBlobs.push(sideBlob);
           aligned[i] = sideBlob;
           if (side.neck) necks.push(side.neck);
@@ -656,7 +644,7 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
         const speed =
           Math.abs(vBar) + Math.abs(vSide) + Math.abs(vDrip) + Math.abs(vMenu);
         energy.bump(speed);
-        const liveK = mergeRadius + (K_ACTIVE - mergeRadius) * energy.value;
+        const liveK = mergeRadius;
         /* Rest tension necks between adjacent row parts. The reach uses a
          * slightly wider k so parts at the default flex gap still neck at rest.
          * They persist because the last drawn frame keeps them once the field
@@ -715,7 +703,7 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
         }
 
         energy.bump(Math.abs(vSwitch));
-        const liveK = mergeRadius + (K_ACTIVE - mergeRadius) * energy.value;
+        const liveK = mergeRadius;
         /* Same reach as the rest path, so when the switch spring's `.finished`
          * hands off to loadFrame a beat after settle the necks do not resize. */
         const necks = bridgeNecks(blobs, liveK * NECK_REACH, merge);
@@ -1053,7 +1041,7 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
 
     const part = cn(
       "relative rounded-full",
-      !isFluid &&
+      !fluidShell &&
         "border border-border bg-surface/85 shadow-raised backdrop-blur-xl",
     );
 
@@ -1065,7 +1053,7 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
     const brandNode = brand ? (
       <div
         ref={brandRef}
-        className={cn(part, !sidesOpen && !isFluid && "hidden")}
+        className={cn(part, !sidesOpen && !fluidShell && "hidden")}
       >
         <Link
           href={brandHref}
@@ -1087,7 +1075,7 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
         }}
         role="group"
         aria-label={satellite.label}
-        className={cn(part, !sidesOpen && !isFluid && "hidden")}
+        className={cn(part, !sidesOpen && !fluidShell && "hidden")}
       >
         {satellite.children}
       </div>
@@ -1161,7 +1149,10 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
           ref={(node) => {
             viewRefs.current[index] = node;
           }}
-          className={cn(part, !isActive && !sidesOpen && !isFluid && "hidden")}
+          className={cn(
+            part,
+            !isActive && !sidesOpen && !fluidShell && "hidden",
+          )}
           data-active={isActive || undefined}
         >
           {isMenu ? (
@@ -1211,7 +1202,7 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
       );
     });
 
-    const stage = isFluid ? (
+    const stage = fluidShell ? (
       <div
         ref={stageRef}
         aria-hidden="true"
@@ -1233,15 +1224,15 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
         id={panelId}
         className={cn(
           "absolute top-full right-0 left-0 z-10 mt-3 max-h-[min(520px,calc(100dvh-5rem))] rounded-[28px] p-2",
-          isFluid
+          fluidShell
             ? "transition-opacity duration-fast motion-reduce:transition-none"
             : "border border-border bg-surface/95 shadow-raised backdrop-blur-xl",
           menuOpen && "overflow-y-auto",
           !menuOpen &&
-            (isFluid ? "pointer-events-none overflow-hidden" : "hidden"),
+            (fluidShell ? "pointer-events-none overflow-hidden" : "hidden"),
         )}
       >
-        <div ref={panelBodyRef} className={cn(isFluid && "opacity-0")}>
+        <div ref={panelBodyRef} className={cn(fluidShell && "opacity-0")}>
           <ul className="flex flex-col gap-0.5">
             {activeItems.map((item) => (
               <li key={item.href}>{itemLink(item, true)}</li>
@@ -1274,7 +1265,7 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
           else if (forwardedRef) forwardedRef.current = node;
         }}
         aria-label={ariaLabel}
-        data-fluid={isFluid ? "on" : "off"}
+        data-fluid={fluidShell ? "on" : "off"}
         className={cn(
           "relative items-center",
           /* Satellites need real corners to fly to, and the body needs to stay

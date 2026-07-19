@@ -12,6 +12,8 @@ export interface StripeCardProps extends Omit<CardProps, "title"> {
   footer?: React.ReactNode;
   /** Leading stripe color. Any CSS color; defaults to a neutral token. */
   stripeColor?: string;
+  /** Paints a faint background wash keyed to `stripeColor` (or the accent). */
+  wash?: boolean;
   selected?: boolean;
 }
 
@@ -33,6 +35,7 @@ export const StripeCard = React.forwardRef<HTMLDivElement, StripeCardProps>(
       badge,
       footer,
       stripeColor,
+      wash = false,
       selected = false,
       children,
       ...props
@@ -43,9 +46,22 @@ export const StripeCard = React.forwardRef<HTMLDivElement, StripeCardProps>(
       ref={ref}
       interactive
       highlight={selected ? "ring" : "none"}
-      className={cn("group/stripe flex flex-col overflow-hidden", className)}
+      className={cn(
+        "group/stripe relative isolate flex flex-col overflow-hidden",
+        className,
+      )}
       {...props}
     >
+      {wash && (
+        <span
+          aria-hidden="true"
+          data-stripe-wash=""
+          className="pointer-events-none absolute inset-0 -z-10"
+          style={{
+            backgroundImage: `linear-gradient(105deg, color-mix(in oklab, ${stripeColor ?? "var(--color-accent)"} 20%, transparent), color-mix(in oklab, ${stripeColor ?? "var(--color-accent)"} 6%, transparent) 42%, transparent 78%)`,
+          }}
+        />
+      )}
       <div className="flex items-start justify-between gap-3 p-4">
         <div className="flex min-w-0 items-stretch gap-3">
           <span

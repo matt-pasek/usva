@@ -34,7 +34,7 @@ export const PopoverContent = React.forwardRef<
       <Base.Popup
         ref={ref}
         className={cn(
-          "rim-light rounded-xl border border-border bg-surface-2 p-4 text-ink shadow-floating",
+          "rim-light rounded-xl border border-border bg-surface-2 p-4 text-ink shadow-floating outline-none",
           "origin-[var(--transform-origin)] transition-enter duration-base ease-spring motion-reduce:transition-none motion-reduce:transform-none",
           "data-[starting-style]:translate-y-1 data-[starting-style]:scale-[0.97] data-[starting-style]:opacity-0 data-[starting-style]:blur-[2px]",
           "data-[ending-style]:scale-[0.98] data-[ending-style]:opacity-0 data-[ending-style]:duration-fast data-[ending-style]:ease-soft",
@@ -48,18 +48,6 @@ export const PopoverContent = React.forwardRef<
   </Base.Portal>
 ));
 PopoverContent.displayName = "PopoverContent";
-
-export const PopoverArrow = React.forwardRef<
-  HTMLDivElement,
-  React.ComponentPropsWithoutRef<typeof Base.Arrow>
->(({ className, ...props }, ref) => (
-  <Base.Arrow
-    ref={ref}
-    className={cn("fill-surface-2", className)}
-    {...props}
-  />
-));
-PopoverArrow.displayName = "PopoverArrow";
 
 export const PopoverTitle = React.forwardRef<
   HTMLHeadingElement,
@@ -105,7 +93,6 @@ PopoverClose.displayName = "PopoverClose";
 export const Popover = Object.assign(PopoverRoot, {
   Trigger: PopoverTrigger,
   Content: PopoverContent,
-  Arrow: PopoverArrow,
   Title: PopoverTitle,
   Description: PopoverDescription,
   Close: PopoverClose,

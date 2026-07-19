@@ -38,10 +38,47 @@ export const buttonVariants = cva(
         md: "h-10 px-4 text-sm after:-inset-y-0.5",
         lg: "h-12 rounded-xl px-6 text-[0.9375rem] after:inset-y-0",
       },
+      iconOnly: { true: "px-0", false: "" },
+      active: { true: "glow-ring text-accent", false: "" },
     },
-    defaultVariants: { variant: "solid", size: "md" },
+    compoundVariants: [
+      // the `after` inset expands the hit area to 44px without growing the box,
+      // so it has to scale inversely with the visual size
+      {
+        iconOnly: true,
+        size: "sm",
+        class: "w-8 rounded-lg after:-inset-1.5 [&_svg]:size-4",
+      },
+      {
+        iconOnly: true,
+        size: "md",
+        class: "w-10 rounded-xl after:-inset-0.5 [&_svg]:size-[1.15rem]",
+      },
+      { iconOnly: true, size: "lg", class: "w-12 [&_svg]:size-5" },
+      // icon-only outline keeps the quiet reading the old IconButton had
+      {
+        iconOnly: true,
+        variant: "outline",
+        active: false,
+        class: "bg-surface text-muted hover:text-ink",
+      },
+      { active: true, variant: "outline", class: "border-transparent" },
+    ],
+    defaultVariants: {
+      variant: "solid",
+      size: "md",
+      iconOnly: false,
+      active: false,
+    },
   },
 );
+
+const TOOLTIP_SIDE: Record<string, string> = {
+  top: "bottom-full left-1/2 mb-2 -translate-x-1/2",
+  bottom: "top-full left-1/2 mt-2 -translate-x-1/2",
+  left: "right-full top-1/2 mr-2 -translate-y-1/2",
+  right: "left-full top-1/2 ml-2 -translate-y-1/2",
+};
 
 const SPINNER_SIZE = { sm: "sm", md: "sm", lg: "md" } as const;
 
@@ -73,6 +110,9 @@ export interface ButtonProps
   /** How long `success` / `error` hold before the button settles back to idle. */
   settleDelay?: number;
   onSettle?: () => void;
+  /** Optional visible tooltip on hover/focus. */
+  tooltip?: React.ReactNode;
+  side?: "top" | "bottom" | "left" | "right";
 }
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
@@ -81,13 +121,17 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       className,
       variant,
       size = "md",
+      iconOnly = false,
+      active = false,
       asChild,
       status = "idle",
-      loadingText = "Loading",
+      loadingText,
       successText,
       errorText,
       settleDelay = 1200,
       onSettle,
+      tooltip,
+      side = "top",
       onClick,
       children,
       ...props
@@ -96,11 +140,26 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ) => {
     const reduce = useReducedMotion();
     const display = useSettlingStatus(status, settleDelay, onSettle);
+    const tooltipId = React.useId();
     const busy = display === "loading";
+
+    if (
+      process.env.NODE_ENV !== "production" &&
+      iconOnly &&
+      !props["aria-label"] &&
+      !props["aria-labelledby"]
+    ) {
+      throw new Error("usva: an icon-only Button needs an aria-label.");
+    }
 
     if (asChild)
       return (
-        <Slot className={cn(buttonVariants({ variant, size }), className)}>
+        <Slot
+          className={cn(
+            buttonVariants({ variant, size, iconOnly, active }),
+            className,
+          )}
+        >
           {children}
         </Slot>
       );
@@ -115,7 +174,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
             tone="current"
             size={SPINNER_SIZE[size ?? "md"]}
           />
-          {loadingText}
+          {loadingText ?? (iconOnly ? null : "Loading")}
         </>
       ),
       success: (
@@ -135,11 +194,12 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     // The lift is declared twice on purpose. Motion writes an inline transform on the
     // first press and never gives it back, which outranks the `hover:-translate-y-px`
     // class from here on. That class is what the motion-free `asChild` path uses.
-    return (
+    const button = (
       <motion.button
         ref={ref}
         data-status={display}
         aria-busy={busy || undefined}
+        aria-describedby={tooltip ? tooltipId : undefined}
         whileHover={reduce ? undefined : { y: -1 }}
         whileTap={reduce ? undefined : { scale: 0.96, y: 0 }}
         transition={
@@ -148,7 +208,10 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
             : { type: "spring", stiffness: 420, damping: 34 }
         }
         onClick={busy ? undefined : onClick}
-        className={cn(buttonVariants({ variant, size }), className)}
+        className={cn(
+          buttonVariants({ variant, size, iconOnly, active }),
+          className,
+        )}
         {...props}
       >
         {/* Every state is stacked in one grid cell so the button reserves the widest
@@ -182,6 +245,24 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           </motion.span>
         </span>
       </motion.button>
+    );
+
+    if (!tooltip) return button;
+    return (
+      <span className="group relative isolate inline-flex">
+        {button}
+        <span
+          id={tooltipId}
+          role="tooltip"
+          className={cn(
+            "pointer-events-none absolute z-overlay whitespace-nowrap rounded-md border border-border bg-overlay px-2 py-1 font-mono text-[0.625rem] font-semibold uppercase tracking-[0.08em] text-ink shadow-floating",
+            "opacity-0 transition-opacity duration-fast ease-soft group-hover:opacity-100 group-focus-within:opacity-100 motion-reduce:transition-none",
+            TOOLTIP_SIDE[side],
+          )}
+        >
+          {tooltip}
+        </span>
+      </span>
     );
   },
 );

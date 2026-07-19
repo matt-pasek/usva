@@ -27,6 +27,23 @@ export interface LoadShape {
   necks: Neck[];
 }
 
+/** A small, frame-rate-independent deformation that makes moving blobs yield
+ * like fluid while returning to the exact authored shape at both endpoints. */
+export function flowStretch(
+  blob: Blob,
+  progress: number,
+  vertical: boolean,
+): Blob {
+  const wave = Math.sin(Math.PI * clamp01(progress)) ** 2;
+  if (wave <= 0.000001) return blob;
+  const stretch = wave * 0.055;
+  const along = 1 + stretch;
+  const across = 1 - stretch * 0.4;
+  const hw = blob.hw * (vertical ? across : along);
+  const hh = blob.hh * (vertical ? along : across);
+  return { ...blob, hw, hh, r: Math.min(blob.r, hw, hh) };
+}
+
 /**
  * The bar is drawn down out of the top edge as a teardrop. A small bulb gathers
  * at the edge, the drop stretches away on a short neck, and it separates early in
@@ -71,8 +88,8 @@ export function loadPhase(
    * bead: the width is what reads as a gooey surface being pulled, and it drains
    * to nothing as the drop separates. */
   const swell = mix(0.78, 1, gather);
-  const bulbHw = Math.max(barRest.hw * mix(0.52, 0.04, recoil) * swell, 0.5);
-  const bulbHh = Math.max(barRest.hh * mix(0.92, 0.05, recoil) * swell, 0.5);
+  const bulbHw = barRest.hw * mix(0.52, 0, recoil) * swell;
+  const bulbHh = barRest.hh * mix(0.92, 0, recoil) * swell;
   const reservoir: Blob = {
     cx,
     cy: edgeY + bulbHh * 0.5,
@@ -101,7 +118,8 @@ export function loadPhase(
         ]
       : [];
 
-  return { bar, extras: [reservoir], necks };
+  const extras = bulbHw > 0.001 && bulbHh > 0.001 ? [reservoir] : [];
+  return { bar, extras, necks };
 }
 
 /** The side first redistributes mass into the bar's shoulder without travelling.
@@ -111,8 +129,8 @@ const SIDE_SWELL_END = 0.36;
 /** Travel overlaps the end of the swell so the shoulder pours outward. */
 const SIDE_TRAVEL_START = 0.3;
 /** The side is already home when its tether pinches free. */
-const SIDE_PINCH_START = 0.84;
-const SIDE_PINCH_END = 0.94;
+const SIDE_PINCH_START = 0.76;
+const SIDE_PINCH_END = 0.97;
 
 /** Past this much free length, in CSS px, a neck has stopped being surface
  * tension and started being a thread, so it thins; by the break it is gone.
@@ -122,7 +140,7 @@ const SIDE_PINCH_END = 0.94;
  * came from and covers the rest of the distance free. Without it, a part that
  * flies 500px out drags a fat capsule behind it and the bar reads as one slab
  * spanning the whole viewport. */
-const NECK_STRETCH_FREE = 40;
+const NECK_STRETCH_FREE = 0;
 const NECK_STRETCH_BREAK = 104;
 
 /** How much of the bridge's remaining slack the settle wobble is allowed to
@@ -198,14 +216,17 @@ export function revealSide(
   if (travel <= 0) return { blob, neck: null };
   if (pinch >= 1) return { blob, neck: null };
   const inner = cx - dir * hw;
-  const r = Math.max(rest.hh * mix(0.86, 0.08, pinch), NECK_MIN);
+  const tail = 1 - pinch;
+  const r = rest.hh * 0.86 * tail;
+  const strength = tail * tail;
+  if (r < 0.2 || strength < 0.0001) return { blob, neck: null };
   const neck: Neck = {
     ax: barEnd,
     ay: bar.cy,
     bx: inner,
     by: cy,
     r,
-    strength: 1 - pinch,
+    strength,
   };
   return { blob, neck };
 }

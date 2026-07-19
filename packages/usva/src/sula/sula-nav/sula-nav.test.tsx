@@ -2,10 +2,12 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { axe } from "jest-axe";
 import type * as React from "react";
+import { renderToString } from "react-dom/server";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { SulaNav, type SulaNavView } from "./sula-nav.js";
 
 const reducedMotion = { current: false };
+const fieldDraw = vi.hoisted(() => vi.fn());
 vi.mock("motion/react", async (importOriginal) => ({
   ...(await importOriginal<typeof import("motion/react")>()),
   useReducedMotion: () => reducedMotion.current,
@@ -17,7 +19,7 @@ vi.mock("../sula-core/field.js", () => ({
   createField: () => ({
     resize: vi.fn(),
     setColors: vi.fn(),
-    draw: vi.fn(),
+    draw: fieldDraw,
     dispose: vi.fn(),
   }),
 }));
@@ -56,6 +58,7 @@ const matchMedia = (reduced: boolean, below = false) =>
 
 beforeEach(() => {
   reducedMotion.current = false;
+  fieldDraw.mockClear();
   vi.stubGlobal("matchMedia", matchMedia(false));
 });
 afterEach(() => {
@@ -203,6 +206,23 @@ describe("SulaNav", () => {
       "aria-hidden",
       "true",
     );
+  });
+
+  it("starts with the fluid shell so plain pills cannot flash before hydration", () => {
+    const html = renderToString(<SulaNav views={views} />);
+    expect(html).toContain('data-fluid="on"');
+    expect(html).toContain("<canvas");
+    expect(html).not.toContain("border-border");
+  });
+
+  it("keeps field softness fixed while the reveal moves", async () => {
+    render(<SulaNav views={views} mergeRadius={13} revealDelay={0} />);
+
+    await vi.waitFor(() => expect(fieldDraw).toHaveBeenCalled());
+    await new Promise((resolve) => setTimeout(resolve, 100));
+
+    const softness = fieldDraw.mock.calls.map(([frame]) => frame.k);
+    expect(new Set(softness)).toEqual(new Set([13]));
   });
 
   it("mounts no canvas when fluid is off", () => {

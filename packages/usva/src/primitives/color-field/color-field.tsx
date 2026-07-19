@@ -43,12 +43,12 @@ export const ColorField = React.forwardRef<HTMLInputElement, ColorFieldProps>(
     }
 
     const text = draft;
-    const invalid = !HEX.test(text);
+    const invalid = text !== "" && !HEX.test(text);
     const swatch = HEX.test(text) ? text : defaultValue;
 
     const commit = (next: string) => {
       setDraft(next);
-      if (HEX.test(next)) onValueChange?.(next);
+      if (HEX.test(next) || next === "") onValueChange?.(next);
     };
 
     return (

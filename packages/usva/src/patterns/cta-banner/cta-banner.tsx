@@ -1,6 +1,5 @@
 import * as React from "react";
 import { cn } from "../../cn.js";
-import { StepChips } from "../step-chips/step-chips.js";
 
 export type CtaBannerHeadingLevel = "h2" | "h3" | "h4";
 
@@ -9,10 +8,6 @@ export interface CtaBannerProps
   title: React.ReactNode;
   body?: React.ReactNode;
   headingLevel?: CtaBannerHeadingLevel;
-  /** Numbered chips under the copy. Rendered as an ordered list. */
-  steps?: React.ReactNode[];
-  /** Names the step sequence for assistive tech, e.g. "Setup steps". */
-  stepsLabel?: string;
   /** The call to action itself. Pass a Button. */
   action?: React.ReactNode;
   /** Mono kicker beside the footer content. */
@@ -33,8 +28,6 @@ export const CtaBanner = React.forwardRef<HTMLElement, CtaBannerProps>(
       title,
       body,
       headingLevel: Heading = "h2",
-      steps,
-      stepsLabel,
       action,
       footerLabel,
       footer,
@@ -61,9 +54,6 @@ export const CtaBanner = React.forwardRef<HTMLElement, CtaBannerProps>(
           </Heading>
           {body != null && (
             <p className="max-w-2xl text-sm leading-6 text-muted">{body}</p>
-          )}
-          {steps != null && steps.length > 0 && (
-            <StepChips className="mt-4" steps={steps} aria-label={stepsLabel} />
           )}
         </div>
         {action}

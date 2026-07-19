@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
-import { IconButton } from "../../primitives/icon-button/index.js";
+import { Button } from "../../primitives/button/index.js";
 import { Progress } from "../../primitives/progress/index.js";
 import {
   ToggleChip,
@@ -117,13 +117,13 @@ export const Editable: Story = {
         titleAccent="Mateusz."
         aside={<PageHeaderMetric value="42%" caption="Credit trajectory" />}
         action={
-          <IconButton
+          <Button variant="outline" iconOnly
             aria-label={editing ? "Done editing" : "Edit header"}
             active={editing}
             onClick={() => setEditing((current) => !current)}
           >
             {editing ? <CheckIcon /> : <PencilIcon />}
-          </IconButton>
+          </Button>
         }
         controlsOpen={editing}
         controls={

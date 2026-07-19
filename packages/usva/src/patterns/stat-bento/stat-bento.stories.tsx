@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { RevealGroup } from "../../motion/reveal.js";
+import { RevealGroup } from "../../motion/reveal/reveal.js";
 import { StatBento } from "./stat-bento.js";
 
 const stats = [

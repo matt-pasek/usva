@@ -111,20 +111,3 @@ export const Sides: Story = {
     </div>
   ),
 };
-
-export const WithArrow: Story = {
-  render: () => (
-    <Popover defaultOpen>
-      <Popover.Trigger className={triggerClassName}>
-        Open popover
-      </Popover.Trigger>
-      <Popover.Content side="bottom">
-        <Popover.Arrow />
-        <Popover.Title>With arrow</Popover.Title>
-        <Popover.Description>
-          The arrow points back at the trigger.
-        </Popover.Description>
-      </Popover.Content>
-    </Popover>
-  ),
-};

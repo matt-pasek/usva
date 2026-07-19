@@ -17,6 +17,13 @@ const meta: Meta<typeof Button> = {
     },
     disabled: { control: { type: "boolean" } },
     asChild: { control: { type: "boolean" } },
+    iconOnly: { control: { type: "boolean" } },
+    active: { control: { type: "boolean" } },
+    tooltip: { control: { type: "text" } },
+    side: {
+      control: { type: "select" },
+      options: ["top", "bottom", "left", "right"],
+    },
   },
   args: {
     children: "Button",
@@ -31,6 +38,27 @@ export default meta;
 type Story = StoryObj<typeof Button>;
 
 export const Default: Story = {};
+
+export const IconOnly: Story = {
+  args: {
+    iconOnly: true,
+    variant: "outline",
+    "aria-label": "Copy",
+    tooltip: "copy",
+    children: (
+      <svg
+        viewBox="0 0 16 16"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.3"
+        aria-hidden="true"
+      >
+        <rect x="5.5" y="5.5" width="8" height="8" rx="1.5" />
+        <path d="M10.5 3.5A1.5 1.5 0 0 0 9 2H4a2 2 0 0 0-2 2v5a1.5 1.5 0 0 0 1.5 1.5" />
+      </svg>
+    ),
+  },
+};
 
 export const Solid: Story = {
   args: { variant: "solid" },

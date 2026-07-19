@@ -53,7 +53,7 @@ export const Pullquote = React.forwardRef<HTMLElement, PullquoteProps>(
     return (
       <figure ref={ref as React.Ref<HTMLElement>} className={shell} {...props}>
         {body}
-        <figcaption className="mt-5 font-mono text-sm text-muted">
+        <figcaption className="mt-3 font-mono text-sm text-muted">
           {attribution}
         </figcaption>
       </figure>

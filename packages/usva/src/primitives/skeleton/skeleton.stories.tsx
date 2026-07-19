@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Skeleton } from "./skeleton.js";
+import { SkeletonGroup } from "./skeleton-group.js";
 
 const meta: Meta<typeof Skeleton> = {
   title: "Primitives/Skeleton",
@@ -49,7 +50,7 @@ export const Variants: Story = {
 
 export const CardComposed: Story = {
   render: () => (
-    <div className="flex w-72 flex-col gap-3 rounded-lg border border-border p-4">
+    <SkeletonGroup className="flex w-72 flex-col gap-3 rounded-lg border border-border p-4">
       <div className="flex items-center gap-3">
         <Skeleton variant="circle" width={40} height={40} />
         <div className="flex flex-1 flex-col gap-2">
@@ -60,6 +61,6 @@ export const CardComposed: Story = {
       <Skeleton variant="rect" height={120} />
       <Skeleton variant="text" />
       <Skeleton variant="text" width="80%" />
-    </div>
+    </SkeletonGroup>
   ),
 };

@@ -120,13 +120,16 @@ export const FieldDescription = React.forwardRef<
   HTMLParagraphElement,
   FieldDescriptionProps
 >(({ className, ...props }, ref) => {
-  const { descriptionId, setHasDescription } =
+  const { descriptionId, setHasDescription, invalid } =
     useFieldContext("FieldDescription");
 
   React.useEffect(() => {
+    if (invalid) return;
     setHasDescription(true);
     return () => setHasDescription(false);
-  }, [setHasDescription]);
+  }, [setHasDescription, invalid]);
+
+  if (invalid) return null;
 
   return (
     <p

@@ -6,6 +6,35 @@ import { createGlSurface, type Uniforms } from "./atmospheres-gl.js";
 /** How long the window has to hold still before the drawing buffer is rebuilt. */
 const RESIZE_SETTLE_MS = 150;
 
+export interface CaptureOptions {
+  /** Opaque backdrop painted under the atmosphere, eg the studio canvas colour. */
+  bg: string;
+  /** Multiplier on the backing-store size. Defaults to 1 (already dpr-scaled). */
+  scale?: number;
+}
+
+type CaptureFn = (opts: CaptureOptions) => Promise<Blob>;
+
+// The renderer runs with preserveDrawingBuffer:false, so the buffer is only
+// readable synchronously in the same tick as render(). Each live canvas
+// registers a grabber here; the drawImage read happens in-frame, the toBlob
+// after is free.
+const captureRegistry = new WeakMap<HTMLCanvasElement, CaptureFn>();
+
+/**
+ * Take an opaque PNG of a mounted atmosphere. Rejects when the canvas is not a
+ * currently live atmosphere surface.
+ */
+export function captureAtmosphere(
+  canvas: HTMLCanvasElement,
+  opts: CaptureOptions,
+): Promise<Blob> {
+  const grab = captureRegistry.get(canvas);
+  if (!grab)
+    return Promise.reject(new Error("canvas is not a live atmosphere"));
+  return grab(opts);
+}
+
 export interface GlPointer {
   /** Pixels from the container centre, y up. */
   x: number;
@@ -63,6 +92,29 @@ const DEFAULT_POINTER_EASE = 0.06;
 
 function approach(current: number, target: number, ease: number): number {
   return current + (target - current) * ease;
+}
+
+/** Composite the GL buffer over an opaque bg. drawImage must run in-frame. */
+function grabToBlob(
+  src: HTMLCanvasElement,
+  { bg, scale = 1 }: CaptureOptions,
+): Promise<Blob> {
+  const w = Math.max(1, Math.round(src.width * scale));
+  const h = Math.max(1, Math.round(src.height * scale));
+  const out = document.createElement("canvas");
+  out.width = w;
+  out.height = h;
+  const ctx = out.getContext("2d");
+  if (!ctx) return Promise.reject(new Error("2d context unavailable"));
+  ctx.fillStyle = bg;
+  ctx.fillRect(0, 0, w, h);
+  ctx.drawImage(src, 0, 0, w, h);
+  return new Promise((resolve, reject) => {
+    out.toBlob(
+      (blob) => (blob ? resolve(blob) : reject(new Error("toBlob failed"))),
+      "image/png",
+    );
+  });
 }
 
 /**
@@ -162,6 +214,11 @@ export function useGlCanvas(options: UseGlCanvasOptions): GlCanvas {
     const pointer: GlPointer = { x: 0, y: 0, amount: 0, inside: false };
     let pointerTarget = 0;
     let elapsed = 0;
+    let pending: {
+      opts: CaptureOptions;
+      resolve: (blob: Blob) => void;
+      reject: (err: unknown) => void;
+    } | null = null;
 
     const draw = (time: number) => {
       pointer.amount = approach(pointer.amount, pointerTarget, pointerEase);
@@ -170,6 +227,11 @@ export function useGlCanvas(options: UseGlCanvasOptions): GlCanvas {
       if (clock) clock.value = time;
       frameRef.current?.(u, { time, width, height, dpr, pointer });
       surface.render();
+      if (pending) {
+        const { opts, resolve, reject } = pending;
+        pending = null;
+        grabToBlob(canvas, opts).then(resolve, reject);
+      }
     };
     redrawRef.current = () => {
       if (measure()) draw(still ? stillTime : elapsed);
@@ -179,6 +241,16 @@ export function useGlCanvas(options: UseGlCanvasOptions): GlCanvas {
       surface.dispose();
       return;
     }
+
+    captureRegistry.set(
+      canvas,
+      (opts) =>
+        new Promise<Blob>((resolve, reject) => {
+          pending = { opts, resolve, reject };
+          // Force one in-frame draw+grab; covers the paused and still cases too.
+          redrawRef.current();
+        }),
+    );
 
     if (still) {
       draw(stillTime);
@@ -191,6 +263,7 @@ export function useGlCanvas(options: UseGlCanvasOptions): GlCanvas {
       observer?.observe(container);
       return () => {
         redrawRef.current = () => {};
+        captureRegistry.delete(canvas);
         window.clearTimeout(settleTimer);
         observer?.disconnect();
         surface.dispose();
@@ -272,6 +345,7 @@ export function useGlCanvas(options: UseGlCanvasOptions): GlCanvas {
     return () => {
       killed = true;
       redrawRef.current = () => {};
+      captureRegistry.delete(canvas);
       window.clearTimeout(settleTimer);
       if (trackPointer) {
         container.removeEventListener("pointermove", onMove);

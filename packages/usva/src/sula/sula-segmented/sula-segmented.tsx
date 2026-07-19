@@ -32,6 +32,8 @@ export interface SulaSegmentedProps
   size?: "sm" | "md";
   /** false or reduced-motion renders the plain sliding pill and mounts no canvas. */
   fluid?: boolean;
+  /** Drops the track fill and border, leaving the indicator on a bare surface. */
+  bare?: boolean;
   accentColor?: string;
   backdrop?: string;
   tint?: string;
@@ -88,6 +90,7 @@ export const SulaSegmented = React.forwardRef<
       onValueChange,
       size = "md",
       fluid = true,
+      bare = false,
       accentColor,
       backdrop,
       tint,
@@ -409,7 +412,8 @@ export const SulaSegmented = React.forwardRef<
         role="radiogroup"
         data-fluid={isFluid ? "on" : "off"}
         className={cn(
-          "relative inline-flex items-center rounded-full border border-border bg-surface p-1",
+          "relative inline-flex items-center rounded-full p-1",
+          !bare && "border border-border bg-surface",
           className,
         )}
         {...props}

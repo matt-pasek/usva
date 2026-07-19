@@ -19,7 +19,7 @@ export interface PageHeaderProps
   meta?: React.ReactNode;
   /** The right-hand column. A PageHeaderMetric, a row of stat panels, or a chart. */
   aside?: React.ReactNode;
-  /** Control pinned to the top right. An IconButton toggling `controlsOpen`. */
+  /** Control pinned to the top right. An icon-only Button toggling `controlsOpen`. */
   action?: React.ReactNode;
   /** Revealed under the copy column while `controlsOpen`. Pass ToggleChipGroups. */
   controls?: React.ReactNode;

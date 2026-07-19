@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { IconButton } from "../icon-button/icon-button.js";
+import { Button } from "../button/button.js";
 import { NotificationBadge } from "./notification-badge.js";
 
 const Bell = () => (
@@ -38,19 +38,19 @@ export const Default: Story = {
   render: () => (
     <div className="flex items-center gap-5">
       <NotificationBadge count={3}>
-        <IconButton aria-label="Notifications">
+        <Button variant="outline" iconOnly aria-label="Notifications">
           <Bell />
-        </IconButton>
+        </Button>
       </NotificationBadge>
       <NotificationBadge count={42}>
-        <IconButton aria-label="Notifications">
+        <Button variant="outline" iconOnly aria-label="Notifications">
           <Bell />
-        </IconButton>
+        </Button>
       </NotificationBadge>
       <NotificationBadge dot tone="accent-alt">
-        <IconButton aria-label="Notifications">
+        <Button variant="outline" iconOnly aria-label="Notifications">
           <Bell />
-        </IconButton>
+        </Button>
       </NotificationBadge>
     </div>
   ),
@@ -62,9 +62,9 @@ export const Tones: Story = {
       {(["accent", "accent-alt", "danger", "warning"] as const).map((tone) => (
         <div key={tone} className="flex flex-col items-center gap-2">
           <NotificationBadge count={5} tone={tone}>
-            <IconButton aria-label="Notifications">
+            <Button variant="outline" iconOnly aria-label="Notifications">
               <Bell />
-            </IconButton>
+            </Button>
           </NotificationBadge>
           <span className="font-mono text-xs text-muted">{tone}</span>
         </div>

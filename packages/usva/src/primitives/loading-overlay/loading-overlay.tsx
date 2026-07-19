@@ -57,7 +57,7 @@ export const LoadingOverlay = React.forwardRef<
         data-testid="loading-overlay"
         data-contain={contain}
         className={cn(
-          "z-overlay grid place-items-center gap-3 bg-scrim",
+          "z-overlay grid content-center place-items-center gap-3 bg-scrim",
           contain === "viewport" ? "fixed inset-0" : "absolute inset-0",
           blur && "backdrop-blur-sm",
           className,

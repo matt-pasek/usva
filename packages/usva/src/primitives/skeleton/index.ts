@@ -5,3 +5,7 @@ export {
   type SkeletonProps,
   skeletonVariants,
 } from "./skeleton.js";
+export {
+  SkeletonGroup,
+  type SkeletonGroupProps,
+} from "./skeleton-group.js";
