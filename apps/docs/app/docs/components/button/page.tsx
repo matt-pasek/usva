@@ -7,18 +7,21 @@ import { ButtonDemo } from "./button-demo";
 export const metadata: Metadata = {
   title: "Button",
   description:
-    "The primary action primitive with five variants, three sizes, and a built-in loading, success and error machine.",
+    "The primary action primitive with six variants, three sizes, and a built-in loading, success and error machine.",
 };
 
 const props = [
   {
     name: "variant",
-    type: '"solid" | "soft" | "outline" | "ghost" | "onSurface"',
+    type: '"solid" | "soft" | "outline" | "ghost" | "onSurface" | "glass"',
     defaultValue: '"solid"',
     desc: (
       <>
-        visual weight. <b>one solid per region</b>; onSurface is the translucent
-        fill for buttons over imagery or a gradient.
+        visual weight. <b>one solid per region</b>. onSurface is a{" "}
+        <b>theme-tonal</b> fill for a button on a surface or gradient you own;
+        it adapts with the theme. glass is a <b>fixed dark frost</b>, blurred,
+        for a control floating over a live atmosphere, where the theme cannot
+        guarantee contrast.
       </>
     ),
   },
@@ -30,6 +33,17 @@ const props = [
       <>
         sm exists for dense rows. it is a smaller button, not a <b>subtler</b>{" "}
         one.
+      </>
+    ),
+  },
+  {
+    name: "shape",
+    type: '"rounded" | "pill"',
+    defaultValue: '"rounded"',
+    desc: (
+      <>
+        pill fully rounds the button into a chip. the default follows the size
+        radius.
       </>
     ),
   },

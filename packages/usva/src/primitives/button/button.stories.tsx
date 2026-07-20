@@ -8,9 +8,10 @@ const meta: Meta<typeof Button> = {
   argTypes: {
     variant: {
       control: { type: "select" },
-      options: ["solid", "soft", "ghost", "outline", "onSurface"],
+      options: ["solid", "soft", "ghost", "outline", "onSurface", "glass"],
     },
     size: { control: { type: "select" }, options: ["sm", "md", "lg"] },
+    shape: { control: { type: "select" }, options: ["rounded", "pill"] },
     status: {
       control: { type: "select" },
       options: ["idle", "loading", "success", "error"],
@@ -85,6 +86,26 @@ export const OnSurface: Story = {
       </div>
     ),
   ],
+};
+
+export const Glass: Story = {
+  args: {
+    variant: "glass",
+    shape: "pill",
+    size: "sm",
+    children: "download png",
+  },
+  decorators: [
+    (Story) => (
+      <div className="rounded-xl bg-[radial-gradient(circle_at_30%_20%,#3a2d6b,#0a0613)] p-10">
+        <Story />
+      </div>
+    ),
+  ],
+};
+
+export const Pill: Story = {
+  args: { variant: "outline", shape: "pill", children: "Follow" },
 };
 
 export const Small: Story = {

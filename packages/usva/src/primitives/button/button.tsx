@@ -9,7 +9,7 @@ export type ButtonStatus = "idle" | "loading" | "success" | "error";
 
 export const buttonVariants = cva(
   cn(
-    "relative isolate inline-flex select-none items-center justify-center gap-2 whitespace-nowrap rounded-lg font-medium tracking-[-0.01em] outline-none",
+    "relative isolate inline-flex cursor-pointer select-none items-center justify-center gap-2 whitespace-nowrap rounded-lg font-medium tracking-[-0.01em] outline-none",
     "transition-control duration-fast ease-soft",
     "hover:-translate-y-px active:scale-[0.96] motion-reduce:transition-none motion-reduce:transform-none",
     "before:pointer-events-none before:absolute before:inset-0 before:-z-10 before:rounded-[inherit] before:bg-transparent before:transition-tint before:duration-fast",
@@ -32,6 +32,8 @@ export const buttonVariants = cva(
           "border border-border bg-transparent text-ink hover:border-border-strong hover:before:bg-ink/5 focus-visible:border-transparent",
         onSurface:
           "border border-ink/10 bg-ink/[0.055] font-semibold text-ink hover:border-ink/20 hover:before:bg-ink/5",
+        glass:
+          "border border-white/15 bg-black/40 text-white/90 shadow-raised backdrop-blur-sm hover:bg-black/55 hover:before:bg-white/5",
       },
       size: {
         sm: "h-8 gap-1.5 rounded-md px-3 text-xs after:-inset-y-1.5",
@@ -40,6 +42,7 @@ export const buttonVariants = cva(
       },
       iconOnly: { true: "px-0", false: "" },
       active: { true: "glow-ring text-accent", false: "" },
+      shape: { rounded: "", pill: "" },
     },
     compoundVariants: [
       // the `after` inset expands the hit area to 44px without growing the box,
@@ -63,12 +66,14 @@ export const buttonVariants = cva(
         class: "bg-surface text-muted hover:text-ink",
       },
       { active: true, variant: "outline", class: "border-transparent" },
+      { shape: "pill", class: "rounded-full" },
     ],
     defaultVariants: {
       variant: "solid",
       size: "md",
       iconOnly: false,
       active: false,
+      shape: "rounded",
     },
   },
 );
@@ -123,6 +128,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       size = "md",
       iconOnly = false,
       active = false,
+      shape,
       asChild,
       status = "idle",
       loadingText,
@@ -156,7 +162,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       return (
         <Slot
           className={cn(
-            buttonVariants({ variant, size, iconOnly, active }),
+            buttonVariants({ variant, size, iconOnly, active, shape }),
             className,
           )}
         >
@@ -209,7 +215,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         }
         onClick={busy ? undefined : onClick}
         className={cn(
-          buttonVariants({ variant, size, iconOnly, active }),
+          buttonVariants({ variant, size, iconOnly, active, shape }),
           className,
         )}
         {...props}

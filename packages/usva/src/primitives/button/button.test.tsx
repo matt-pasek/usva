@@ -21,6 +21,16 @@ describe("Button", () => {
     expect(className).toContain("bg-ink/[0.055]");
     expect(className).toContain("border-ink/10");
   });
+  it("glass is a dark blurred fill for controls floating over a live canvas", () => {
+    render(<Button variant="glass">x</Button>);
+    const className = screen.getByRole("button").className;
+    expect(className).toContain("bg-black/40");
+    expect(className).toContain("backdrop-blur-sm");
+  });
+  it("pill shape fully rounds the button, outranking the size radius", () => {
+    render(<Button shape="pill">x</Button>);
+    expect(screen.getByRole("button").className).toContain("rounded-full");
+  });
   it("has no a11y violations", async () => {
     const { container } = render(<Button>ok</Button>);
     expect(await axe(container)).toHaveNoViolations();
