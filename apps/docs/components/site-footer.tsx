@@ -1,4 +1,6 @@
+"use client";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { counts } from "@/lib/catalog";
 
 const footerLink =
@@ -18,7 +20,6 @@ const GROUPS = [
     heading: "language",
     links: [
       { href: "/design-language", label: "design language" },
-      { href: "/composer", label: "composer" },
     ],
   },
   {
@@ -32,6 +33,9 @@ const GROUPS = [
 ];
 
 export function SiteFooter() {
+  const pathname = usePathname();
+  if (pathname === "/studio") return null;
+
   return (
     <footer className="relative z-30 border-t border-border bg-bg">
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-10 px-6 py-12 sm:px-10">
@@ -55,7 +59,7 @@ export function SiteFooter() {
           >
             {GROUPS.map((group) => (
               <div key={group.heading} className="flex flex-col gap-3">
-                <h2 className="font-mono text-xs tracking-wide text-faint">
+                <h2 className="font-mono text-xs tracking-wide text-muted">
                   {group.heading}
                 </h2>
                 <ul className="flex flex-col gap-2">
@@ -75,7 +79,7 @@ export function SiteFooter() {
           </nav>
         </div>
 
-        <p className="flex flex-wrap items-center gap-x-2 gap-y-1 font-mono text-xs text-faint">
+        <p className="flex flex-wrap items-center gap-x-2 gap-y-1 font-mono text-xs text-muted">
           <span>© 2026 usva</span>
           <span aria-hidden="true">·</span>
           <span>

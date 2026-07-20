@@ -10,7 +10,13 @@ import { PACKAGE_NAME, registryUrl, SITE_ORIGIN } from "@/lib/site";
 
 export const dynamic = "force-static";
 
-const LAYERS: Layer[] = ["primitive", "pattern", "sula", "atmosphere"];
+const LAYERS: Layer[] = [
+  "primitive",
+  "pattern",
+  "motion",
+  "sula",
+  "atmosphere",
+];
 
 const layerSection = (layer: Layer): string => {
   const entries = byLayer(layer);
@@ -48,7 +54,7 @@ const body = (): string =>
     "## The one rule",
     "",
     "Intensity is a property of the layer, not of the item.",
-    "Core primitives recede. Patterns structure. Sula asserts. Atmospheres are the room.",
+    "Core primitives recede. Patterns structure. Motion guides. Sula asserts. Atmospheres are the room.",
     "At most one sula element per region, where a region is a bounded area competing for a",
     "single attention focus. Never put a sula element inside dense, task-bound UI.",
     "",
@@ -70,14 +76,8 @@ const body = (): string =>
     `- ${SITE_ORIGIN}/docs/get-started/installation`,
     `- ${SITE_ORIGIN}/docs/get-started/theming`,
     `- ${SITE_ORIGIN}/docs/get-started/for-agents`,
-    `- ${SITE_ORIGIN}/docs/get-started/index`,
     `- ${SITE_ORIGIN}/design-language`,
     `- ${SITE_ORIGIN}/recipes`,
-    "",
-    "## Not available",
-    "",
-    "- There is no MCP server, deliberately. Everything an agent needs is a static file on this site.",
-    "- The composer (a drag-and-drop layout canvas) is planned, not built.",
     "",
   ].join("\n");
 

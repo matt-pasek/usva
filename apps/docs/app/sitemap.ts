@@ -12,7 +12,6 @@ const pages = [
   "/docs/get-started/index",
   "/tokens",
   "/recipes",
-  "/composer",
 ];
 
 const routes = [
