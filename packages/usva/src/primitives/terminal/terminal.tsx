@@ -32,7 +32,7 @@ export const Terminal = React.forwardRef<HTMLDivElement, TerminalProps>(
         )}
         {...rest}
       >
-        <code className="overflow-x-auto whitespace-nowrap font-mono text-[0.74rem] text-on-sunken">
+        <code className="overflow-x-auto whitespace-nowrap font-mono text-[0.74rem] text-on-sunken [scrollbar-width:thin] [&::-webkit-scrollbar]:h-1 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-border-strong/60 [&::-webkit-scrollbar-track]:bg-transparent">
           <span aria-hidden="true" className="text-faint">
             {prompt}{" "}
           </span>

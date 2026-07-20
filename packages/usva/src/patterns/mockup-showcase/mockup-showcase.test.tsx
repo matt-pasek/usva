@@ -35,6 +35,17 @@ describe("MockupShowcase", () => {
     });
   });
 
+  it("lets live children set the height when aspect is auto", () => {
+    render(
+      <MockupShowcase aspect="auto">
+        <div data-testid="app">live app</div>
+      </MockupShowcase>,
+    );
+    const well = screen.getByTestId("mockup-well");
+    expect(well.style.aspectRatio).toBe("");
+    expect(well.className).not.toContain("object-cover");
+  });
+
   it("shows a decorative address bar for the browser frame", () => {
     render(
       <MockupShowcase frame="browser" url="usva.dev">
