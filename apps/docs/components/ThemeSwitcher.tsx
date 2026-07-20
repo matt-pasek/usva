@@ -16,6 +16,7 @@ export function ThemeSwitcher() {
 
   return (
     <SulaSegmented
+      bare
       aria-label="Theme"
       className="m-1"
       size="sm"

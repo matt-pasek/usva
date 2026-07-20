@@ -1,5 +1,10 @@
-export type Layer = "primitive" | "pattern" | "sula" | "atmosphere";
-export type Intensity = "recedes" | "structures" | "asserts" | "room";
+export type Layer = "primitive" | "pattern" | "motion" | "sula" | "atmosphere";
+export type Intensity =
+  | "recedes"
+  | "structures"
+  | "guides"
+  | "asserts"
+  | "room";
 export type Provenance = "personal-website" | "sisu-plus";
 
 export interface CatalogEntry {
@@ -16,6 +21,7 @@ export interface CatalogEntry {
 export const INTENSITY_BY_LAYER: Record<Layer, Intensity> = {
   primitive: "recedes",
   pattern: "structures",
+  motion: "guides",
   sula: "asserts",
   atmosphere: "room",
 };
@@ -23,6 +29,7 @@ export const INTENSITY_BY_LAYER: Record<Layer, Intensity> = {
 export const LAYER_LABEL: Record<Layer, string> = {
   primitive: "core · primitives",
   pattern: "core · patterns",
+  motion: "core · motion",
   sula: "sula",
   atmosphere: "atmospheres",
 };
@@ -49,7 +56,7 @@ const primitives = seed("primitive", [
     name: "Announcement",
     summary:
       "a one-line notice above the fold, for a release or a warning you cannot bury.",
-    provenance: [],
+    provenance: ["sisu-plus"],
   },
   {
     slug: "avatar",
@@ -76,7 +83,7 @@ const primitives = seed("primitive", [
     name: "Card",
     summary:
       "a surface that groups things. four skins, from elevated to a bare outline.",
-    provenance: [],
+    provenance: ["personal-website", "sisu-plus"],
   },
   {
     slug: "checkbox",
@@ -91,6 +98,12 @@ const primitives = seed("primitive", [
     summary:
       "a tag. a keyword, a filter, a stack entry. removable when it is a filter.",
     provenance: ["personal-website"],
+  },
+  {
+    slug: "code-snippet",
+    name: "CodeSnippet",
+    summary: "a highlighted code block with the copy button already there.",
+    provenance: [],
   },
   {
     slug: "color-field",
@@ -125,13 +138,6 @@ const primitives = seed("primitive", [
     name: "HintPopover",
     summary:
       "the explanation a tooltip cannot hold, because this one has a button in it.",
-    provenance: ["sisu-plus"],
-  },
-  {
-    slug: "icon-button",
-    name: "IconButton",
-    summary:
-      "an action reduced to its glyph. it carries its own tooltip, since the label is gone.",
     provenance: ["sisu-plus"],
   },
   {
@@ -244,6 +250,12 @@ const primitives = seed("primitive", [
     name: "Tabs",
     summary:
       "peer views in one region. not steps, and never a way to hide required fields.",
+    provenance: [],
+  },
+  {
+    slug: "terminal",
+    name: "Terminal",
+    summary: "a shell command in a row, prompt and copy button included.",
     provenance: [],
   },
   {
@@ -458,6 +470,22 @@ const patterns = seed("pattern", [
   },
 ]);
 
+const motion = seed("motion", [
+  {
+    slug: "reveal",
+    name: "Reveal",
+    summary:
+      "scroll reveals that resolve out of mist as they come into view, with a stagger group for cascading children.",
+    provenance: ["personal-website"],
+  },
+  {
+    slug: "page-transition",
+    name: "PageTransition",
+    summary: "a route-level fade and lift, keyed on any routeKey.",
+    provenance: ["personal-website"],
+  },
+]);
+
 const sula = seed("sula", [
   {
     slug: "sula-nav",
@@ -582,6 +610,7 @@ const atmospheres = seed("atmosphere", [
 export const CATALOG: CatalogEntry[] = [
   ...primitives,
   ...patterns,
+  ...motion,
   ...sula,
   ...atmospheres,
 ];
@@ -597,6 +626,7 @@ export const THEMES = ["kajo", "sisu", "savi"] as const;
 export const counts = {
   primitives: byLayer("primitive").length,
   patterns: byLayer("pattern").length,
+  motion: byLayer("motion").length,
   sula: byLayer("sula").length,
   atmospheres: byLayer("atmosphere").length,
   themes: THEMES.length,

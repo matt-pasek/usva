@@ -1,120 +1,87 @@
-import { Card, CardBody, CardHeader, Progress } from "@matt-pasek/usva";
 import type { Metadata } from "next";
-import { InstallBlock } from "@/components/install-block";
-import { SourceView } from "@/components/source-view";
+import { AcquireSection } from "@/components/docs/acquire-section";
+import { ComponentDoc } from "@/components/docs/component-doc";
+import { PropsTable } from "@/components/docs/props-table";
+import { ProgressDemo } from "./progress-demo";
 
 export const metadata: Metadata = {
   title: "Progress",
   description:
-    "An accessible progress bar with determinate and indeterminate modes, three sizes, and an optional kajo accent glow.",
+    "A progress bar with determinate and indeterminate modes, three sizes, and an optional accent glow.",
 };
 
 const props = [
   {
     name: "value",
     type: "number",
-    desc: "Current progress. Omit for an indeterminate (pulsing) bar.",
+    desc: "current progress, clamped to [0, max]. omit it for the indeterminate shimmer.",
   },
   {
     name: "max",
     type: "number",
-    desc: "Upper bound for value. Defaults to 100.",
+    defaultValue: "100",
+    desc: "upper bound for value.",
   },
   {
     name: "size",
     type: '"sm" | "md" | "lg"',
-    desc: 'Track height. Defaults to "md".',
+    defaultValue: '"md"',
+    desc: "track height, 4 to 12 pixels. pick by the density of the row it sits in.",
   },
   {
     name: "glow",
     type: "boolean",
-    desc: "Adds the kajo accent glow to the filled portion. Defaults to false.",
+    defaultValue: "false",
+    desc: "the accent halo on the fill. one glowing bar per view.",
   },
 ];
 
-const usageSnippet = `import { Progress } from "@matt-pasek/usva";
-
-<Progress value={40} />
-<Progress value={72} glow />
-<Progress value={30} max={50} size="lg" />
-<Progress />`;
-
 export default function ProgressPage() {
   return (
-    <main className="mx-auto flex max-w-2xl flex-col gap-8 p-10">
-      <div className="flex flex-col gap-2">
-        <h1 className="text-3xl font-semibold text-ink">Progress</h1>
-        <p className="text-muted">
-          A styled <code>role="progressbar"</code> track. Pass a{" "}
-          <code>value</code> for a determinate bar, omit it for an indeterminate
-          pulse, and set <code>glow</code> for the kajo accent halo.
-        </p>
-      </div>
+    <ComponentDoc
+      slug="progress"
+      description={
+        <>
+          a bar that fills to show how far along something is, or shimmers when
+          the end is unknown. <b>it renders no text, so it always needs a
+          label</b>.
+        </>
+      }
+      composition={{
+        ok: [
+          "uploads, installs, quota rows inside Card or a table cell",
+          "pair with a text line that says what is progressing",
+        ],
+        no: [
+          "not a meter for static values. it implies something is underway",
+          "not a page loader. indeterminate work that owns the view gets Spinner",
+        ],
+      }}
+      a11y={
+        <>
+          <code className="font-mono text-xs">role="progressbar"</code> with{" "}
+          <code className="font-mono text-xs">aria-valuenow/min/max</code>,
+          valuenow omitted when indeterminate · bring an{" "}
+          <code className="font-mono text-xs">aria-label</code> · motion stops
+          under reduced motion
+        </>
+      }
+      dependencies={
+        <code className="font-mono text-xs">class-variance-authority</code>
+      }
+    >
+      <ProgressDemo />
 
-      <Card>
-        <CardHeader>Demo</CardHeader>
-        <CardBody>
-          <div className="flex flex-col gap-5">
-            <Progress value={25} size="sm" />
-            <Progress value={55} />
-            <Progress value={80} size="lg" glow />
-            <Progress />
-          </div>
-        </CardBody>
-      </Card>
+      <PropsTable rows={props} />
 
-      <Card>
-        <CardHeader>Install</CardHeader>
-        <CardBody>
-          <InstallBlock registryName="progress" />
-        </CardBody>
-      </Card>
+      <AcquireSection
+        registryName="progress"
+        usage={`import { Progress } from "@matt-pasek/usva";
 
-      <Card>
-        <CardHeader>Usage</CardHeader>
-        <CardBody>
-          <pre className="overflow-x-auto rounded-md border border-border bg-sunken p-3 text-xs text-on-sunken">
-            <code>{usageSnippet}</code>
-          </pre>
-        </CardBody>
-      </Card>
-
-      <Card>
-        <CardHeader>Source</CardHeader>
-        <CardBody>
-          <SourceView filePath="packages/usva/src/primitives/progress/progress.tsx" />
-        </CardBody>
-      </Card>
-
-      <Card>
-        <CardHeader>Props</CardHeader>
-        <CardBody>
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-sm">
-              <thead>
-                <tr className="border-b border-border text-muted">
-                  <th className="py-2 pr-4 font-medium">Prop</th>
-                  <th className="py-2 pr-4 font-medium">Type</th>
-                  <th className="py-2 font-medium">Description</th>
-                </tr>
-              </thead>
-              <tbody>
-                {props.map((p) => (
-                  <tr key={p.name} className="border-b border-border/50">
-                    <td className="py-2 pr-4 font-mono text-xs text-ink">
-                      {p.name}
-                    </td>
-                    <td className="py-2 pr-4 font-mono text-xs text-muted">
-                      {p.type}
-                    </td>
-                    <td className="py-2 text-muted">{p.desc}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </CardBody>
-      </Card>
-    </main>
+<Progress value={40} aria-label="Upload" />
+<Progress value={80} glow aria-label="Sync" />
+<Progress aria-label="Working" />`}
+      />
+    </ComponentDoc>
   );
 }

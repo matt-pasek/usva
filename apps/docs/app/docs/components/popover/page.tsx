@@ -1,45 +1,88 @@
-import { Card, CardBody, CardHeader } from "@matt-pasek/usva";
 import type { Metadata } from "next";
-import { InstallBlock } from "@/components/install-block";
-import { SourceView } from "@/components/source-view";
+import { AcquireSection } from "@/components/docs/acquire-section";
+import { ComponentDoc } from "@/components/docs/component-doc";
+import { PropsTable } from "@/components/docs/props-table";
 import { PopoverDemo } from "./popover-demo";
 
 export const metadata: Metadata = {
   title: "Popover",
   description:
-    "A positioned, non-modal overlay primitive with no backdrop or scroll lock, built on Base UI Popover.",
+    "A small panel you click open, anchored to its trigger, with the page still live behind it.",
 };
 
 const props = [
-  { name: "open", type: "boolean", desc: "Controlled open state." },
+  {
+    name: "open",
+    type: "boolean",
+    desc: "controlled open state.",
+  },
   {
     name: "defaultOpen",
     type: "boolean",
-    desc: "Initial open state (uncontrolled).",
+    defaultValue: "false",
+    desc: "initial open state when uncontrolled.",
   },
   {
     name: "onOpenChange",
     type: "(open, eventDetails) => void",
-    desc: "Fires when the open state changes.",
+    desc: "fires with the new open state first.",
   },
   {
     name: "side",
-    type: "'top' | 'right' | 'bottom' | 'left'",
-    desc: "Preferred side of the trigger to render the content (on Content).",
+    type: '"top" | "right" | "bottom" | "left"',
+    desc: "preferred side of the trigger, on Content.",
   },
   {
     name: "align",
-    type: "'start' | 'center' | 'end'",
-    desc: "Alignment along the side (on Content).",
+    type: '"start" | "center" | "end"',
+    desc: "alignment along the chosen side, on Content.",
   },
   {
     name: "sideOffset",
     type: "number",
-    desc: "Distance in pixels from the trigger (on Content, default 8).",
+    defaultValue: "8",
+    desc: "distance in pixels from the trigger, on Content.",
   },
 ];
 
-const usageSnippet = `import { Popover } from "@matt-pasek/usva";
+export default function PopoverPage() {
+  return (
+    <ComponentDoc
+      slug="popover"
+      client
+      description={
+        <>
+          a small panel you click open, anchored to whatever you clicked. the
+          page stays live behind it, so it is for the extras you reach for on
+          purpose: a filter set, a menu of actions, a compact form.
+        </>
+      }
+      composition={{
+        ok: [
+          "small anchored panels: notifications, filters, a compact form",
+          "Title + Description inside Content give it an accessible name",
+        ],
+        no: [
+          "not modal. anything that must block the page is a Dialog",
+          "not a tooltip. plain hover labels stay Tooltip",
+        ],
+      }}
+      a11y={
+        <>
+          opens on click, closes on click-outside and{" "}
+          <code className="font-mono text-xs">Escape</code> · Title and
+          Description wire the popup's name and description
+        </>
+      }
+      dependencies={<code className="font-mono text-xs">@base-ui/react</code>}
+    >
+      <PopoverDemo />
+
+      <PropsTable rows={props} />
+
+      <AcquireSection
+        registryName="popover"
+        usage={`import { Popover } from "@matt-pasek/usva";
 
 <Popover>
   <Popover.Trigger>Open</Popover.Trigger>
@@ -47,81 +90,8 @@ const usageSnippet = `import { Popover } from "@matt-pasek/usva";
     <Popover.Title>Notifications</Popover.Title>
     <Popover.Description>You have no new notifications.</Popover.Description>
   </Popover.Content>
-</Popover>`;
-
-export default function PopoverPage() {
-  return (
-    <main className="mx-auto flex max-w-2xl flex-col gap-8 p-10">
-      <div className="flex flex-col gap-2">
-        <h1 className="text-3xl font-semibold text-ink">Popover</h1>
-        <p className="text-muted">
-          Built on Base UI <code>Popover</code>, a positioned, non-modal
-          overlay: no backdrop, no scroll lock. Dotted compound composition (
-          <code>Popover.Trigger</code>, <code>Popover.Content</code>,{" "}
-          <code>Popover.Arrow</code>, <code>Popover.Title</code>,{" "}
-          <code>Popover.Description</code>, <code>Popover.Close</code>).
-        </p>
-      </div>
-
-      <Card>
-        <CardHeader>Demo</CardHeader>
-        <CardBody>
-          <PopoverDemo />
-        </CardBody>
-      </Card>
-
-      <Card>
-        <CardHeader>Install</CardHeader>
-        <CardBody>
-          <InstallBlock registryName="popover" />
-        </CardBody>
-      </Card>
-
-      <Card>
-        <CardHeader>Usage</CardHeader>
-        <CardBody>
-          <pre className="overflow-x-auto rounded-md border border-border bg-sunken p-3 text-xs text-on-sunken">
-            <code>{usageSnippet}</code>
-          </pre>
-        </CardBody>
-      </Card>
-
-      <Card>
-        <CardHeader>Source</CardHeader>
-        <CardBody>
-          <SourceView filePath="packages/usva/src/primitives/popover/popover.tsx" />
-        </CardBody>
-      </Card>
-
-      <Card>
-        <CardHeader>Props</CardHeader>
-        <CardBody>
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-sm">
-              <thead>
-                <tr className="border-b border-border text-muted">
-                  <th className="py-2 pr-4 font-medium">Prop</th>
-                  <th className="py-2 pr-4 font-medium">Type</th>
-                  <th className="py-2 font-medium">Description</th>
-                </tr>
-              </thead>
-              <tbody>
-                {props.map((p) => (
-                  <tr key={p.name} className="border-b border-border/50">
-                    <td className="py-2 pr-4 font-mono text-xs text-ink">
-                      {p.name}
-                    </td>
-                    <td className="py-2 pr-4 font-mono text-xs text-muted">
-                      {p.type}
-                    </td>
-                    <td className="py-2 text-muted">{p.desc}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </CardBody>
-      </Card>
-    </main>
+</Popover>`}
+      />
+    </ComponentDoc>
   );
 }

@@ -1,76 +1,133 @@
 "use client";
-import { Button, type ButtonStatus } from "@matt-pasek/usva";
-import * as React from "react";
+import { Button } from "@matt-pasek/usva";
+import { cn } from "@matt-pasek/usva/cn";
+import { Playground } from "@/components/docs/playground";
 
-const variants = ["solid", "soft", "outline", "ghost"] as const;
+const VARIANTS = ["solid", "soft", "outline", "ghost", "onSurface"] as const;
+const SIZES = ["sm", "md", "lg"] as const;
+
+type Config = {
+  variant: (typeof VARIANTS)[number];
+  size: (typeof SIZES)[number];
+  label: string;
+  loading: boolean;
+  disabled: boolean;
+  iconOnly: boolean;
+};
+
+const base: Config = {
+  variant: "solid",
+  size: "md",
+  label: "Save changes",
+  loading: false,
+  disabled: false,
+  iconOnly: false,
+};
+
+const templates: Record<string, Config> = {
+  "primary action": base,
+  "dense row": { ...base, variant: "soft", size: "sm", label: "Assign" },
+  "quiet dismiss": { ...base, variant: "ghost", label: "Dismiss" },
+  "over imagery": { ...base, variant: "onSurface", label: "View case study" },
+  "busy save": { ...base, loading: true },
+  "icon action": { ...base, variant: "outline", label: "Copy", iconOnly: true },
+};
+
+const snippetFor = (c: Config): string => {
+  const attrs = [
+    c.iconOnly && `iconOnly aria-label="${c.label}" tooltip="copy"`,
+    c.variant !== "solid" && `variant="${c.variant}"`,
+    c.size !== "md" && `size="${c.size}"`,
+    c.loading &&
+      (c.iconOnly
+        ? `status="loading"`
+        : `status="loading" loadingText="Saving"`),
+    c.disabled && "disabled",
+  ]
+    .filter(Boolean)
+    .join(" ");
+
+  const child = c.iconOnly ? "<CopyIcon />" : c.label;
+  return `import { Button } from "@matt-pasek/usva";
+
+<Button${attrs ? ` ${attrs}` : ""}>${child}</Button>`;
+};
+
+const CopyGlyph = () => (
+  <svg
+    viewBox="0 0 16 16"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.3"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+  >
+    <rect x="5.5" y="5.5" width="8" height="8" rx="1.5" />
+    <path d="M10.5 3.5A1.5 1.5 0 0 0 9 2H4a2 2 0 0 0-2 2v5a1.5 1.5 0 0 0 1.5 1.5" />
+  </svg>
+);
 
 export function ButtonDemo() {
   return (
-    <div className="flex flex-col gap-6">
-      <div className="flex flex-wrap items-center gap-3">
-        {variants.map((variant) => (
-          <Button key={variant} variant={variant}>
-            {variant}
+    <Playground<Config>
+      templates={templates}
+      fields={[
+        {
+          kind: "select",
+          key: "variant",
+          label: "variant",
+          sub: "visual weight",
+          options: VARIANTS,
+        },
+        {
+          kind: "select",
+          key: "size",
+          label: "size",
+          sub: "density",
+          options: SIZES,
+        },
+        {
+          kind: "switch",
+          key: "iconOnly",
+          label: "icon only",
+          sub: "square, needs aria-label",
+        },
+        {
+          kind: "switch",
+          key: "loading",
+          label: "loading",
+          sub: "still focusable",
+        },
+        {
+          kind: "switch",
+          key: "disabled",
+          label: "disabled",
+          sub: "prefer an inline error",
+        },
+      ]}
+      snippet={snippetFor}
+      render={(c) => (
+        <div
+          className={cn(
+            "flex min-h-24 w-full items-center justify-center",
+            c.variant === "onSurface" && "rounded-xl bg-gradient-accent p-8",
+          )}
+        >
+          <Button
+            variant={c.variant}
+            size={c.size}
+            iconOnly={c.iconOnly}
+            aria-label={c.iconOnly ? c.label : undefined}
+            tooltip={c.iconOnly ? "copy" : undefined}
+            disabled={c.disabled}
+            status={c.loading ? "loading" : "idle"}
+            loadingText={c.iconOnly ? undefined : "Saving"}
+          >
+            {c.iconOnly ? <CopyGlyph /> : c.label}
           </Button>
-        ))}
-      </div>
-
-      <div className="flex flex-wrap items-center gap-3">
-        <Button size="sm">Small</Button>
-        <Button size="md">Medium</Button>
-        <Button size="lg">Large</Button>
-      </div>
-
-      <div className="flex flex-wrap items-center gap-3">
-        <Button>Hover for glow</Button>
-        <Button disabled>Disabled</Button>
-      </div>
-
-      <StatefulRow />
-
-      <div className="flex flex-wrap items-center gap-3 rounded-xl bg-gradient-accent p-6">
-        <Button variant="onSurface">onSurface</Button>
-        <Button variant="onSurface" size="sm">
-          Over a gradient
-        </Button>
-      </div>
-    </div>
-  );
-}
-
-function StatefulRow() {
-  const [saveStatus, setSaveStatus] = React.useState<ButtonStatus>("idle");
-  const [failStatus, setFailStatus] = React.useState<ButtonStatus>("idle");
-  const timer = React.useRef<ReturnType<typeof setTimeout>>(undefined);
-
-  React.useEffect(() => () => clearTimeout(timer.current), []);
-
-  const run = (set: (s: ButtonStatus) => void, outcome: ButtonStatus) => {
-    set("loading");
-    timer.current = setTimeout(() => set(outcome), 1400);
-  };
-
-  return (
-    <div className="flex flex-wrap items-center gap-3">
-      <Button
-        status={saveStatus}
-        loadingText="Saving"
-        successText="Saved"
-        onClick={() => run(setSaveStatus, "success")}
-        onSettle={() => setSaveStatus("idle")}
-      >
-        Save changes
-      </Button>
-      <Button
-        variant="outline"
-        status={failStatus}
-        loadingText="Uploading"
-        errorText="Failed"
-        onClick={() => run(setFailStatus, "error")}
-        onSettle={() => setFailStatus("idle")}
-      >
-        Upload
-      </Button>
-    </div>
+        </div>
+      )}
+    />
   );
 }

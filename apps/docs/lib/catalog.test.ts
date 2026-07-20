@@ -14,6 +14,7 @@ const SRC = join(import.meta.dirname, "../../../packages/usva/src");
 const LAYER_DIRS: Record<Layer, string> = {
   primitive: "primitives",
   pattern: "patterns",
+  motion: "motion",
   sula: "sula",
   atmosphere: "atmospheres",
 };
@@ -61,6 +62,7 @@ test("every entry has a real summary", () => {
 test("counts match the catalog", () => {
   expect(counts.primitives).toBe(byLayer("primitive").length);
   expect(counts.patterns).toBe(byLayer("pattern").length);
+  expect(counts.motion).toBe(byLayer("motion").length);
   expect(counts.sula).toBe(byLayer("sula").length);
   expect(counts.atmospheres).toBe(byLayer("atmosphere").length);
   expect(counts.total).toBe(CATALOG.length);

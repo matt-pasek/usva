@@ -1,3 +1,4 @@
+import { CodeSnippet } from "@matt-pasek/usva";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { counts } from "@/lib/catalog";
@@ -6,7 +7,7 @@ import { SITE_ORIGIN } from "@/lib/site";
 export const metadata: Metadata = {
   title: "For agents",
   description:
-    "How a coding agent is meant to consume usva.: llms.txt today, a skill file next, and no MCP server on purpose.",
+    "How a coding agent is meant to consume usva.: llms.txt today, a skill file next.",
 };
 
 export default function ForAgentsPage() {
@@ -64,30 +65,15 @@ export default function ForAgentsPage() {
         </p>
       </section>
 
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-bold text-ink">
-          no MCP server{" "}
-          <span className="font-mono text-sm text-muted">on purpose</span>
-        </h2>
-        <p className="text-muted">
-          there is no usva MCP server and i am not planning one right now. a
-          server is a thing to run, to version, to keep up, and to trust, and
-          everything it would hand back is already a static file this site
-          serves: the catalog, the rules, the registry JSON. an agent that can
-          fetch a URL has the whole system. if that ever stops being true, the
-          server can be built then, and i would rather say so than ship a stub
-          to look current.
-        </p>
-      </section>
-
       <section className="flex flex-col gap-3 rounded-lg border border-border bg-surface p-5">
         <h2 className="font-semibold text-ink">the shortest useful prompt</h2>
-        <pre className="overflow-x-auto rounded-md border border-border bg-sunken p-3 text-xs text-on-sunken">
-          <code>{`read ${SITE_ORIGIN}/llms.txt before you build any UI.
+        <CodeSnippet
+          language="plain"
+          code={`read ${SITE_ORIGIN}/llms.txt before you build any UI.
 use usva components. obey the intensity rules:
 core recedes, patterns structure, sula asserts,
-one sula element per region, at most.`}</code>
-        </pre>
+one sula element per region, at most.`}
+        />
       </section>
     </main>
   );

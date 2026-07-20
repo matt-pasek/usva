@@ -1,126 +1,113 @@
-import { Card, CardBody, CardHeader } from "@matt-pasek/usva";
 import type { Metadata } from "next";
-import { InstallBlock } from "@/components/install-block";
-import { SourceView } from "@/components/source-view";
+import { AcquireSection } from "@/components/docs/acquire-section";
+import { ComponentDoc } from "@/components/docs/component-doc";
+import { DemoPanel } from "@/components/docs/demo-panel";
+import { PropsTable } from "@/components/docs/props-table";
 import { ToastDemo } from "./toast-demo";
 
 export const metadata: Metadata = {
   title: "Toast",
   description:
-    "An imperative toast primitive with a provider + toast() API, built on Base UI's SSR-safe toast manager.",
+    "A brief message announcing something happened, fired from anywhere with toast().",
 };
 
-const props = [
+const toastOptions = [
   {
     name: "title",
-    type: "React.ReactNode",
-    desc: "The toast's headline. Required.",
+    type: "ReactNode",
+    desc: "the headline. the only required field.",
   },
   {
     name: "description",
-    type: "React.ReactNode",
-    desc: "Optional supporting copy.",
+    type: "ReactNode",
+    desc: "supporting copy under the title.",
   },
   {
     name: "type",
-    type: "'success' | 'warning' | 'danger' | 'info'",
-    desc: "Maps to a status token role (accent border).",
+    type: '"success" | "warning" | "danger" | "info"',
+    desc: "the status icon, dot and tint. untyped toasts render plain.",
   },
   {
     name: "duration",
     type: "number",
-    desc: "Auto-dismiss timeout in ms (maps to Base UI's timeout). 0 disables auto-dismiss.",
+    desc: (
+      <>
+        auto-dismiss in ms, drawn as a countdown bar. <b>0 disables it</b>, for
+        toasts that need a decision.
+      </>
+    ),
   },
   {
     name: "action",
     type: "{ label: string; onClick?: () => void }",
-    desc: "Renders an inline action button (maps to Base UI's actionProps).",
+    desc: "one inline action button. more than that is a Dialog.",
   },
 ];
 
-const usageSnippet = `import { toast, Toaster } from "@matt-pasek/usva";
-
-// mount once, e.g. in a root layout. It does not wrap your app.
-<Toaster />
-
-// call from anywhere, including outside React
-toast({ title: "Saved", description: "Your changes are live.", type: "success" });`;
+const toasterProps = [
+  {
+    name: "limit",
+    type: "number",
+    desc: "how many toasts stack before the oldest collapses.",
+  },
+  {
+    name: "timeout",
+    type: "number",
+    desc: "the default duration for toasts that do not set their own.",
+  },
+];
 
 export default function ToastPage() {
   return (
-    <main className="mx-auto flex max-w-2xl flex-col gap-8 p-10">
-      <div className="flex flex-col gap-2">
-        <h1 className="text-3xl font-semibold text-ink">Toast</h1>
-        <p className="text-muted">
-          Built on Base UI's <code>Toast</code> manager, which lives at module
-          scope rather than in React context. So <code>toast()</code> is
-          callable from anywhere, even outside React, and stays SSR-safe. Mount{" "}
-          <code>Toaster</code> once (e.g. in a root layout) to render the
-          viewport. It does not wrap your app, and your call sites do not need
-          to sit beneath it. Toasts fired before it mounts are dropped, not
-          queued.
-        </p>
-      </div>
+    <ComponentDoc
+      slug="toast"
+      client
+      description={
+        <>
+          a brief message that announces something just happened. mount{" "}
+          <code>Toaster</code> once, then fire <code>toast()</code> from
+          anywhere, even outside React.
+        </>
+      }
+      composition={{
+        ok: [
+          "Toaster mounts once in the root layout, the viewport portals itself",
+          "fire from event handlers, async callbacks, non-React modules",
+        ],
+        no: [
+          "never two Toasters. two viewports means every toast twice",
+          "not for form errors. those belong inline, next to the field",
+        ],
+      }}
+      a11y={
+        <>
+          the close button is labelled Dismiss · icons, dots and the countdown
+          bar are <code className="font-mono text-xs">aria-hidden</code> · swipe
+          down or right to dismiss
+        </>
+      }
+      dependencies={
+        <>
+          <code className="font-mono text-xs">@base-ui/react</code>
+        </>
+      }
+    >
+      <DemoPanel>
+        <ToastDemo />
+      </DemoPanel>
 
-      <Card>
-        <CardHeader>Demo</CardHeader>
-        <CardBody>
-          <ToastDemo />
-        </CardBody>
-      </Card>
+      <PropsTable title="toast() options" rows={toastOptions} />
+      <PropsTable title="Toaster" rows={toasterProps} />
 
-      <Card>
-        <CardHeader>Install</CardHeader>
-        <CardBody>
-          <InstallBlock registryName="toast" />
-        </CardBody>
-      </Card>
+      <AcquireSection
+        registryName="toast"
+        usage={`import { toast, notify, Toaster } from "@matt-pasek/usva";
 
-      <Card>
-        <CardHeader>Usage</CardHeader>
-        <CardBody>
-          <pre className="overflow-x-auto rounded-md border border-border bg-sunken p-3 text-xs text-on-sunken">
-            <code>{usageSnippet}</code>
-          </pre>
-        </CardBody>
-      </Card>
+<Toaster />
 
-      <Card>
-        <CardHeader>Source</CardHeader>
-        <CardBody>
-          <SourceView filePath="packages/usva/src/primitives/toast/toast.tsx" />
-        </CardBody>
-      </Card>
-
-      <Card>
-        <CardHeader>toast() options</CardHeader>
-        <CardBody>
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-sm">
-              <thead>
-                <tr className="border-b border-border text-muted">
-                  <th className="py-2 pr-4 font-medium">Option</th>
-                  <th className="py-2 pr-4 font-medium">Type</th>
-                  <th className="py-2 font-medium">Description</th>
-                </tr>
-              </thead>
-              <tbody>
-                {props.map((p) => (
-                  <tr key={p.name} className="border-b border-border/50">
-                    <td className="py-2 pr-4 font-mono text-xs text-ink">
-                      {p.name}
-                    </td>
-                    <td className="py-2 pr-4 font-mono text-xs text-muted">
-                      {p.type}
-                    </td>
-                    <td className="py-2 text-muted">{p.desc}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </CardBody>
-      </Card>
-    </main>
+toast({ title: "Saved", description: "Your changes are live.", type: "success" });
+notify.error("Upload failed");`}
+      />
+    </ComponentDoc>
   );
 }

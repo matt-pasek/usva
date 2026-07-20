@@ -1,13 +1,8 @@
-import {
-  Card,
-  CardBody,
-  CardHeader,
-  type RoadmapMilestone,
-  RoadmapTimeline,
-} from "@matt-pasek/usva";
 import type { Metadata } from "next";
-import { InstallBlock } from "@/components/install-block";
-import { SourceView } from "@/components/source-view";
+import { AcquireSection } from "@/components/docs/acquire-section";
+import { ComponentDoc } from "@/components/docs/component-doc";
+import { PropsTable } from "@/components/docs/props-table";
+import { RoadmapTimelineDemo } from "./roadmap-timeline-demo";
 
 export const metadata: Metadata = {
   title: "Roadmap Timeline",
@@ -15,186 +10,91 @@ export const metadata: Metadata = {
     "A status board of milestones, joined by a connector track that fills up to wherever you are now.",
 };
 
-const milestones: RoadmapMilestone[] = [
-  {
-    version: "0.1",
-    status: "Shipped",
-    title: "Foundations",
-    body: "Tokens, themes, and the first five primitives.",
-    tone: "done",
-    items: [
-      { label: "Semantic token roles" },
-      { label: "kajo and sisu themes" },
-      { label: "Registry pipeline" },
-    ],
-  },
-  {
-    version: "0.2",
-    status: "In progress",
-    title: "Patterns",
-    body: "Composed blocks extracted from two live apps.",
-    tone: "current",
-    items: [
-      { label: "Bento grid" },
-      { label: "Page header", featured: true },
-      { label: "Roadmap timeline" },
-    ],
-  },
-  {
-    version: "0.3",
-    status: "Planned",
-    title: "Showcase",
-    body: "The motion layer.",
-    tone: "planned",
-    items: [{ label: "Fog sphere" }, { label: "Page transitions" }],
-  },
-];
-
 const props = [
   {
     name: "milestones",
     type: "RoadmapMilestone[]",
-    desc: "Each one is { version, status, title, body, items, tone }.",
+    desc: "each one is { version, status, title, body, items, tone }.",
   },
   {
     name: "tone",
     type: '"done" | "current" | "planned"',
-    desc: "Per milestone. Semantic, not decorative: it drives the connector fill.",
+    defaultValue: '"planned"',
+    desc: (
+      <>
+        per milestone. <b>semantic, not decorative</b>: it drives the connector
+        fill, the card weight and the marker.
+      </>
+    ),
   },
   {
     name: "items",
     type: "{ label, featured? }[]",
-    desc: "A featured item drops its marker and gets its own accent card.",
+    desc: "a featured item drops its marker and gets its own accent card.",
   },
   {
     name: "markerIcon",
-    type: "React.ReactNode",
-    desc: "Replaces the tick drawn inside a shipped item's marker.",
+    type: "ReactNode",
+    desc: "replaces the tick drawn inside a shipped item's marker.",
   },
   {
     name: "headingLevel",
     type: '"h2" | "h3" | "h4"',
-    desc: "Level of each milestone title. Defaults to h3.",
+    defaultValue: '"h3"',
+    desc: "level of each milestone title. pick it to fit the page outline.",
   },
   {
     name: "hideTrack",
     type: "boolean",
-    desc: "Hides the connector track above the cards.",
+    defaultValue: "false",
+    desc: "hides the connector track above the cards.",
   },
 ];
 
-const usage = `import { RoadmapTimeline } from "@matt-pasek/usva";
+export default function RoadmapTimelinePage() {
+  return (
+    <ComponentDoc
+      slug="roadmap-timeline"
+      description={
+        <>
+          shipped, in progress and next, as one row of cards under a connector
+          track that fills up to where you are now.
+        </>
+      }
+      composition={{
+        ok: [
+          "a landing page roadmap or a docs release board",
+          "any milestone count; node positions come from the count",
+        ],
+        no: [
+          "not a changelog. a milestone holds a handful of items, not a log",
+          "at most one current milestone. the fill stops at the first it finds",
+        ],
+      }}
+      a11y={
+        <>
+          milestones are an ordered list with real headings · the track is{" "}
+          <code className="font-mono text-xs">aria-hidden</code>, the status
+          pills say the same thing in words
+        </>
+      }
+    >
+      <RoadmapTimelineDemo />
+
+      <PropsTable rows={props} />
+
+      <AcquireSection
+        registryName="roadmap-timeline"
+        usage={`import { RoadmapTimeline } from "@matt-pasek/usva";
 
 <RoadmapTimeline
   milestones={[
-    { version: "0.1", status: "Shipped", title: "Foundations", tone: "done",
-      items: [{ label: "Semantic token roles" }] },
-    { version: "0.2", status: "In progress", title: "Patterns", tone: "current",
-      items: [{ label: "Page header", featured: true }] },
+    { version: "0.1", status: "Shipped", title: "Foundations", tone: "done" },
+    { version: "0.2", status: "In progress", title: "Patterns", tone: "current" },
     { version: "0.3", status: "Planned", title: "Showcase", tone: "planned" },
   ]}
-/>`;
-
-export default function RoadmapTimelinePage() {
-  return (
-    <main className="mx-auto flex max-w-5xl flex-col gap-8 p-10">
-      <div className="flex flex-col gap-2">
-        <h1 className="text-3xl font-semibold text-ink">Roadmap Timeline</h1>
-        <p className="text-muted">
-          A status board of what shipped, what is being built, and what comes
-          next. The cards are an ordered list, and a connector track above them
-          fills up to wherever you are now.
-        </p>
-      </div>
-
-      <Card>
-        <CardHeader>Demo</CardHeader>
-        <CardBody className="bg-bg">
-          <RoadmapTimeline milestones={milestones} />
-        </CardBody>
-      </Card>
-
-      <Card>
-        <CardHeader>The track is derived, not hardcoded</CardHeader>
-        <CardBody>
-          <p className="text-sm text-muted">
-            Node positions come from the milestone count, so four columns work
-            as well as three. The filled segment runs to the{" "}
-            <code>current</code> milestone, or to the last <code>done</code> one
-            if nothing is current, and does not draw at all before anything has
-            shipped. The whole track is <code>aria-hidden</code>: the status
-            pills already say the same thing in words.
-          </p>
-        </CardBody>
-      </Card>
-
-      <Card>
-        <CardHeader>Tone is semantic</CardHeader>
-        <CardBody>
-          <p className="text-sm text-muted">
-            <code>tone</code> is a three-way union, not a color. It says where a
-            milestone stands, and the component decides how that looks: the
-            current card is accented and slightly larger, planned items lose
-            their tick and their title drops to <code>muted</code>. A planned
-            card recedes through its title, its border and its hollow node,
-            never through its body copy: <code>faint</code> sits near 2:1 and
-            cannot carry a sentence.
-          </p>
-        </CardBody>
-      </Card>
-
-      <Card>
-        <CardHeader>Install</CardHeader>
-        <CardBody>
-          <InstallBlock registryName="roadmap-timeline" />
-        </CardBody>
-      </Card>
-
-      <Card>
-        <CardHeader>Usage</CardHeader>
-        <CardBody>
-          <pre className="overflow-x-auto rounded-md border border-border bg-sunken p-3 text-xs text-on-sunken">
-            <code>{usage}</code>
-          </pre>
-        </CardBody>
-      </Card>
-
-      <Card>
-        <CardHeader>Source</CardHeader>
-        <CardBody>
-          <SourceView filePath="packages/usva/src/patterns/roadmap-timeline/roadmap-timeline.tsx" />
-        </CardBody>
-      </Card>
-
-      <Card>
-        <CardHeader>Props</CardHeader>
-        <CardBody>
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-sm">
-              <thead>
-                <tr className="border-b border-border text-muted">
-                  <th className="py-2 pr-4 font-medium">Prop</th>
-                  <th className="py-2 pr-4 font-medium">Type</th>
-                  <th className="py-2 font-medium">Description</th>
-                </tr>
-              </thead>
-              <tbody>
-                {props.map((p) => (
-                  <tr key={p.name} className="border-b border-border/50">
-                    <td className="py-2 pr-4 font-mono text-xs text-ink">
-                      {p.name}
-                    </td>
-                    <td className="py-2 pr-4 font-mono text-xs text-muted">
-                      {p.type}
-                    </td>
-                    <td className="py-2 text-muted">{p.desc}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </CardBody>
-      </Card>
-    </main>
+/>`}
+      />
+    </ComponentDoc>
   );
 }

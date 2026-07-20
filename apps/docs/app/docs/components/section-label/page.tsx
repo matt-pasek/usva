@@ -1,111 +1,104 @@
-import { Card, CardBody, CardHeader, SectionLabel } from "@matt-pasek/usva";
+import { SectionLabel } from "@matt-pasek/usva";
 import type { Metadata } from "next";
-import { InstallBlock } from "@/components/install-block";
-import { SourceView } from "@/components/source-view";
+import { AcquireSection } from "@/components/docs/acquire-section";
+import { ComponentDoc } from "@/components/docs/component-doc";
+import { DemoPanel } from "@/components/docs/demo-panel";
+import { PropsTable } from "@/components/docs/props-table";
 
 export const metadata: Metadata = {
   title: "Section Label",
   description:
-    "A section heading with an optional mono index, uppercase title, glowing accent hairline, and trailing aside.",
+    "A heading row that names a region: an optional mono index, an uppercase title, an accent hairline, and a trailing aside.",
 };
 
 const props = [
   {
     name: "index",
     type: "string",
-    desc: "Optional mono, glowing accent index (e.g. 01) shown before the title.",
+    desc: "mono, glowing accent index before the title (e.g. 01).",
   },
   {
     name: "title",
-    type: "React.ReactNode",
-    desc: "The section title. Rendered as an uppercase h2.",
+    type: "ReactNode",
+    desc: (
+      <>
+        the section title, rendered as an <code>h2</code>.
+      </>
+    ),
   },
   {
     name: "aside",
-    type: "React.ReactNode",
-    desc: "Optional trailing content after the hairline (e.g. a count).",
+    type: "ReactNode",
+    desc: "trailing content after the hairline (e.g. a count).",
+  },
+  {
+    name: "description",
+    type: "ReactNode",
+    desc: "a lede below the row. turns the label into a section header.",
+  },
+  {
+    name: "tone",
+    type: '"accent" | "accent-alt"',
+    defaultValue: '"accent"',
+    desc: "the index color. accent glows, accent-alt does not.",
   },
 ];
 
-const usageSnippet = `import { SectionLabel } from "@matt-pasek/usva";
-
-<SectionLabel index="01" title="Projects" aside="6 total" />`;
-
 export default function SectionLabelPage() {
   return (
-    <main className="mx-auto flex max-w-2xl flex-col gap-8 p-10">
-      <div className="flex flex-col gap-2">
-        <h1 className="text-3xl font-semibold text-ink">Section Label</h1>
-        <p className="text-muted">
-          A composed section heading — a mono glowing <code>index</code>, an
-          uppercase <code>title</code>, an accent hairline that fills the
-          remaining width, and an optional trailing <code>aside</code>.
-        </p>
-      </div>
+    <ComponentDoc
+      slug="section-label"
+      description={
+        <>
+          a heading row that names a region: a mono index, a title, an accent
+          hairline, and a trailing aside. add a description and it becomes a full
+          section header.
+        </>
+      }
+      composition={{
+        ok: [
+          "at the top of every major page region, index counting up",
+          "aside carries the region's one metadata fact, like a count",
+        ],
+        no: [
+          "not a page title. it labels a section, PageHeader opens the page",
+          "never stack two without content between them",
+        ],
+      }}
+      a11y={
+        <>
+          the title is a real <code className="font-mono text-xs">h2</code>{" "}
+          heading · the hairline is{" "}
+          <code className="font-mono text-xs">aria-hidden</code>
+        </>
+      }
+    >
+      <DemoPanel label="label row">
+        <div className="flex w-full flex-col gap-8">
+          <SectionLabel index="01" title="Selected work" aside="6 projects" />
+          <SectionLabel index="02" title="Writing" />
+          <SectionLabel title="Now" aside="2026" />
+        </div>
+      </DemoPanel>
 
-      <Card>
-        <CardHeader>Demo</CardHeader>
-        <CardBody>
-          <div className="flex flex-col gap-8">
-            <SectionLabel index="01" title="Selected work" aside="6 projects" />
-            <SectionLabel index="02" title="Writing" />
-            <SectionLabel title="Now" aside="2026" />
-          </div>
-        </CardBody>
-      </Card>
+      <DemoPanel label="section header">
+        <SectionLabel
+          className="w-full"
+          index="03"
+          title="About"
+          aside="est. 2024"
+          description="with a description the label grows into a section header. the row keeps its rhythm and the lede stays muted below it."
+        />
+      </DemoPanel>
 
-      <Card>
-        <CardHeader>Install</CardHeader>
-        <CardBody>
-          <InstallBlock registryName="section-label" />
-        </CardBody>
-      </Card>
+      <PropsTable rows={props} />
 
-      <Card>
-        <CardHeader>Usage</CardHeader>
-        <CardBody>
-          <pre className="overflow-x-auto rounded-md border border-border bg-sunken p-3 text-xs text-on-sunken">
-            <code>{usageSnippet}</code>
-          </pre>
-        </CardBody>
-      </Card>
+      <AcquireSection
+        registryName="section-label"
+        usage={`import { SectionLabel } from "@matt-pasek/usva";
 
-      <Card>
-        <CardHeader>Source</CardHeader>
-        <CardBody>
-          <SourceView filePath="packages/usva/src/patterns/section-label/section-label.tsx" />
-        </CardBody>
-      </Card>
-
-      <Card>
-        <CardHeader>Props</CardHeader>
-        <CardBody>
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-sm">
-              <thead>
-                <tr className="border-b border-border text-muted">
-                  <th className="py-2 pr-4 font-medium">Prop</th>
-                  <th className="py-2 pr-4 font-medium">Type</th>
-                  <th className="py-2 font-medium">Description</th>
-                </tr>
-              </thead>
-              <tbody>
-                {props.map((p) => (
-                  <tr key={p.name} className="border-b border-border/50">
-                    <td className="py-2 pr-4 font-mono text-xs text-ink">
-                      {p.name}
-                    </td>
-                    <td className="py-2 pr-4 font-mono text-xs text-muted">
-                      {p.type}
-                    </td>
-                    <td className="py-2 text-muted">{p.desc}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </CardBody>
-      </Card>
-    </main>
+<SectionLabel index="01" title="Projects" aside="6 total" />`}
+      />
+    </ComponentDoc>
   );
 }

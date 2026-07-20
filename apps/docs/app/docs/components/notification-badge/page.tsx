@@ -1,149 +1,90 @@
-import {
-  Card,
-  CardBody,
-  CardHeader,
-  IconButton,
-  NotificationBadge,
-} from "@matt-pasek/usva";
 import type { Metadata } from "next";
-import { InstallBlock } from "@/components/install-block";
-import { SourceView } from "@/components/source-view";
+import { AcquireSection } from "@/components/docs/acquire-section";
+import { ComponentDoc } from "@/components/docs/component-doc";
+import { PropsTable } from "@/components/docs/props-table";
+import { NotificationBadgeDemo } from "./notification-badge-demo";
 
 export const metadata: Metadata = {
   title: "Notification Badge",
   description:
-    "A count or dot indicator overlaid on the corner of any icon or button, with overflow capping.",
+    "A small count or dot pinned to the corner of an icon or button, capped at a max.",
 };
-
-const Bell = () => (
-  <svg
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth={1.5}
-    aria-hidden="true"
-  >
-    <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10.3 21a2 2 0 0 0 3.4 0" />
-  </svg>
-);
 
 const props = [
   {
     name: "count",
     type: "number",
-    desc: "The count to show. Hidden at 0 unless showZero.",
+    defaultValue: "0",
+    desc: "the count to show. hidden at 0 unless showZero.",
   },
   {
     name: "max",
     type: "number",
-    desc: 'Cap before showing "N+". Defaults to 9.',
+    defaultValue: "9",
+    desc: 'cap before showing "N+".',
   },
   {
     name: "dot",
     type: "boolean",
-    desc: "Show a bare dot instead of a number.",
+    defaultValue: "false",
+    desc: "a bare presence dot instead of a number.",
   },
   {
     name: "tone",
     type: '"accent" | "accent-alt" | "danger" | "warning"',
-    desc: "Indicator color. Defaults to danger.",
+    defaultValue: '"danger"',
+    desc: "indicator color.",
   },
-  { name: "showZero", type: "boolean", desc: "Keep the badge visible at 0." },
+  {
+    name: "showZero",
+    type: "boolean",
+    defaultValue: "false",
+    desc: "keep the badge visible at 0.",
+  },
 ];
-
-const usage = `import { NotificationBadge, IconButton } from "@matt-pasek/usva";
-
-<NotificationBadge count={42} max={9}>
-  <IconButton aria-label="Notifications"><BellIcon /></IconButton>
-</NotificationBadge>`;
 
 export default function NotificationBadgePage() {
   return (
-    <main className="mx-auto flex max-w-2xl flex-col gap-8 p-10">
-      <div className="flex flex-col gap-2">
-        <h1 className="text-3xl font-semibold text-ink">Notification Badge</h1>
-        <p className="text-muted">
-          A count or dot indicator overlaid on the corner of any element — an
-          icon, a button, an avatar. Caps overflow as <code>N+</code> and hides
-          itself at zero.
-        </p>
-      </div>
+    <ComponentDoc
+      slug="notification-badge"
+      description={
+        <>
+          a small count or dot pinned to the corner of whatever it wraps: an
+          icon, a button, an avatar. it vanishes at zero, so silence stays
+          silent.
+        </>
+      }
+      composition={{
+        ok: [
+          "wraps an icon-only Button, an avatar, a nav item",
+          "dot mode for presence, count mode for unread",
+        ],
+        no: [
+          "not a status Badge. it counts, it does not label",
+          "never on a bare icon with no accessible name of its own",
+        ],
+      }}
+      a11y={
+        <>
+          the dot is <code className="font-mono text-xs">aria-hidden</code> ·
+          the wrapper never steals the child's role or name
+        </>
+      }
+    >
+      <NotificationBadgeDemo />
 
-      <Card>
-        <CardHeader>Demo</CardHeader>
-        <CardBody>
-          <div className="flex items-center gap-6">
-            <NotificationBadge count={3}>
-              <IconButton aria-label="Notifications">
-                <Bell />
-              </IconButton>
-            </NotificationBadge>
-            <NotificationBadge count={42}>
-              <IconButton aria-label="Notifications">
-                <Bell />
-              </IconButton>
-            </NotificationBadge>
-            <NotificationBadge dot tone="accent-alt">
-              <IconButton aria-label="Notifications">
-                <Bell />
-              </IconButton>
-            </NotificationBadge>
-          </div>
-        </CardBody>
-      </Card>
+      <PropsTable rows={props} />
 
-      <Card>
-        <CardHeader>Install</CardHeader>
-        <CardBody>
-          <InstallBlock registryName="notification-badge" />
-        </CardBody>
-      </Card>
+      <AcquireSection
+        registryName="notification-badge"
+        usage={`import { NotificationBadge, Button } from "@matt-pasek/usva";
 
-      <Card>
-        <CardHeader>Usage</CardHeader>
-        <CardBody>
-          <pre className="overflow-x-auto rounded-md border border-border bg-sunken p-3 text-xs text-on-sunken">
-            <code>{usage}</code>
-          </pre>
-        </CardBody>
-      </Card>
-
-      <Card>
-        <CardHeader>Source</CardHeader>
-        <CardBody>
-          <SourceView filePath="packages/usva/src/primitives/notification-badge/notification-badge.tsx" />
-        </CardBody>
-      </Card>
-
-      <Card>
-        <CardHeader>Props</CardHeader>
-        <CardBody>
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-sm">
-              <thead>
-                <tr className="border-b border-border text-muted">
-                  <th className="py-2 pr-4 font-medium">Prop</th>
-                  <th className="py-2 pr-4 font-medium">Type</th>
-                  <th className="py-2 font-medium">Description</th>
-                </tr>
-              </thead>
-              <tbody>
-                {props.map((p) => (
-                  <tr key={p.name} className="border-b border-border/50">
-                    <td className="py-2 pr-4 font-mono text-xs text-ink">
-                      {p.name}
-                    </td>
-                    <td className="py-2 pr-4 font-mono text-xs text-muted">
-                      {p.type}
-                    </td>
-                    <td className="py-2 text-muted">{p.desc}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </CardBody>
-      </Card>
-    </main>
+<NotificationBadge count={42} max={9}>
+  <Button variant="outline" iconOnly aria-label="Notifications">
+    <BellIcon />
+  </Button>
+</NotificationBadge>`}
+      />
+    </ComponentDoc>
   );
 }

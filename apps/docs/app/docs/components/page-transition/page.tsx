@@ -1,15 +1,17 @@
-import { Card, CardBody, CardHeader } from "@matt-pasek/usva";
 import type { Metadata } from "next";
+import { AcquireSection } from "@/components/docs/acquire-section";
+import { ComponentDoc } from "@/components/docs/component-doc";
+import { DemoPanel } from "@/components/docs/demo-panel";
+import { PropsTable } from "@/components/docs/props-table";
 import { PageTransitionDemo } from "@/components/page-transition-demo";
-import { SourceView } from "@/components/source-view";
 
 export const metadata: Metadata = {
   title: "Page Transition",
   description:
-    "A framework-neutral route transition — fade + lift in, soft lift out — keyed on a routeKey prop so it works with any router.",
+    "A route transition that fades and lifts content in, then softly out, keyed on a routeKey so it works with any router.",
 };
 
-const nextSnippet = `"use client";
+const usage = `"use client";
 import { PageTransition } from "@matt-pasek/usva";
 import { usePathname } from "next/navigation";
 
@@ -21,42 +23,65 @@ export function Shell({ children }) {
   );
 }`;
 
+const props = [
+  {
+    name: "routeKey",
+    type: "string",
+    desc: (
+      <>
+        the current route. <code>usePathname()</code> in next,{" "}
+        <code>location.pathname</code> anywhere else. a change fires the
+        transition.
+      </>
+    ),
+  },
+  {
+    name: "children",
+    type: "ReactNode",
+    desc: "the route content. the whole subtree unmounts and remounts on every key change.",
+  },
+];
+
 export default function PageTransitionPage() {
   return (
-    <main className="mx-auto flex max-w-2xl flex-col gap-8 p-10">
-      <div className="flex flex-col gap-2">
-        <h1 className="text-3xl font-semibold text-ink">Page Transition</h1>
-        <p className="text-muted">
-          Wraps route content in a fade-and-lift transition — in from below, out
-          softly upward. It is framework-neutral: you pass the current route as{" "}
-          <code>routeKey</code> (from <code>usePathname()</code>,{" "}
-          <code>location.pathname</code>, or any router), so it isn&apos;t bound
-          to Next. Collapses to a plain render under reduced motion.
-        </p>
-      </div>
+    <ComponentDoc
+      name="Page Transition"
+      layer="motion"
+      intensity="guides"
+      client
+      description={
+        <>
+          a route-level fade and lift: content enters from below and exits
+          softly upward, with the outgoing view finishing before the next
+          mounts. framework-neutral, keyed on whatever routeKey you hand it.
+        </>
+      }
+      composition={{
+        ok: [
+          "wraps the route outlet in the app shell, once",
+          "any router works, key it on the pathname",
+        ],
+        no: [
+          "never nested. one transition per shell",
+          "not for in-page swaps like tabs or lists, it unmounts everything under it",
+        ],
+      }}
+      a11y={
+        <>
+          returns children untouched under{" "}
+          <code className="font-mono text-xs">prefers-reduced-motion</code> ·
+          the wrapper is a plain div, no roles, no focus trapping
+        </>
+      }
+      dependencies={<code className="font-mono text-xs">motion</code>}
+    >
+      <DemoPanel label="live · simulated routes">
+        <PageTransitionDemo />
+      </DemoPanel>
 
-      <Card>
-        <CardHeader>Demo</CardHeader>
-        <CardBody>
-          <PageTransitionDemo />
-        </CardBody>
-      </Card>
+      <PropsTable rows={props} />
 
-      <Card>
-        <CardHeader>Usage</CardHeader>
-        <CardBody>
-          <pre className="overflow-x-auto rounded-md border border-border bg-sunken p-3 text-xs text-on-sunken">
-            <code>{nextSnippet}</code>
-          </pre>
-        </CardBody>
-      </Card>
-
-      <Card>
-        <CardHeader>Source</CardHeader>
-        <CardBody>
-          <SourceView filePath="packages/usva/src/motion/page-transition.tsx" />
-        </CardBody>
-      </Card>
-    </main>
+      <AcquireSection registryName="page-transition" usage={usage} />
+    </ComponentDoc>
   );
 }

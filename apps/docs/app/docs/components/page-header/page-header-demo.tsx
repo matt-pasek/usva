@@ -1,6 +1,6 @@
 "use client";
 import {
-  IconButton,
+  Button,
   PageHeader,
   PageHeaderMetric,
   PageHeaderStat,
@@ -78,13 +78,15 @@ export function EditableDemo() {
       titleAccent="Mateusz."
       aside={<PageHeaderMetric value="42%" caption="Credit trajectory" />}
       action={
-        <IconButton
+        <Button
+          variant="outline"
+          iconOnly
           aria-label={editing ? "Done editing" : "Edit header"}
           active={editing}
           onClick={() => setEditing((current) => !current)}
         >
           {editing ? <CheckIcon /> : <PencilIcon />}
-        </IconButton>
+        </Button>
       }
       controlsOpen={editing}
       controls={

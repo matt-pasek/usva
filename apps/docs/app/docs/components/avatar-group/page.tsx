@@ -1,13 +1,8 @@
-import {
-  Avatar,
-  AvatarGroup,
-  Card,
-  CardBody,
-  CardHeader,
-} from "@matt-pasek/usva";
 import type { Metadata } from "next";
-import { InstallBlock } from "@/components/install-block";
-import { SourceView } from "@/components/source-view";
+import { AcquireSection } from "@/components/docs/acquire-section";
+import { ComponentDoc } from "@/components/docs/component-doc";
+import { PropsTable } from "@/components/docs/props-table";
+import { AvatarGroupDemo } from "./avatar-group-demo";
 
 export const metadata: Metadata = {
   title: "Avatar Group",
@@ -19,137 +14,74 @@ const props = [
   {
     name: "max",
     type: "number",
-    desc: "Cap the visible avatars; the rest collapse into a +N chip.",
+    desc: "caps the visible avatars. the rest collapse into a +N chip.",
   },
   {
     name: "size",
     type: '"sm" | "md" | "lg"',
-    desc: "Overlap spacing and +N chip size. Defaults to md.",
+    defaultValue: '"md"',
+    desc: "overlap spacing and +N chip size. match the Avatars inside.",
   },
   {
     name: "label",
-    type: "React.ReactNode",
-    desc: 'Caption after the stack, e.g. "25+ active users".',
+    type: "ReactNode",
+    desc: 'caption after the stack, e.g. "25+ active users".',
   },
   {
     name: "tone",
     type: '"solid" | "accent" | "neutral"',
-    desc: "Colors the +N chip to match the cluster. Pair with Avatar tone. Defaults to neutral.",
+    defaultValue: '"neutral"',
+    desc: "colors the +N chip. pair it with the Avatar tone.",
   },
 ];
 
-const usage = `import { AvatarGroup, Avatar } from "@matt-pasek/usva";
-
-<AvatarGroup max={4} label="+128 students">
-  <Avatar alt="Ada" fallback="MP" />
-  <Avatar alt="Blaise" fallback="AK" />
-  <Avatar alt="Curie" fallback="JL" />
-  <Avatar alt="Dijkstra" fallback="RS" />
-  <Avatar alt="Euler" fallback="TN" />
-</AvatarGroup>`;
-
 export default function AvatarGroupPage() {
   return (
-    <main className="mx-auto flex max-w-2xl flex-col gap-8 p-10">
-      <div className="flex flex-col gap-2">
-        <h1 className="text-3xl font-semibold text-ink">Avatar Group</h1>
-        <p className="text-muted">
-          An overlapping stack of <code>Avatar</code>s, capped with a{" "}
-          <code>max</code> and a <code>+N</code> overflow chip, plus an optional
-          caption. For social proof, shared ownership, and participant lists.
-        </p>
-      </div>
+    <ComponentDoc
+      slug="avatar-group"
+      name="AvatarGroup"
+      layer="primitive"
+      provenance={["sisu-plus"]}
+      description={
+        <>
+          avatars overlapped into one cluster, so a crowd reads at a glance. the
+          caption carries the claim, the faces carry the proof.
+        </>
+      }
+      composition={{
+        ok: [
+          "hero social proof, participant lists, shared ownership rows",
+          "the tinted cluster pairs tone on the group with tone on each Avatar",
+        ],
+        no: [
+          "never more faces than max can justify. five visible is the ceiling",
+          "not a picker. the stack does not click",
+        ],
+      }}
+      a11y={
+        <>
+          each Avatar keeps its own{" "}
+          <code className="font-mono text-xs">alt</code> · the +N chip and
+          caption are plain text
+        </>
+      }
+    >
+      <AvatarGroupDemo />
 
-      <Card>
-        <CardHeader>Demo</CardHeader>
-        <CardBody className="flex flex-col gap-5">
-          <AvatarGroup max={4} label="+128 students">
-            <Avatar alt="Ada" fallback="MP" />
-            <Avatar alt="Blaise" fallback="AK" />
-            <Avatar alt="Curie" fallback="JL" />
-            <Avatar alt="Dijkstra" fallback="RS" />
-            <Avatar alt="Euler" fallback="TN" />
-            <Avatar alt="Fermat" fallback="OK" />
-          </AvatarGroup>
-          <AvatarGroup size="sm">
-            <Avatar size="sm" alt="Ada" fallback="MP" />
-            <Avatar size="sm" alt="Blaise" fallback="AK" />
-            <Avatar size="sm" alt="Curie" fallback="JL" />
-          </AvatarGroup>
-        </CardBody>
-      </Card>
+      <PropsTable rows={props} />
 
-      <Card>
-        <CardHeader>Tinted cluster</CardHeader>
-        <CardBody className="flex flex-col gap-3">
-          <p className="text-sm text-muted">
-            Pair <code>Avatar tone=&quot;accent&quot;</code> with{" "}
-            <code>AvatarGroup tone=&quot;accent&quot;</code> for the tinted
-            social-proof cluster — accent-filled initials, a matching{" "}
-            <code>+N</code> chip, and a caption.
-          </p>
-          <AvatarGroup size="sm" max={3} tone="accent" label="25+ active users">
-            <Avatar size="sm" tone="accent" alt="Ada" fallback="MP" />
-            <Avatar size="sm" tone="accent" alt="Blaise" fallback="AK" />
-            <Avatar size="sm" tone="accent" alt="Curie" fallback="JL" />
-            <Avatar size="sm" tone="accent" alt="Dijkstra" fallback="RS" />
-            <Avatar size="sm" tone="accent" alt="Euler" fallback="TN" />
-          </AvatarGroup>
-        </CardBody>
-      </Card>
+      <AcquireSection
+        registryName="avatar"
+        usage={`import { AvatarGroup, Avatar } from "@matt-pasek/usva";
 
-      <Card>
-        <CardHeader>Install</CardHeader>
-        <CardBody>
-          <InstallBlock registryName="avatar" />
-        </CardBody>
-      </Card>
-
-      <Card>
-        <CardHeader>Usage</CardHeader>
-        <CardBody>
-          <pre className="overflow-x-auto rounded-md border border-border bg-sunken p-3 text-xs text-on-sunken">
-            <code>{usage}</code>
-          </pre>
-        </CardBody>
-      </Card>
-
-      <Card>
-        <CardHeader>Source</CardHeader>
-        <CardBody>
-          <SourceView filePath="packages/usva/src/primitives/avatar/avatar-group.tsx" />
-        </CardBody>
-      </Card>
-
-      <Card>
-        <CardHeader>Props</CardHeader>
-        <CardBody>
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-sm">
-              <thead>
-                <tr className="border-b border-border text-muted">
-                  <th className="py-2 pr-4 font-medium">Prop</th>
-                  <th className="py-2 pr-4 font-medium">Type</th>
-                  <th className="py-2 font-medium">Description</th>
-                </tr>
-              </thead>
-              <tbody>
-                {props.map((p) => (
-                  <tr key={p.name} className="border-b border-border/50">
-                    <td className="py-2 pr-4 font-mono text-xs text-ink">
-                      {p.name}
-                    </td>
-                    <td className="py-2 pr-4 font-mono text-xs text-muted">
-                      {p.type}
-                    </td>
-                    <td className="py-2 text-muted">{p.desc}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </CardBody>
-      </Card>
-    </main>
+<AvatarGroup max={4} label="+128 students">
+  <Avatar alt="Ada" fallback="AL" />
+  <Avatar alt="Blaise" fallback="BP" />
+  <Avatar alt="Curie" fallback="MC" />
+  <Avatar alt="Dijkstra" fallback="ED" />
+  <Avatar alt="Euler" fallback="LE" />
+</AvatarGroup>`}
+      />
+    </ComponentDoc>
   );
 }

@@ -21,12 +21,7 @@ const next = [
   {
     href: "/docs/get-started/for-agents",
     title: "for agents",
-    body: "what a coding agent gets: a skill file and llms.txt. no MCP server, and here is why.",
-  },
-  {
-    href: "/docs/get-started/index",
-    title: "index",
-    body: `every one of the ${counts.total} components, in one flat list.`,
+    body: "what a coding agent gets: a skill file and llms.txt.",
   },
 ];
 

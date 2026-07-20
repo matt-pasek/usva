@@ -1,3 +1,4 @@
+import { Terminal } from "@matt-pasek/usva";
 import { PACKAGE_NAME, registryUrl } from "@/lib/site";
 
 export interface InstallBlockProps {
@@ -12,21 +13,17 @@ export function InstallBlock({
 }: InstallBlockProps) {
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex flex-col gap-1">
+      <div className="flex flex-col gap-1.5">
         <p className="text-sm text-muted">
           As a package dependency (recommended):
         </p>
-        <pre className="overflow-x-auto rounded-md border border-border bg-sunken p-3 text-xs text-on-sunken">
-          <code>bun add {packageName}</code>
-        </pre>
+        <Terminal command={`bun add ${packageName}`} />
       </div>
-      <div className="flex flex-col gap-1">
+      <div className="flex flex-col gap-1.5">
         <p className="text-sm text-muted">
           Or copy the source into your project via shadcn:
         </p>
-        <pre className="overflow-x-auto rounded-md border border-border bg-sunken p-3 text-xs text-on-sunken">
-          <code>npx shadcn add {registryUrl(registryName)}</code>
-        </pre>
+        <Terminal command={`npx shadcn add ${registryUrl(registryName)}`} />
       </div>
     </div>
   );

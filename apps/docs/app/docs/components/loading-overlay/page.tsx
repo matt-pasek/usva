@@ -1,144 +1,109 @@
-import { Card, CardBody, CardHeader, LoadingOverlay } from "@matt-pasek/usva";
 import type { Metadata } from "next";
-import { InstallBlock } from "@/components/install-block";
-import { SourceView } from "@/components/source-view";
+import { AcquireSection } from "@/components/docs/acquire-section";
+import { ComponentDoc } from "@/components/docs/component-doc";
+import { PropsTable } from "@/components/docs/props-table";
+import { LoadingOverlayDemo } from "./loading-overlay-demo";
 
 export const metadata: Metadata = {
   title: "Loading Overlay",
   description:
-    "A scrim with a centered spinner, contained to its parent or to the viewport with a refcounted body scroll lock.",
+    "A dimming scrim with a centered spinner, over its parent or the whole viewport while content loads.",
 };
 
 const props = [
   {
     name: "contain",
     type: '"viewport" | "parent"',
-    desc: "parent covers the nearest positioned ancestor and locks nothing. viewport covers the page and locks body scroll. Defaults to parent.",
+    defaultValue: '"parent"',
+    desc: (
+      <>
+        parent covers the nearest positioned ancestor and locks nothing.{" "}
+        <b>viewport locks body scroll</b>, refcounted, and restores the exact
+        overflow value it found.
+      </>
+    ),
   },
   {
     name: "label",
     type: "string",
-    desc: "Announced by the status region and shown as a caption.",
+    defaultValue: '"Loading"',
+    desc: "announced by the status region and repeated as a visible caption.",
   },
-  { name: "blur", type: "boolean", desc: "Backdrop blur. Defaults to true." },
+  {
+    name: "blur",
+    type: "boolean",
+    defaultValue: "true",
+    desc: "backdrop blur behind the scrim.",
+  },
   {
     name: "variant",
     type: '"ring" | "dots" | "bars" | "orbit"',
-    desc: "Forwarded to Spinner.",
+    defaultValue: '"ring"',
+    desc: "forwarded to Spinner.",
+  },
+  {
+    name: "size",
+    type: "SpinnerSize",
+    defaultValue: '"lg"',
+    desc: "forwarded to Spinner.",
+  },
+  {
+    name: "tone",
+    type: "SpinnerTone",
+    defaultValue: '"accent"',
+    desc: "forwarded to Spinner.",
   },
 ];
 
-const usage = `import { LoadingOverlay } from "@matt-pasek/usva";
+export default function LoadingOverlayPage() {
+  return (
+    <ComponentDoc
+      slug="loading-overlay"
+      client
+      description={
+        <>
+          a dimming scrim with a centered spinner, over its parent while it
+          loads or over the whole page.
+        </>
+      }
+      composition={{
+        ok: [
+          "over a positioned panel or Card while its data loads",
+          'contain="viewport" for whole-page transitions, even over an open modal',
+        ],
+        no: [
+          "not for button-level loading. Button has a status machine",
+          "not a Dialog scrim. it dims content, it does not trap focus",
+        ],
+      }}
+      a11y={
+        <>
+          the spinner is a{" "}
+          <code className="font-mono text-xs">role="status"</code> region
+          announcing the label once · the visible caption is{" "}
+          <code className="font-mono text-xs">aria-hidden</code>
+        </>
+      }
+      dependencies={
+        <>
+          Spinner <span className="text-muted">from the same package</span>
+        </>
+      }
+    >
+      <LoadingOverlayDemo />
 
-// Over a panel. Locks nothing.
+      <PropsTable rows={props} />
+
+      <AcquireSection
+        registryName="loading-overlay"
+        usage={`import { LoadingOverlay } from "@matt-pasek/usva";
+
 <div className="relative">
   <LoadingOverlay label="Fetching courses" />
 </div>
 
-// Over the page. Locks body scroll, refcounted.
-<LoadingOverlay contain="viewport" label="Loading dashboard" />`;
-
-export default function LoadingOverlayPage() {
-  return (
-    <main className="mx-auto flex max-w-2xl flex-col gap-8 p-10">
-      <div className="flex flex-col gap-2">
-        <h1 className="text-3xl font-semibold text-ink">Loading Overlay</h1>
-        <p className="text-muted">
-          A scrim with a centered spinner. It defaults to{" "}
-          <code>contain=&quot;parent&quot;</code> because that variant locks
-          nothing, and the scroll lock is the one thing here that can reach
-          outside the component and break an unrelated modal.
-        </p>
-      </div>
-
-      <Card>
-        <CardHeader>Over a panel</CardHeader>
-        <CardBody>
-          <div className="relative h-56 overflow-hidden rounded-2xl border border-border bg-surface p-6">
-            <p className="text-sm text-muted">
-              Content underneath, dimmed and blurred by the overlay.
-            </p>
-            <LoadingOverlay contain="parent" label="Fetching courses" />
-          </div>
-        </CardBody>
-      </Card>
-
-      <Card>
-        <CardHeader>Without blur</CardHeader>
-        <CardBody>
-          <div className="relative h-56 overflow-hidden rounded-2xl border border-border bg-surface p-6">
-            <p className="text-sm text-muted">Scrim only, no backdrop blur.</p>
-            <LoadingOverlay contain="parent" blur={false} variant="bars" />
-          </div>
-        </CardBody>
-      </Card>
-
-      <Card>
-        <CardHeader>The scroll lock</CardHeader>
-        <CardBody>
-          <p className="text-sm text-muted">
-            <code>contain=&quot;viewport&quot;</code> locks body scroll through
-            a module-scoped refcount. It records the overflow value that was
-            there before the first lock and restores exactly that on the last
-            release. The naive version, which resets overflow to a hardcoded
-            default, silently unlocks the page when an overlay closes over a
-            still-open modal.
-          </p>
-        </CardBody>
-      </Card>
-
-      <Card>
-        <CardHeader>Install</CardHeader>
-        <CardBody>
-          <InstallBlock registryName="loading-overlay" />
-        </CardBody>
-      </Card>
-
-      <Card>
-        <CardHeader>Usage</CardHeader>
-        <CardBody>
-          <pre className="overflow-x-auto rounded-md border border-border bg-sunken p-3 text-xs text-on-sunken">
-            <code>{usage}</code>
-          </pre>
-        </CardBody>
-      </Card>
-
-      <Card>
-        <CardHeader>Source</CardHeader>
-        <CardBody>
-          <SourceView filePath="packages/usva/src/primitives/loading-overlay/loading-overlay.tsx" />
-        </CardBody>
-      </Card>
-
-      <Card>
-        <CardHeader>Props</CardHeader>
-        <CardBody>
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-sm">
-              <thead>
-                <tr className="border-b border-border text-muted">
-                  <th className="py-2 pr-4 font-medium">Prop</th>
-                  <th className="py-2 pr-4 font-medium">Type</th>
-                  <th className="py-2 font-medium">Description</th>
-                </tr>
-              </thead>
-              <tbody>
-                {props.map((p) => (
-                  <tr key={p.name} className="border-b border-border/50">
-                    <td className="py-2 pr-4 font-mono text-xs text-ink">
-                      {p.name}
-                    </td>
-                    <td className="py-2 pr-4 font-mono text-xs text-muted">
-                      {p.type}
-                    </td>
-                    <td className="py-2 text-muted">{p.desc}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </CardBody>
-      </Card>
-    </main>
+<LoadingOverlay contain="viewport" label="Loading dashboard" />`}
+      />
+    </ComponentDoc>
   );
 }

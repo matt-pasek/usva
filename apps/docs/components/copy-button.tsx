@@ -1,5 +1,5 @@
 "use client";
-import { IconButton } from "@matt-pasek/usva";
+import { Button } from "@matt-pasek/usva";
 import { useEffect, useRef, useState } from "react";
 
 const CopyIcon = () => (
@@ -70,7 +70,9 @@ export function CopyButton({
   const { copied, copy } = useCopy(value);
 
   return (
-    <IconButton
+    <Button
+      variant="outline"
+      iconOnly
       type="button"
       size="sm"
       active={copied}
@@ -80,6 +82,6 @@ export function CopyButton({
       className="shrink-0"
     >
       {copied ? <CheckIcon /> : <CopyIcon />}
-    </IconButton>
+    </Button>
   );
 }

@@ -1,7 +1,7 @@
-import { Card, CardBody, CardHeader } from "@matt-pasek/usva";
 import type { Metadata } from "next";
-import { InstallBlock } from "@/components/install-block";
-import { SourceView } from "@/components/source-view";
+import { AcquireSection } from "@/components/docs/acquire-section";
+import { ComponentDoc } from "@/components/docs/component-doc";
+import { PropsTable } from "@/components/docs/props-table";
 import { DialogDemo } from "./dialog-demo";
 
 export const metadata: Metadata = {
@@ -11,25 +11,89 @@ export const metadata: Metadata = {
 };
 
 const props = [
-  { name: "open", type: "boolean", desc: "Controlled open state." },
+  {
+    name: "open",
+    type: "boolean",
+    desc: "controlled open state, on the root.",
+  },
   {
     name: "defaultOpen",
     type: "boolean",
-    desc: "Initial open state (uncontrolled).",
+    defaultValue: "false",
+    desc: "initial open state when uncontrolled.",
   },
   {
     name: "onOpenChange",
     type: "(open, eventDetails) => void",
-    desc: "Fires when the open state changes.",
+    desc: "fires when the open state changes.",
   },
   {
     name: "modal",
-    type: "boolean | 'trap-focus'",
-    desc: "Controls focus trap, scroll lock, and outside pointer interaction.",
+    type: 'boolean | "trap-focus"',
+    defaultValue: "true",
+    desc: "focus trap, scroll lock and outside-pointer behavior in one switch.",
+  },
+  {
+    name: "surface",
+    type: '"elevated" | "flat" | "glass"',
+    defaultValue: '"elevated"',
+    desc: "how Dialog.Content sits above the scrim. shared with Card and Drawer.",
+  },
+  {
+    name: "highlight",
+    type: '"none" | "wash" | "edge" | "ring"',
+    defaultValue: '"none"',
+    desc: "accent treatment on Dialog.Content: a radial wash, a top edge hairline, or a glow ring. the same vocabulary as Card.",
+  },
+  {
+    name: "backdropClassName",
+    type: "string",
+    desc: "extra classes on the scrim, on Dialog.Content.",
   },
 ];
 
-const usageSnippet = `import { Dialog } from "@matt-pasek/usva";
+export default function DialogPage() {
+  return (
+    <ComponentDoc
+      slug="dialog"
+      client
+      description={
+        <>
+          a window that stops the page until you answer it. for confirmations,
+          short forms, and the last word before something destructive happens.
+        </>
+      }
+      composition={{
+        ok: [
+          "confirmations and short forms that block the page until answered",
+          "destructive actions pass through it before anything is destroyed",
+        ],
+        no: [
+          "not for content that scrolls or pins to an edge. that is Drawer",
+          "never stack two. a second dialog means the first asked too much",
+        ],
+      }}
+      a11y={
+        <>
+          <code className="font-mono text-xs">role="dialog"</code> named by its
+          Title, or <code className="font-mono text-xs">aria-label</code>{" "}
+          without one · focus moves in on open, Escape closes
+        </>
+      }
+      dependencies={
+        <>
+          <code className="font-mono text-xs">@base-ui/react</code> · Card{" "}
+          <span className="text-muted">from the same package</span>
+        </>
+      }
+    >
+      <DialogDemo />
+
+      <PropsTable rows={props} />
+
+      <AcquireSection
+        registryName="dialog"
+        usage={`import { Dialog } from "@matt-pasek/usva";
 
 <Dialog>
   <Dialog.Trigger>Open</Dialog.Trigger>
@@ -38,81 +102,8 @@ const usageSnippet = `import { Dialog } from "@matt-pasek/usva";
     <Dialog.Description>This can't be undone.</Dialog.Description>
     <Dialog.Close>Cancel</Dialog.Close>
   </Dialog.Content>
-</Dialog>`;
-
-export default function DialogPage() {
-  return (
-    <main className="mx-auto flex max-w-2xl flex-col gap-8 p-10">
-      <div className="flex flex-col gap-2">
-        <h1 className="text-3xl font-semibold text-ink">Dialog</h1>
-        <p className="text-muted">
-          Built on Base UI <code>Dialog</code>, with a portal-rendered backdrop
-          + popup and dotted compound composition (<code>Dialog.Trigger</code>,{" "}
-          <code>Dialog.Content</code>, <code>Dialog.Title</code>,{" "}
-          <code>Dialog.Description</code>, <code>Dialog.Close</code>). Focus
-          trap and scroll lock are handled automatically for modal dialogs.
-        </p>
-      </div>
-
-      <Card>
-        <CardHeader>Demo</CardHeader>
-        <CardBody>
-          <DialogDemo />
-        </CardBody>
-      </Card>
-
-      <Card>
-        <CardHeader>Install</CardHeader>
-        <CardBody>
-          <InstallBlock registryName="dialog" />
-        </CardBody>
-      </Card>
-
-      <Card>
-        <CardHeader>Usage</CardHeader>
-        <CardBody>
-          <pre className="overflow-x-auto rounded-md border border-border bg-sunken p-3 text-xs text-on-sunken">
-            <code>{usageSnippet}</code>
-          </pre>
-        </CardBody>
-      </Card>
-
-      <Card>
-        <CardHeader>Source</CardHeader>
-        <CardBody>
-          <SourceView filePath="packages/usva/src/primitives/dialog/dialog.tsx" />
-        </CardBody>
-      </Card>
-
-      <Card>
-        <CardHeader>Props</CardHeader>
-        <CardBody>
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-sm">
-              <thead>
-                <tr className="border-b border-border text-muted">
-                  <th className="py-2 pr-4 font-medium">Prop</th>
-                  <th className="py-2 pr-4 font-medium">Type</th>
-                  <th className="py-2 font-medium">Description</th>
-                </tr>
-              </thead>
-              <tbody>
-                {props.map((p) => (
-                  <tr key={p.name} className="border-b border-border/50">
-                    <td className="py-2 pr-4 font-mono text-xs text-ink">
-                      {p.name}
-                    </td>
-                    <td className="py-2 pr-4 font-mono text-xs text-muted">
-                      {p.type}
-                    </td>
-                    <td className="py-2 text-muted">{p.desc}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </CardBody>
-      </Card>
-    </main>
+</Dialog>`}
+      />
+    </ComponentDoc>
   );
 }

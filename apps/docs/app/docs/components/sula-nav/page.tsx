@@ -1,104 +1,183 @@
-import { Card, CardBody, CardHeader } from "@matt-pasek/usva";
 import type { Metadata } from "next";
-import { InstallBlock } from "@/components/install-block";
-import { SourceView } from "@/components/source-view";
+import { AcquireSection } from "@/components/docs/acquire-section";
+import { ComponentDoc } from "@/components/docs/component-doc";
+import { PropsTable } from "@/components/docs/props-table";
 import { SulaNavDemo } from "./sula-nav-demo";
 
 export const metadata: Metadata = {
   title: "Sula Nav",
   description:
-    "Sula Nav: a liquid-glass navigation bar. The parts merge and separate like drops of water, painted by one WebGL distance field.",
+    "A navigation bar whose parts merge and pinch apart as you move between views.",
 };
 
 const props = [
   {
     name: "views",
     type: "SulaNavView[]",
-    desc: "Each entry is { href, label, icon, items? }. One is expanded to its bar of items; the rest collapse to icon pills on the right.",
+    desc: "each entry is { href, label, icon, items? }. one expands to its bar of section tabs; the rest collapse to icon pills.",
   },
   {
     name: "activeView",
     type: "string",
-    desc: "Controlled: the href of the expanded view. Defaults to the first view. Derive it from your router.",
+    defaultValue: "first view",
+    desc: "controlled: the href of the expanded view. derive it from your router.",
   },
   {
     name: "onViewChange",
     type: "(href: string) => void",
-    desc: "Fires when a collapsed view pill is clicked; the row morphs the old bar down and the clicked one up.",
+    desc: "fires when a collapsed view pill is clicked; the old bar melts down while the clicked one swells up.",
   },
   {
     name: "activeItem",
     type: "string",
-    desc: "Controlled: the active section tab inside the expanded view. Drive it from a scroll-spy.",
+    desc: "controlled: the active section tab inside the expanded view. drive it from a scroll-spy.",
   },
   {
     name: "onNavigate",
     type: "(href: string) => void",
-    desc: "Fires on a section-tab click, alongside the link's own navigation.",
+    desc: "fires on a section-tab click, alongside the link's own navigation.",
   },
   {
     name: "linkComponent",
     type: "React.ElementType",
-    desc: 'Defaults to "a". Pass next/link or a NavLink.',
+    defaultValue: '"a"',
+    desc: "pass next/link or a NavLink.",
   },
   {
-    name: "brand",
-    type: "ReactNode",
-    desc: "The leftmost pill: a wordmark or logo. Links to brandHref. Needs brandLabel to be named.",
+    name: "brand / brandHref / brandLabel",
+    type: "ReactNode · string · string",
+    defaultValue: 'brandHref: "/"',
+    desc: (
+      <>
+        the leftmost pill: a wordmark linking to brandHref.{" "}
+        <b>needs brandLabel</b> to be named.
+      </>
+    ),
   },
   {
-    name: "brandHref",
+    name: "satellites",
+    type: "SulaNavSatellite[]",
+    desc: "fields that split off the body and settle in a corner: search, theme. handing them here keeps them one material with the bar.",
+  },
+  {
+    name: "labelsFrom",
+    type: '"sm" | "md" | "lg" | "xl"',
+    defaultValue: '"sm"',
+    desc: "below this width the item labels fold away and the tabs are icons.",
+  },
+  {
+    name: "collapseBelow",
+    type: '"sm" | "md" | "lg"',
+    desc: "below this width the routes and satellites fold into a single menu droplet and the body swells open into a panel. nothing is hidden.",
+  },
+  {
+    name: "menuLabel",
     type: "string",
-    desc: 'Where the brand pill points. Defaults to "/".',
+    defaultValue: '"Menu"',
+    desc: "accessible name of the menu droplet.",
   },
   {
     name: "offset",
     type: "number",
-    desc: "Vertical nudge in px from the nav's anchor: positive is down, negative is up.",
+    defaultValue: "0",
+    desc: "vertical nudge in px from the nav's anchor: positive is down.",
+  },
+  {
+    name: "ariaLabel",
+    type: "string",
+    defaultValue: '"Primary"',
+    desc: "names the nav landmark.",
   },
   {
     name: "fluid",
     type: "boolean",
-    desc: "false renders plain CSS pills and mounts no canvas. Defaults to true.",
+    defaultValue: "true",
+    desc: "false renders plain CSS pills and mounts no canvas. reduced motion and missing WebGL2 take the same path.",
   },
   {
-    name: "backdrop",
+    name: "backdrop / tint / accentColor",
     type: "string",
-    desc: "The colour the glass tints against. Defaults to the bg token.",
-  },
-  {
-    name: "tint",
-    type: "string",
-    desc: "The glass itself. Defaults to the surface token.",
-  },
-  {
-    name: "accentColor",
-    type: "string",
-    desc: "Rim light and specular sweep. Defaults to the accent token.",
+    defaultValue: "bg · surface · accent tokens",
+    desc: "what the glass tints against, the glass itself, and the rim light. re-read on theme change.",
   },
   {
     name: "shine",
     type: "number",
-    desc: "0 is flat matte glass, 1 is the full neon rim. Defaults to the theme: dark themes glow, pale ones stay subtle.",
+    defaultValue: "theme",
+    desc: "0 is flat matte glass, 1 is the full neon rim. dark themes glow, pale ones stay subtle.",
   },
   {
     name: "mergeRadius",
     type: "number",
-    desc: "How eagerly the parts merge, in pixels. Defaults to 14.",
+    defaultValue: "14",
+    desc: "how eagerly the parts merge, in pixels.",
   },
   {
     name: "revealDelay",
     type: "number",
-    desc: "Milliseconds after the bar lands before the brand and view pills emerge.",
+    defaultValue: "120",
+    desc: "milliseconds after the bar lands before the sides emerge.",
   },
   {
     name: "sidesOpen",
     type: "boolean",
-    desc: "Whether the brand and collapsed view pills are out. Defaults to true. Toggle it from scroll or focus to melt everything but the active bar back in; a hidden part is not tabbable.",
+    defaultValue: "true",
+    desc: (
+      <>
+        whether the brand, pills and satellites are out. toggle from scroll to
+        melt everything but the active bar back in;{" "}
+        <b>a hidden part is not tabbable</b>.
+      </>
+    ),
   },
 ];
 
-const usage = `import { SulaNav } from "@matt-pasek/usva";
+export default function SulaNavPage() {
+  return (
+    <ComponentDoc
+      slug="sula-nav"
+      client
+      description={
+        <>
+          a row of views that behaves like one body of liquid: one view opens
+          into its bar of section tabs, the rest sit collapsed as icon pills,
+          and the shapes merge and split as you move between them.
+        </>
+      }
+      composition={{
+        ok: [
+          "one per page, fixed in a header that centers it",
+          "search and theme controls ride along as satellites, one material with the bar",
+        ],
+        no: [
+          "never a second sula in the nav's region; satellites exist so nothing sits beside it",
+          "not an in-page tab strip. SulaSegmented switches content, this switches routes",
+        ],
+      }}
+      a11y={
+        <>
+          a labelled <code className="font-mono text-xs">nav</code> landmark ·
+          the active tab carries{" "}
+          <code className="font-mono text-xs">aria-current="page"</code> ·
+          melted sides are <code className="font-mono text-xs">inert</code> ·
+          the canvas is <code className="font-mono text-xs">aria-hidden</code>
+        </>
+      }
+      dependencies={
+        <>
+          <code className="font-mono text-xs">motion</code> ·{" "}
+          <code className="font-mono text-xs">ogl</code> · sula-core and
+          sula-motion <span className="text-muted">from the same package</span>
+        </>
+      }
+    >
+      <SulaNavDemo />
+
+      <PropsTable rows={props} />
+
+      <AcquireSection
+        registryName="sula-nav"
+        usage={`import { SulaNav } from "@matt-pasek/usva";
 import Link from "next/link";
 
 <header className="fixed inset-x-0 top-0 z-50 flex justify-center p-4">
@@ -120,168 +199,11 @@ import Link from "next/link";
           { href: "#work", label: "Work" },
         ],
       },
-      { href: "/writing", label: "Writing", icon: <PenIcon />, items: [
-        { href: "#latest", label: "Latest" },
-      ] },
       { href: "/play", label: "Playground", icon: <SparkIcon /> },
     ]}
   />
-</header>`;
-
-function PropsTable() {
-  return (
-    <div className="overflow-x-auto">
-      <table className="w-full text-left text-sm">
-        <thead>
-          <tr className="border-b border-border text-muted">
-            <th className="py-2 pr-4 font-medium">Prop</th>
-            <th className="py-2 pr-4 font-medium">Type</th>
-            <th className="py-2 font-medium">Description</th>
-          </tr>
-        </thead>
-        <tbody>
-          {props.map((p) => (
-            <tr key={p.name} className="border-b border-border/50">
-              <td className="py-2 pr-4 font-mono text-xs text-ink">{p.name}</td>
-              <td className="py-2 pr-4 font-mono text-xs text-muted">
-                {p.type}
-              </td>
-              <td className="py-2 text-muted">{p.desc}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  );
-}
-
-export default function SulaNavPage() {
-  return (
-    <main className="mx-auto flex max-w-5xl flex-col gap-8 p-10">
-      <div className="flex flex-col gap-2">
-        <h1 className="text-3xl font-semibold text-ink">Sula Nav</h1>
-        <p className="text-muted">
-          A row of views that behaves like one body of liquid. One view is
-          expanded into its bar of section tabs; the others sit collapsed to
-          icon pills on the right. Click a pill and the row morphs: the old bar
-          melts down into its own pill while the clicked one swells into the
-          bar, the whole row fusing and separating as it settles.
-        </p>
-      </div>
-
-      <Card>
-        <CardHeader>Demo</CardHeader>
-        <CardBody className="bg-bg pt-0!">
-          <SulaNavDemo />
-        </CardBody>
-      </Card>
-
-      <Card>
-        <CardHeader>One mechanism, three animations</CardHeader>
-        <CardBody>
-          <p className="text-sm text-muted">
-            The load, the reveal and the merge are not three animations. They
-            are one: a signed distance field of rounded pills, combined with a
-            polynomial smooth minimum. Two shapes that approach each other grow
-            a meniscus between them, and two that separate stretch a neck that
-            thins until it breaks. Everything else falls out of the geometry.
-          </p>
-        </CardBody>
-      </Card>
-
-      <Card>
-        <CardHeader>The active pill is DOM, not liquid</CardHeader>
-        <CardBody>
-          <p className="text-sm text-muted">
-            The indicator behind the current link is a measured{" "}
-            <code>span</code>, the same approach the segmented control uses. It
-            could have been a fourth blob, but text drawn over a canvas that is
-            resampling every frame goes soft, and the field would have to run
-            forever. Instead the shader draws glass and the browser draws type.
-          </p>
-        </CardBody>
-      </Card>
-
-      <Card>
-        <CardHeader>Why there is a backdrop prop</CardHeader>
-        <CardBody>
-          <p className="text-sm text-muted">
-            A canvas cannot sample the page behind it, so the glass cannot
-            refract what it sits on. It paints its own instead: a fresnel rim, a
-            specular sweep and a chromatic fringe, tinted against{" "}
-            <code>backdrop</code>. Set that to whatever the nav floats over and
-            the illusion holds. Leave it alone and it uses the background token,
-            re-reading it whenever the theme changes. A dark theme gets the full
-            glow; a pale one drops to a matte frosted glass, because the neon
-            rim only looks garish on light. Override that with{" "}
-            <code>shine</code>.
-          </p>
-        </CardBody>
-      </Card>
-
-      <Card>
-        <CardHeader>When the canvas does not run</CardHeader>
-        <CardBody className="flex flex-col gap-3">
-          <p className="text-sm text-muted">
-            Three cases fall back to plain CSS pills, and they share one code
-            path: <code>fluid={"{false}"}</code>, a{" "}
-            <code>prefers-reduced-motion</code> preference, and a machine with
-            no WebGL2 or a lost context. The server always renders the fallback,
-            so there is no hydration mismatch. The canvas is appended
-            afterwards, and it is decorative.
-          </p>
-          <div className="rounded-lg border border-border bg-bg p-4">
-            <SulaNavDemo fluid={false} />
-          </div>
-        </CardBody>
-      </Card>
-
-      <Card>
-        <CardHeader>It costs nothing at rest</CardHeader>
-        <CardBody>
-          <p className="text-sm text-muted">
-            The render loop parks itself the moment every spring settles, and
-            wakes on a resize or a font swap. The field never runs on an idle
-            page. The normal comes from screen-space derivatives rather than
-            four extra samples, and the device pixel ratio is capped at two.
-          </p>
-        </CardBody>
-      </Card>
-
-      <Card>
-        <CardHeader>Install</CardHeader>
-        <CardBody className="flex flex-col gap-3">
-          <InstallBlock registryName="sula-nav" />
-          <p className="text-sm text-muted">
-            Pulls in <code>ogl</code>, which ships untranspiled ESM. Bundlers
-            are fine with it; a bare CommonJS <code>require</code> is not.
-          </p>
-        </CardBody>
-      </Card>
-
-      <Card>
-        <CardHeader>Usage</CardHeader>
-        <CardBody>
-          <pre className="overflow-x-auto rounded-md border border-border bg-sunken p-3 text-xs text-on-sunken">
-            <code>{usage}</code>
-          </pre>
-        </CardBody>
-      </Card>
-
-      <Card>
-        <CardHeader>Source</CardHeader>
-        <CardBody className="flex flex-col gap-4">
-          <SourceView filePath="packages/usva/src/sula/sula-nav/sula-nav.tsx" />
-          <SourceView filePath="packages/usva/src/sula/sula-nav/nav-geometry.ts" />
-        </CardBody>
-      </Card>
-
-      <Card>
-        <CardHeader>Props</CardHeader>
-        <CardBody>
-          <PropsTable />
-        </CardBody>
-      </Card>
-    </main>
+</header>`}
+      />
+    </ComponentDoc>
   );
 }

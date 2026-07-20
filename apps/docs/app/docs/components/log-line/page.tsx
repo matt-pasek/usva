@@ -1,78 +1,81 @@
-import {
-  Card,
-  CardBody,
-  CardHeader,
-  InlineError,
-  LogLine,
-  LogList,
-} from "@matt-pasek/usva";
+import { InlineError, LogLine, LogList } from "@matt-pasek/usva";
 import type { Metadata } from "next";
-import { InstallBlock } from "@/components/install-block";
-import { SourceView } from "@/components/source-view";
+import { AcquireSection } from "@/components/docs/acquire-section";
+import { ComponentDoc } from "@/components/docs/component-doc";
+import { DemoPanel } from "@/components/docs/demo-panel";
+import { PropsTable } from "@/components/docs/props-table";
 
 export const metadata: Metadata = {
   title: "Log Line",
   description:
-    "A mono log readout with a colored severity rail, source, repeat count and an optional expandable detail block.",
+    "A single log line with a severity color, source, repeat count and optional expandable detail.",
 };
 
 const props = [
   {
     name: "level",
     type: '"error" | "warn" | "info" | "debug" | "success"',
-    desc: "Log levels, not semantic roles. They resolve to danger, warning, info, muted and success.",
+    desc: "log levels, not semantic roles. they resolve to danger, warning, info, muted and success.",
   },
   {
     name: "source",
-    type: "React.ReactNode",
-    desc: "Endpoint, module or subsystem the line came from.",
+    type: "ReactNode",
+    desc: "endpoint, module or subsystem the line came from.",
   },
   {
     name: "count",
     type: "number",
-    desc: "Repeat collapsing. Values at or below 1 render no chip.",
+    desc: "repeat collapsing. values at or below 1 render no chip.",
   },
   {
     name: "details",
-    type: "React.ReactNode",
-    desc: "Stack trace or payload. Its presence turns the row into a disclosure.",
+    type: "ReactNode",
+    desc: (
+      <>
+        stack trace or payload. its presence swaps the row to a{" "}
+        <code>&lt;details&gt;</code> disclosure, so <b>treat it as static</b>{" "}
+        per entry.
+      </>
+    ),
   },
   {
     name: "timestamp",
-    type: "React.ReactNode",
-    desc: "Optional leading column, tabular figures.",
+    type: "ReactNode",
+    desc: "optional leading column, tabular figures.",
   },
 ];
 
-const usage = `import { LogLine, LogList, InlineError } from "@matt-pasek/usva";
-
-<LogList>
-  <LogLine level="error" source="/api/courses" count={3}>
-    Failed to fetch: 502 Bad Gateway
-  </LogLine>
-  <LogLine level="warn" source="parser">
-    Skipped 3 malformed rows
-  </LogLine>
-</LogList>
-
-<InlineError source="/api/courses" error={err} />`;
-
 export default function LogLinePage() {
   return (
-    <main className="mx-auto flex max-w-2xl flex-col gap-8 p-10">
-      <div className="flex flex-col gap-2">
-        <h1 className="text-3xl font-semibold text-ink">Log Line</h1>
-        <p className="text-muted">
-          Severity lives in a glowing rail in the gutter, so a wall of lines
-          scans by color before you read a word. <code>LogList</code> is an
-          announced polite region; <code>InlineError</code> is the single-line
-          preset for sitting beside a panel that failed to load.
-        </p>
-      </div>
-
-      <Card>
-        <CardHeader>Demo</CardHeader>
-        <CardBody>
+    <ComponentDoc
+      slug="log-line"
+      description={
+        <>
+          one line of a log: a message tagged with a severity color and its
+          source. LogList stacks them, InlineError is the single-line preset for
+          a panel that failed to load.
+        </>
+      }
+      composition={{
+        ok: [
+          "a LogList inside a Card or dashboard panel for recent activity",
+          "InlineError in place of the content a failed fetch never delivered",
+        ],
+        no: [
+          "bare LogLines outside a LogList lose the surface and dividers",
+          "not a terminal. commands to run go in Terminal or CodeSnippet",
+        ],
+      }}
+      a11y={
+        <>
+          LogList is <code className="font-mono text-xs">role="log"</code> with{" "}
+          <code className="font-mono text-xs">aria-live="polite"</code> ·
+          InlineError is an alert · the count chip reads as "repeated n times"
+        </>
+      }
+    >
+      <DemoPanel label="levels">
+        <div className="mx-auto max-w-xl">
           <LogList>
             <LogLine level="error" source="/api/courses" count={3}>
               Failed to fetch: 502 Bad Gateway
@@ -90,12 +93,11 @@ export default function LogLinePage() {
               hit ratio 0.94
             </LogLine>
           </LogList>
-        </CardBody>
-      </Card>
+        </div>
+      </DemoPanel>
 
-      <Card>
-        <CardHeader>Expandable detail</CardHeader>
-        <CardBody>
+      <DemoPanel label="expandable detail">
+        <div className="mx-auto max-w-xl">
           <LogList>
             <LogLine
               level="error"
@@ -111,71 +113,32 @@ export default function LogLinePage() {
               Cold start
             </LogLine>
           </LogList>
-        </CardBody>
-      </Card>
+        </div>
+      </DemoPanel>
 
-      <Card>
-        <CardHeader>Inline error</CardHeader>
-        <CardBody>
+      <DemoPanel label="inline error">
+        <div className="mx-auto max-w-xl">
           <InlineError
             source="/api/courses"
             error={new Error("502 Bad Gateway")}
           />
-        </CardBody>
-      </Card>
+        </div>
+      </DemoPanel>
 
-      <Card>
-        <CardHeader>Install</CardHeader>
-        <CardBody>
-          <InstallBlock registryName="log-line" />
-        </CardBody>
-      </Card>
+      <PropsTable rows={props} />
 
-      <Card>
-        <CardHeader>Usage</CardHeader>
-        <CardBody>
-          <pre className="overflow-x-auto rounded-md border border-border bg-sunken p-3 text-xs text-on-sunken">
-            <code>{usage}</code>
-          </pre>
-        </CardBody>
-      </Card>
+      <AcquireSection
+        registryName="log-line"
+        usage={`import { LogLine, LogList, InlineError } from "@matt-pasek/usva";
 
-      <Card>
-        <CardHeader>Source</CardHeader>
-        <CardBody>
-          <SourceView filePath="packages/usva/src/primitives/log-line/log-line.tsx" />
-        </CardBody>
-      </Card>
+<LogList>
+  <LogLine level="error" source="/api/courses" count={3}>
+    Failed to fetch: 502 Bad Gateway
+  </LogLine>
+</LogList>
 
-      <Card>
-        <CardHeader>Props</CardHeader>
-        <CardBody>
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-sm">
-              <thead>
-                <tr className="border-b border-border text-muted">
-                  <th className="py-2 pr-4 font-medium">Prop</th>
-                  <th className="py-2 pr-4 font-medium">Type</th>
-                  <th className="py-2 font-medium">Description</th>
-                </tr>
-              </thead>
-              <tbody>
-                {props.map((p) => (
-                  <tr key={p.name} className="border-b border-border/50">
-                    <td className="py-2 pr-4 font-mono text-xs text-ink">
-                      {p.name}
-                    </td>
-                    <td className="py-2 pr-4 font-mono text-xs text-muted">
-                      {p.type}
-                    </td>
-                    <td className="py-2 text-muted">{p.desc}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </CardBody>
-      </Card>
-    </main>
+<InlineError source="/api/courses" error={err} />`}
+      />
+    </ComponentDoc>
   );
 }

@@ -1,3 +1,4 @@
+import { CodeSnippet } from "@matt-pasek/usva";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { InstallBlock } from "@/components/install-block";
@@ -21,8 +22,14 @@ const registryWins = [
   "you want exactly one component and nothing else in your bundle",
 ];
 
-const setup = `/* app/globals.css */
-@import "tailwindcss";
+const cnUtil = `import { type ClassValue, clsx } from "clsx";
+import { twMerge } from "tailwind-merge";
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}`;
+
+const setup = `@import "tailwindcss";
 @import "@matt-pasek/usva-tokens/theme.css";
 @import "@matt-pasek/usva-tokens/themes/kajo.css";
 
@@ -95,6 +102,28 @@ export default function InstallationPage() {
       </section>
 
       <section className="flex flex-col gap-4">
+        <h2 className="text-xl font-bold text-ink">
+          the cn util, if you copy source
+        </h2>
+        <p className="text-muted">
+          copied source imports <code className="font-mono text-ink">cn</code>{" "}
+          from <code className="font-mono text-ink">@/lib/utils</code>, the same
+          contract shadcn uses. if your project ran{" "}
+          <code className="font-mono text-ink">npx shadcn init</code> it is
+          already there, and the add command wires everything up. copying by
+          hand instead, create it once:
+        </p>
+        <CodeSnippet label="lib/utils.ts" language="typescript" code={cnUtil} />
+        <p className="text-sm text-muted">
+          it needs <code className="font-mono text-ink">clsx</code> and{" "}
+          <code className="font-mono text-ink">tailwind-merge</code>. a
+          component that leans on a sibling, like Button on Spinner, declares it
+          as a registry dependency, so the add command copies both. hand copiers
+          grab the sibling from its own page.
+        </p>
+      </section>
+
+      <section className="flex flex-col gap-4">
         <h2 className="text-xl font-bold text-ink">wire up the CSS</h2>
         <p className="text-muted">
           usva. is Tailwind v4. the roles arrive as CSS variables and as
@@ -102,9 +131,7 @@ export default function InstallationPage() {
           <code className="font-mono text-ink">bg-surface</code> and mean it in
           any theme.
         </p>
-        <pre className="overflow-x-auto rounded-md border border-border bg-sunken p-3 text-xs text-on-sunken">
-          <code>{setup}</code>
-        </pre>
+        <CodeSnippet label="app/globals.css" language="css" code={setup} />
         <p className="text-sm text-muted">
           the <code className="font-mono text-ink">@source</code> line is the
           one people miss. tailwind only generates the utilities it can see
@@ -115,9 +142,7 @@ export default function InstallationPage() {
 
       <section className="flex flex-col gap-4">
         <h2 className="text-xl font-bold text-ink">then use it</h2>
-        <pre className="overflow-x-auto rounded-md border border-border bg-sunken p-3 text-xs text-on-sunken">
-          <code>{usage}</code>
-        </pre>
+        <CodeSnippet label="anywhere" language="tsx" code={usage} />
         <p className="text-sm text-muted">
           next:{" "}
           <Link

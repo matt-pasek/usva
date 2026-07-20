@@ -1,133 +1,81 @@
-import { Card, CardBody, CardHeader, ChecklistCard } from "@matt-pasek/usva";
 import type { Metadata } from "next";
-import { InstallBlock } from "@/components/install-block";
-import { SourceView } from "@/components/source-view";
+import { AcquireSection } from "@/components/docs/acquire-section";
+import { ComponentDoc } from "@/components/docs/component-doc";
+import { PropsTable } from "@/components/docs/props-table";
+import { ChecklistCardDemo } from "./checklist-card-demo";
 
 export const metadata: Metadata = {
   title: "Checklist Card",
   description:
-    "A card of ticked reassurances, built on a real list rather than a stack of bordered divs.",
+    "A card of short, ticked reassurances for the feature and privacy claims on a landing page.",
 };
 
 const props = [
   {
     name: "items",
     type: "React.ReactNode[]",
-    desc: "The claims. Strings or nodes.",
+    desc: "the claims. strings or nodes.",
   },
   {
     name: "title",
     type: "React.ReactNode",
-    desc: "Optional heading above the list. Omitted entirely when absent.",
+    desc: "heading above the list. omitted entirely when absent.",
   },
   {
     name: "marker",
     type: "React.ReactNode",
-    desc: "Overrides the default tick. Decorative either way.",
+    defaultValue: "tick",
+    desc: "overrides the default tick. decorative either way.",
   },
-];
-
-const usage = `import { ChecklistCard } from "@matt-pasek/usva";
-
-<ChecklistCard
-  title="Privacy"
-  items={[
-    "Runs entirely on your machine",
-    "No tracking, no analytics",
-    "Open source, end to end",
-  ]}
-/>`;
-
-const items = [
-  "Runs entirely on your machine",
-  "No tracking, no analytics, no accounts",
-  "Open source, end to end",
 ];
 
 export default function ChecklistCardPage() {
   return (
-    <main className="mx-auto flex max-w-2xl flex-col gap-8 p-10">
-      <div className="flex flex-col gap-2">
-        <h1 className="text-3xl font-semibold text-ink">Checklist Card</h1>
-        <p className="text-muted">
-          A card of reassurances: short claims, each ticked. Thin on purpose. It
-          is a <code>Card</code> recipe over <code>List</code>, and exists so
-          the markup stays a real list.
-        </p>
-      </div>
+    <ComponentDoc
+      slug="checklist-card"
+      description={
+        <>
+          a card of short reassurances, each one ticked. for the feature and
+          privacy claims on a landing page, three to five at a time.
+        </>
+      }
+      composition={{
+        ok: [
+          "feature and privacy claims on landing pages, three to five items",
+          "a custom marker when the tick reads wrong for the content",
+        ],
+        no: [
+          "not a todo list. nothing here is interactive or checkable",
+          "no paragraphs as items. a claim is one line",
+        ],
+      }}
+      a11y={
+        <>
+          a real <code className="font-mono text-xs">ul</code> with the item
+          count · markers are{" "}
+          <code className="font-mono text-xs">aria-hidden</code> · the title is
+          a heading
+        </>
+      }
+      dependencies={
+        <>
+          Card · List <span className="text-muted">from the same package</span>
+        </>
+      }
+    >
+      <ChecklistCardDemo />
 
-      <Card>
-        <CardHeader>Demo</CardHeader>
-        <CardBody>
-          <ChecklistCard title="Privacy" items={items} />
-        </CardBody>
-      </Card>
+      <PropsTable rows={props} />
 
-      <Card>
-        <CardHeader>Why not bordered divs</CardHeader>
-        <CardBody>
-          <p className="text-sm text-muted">
-            sisu-plus renders this block as a stack of <code>div</code>s with a
-            bottom border. Visually identical, but a screen reader announces
-            three loose fragments rather than a list of three related items, and
-            never says how many there are. The border is a <code>divided</code>{" "}
-            prop on a real <code>ul</code> instead.
-          </p>
-        </CardBody>
-      </Card>
+      <AcquireSection
+        registryName="checklist-card"
+        usage={`import { ChecklistCard } from "@matt-pasek/usva";
 
-      <Card>
-        <CardHeader>Install</CardHeader>
-        <CardBody>
-          <InstallBlock registryName="checklist-card" />
-        </CardBody>
-      </Card>
-
-      <Card>
-        <CardHeader>Usage</CardHeader>
-        <CardBody>
-          <pre className="overflow-x-auto rounded-md border border-border bg-sunken p-3 text-xs text-on-sunken">
-            <code>{usage}</code>
-          </pre>
-        </CardBody>
-      </Card>
-
-      <Card>
-        <CardHeader>Source</CardHeader>
-        <CardBody>
-          <SourceView filePath="packages/usva/src/patterns/checklist-card/checklist-card.tsx" />
-        </CardBody>
-      </Card>
-
-      <Card>
-        <CardHeader>Props</CardHeader>
-        <CardBody>
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-sm">
-              <thead>
-                <tr className="border-b border-border text-muted">
-                  <th className="py-2 pr-4 font-medium">Prop</th>
-                  <th className="py-2 pr-4 font-medium">Type</th>
-                  <th className="py-2 font-medium">Description</th>
-                </tr>
-              </thead>
-              <tbody>
-                {props.map((p) => (
-                  <tr key={p.name} className="border-b border-border/50">
-                    <td className="py-2 pr-4 font-mono text-xs text-ink">
-                      {p.name}
-                    </td>
-                    <td className="py-2 pr-4 font-mono text-xs text-muted">
-                      {p.type}
-                    </td>
-                    <td className="py-2 text-muted">{p.desc}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </CardBody>
-      </Card>
-    </main>
+<ChecklistCard
+  title="Privacy"
+  items={["Runs on your machine", "No tracking", "Open source"]}
+/>`}
+      />
+    </ComponentDoc>
   );
 }

@@ -1,41 +1,125 @@
 "use client";
-import type { LoaderMotion } from "@matt-pasek/usva";
-import { SulaLoader } from "@matt-pasek/usva";
-import * as React from "react";
+import { type LoaderMotion, SulaLoader } from "@matt-pasek/usva";
+import { Playground } from "@/components/docs/playground";
 
-const MOTIONS: Array<{
-  value: LoaderMotion;
+const MOTIONS = ["orbit", "cluster", "twin"] as const;
+
+const ACTION: Record<LoaderMotion, string> = {
+  orbit: "recoil, release, return",
+  cluster: "arrive, fuse, scatter",
+  twin: "bridge, exchange, release",
+};
+
+type Config = {
+  motion: (typeof MOTIONS)[number];
+  size: number;
+  speed: number;
   label: string;
-  action: string;
-}> = [
-  { value: "orbit", label: "relay", action: "recoil, release, return" },
-  { value: "cluster", label: "gather", action: "arrive, fuse, scatter" },
-  { value: "twin", label: "eclipse", action: "bridge, exchange, release" },
-];
+  fluid: boolean;
+  shine: number;
+};
 
-export function SulaLoaderDemo({ fluid = true }: { fluid?: boolean }) {
-  const [motion, setMotion] = React.useState<LoaderMotion>("orbit");
+const base: Config = {
+  motion: "orbit",
+  size: 96,
+  speed: 1,
+  label: "Loading",
+  fluid: true,
+  shine: 0.7,
+};
+
+const templates: Record<string, Config> = {
+  relay: base,
+  gather: { ...base, motion: "cluster" },
+  eclipse: { ...base, motion: "twin" },
+  "the still": { ...base, fluid: false },
+};
+
+const snippetFor = (c: Config): string => {
+  const attrs = [
+    c.size !== 96 && `size={${c.size}}`,
+    c.motion !== "orbit" && `motion="${c.motion}"`,
+    c.speed !== 1 && `speed={${c.speed}}`,
+    c.label !== "Loading" && `label="${c.label}"`,
+    !c.fluid && "fluid={false}",
+    c.shine !== base.shine && `shine={${c.shine}}`,
+  ]
+    .filter(Boolean)
+    .join(" ");
+  return `import { SulaLoader } from "@matt-pasek/usva";
+
+<SulaLoader${attrs ? ` ${attrs}` : ""} />`;
+};
+
+export function SulaLoaderDemo() {
   return (
-    <div className="flex min-h-80 w-full flex-col items-center justify-center gap-10 py-10">
-      <SulaLoader size={96} motion={motion} fluid={fluid} />
-      <div className="flex flex-col items-center gap-3">
-        <p aria-live="polite" className="text-sm text-muted">
-          {MOTIONS.find((item) => item.value === motion)?.action}
-        </p>
-        <div className="flex flex-wrap justify-center gap-2">
-          {MOTIONS.map(({ value, label }) => (
-            <button
-              key={value}
-              type="button"
-              onClick={() => setMotion(value)}
-              aria-pressed={value === motion}
-              className="min-h-10 rounded-full border border-border px-4 text-sm font-medium text-muted transition-[color,border-color,background-color,transform] duration-200 hover:border-border-strong hover:text-ink active:scale-[0.97] aria-pressed:border-accent aria-pressed:bg-surface-2 aria-pressed:text-accent motion-reduce:transform-none"
-            >
-              {label}
-            </button>
-          ))}
+    <Playground<Config>
+      templates={templates}
+      fields={[
+        {
+          kind: "select",
+          key: "motion",
+          label: "motion",
+          sub: "which looping event it stages",
+          options: MOTIONS,
+        },
+        {
+          kind: "slider",
+          key: "size",
+          label: "size",
+          sub: "square side in px",
+          min: 48,
+          max: 160,
+          step: 8,
+        },
+        {
+          kind: "slider",
+          key: "speed",
+          label: "speed",
+          sub: "loop-rate multiplier",
+          min: 0.25,
+          max: 3,
+          step: 0.25,
+        },
+        {
+          kind: "text",
+          key: "label",
+          label: "label",
+          sub: "the announced status",
+        },
+        {
+          kind: "switch",
+          key: "fluid",
+          label: "fluid",
+          sub: "off renders the static still",
+        },
+        {
+          kind: "slider",
+          key: "shine",
+          label: "shine",
+          sub: "0 matte glass, 1 full neon rim",
+          min: 0,
+          max: 1,
+          step: 0.05,
+        },
+      ]}
+      snippet={snippetFor}
+      render={(c) => (
+        <div className="flex min-h-80 w-full flex-col items-center justify-center gap-8 py-8">
+          <SulaLoader
+            key={`${c.motion}-${c.fluid}`}
+            size={c.size}
+            motion={c.motion}
+            speed={c.speed}
+            label={c.label}
+            fluid={c.fluid}
+            shine={c.shine}
+          />
+          <p aria-live="polite" className="text-sm text-muted">
+            {ACTION[c.motion]}
+          </p>
         </div>
-      </div>
-    </div>
+      )}
+    />
   );
 }

@@ -1,12 +1,34 @@
 "use client";
-import { DisclosureRow, ProgressRow } from "@matt-pasek/usva";
-import { useState } from "react";
+import { DisclosureRow } from "@matt-pasek/usva";
+import { Playground } from "@/components/docs/playground";
 
-const SECTIONS = [
-  ["core", "Core studies", "#52c989", 45, 60],
-  ["minor", "Minor studies", "#7ea0ff", 20, 25],
-  ["free", "Free-choice studies", "#a98cff", 11, 20],
-] as const;
+type Config = {
+  summary: string;
+  rail: boolean;
+  railColor: string;
+  defaultOpen: boolean;
+  disabled: boolean;
+};
+
+const base: Config = {
+  summary: "Core studies",
+  rail: true,
+  railColor: "#52c989",
+  defaultOpen: false,
+  disabled: false,
+};
+
+const templates: Record<string, Config> = {
+  "core studies": base,
+  "starts open": {
+    ...base,
+    summary: "Minor studies",
+    railColor: "#7ea0ff",
+    defaultOpen: true,
+  },
+  "no rail": { ...base, summary: "Free-choice studies", rail: false },
+  disabled: { ...base, summary: "Locked section", disabled: true },
+};
 
 function Courses() {
   return (
@@ -18,48 +40,71 @@ function Courses() {
   );
 }
 
-export function SingleDemo() {
-  return (
-    <DisclosureRow
-      railColor="#52c989"
-      summary="Core studies"
-      aside={
-        <span className="font-mono text-sm tabular-nums">
-          <span className="font-bold text-accent">45</span>
-          <span className="text-muted"> / 60 cr</span>
-        </span>
-      }
-    >
-      <Courses />
-    </DisclosureRow>
-  );
-}
+const snippetFor = (c: Config): string => {
+  const attrs = [
+    c.rail && `railColor="${c.railColor}"`,
+    c.defaultOpen && "defaultOpen",
+    c.disabled && "disabled",
+  ]
+    .filter(Boolean)
+    .join("\n  ");
+  return `import { DisclosureRow } from "@matt-pasek/usva";
 
-export function AccordionDemo() {
-  const [open, setOpen] = useState<string | null>("core");
+<DisclosureRow
+  summary="${c.summary}"${attrs ? `\n  ${attrs}` : ""}
+>
+  <CourseList />
+</DisclosureRow>`;
+};
 
+export function DisclosureRowDemo() {
   return (
-    <div className="flex flex-col gap-2">
-      {SECTIONS.map(([id, title, color, done, total]) => (
+    <Playground<Config>
+      templates={templates}
+      fields={[
+        {
+          kind: "text",
+          key: "summary",
+          label: "summary",
+          sub: "the row itself, here plain text",
+        },
+        {
+          kind: "switch",
+          key: "rail",
+          label: "railColor",
+          sub: "draw the categorical left rail",
+        },
+        {
+          kind: "color",
+          key: "railColor",
+          label: "railColor",
+          sub: "any css color for the rail",
+        },
+        {
+          kind: "switch",
+          key: "defaultOpen",
+          label: "defaultOpen",
+          sub: "start expanded when uncontrolled",
+        },
+        {
+          kind: "switch",
+          key: "disabled",
+          label: "disabled",
+          sub: "the row stops toggling",
+        },
+      ]}
+      snippet={snippetFor}
+      render={(c) => (
         <DisclosureRow
-          key={id}
-          railColor={color}
-          open={open === id}
-          onOpenChange={(next) => setOpen(next ? id : null)}
-          buttonLabel={title}
-          summary={
-            <ProgressRow
-              label={title}
-              value={done}
-              max={total}
-              unit="cr"
-              barColor={color}
-            />
-          }
+          key={`${c.defaultOpen}`}
+          summary={c.summary}
+          railColor={c.rail ? c.railColor : undefined}
+          defaultOpen={c.defaultOpen}
+          disabled={c.disabled}
         >
           <Courses />
         </DisclosureRow>
-      ))}
-    </div>
+      )}
+    />
   );
 }

@@ -1,203 +1,115 @@
-import {
-  BentoCard,
-  BentoGrid,
-  BentoInfo,
-  BentoMetric,
-  BentoText,
-  Card,
-  CardBody,
-  CardEyebrow,
-  CardHeader,
-  CardTitle,
-  Chip,
-} from "@matt-pasek/usva";
 import type { Metadata } from "next";
-import { InstallBlock } from "@/components/install-block";
-import { SourceView } from "@/components/source-view";
+import { AcquireSection } from "@/components/docs/acquire-section";
+import { ComponentDoc } from "@/components/docs/component-doc";
+import { PropsTable } from "@/components/docs/props-table";
+import { BentoGridDemo } from "./bento-grid-demo";
 
 export const metadata: Metadata = {
   title: "Bento Grid",
   description:
-    "A responsive bento layout whose cells share one accent wash and a coordinated hover shine, so a grid of cards reads as a single lit surface.",
+    "A responsive bento grid whose cards share one accent wash and hover shine, so a wall of cards reads as a single lit surface.",
 };
 
 const props = [
   {
     name: "columns",
     type: "number",
-    desc: "Force an explicit column count. Omit for a responsive auto-fit grid.",
+    desc: "explicit column count. omit for a responsive auto-fit grid.",
   },
   {
     name: "span",
     type: "number",
-    desc: "BentoCard: how many columns the cell spans.",
+    desc: (
+      <>
+        BentoCard: columns the cell spans. <b>nothing clamps it</b>, overshoot
+        columns and the card overflows its track.
+      </>
+    ),
   },
   {
     name: "rowSpan",
     type: "number",
-    desc: "BentoCard: how many rows the cell spans.",
+    desc: "BentoCard: rows the cell spans. rows are minmax, so it raises the floor, not the height.",
   },
   {
     name: "highlight",
     type: '"none" | "wash" | "edge" | "ring"',
     desc: "BentoCard: inherits the Card highlight vocabulary.",
   },
+  {
+    name: "value / label / suffix",
+    type: "ReactNode",
+    desc: "BentoMetric: the stat, its pill label, and the accent unit after the number.",
+  },
+  {
+    name: "size",
+    type: '"md" | "lg"',
+    defaultValue: '"md"',
+    desc: "BentoMetric: lg is the standalone stat treatment, display weight and full-strength ink.",
+  },
+  {
+    name: "animate",
+    type: "boolean",
+    defaultValue: "false",
+    desc: "BentoMetric: count up from zero on mount. ignored for non-numeric values.",
+  },
+  {
+    name: "title / body",
+    type: "ReactNode",
+    desc: "BentoText: the heading and its optional paragraph. label and icon are shared with BentoInfo.",
+  },
 ];
-
-const usageSnippet = `import { BentoGrid, BentoCard } from "@matt-pasek/usva";
-
-<BentoGrid columns={3}>
-  <BentoCard span={2} rowSpan={2}>...</BentoCard>
-  <BentoCard>...</BentoCard>
-  <BentoCard highlight="edge">...</BentoCard>
-</BentoGrid>`;
 
 export default function BentoGridPage() {
   return (
-    <main className="mx-auto flex max-w-2xl flex-col gap-8 p-10">
-      <div className="flex flex-col gap-2">
-        <h1 className="text-3xl font-semibold text-ink">Bento Grid</h1>
-        <p className="text-muted">
-          A responsive bento layout. One accent wash is painted across the whole
-          grid so each cell shows its own slice, and the cells share a
-          coordinated shine on hover, so a wall of cards reads as a single
-          surface lit from above.
-        </p>
-      </div>
+    <ComponentDoc
+      slug="bento-grid"
+      client
+      description={
+        <>
+          a wall of cards that reads as one lit surface. mix wide and tall cells
+          so the grid has a focal point, and a shared wash and hover shine sweep
+          across all of them at once.
+        </>
+      }
+      composition={{
+        ok: [
+          "proof walls and case-study stats: mix spans so the grid has a focal cell",
+          "BentoMetric, BentoInfo and BentoText work inside any Card, not just a bento cell",
+        ],
+        no: [
+          "span is not a position. the grid is flow-dense, narrow cards backfill ahead of a wide one",
+          "a wall of identical one-by-one cells is just a grid, not a bento",
+        ],
+      }}
+      a11y={
+        <>
+          the spotlight and edge glow are{" "}
+          <code className="font-mono text-xs">aria-hidden</code> · BentoText
+          renders a real heading · the shine and count-up respect reduced motion
+        </>
+      }
+      dependencies={
+        <>
+          Card <span className="text-muted">from the same package</span>
+        </>
+      }
+    >
+      <BentoGridDemo />
 
-      <Card>
-        <CardHeader>Demo</CardHeader>
-        <CardBody>
-          <BentoGrid columns={3}>
-            <BentoCard span={2} rowSpan={2}>
-              <CardHeader row>
-                <div className="flex flex-col gap-1">
-                  <CardEyebrow>overview</CardEyebrow>
-                  <CardTitle>Dashboard that starts useful</CardTitle>
-                </div>
-              </CardHeader>
-              <CardBody className="text-sm text-muted">
-                Credits, grades, and deadlines pulled into one quiet overview.
-              </CardBody>
-            </BentoCard>
-            <BentoCard>
-              <CardBody>
-                <CardEyebrow>credits</CardEyebrow>
-                <div className="mt-1 font-mono text-2xl tabular-nums text-ink">
-                  142
-                </div>
-              </CardBody>
-            </BentoCard>
-            <BentoCard>
-              <CardBody>
-                <CardEyebrow>status</CardEyebrow>
-                <div className="mt-1 text-sm text-live">on track</div>
-              </CardBody>
-            </BentoCard>
-            <BentoCard span={3}>
-              <CardBody className="text-sm text-muted">
-                A full-width cell for a chart or a table row.
-              </CardBody>
-            </BentoCard>
-          </BentoGrid>
-        </CardBody>
-      </Card>
+      <PropsTable rows={props} />
 
-      <Card>
-        <CardHeader>Cells</CardHeader>
-        <CardBody>
-          <BentoGrid columns={4}>
-            <BentoCard span={2}>
-              <BentoText
-                label="Problem"
-                title="Students could not see their whole degree."
-                body="Requirements were spread across four systems, none of which agreed with the others."
-              />
-            </BentoCard>
-            <BentoCard span={2}>
-              <BentoMetric
-                animate
-                value="2.4"
-                suffix="k"
-                label="active users"
-              />
-            </BentoCard>
-            <BentoCard span={2}>
-              <BentoMetric animate value="94" suffix="%" label="hit ratio" />
-            </BentoCard>
-            <BentoCard span={2}>
-              <BentoInfo label="Role">Sole designer and engineer</BentoInfo>
-            </BentoCard>
-            <BentoCard span={2}>
-              <BentoInfo label="Stack">
-                <div className="flex flex-wrap gap-1.5">
-                  <Chip>React</Chip>
-                  <Chip>Tailwind</Chip>
-                  <Chip>Base UI</Chip>
-                </div>
-              </BentoInfo>
-            </BentoCard>
-          </BentoGrid>
-          <p className="mt-3 text-sm text-muted">
-            <code>BentoCard</code> is the container: span, row span, edge glow.
-            The three cells are content, and supply only padding and fill. They
-            work as a child of any <code>Card</code>, not just a bento cell.
-          </p>
-        </CardBody>
-      </Card>
+      <AcquireSection
+        registryName="bento-grid"
+        usage={`import { BentoGrid, BentoCard, BentoMetric } from "@matt-pasek/usva";
 
-      <Card>
-        <CardHeader>Install</CardHeader>
-        <CardBody>
-          <InstallBlock registryName="bento-grid" />
-        </CardBody>
-      </Card>
-
-      <Card>
-        <CardHeader>Usage</CardHeader>
-        <CardBody>
-          <pre className="overflow-x-auto rounded-md border border-border bg-sunken p-3 text-xs text-on-sunken">
-            <code>{usageSnippet}</code>
-          </pre>
-        </CardBody>
-      </Card>
-
-      <Card>
-        <CardHeader>Source</CardHeader>
-        <CardBody>
-          <SourceView filePath="packages/usva/src/patterns/bento-grid/bento-grid.tsx" />
-        </CardBody>
-      </Card>
-
-      <Card>
-        <CardHeader>Props</CardHeader>
-        <CardBody>
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-sm">
-              <thead>
-                <tr className="border-b border-border text-muted">
-                  <th className="py-2 pr-4 font-medium">Prop</th>
-                  <th className="py-2 pr-4 font-medium">Type</th>
-                  <th className="py-2 font-medium">Description</th>
-                </tr>
-              </thead>
-              <tbody>
-                {props.map((p) => (
-                  <tr key={p.name} className="border-b border-border/50">
-                    <td className="py-2 pr-4 font-mono text-xs text-ink">
-                      {p.name}
-                    </td>
-                    <td className="py-2 pr-4 font-mono text-xs text-muted">
-                      {p.type}
-                    </td>
-                    <td className="py-2 text-muted">{p.desc}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </CardBody>
-      </Card>
-    </main>
+<BentoGrid columns={3}>
+  <BentoCard span={2} rowSpan={2}>...</BentoCard>
+  <BentoCard>
+    <BentoMetric animate value="94" suffix="%" label="hit ratio" />
+  </BentoCard>
+</BentoGrid>`}
+      />
+    </ComponentDoc>
   );
 }

@@ -30,11 +30,8 @@ const GET_STARTED: Item[] = [
   { href: "/docs/get-started/installation", label: "installation" },
   { href: "/docs/get-started/theming", label: "theming" },
   { href: "/docs/get-started/for-agents", label: "for agents" },
-  { href: "/docs/get-started/index", label: "index" },
 ];
 
-// AvatarGroup is a sub-export of avatar with no directory of its own, so the
-// catalog has no entry for it. Its docs page is real, so it hangs off avatar.
 const SUB_EXPORTS: Record<string, Item[]> = {
   avatar: [
     {
@@ -43,14 +40,28 @@ const SUB_EXPORTS: Record<string, Item[]> = {
       child: true,
     },
   ],
+  card: [
+    {
+      href: "/docs/components/glow-card",
+      label: "glow-card",
+      child: true,
+    },
+  ],
+  skeleton: [
+    {
+      href: "/docs/components/skeleton-mirror",
+      label: "skeleton-mirror",
+      child: true,
+    },
+  ],
+  reveal: [
+    {
+      href: "/docs/components/reveal-group",
+      label: "reveal-group",
+      child: true,
+    },
+  ],
 };
-
-const MOTION_ITEMS: Item[] = [
-  { href: "/docs/components/reveal", label: "reveal" },
-  { href: "/docs/components/page-transition", label: "page-transition" },
-];
-
-const LAYERS: Layer[] = ["primitive", "pattern", "sula"];
 
 const layerItems = (layer: Layer): Item[] =>
   byLayer(layer).flatMap((entry) => [
@@ -58,33 +69,21 @@ const layerItems = (layer: Layer): Item[] =>
     ...(SUB_EXPORTS[entry.slug] ?? []),
   ]);
 
-const componentGroups = (): Group[] => [
-  ...LAYERS.map((layer) => ({
-    key: layer,
-    label: LAYER_LABEL[layer],
-    intensity: INTENSITY_BY_LAYER[layer],
-    count: byLayer(layer).length,
-    items: layerItems(layer),
-  })),
-  {
-    key: "motion",
-    // reveal and page-transition are utilities, not one of the four layers.
-    // They recede: you are meant to feel them and never look at them.
-    label: "core · motion",
-    intensity: "recedes" as Intensity,
-    count: MOTION_ITEMS.length,
-    items: MOTION_ITEMS,
-  },
-];
-
-const atmosphereGroup = (): Group => ({
-  key: "atmosphere",
-  label: LAYER_LABEL.atmosphere,
-  intensity: INTENSITY_BY_LAYER.atmosphere,
-  count: byLayer("atmosphere").length,
-  items: layerItems("atmosphere"),
-  note: "these are backgrounds, not siblings of Button. you reach them from the atmosphere you are standing in.",
+const layerGroup = (layer: Layer): Group => ({
+  key: layer,
+  label: LAYER_LABEL[layer],
+  intensity: INTENSITY_BY_LAYER[layer],
+  count: byLayer(layer).length,
+  items: layerItems(layer),
 });
+
+const componentGroups = (): Group[] => [
+  layerGroup("primitive"),
+  layerGroup("pattern"),
+  layerGroup("motion"),
+  layerGroup("sula"),
+  layerGroup("atmosphere")
+];
 
 function GroupHeader({ group }: { group: Group }) {
   return (
@@ -93,7 +92,7 @@ function GroupHeader({ group }: { group: Group }) {
         <span className="whitespace-nowrap font-mono text-[0.65rem] uppercase tracking-[0.16em] text-muted">
           {group.label}
         </span>
-        <span className="font-mono text-[0.65rem] text-faint tabular-nums">
+        <span className="font-mono text-[0.65rem] text-muted tabular-nums">
           {group.count}
         </span>
         <span className="hairline-accent h-px flex-1" />
@@ -135,13 +134,11 @@ function Row({ item, active }: { item: Item; active: boolean }) {
 export function ComponentNav({ orientation = "vertical" }: Props) {
   const pathname = usePathname();
   const groups = componentGroups();
-  const atmospheres = atmosphereGroup();
 
   if (orientation === "horizontal") {
     const items = [
       ...GET_STARTED,
       ...groups.flatMap((g) => g.items),
-      ...atmospheres.items,
     ];
     return (
       <nav
@@ -198,20 +195,6 @@ export function ComponentNav({ orientation = "vertical" }: Props) {
           </ul>
         </div>
       ))}
-
-      <div className="flex flex-col gap-2">
-        <GroupHeader group={atmospheres} />
-        <p className="text-xs leading-relaxed text-faint">{atmospheres.note}</p>
-        <ul className="flex flex-col">
-          {atmospheres.items.map((item) => (
-            <Row key={item.href} item={item} active={pathname === item.href} />
-          ))}
-        </ul>
-      </div>
-
-      <p className="font-mono text-[0.6rem] leading-relaxed text-faint">
-        no NEW chips: nothing is new until v1.0.0 ships.
-      </p>
     </nav>
   );
 }

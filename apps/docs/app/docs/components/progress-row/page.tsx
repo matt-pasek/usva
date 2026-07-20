@@ -1,46 +1,90 @@
-import {
-  Badge,
-  Card,
-  CardBody,
-  CardHeader,
-  ProgressRow,
-} from "@matt-pasek/usva";
 import type { Metadata } from "next";
-import { InstallBlock } from "@/components/install-block";
-import { SourceView } from "@/components/source-view";
+import { AcquireSection } from "@/components/docs/acquire-section";
+import { ComponentDoc } from "@/components/docs/component-doc";
+import { PropsTable } from "@/components/docs/props-table";
+import { ProgressRowDemo } from "./progress-row-demo";
 
 export const metadata: Metadata = {
   title: "Progress Row",
   description:
-    "A labelled progress bar with mono value over max figures, a categorical bar color and a status slot.",
+    "A labelled progress bar with a value-over-max figure, a keyed bar color, and a status slot.",
 };
 
 const props = [
-  { name: "label", type: "React.ReactNode", desc: "The row's name." },
-  { name: "value", type: "number", desc: "Current amount." },
+  {
+    name: "label",
+    type: "ReactNode",
+    desc: "the row's name. doubles as the bar's accessible name when a string.",
+  },
+  {
+    name: "value",
+    type: "number",
+    desc: "current amount. clamped, overshoot fills the bar.",
+  },
   {
     name: "max",
     type: "number",
-    desc: "Target amount. A max of 0 renders an empty bar rather than dividing by zero.",
+    desc: "target amount. a max of 0 renders an empty bar, not a division by zero.",
   },
   {
     name: "unit",
     type: "string",
-    desc: 'Trailing unit on the figures, e.g. "cr".',
+    desc: 'trailing unit on the figures, e.g. "cr".',
   },
   {
     name: "status",
-    type: "React.ReactNode",
-    desc: "A slot, usually a Badge. ProgressRow never derives status from the ratio.",
+    type: "ReactNode",
+    desc: (
+      <>
+        a slot, usually a Badge. <b>never derived from the ratio</b>.
+      </>
+    ),
   },
   {
     name: "barColor",
     type: "string",
-    desc: "Categorical key color, any CSS color. It says which row this is, not how it is doing.",
+    desc: "categorical key color, any CSS color. it says which row this is, not how it is doing.",
   },
 ];
 
-const usage = `import { ProgressRow, Badge } from "@matt-pasek/usva";
+export default function ProgressRowPage() {
+  return (
+    <ComponentDoc
+      slug="progress-row"
+      client
+      description={
+        <>
+          a labelled progress bar with a value-over-max figure. the bar color
+          keys the row to a category, and any verdict goes in the status slot.
+        </>
+      }
+      composition={{
+        ok: [
+          "stack inside a Card body with divide-y for a module list",
+          "a Badge in the status slot when a row needs a verdict",
+        ],
+        no: [
+          "not a disclosure. no chevron, no aria-expanded, no wrapping button",
+          "no traffic-light barColor. status has its own slot",
+        ],
+      }}
+      a11y={
+        <>
+          <code className="font-mono text-xs">role="progressbar"</code> with{" "}
+          <code className="font-mono text-xs">aria-valuenow/min/max</code> · a
+          string label becomes the bar's{" "}
+          <code className="font-mono text-xs">aria-label</code>, pass one
+          yourself otherwise
+        </>
+      }
+    >
+      <ProgressRowDemo />
+
+      <PropsTable rows={props} />
+
+      <AcquireSection
+        registryName="progress-row"
+        usage={`import { ProgressRow, Badge } from "@matt-pasek/usva";
 
 <ProgressRow
   label="Computer Science"
@@ -49,97 +93,8 @@ const usage = `import { ProgressRow, Badge } from "@matt-pasek/usva";
   unit="cr"
   barColor="#8b5cf6"
   status={<Badge tone="warning">In progress</Badge>}
-/>`;
-
-export default function ProgressRowPage() {
-  return (
-    <main className="mx-auto flex max-w-2xl flex-col gap-8 p-10">
-      <div className="flex flex-col gap-2">
-        <h1 className="text-3xl font-semibold text-ink">Progress Row</h1>
-        <p className="text-muted">
-          A labelled bar with mono figures and a status slot. Deliberately not a
-          disclosure: the accordion chevron that usually wraps this shape is a
-          separate concern and does not belong inside a progress row.
-        </p>
-      </div>
-
-      <Card>
-        <CardHeader>Demo</CardHeader>
-        <CardBody>
-          <div className="divide-y divide-border">
-            <ProgressRow
-              label="Computer Science"
-              value={30}
-              max={30}
-              unit="cr"
-              barColor="#8b5cf6"
-              status={<Badge tone="success">Complete</Badge>}
-            />
-            <ProgressRow
-              label="Mathematics"
-              value={12}
-              max={30}
-              unit="cr"
-              barColor="#52c989"
-              status={<Badge tone="warning">In progress</Badge>}
-            />
-            <ProgressRow label="Electives" value={0} max={15} unit="cr" />
-          </div>
-        </CardBody>
-      </Card>
-
-      <Card>
-        <CardHeader>Install</CardHeader>
-        <CardBody>
-          <InstallBlock registryName="progress-row" />
-        </CardBody>
-      </Card>
-
-      <Card>
-        <CardHeader>Usage</CardHeader>
-        <CardBody>
-          <pre className="overflow-x-auto rounded-md border border-border bg-sunken p-3 text-xs text-on-sunken">
-            <code>{usage}</code>
-          </pre>
-        </CardBody>
-      </Card>
-
-      <Card>
-        <CardHeader>Source</CardHeader>
-        <CardBody>
-          <SourceView filePath="packages/usva/src/patterns/progress-row/progress-row.tsx" />
-        </CardBody>
-      </Card>
-
-      <Card>
-        <CardHeader>Props</CardHeader>
-        <CardBody>
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-sm">
-              <thead>
-                <tr className="border-b border-border text-muted">
-                  <th className="py-2 pr-4 font-medium">Prop</th>
-                  <th className="py-2 pr-4 font-medium">Type</th>
-                  <th className="py-2 font-medium">Description</th>
-                </tr>
-              </thead>
-              <tbody>
-                {props.map((p) => (
-                  <tr key={p.name} className="border-b border-border/50">
-                    <td className="py-2 pr-4 font-mono text-xs text-ink">
-                      {p.name}
-                    </td>
-                    <td className="py-2 pr-4 font-mono text-xs text-muted">
-                      {p.type}
-                    </td>
-                    <td className="py-2 text-muted">{p.desc}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </CardBody>
-      </Card>
-    </main>
+/>`}
+      />
+    </ComponentDoc>
   );
 }

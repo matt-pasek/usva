@@ -1,31 +1,80 @@
 "use client";
-import { PageTransition, SegmentedControl } from "@matt-pasek/usva";
+import {
+  LogLine,
+  LogList,
+  PageTransition,
+  SegmentedControl,
+  StatChip,
+  Switch,
+} from "@matt-pasek/usva";
 import * as React from "react";
 
 const ROUTES = [
-  {
-    value: "overview",
-    label: "Overview",
-    title: "Overview",
-    body: "The at-a-glance summary. Switch tabs to see the content lift out and the next view fade up from below.",
-  },
-  {
-    value: "activity",
-    label: "Activity",
-    title: "Recent activity",
-    body: "A running log of what happened. Each route change is keyed on routeKey, so the transition fires on its own.",
-  },
-  {
-    value: "settings",
-    label: "Settings",
-    title: "Settings",
-    body: "Preferences and configuration. Under prefers-reduced-motion this collapses to a plain, instant swap.",
-  },
+  { value: "overview", label: "Overview" },
+  { value: "activity", label: "Activity" },
+  { value: "settings", label: "Settings" },
 ] as const;
+
+function OverviewView() {
+  return (
+    <div className="flex flex-col gap-4">
+      <div className="flex flex-wrap gap-2">
+        <StatChip tone="accent" label="users" value="2,412" />
+        <StatChip tone="success" label="uptime" value="99.9" unit="%" />
+        <StatChip label="builds" value="18" />
+      </div>
+      <p className="max-w-prose text-sm leading-relaxed text-muted">
+        The summary at a glance. Switch tabs and the whole view lifts out while
+        the next one fades up from below.
+      </p>
+    </div>
+  );
+}
+
+function ActivityView() {
+  return (
+    <LogList>
+      <LogLine level="success" source="deploy" timestamp="14:22:06">
+        Shipped feat/docs to production
+      </LogLine>
+      <LogLine level="info" source="build">
+        Compiled 214 modules in 3.1s
+      </LogLine>
+      <LogLine level="warn" source="lint" count={2}>
+        Unused import in stripe-card
+      </LogLine>
+      <LogLine level="error" source="test">
+        2 snapshots out of date
+      </LogLine>
+    </LogList>
+  );
+}
+
+function SettingsView() {
+  return (
+    <div className="flex flex-col gap-3">
+      <Switch
+        defaultChecked
+        label="Reduce motion"
+        description="Collapse transitions to an instant swap."
+      />
+      <Switch
+        label="Email digests"
+        description="A weekly summary of what changed."
+      />
+      <Switch defaultChecked label="Compact density" />
+    </div>
+  );
+}
+
+const VIEWS: Record<string, React.ReactNode> = {
+  overview: <OverviewView />,
+  activity: <ActivityView />,
+  settings: <SettingsView />,
+};
 
 export function PageTransitionDemo() {
   const [route, setRoute] = React.useState<string>("overview");
-  const active = ROUTES.find((r) => r.value === route) ?? ROUTES[0];
 
   return (
     <div className="flex flex-col gap-4">
@@ -36,16 +85,9 @@ export function PageTransitionDemo() {
         onValueChange={(v) => setRoute(v as string)}
         aria-label="Demo route"
       />
-      <div className="relative min-h-[8.5rem] overflow-hidden rounded-lg border border-border bg-sunken/40 p-5">
+      <div className="relative min-h-[11rem] overflow-hidden rounded-lg border border-border bg-sunken/40 p-5">
         <PageTransition routeKey={route}>
-          <div className="flex flex-col gap-2">
-            <h4 className="text-base font-semibold tracking-[-0.01em] text-ink">
-              {active.title}
-            </h4>
-            <p className="max-w-prose text-sm leading-relaxed text-muted">
-              {active.body}
-            </p>
-          </div>
+          {VIEWS[route] ?? VIEWS.overview}
         </PageTransition>
       </div>
     </div>

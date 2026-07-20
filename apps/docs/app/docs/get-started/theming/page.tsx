@@ -1,3 +1,4 @@
+import { CodeSnippet } from "@matt-pasek/usva";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { THEMES } from "@/lib/catalog";
@@ -8,8 +9,7 @@ export const metadata: Metadata = {
     "Retheme usva. by moving role tokens. Forking a component to change a colour is the failure mode this design prevents.",
 };
 
-const brandTheme = `/* your-theme.css */
-[data-theme="brand"] {
+const brandTheme = `[data-theme="brand"] {
   --usva-bg: #07110f;
   --usva-surface: #0d1a17;
   --usva-ink: #e8f2ef;
@@ -56,9 +56,7 @@ export default function ThemingPage() {
           app and a <code className="font-mono text-ink">&lt;section&gt;</code>{" "}
           themes one region.
         </p>
-        <pre className="overflow-x-auto rounded-md border border-border bg-sunken p-3 text-xs text-on-sunken">
-          <code>{scope}</code>
-        </pre>
+        <CodeSnippet language="xml" code={scope} />
         <p className="text-sm text-muted">
           the three:{" "}
           {THEMES.map((theme, i) => (
@@ -78,12 +76,8 @@ export default function ThemingPage() {
           a theme is one selector and a list of roles. override the ones you
           care about, inherit the rest.
         </p>
-        <pre className="overflow-x-auto rounded-md border border-border bg-sunken p-3 text-xs text-on-sunken">
-          <code>{brandTheme}</code>
-        </pre>
-        <pre className="overflow-x-auto rounded-md border border-border bg-sunken p-3 text-xs text-on-sunken">
-          <code>{apply}</code>
-        </pre>
+        <CodeSnippet label="your-theme.css" language="css" code={brandTheme} />
+        <CodeSnippet language="xml" code={apply} />
       </section>
 
       <section className="flex flex-col gap-3 rounded-lg border border-border bg-surface p-5">
