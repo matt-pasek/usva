@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 export default function StudioPage() {
   return (
-    <main className="flex h-[calc(100svh-5rem)] flex-col overflow-hidden px-4 pb-4 sm:h-[calc(100svh-6rem)] sm:px-6">
+    <main className="flex flex-col px-4 pb-4 sm:px-6 lg:h-[calc(100svh-6rem)] lg:overflow-hidden">
       <header className="mx-auto flex w-full max-w-[112rem] shrink-0 items-baseline gap-3 pb-3">
         <h1 className="text-xl font-extrabold tracking-tight text-ink">
           the atmosphere studio

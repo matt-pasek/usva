@@ -187,8 +187,8 @@ export function CtrlSlider({
           onChange={(event) => onChange(Number(event.target.value))}
           className="h-1 w-[6.5rem] cursor-pointer appearance-none rounded-full bg-border-strong outline-none accent-accent focus-visible:ring-focus"
         />
-        <output className="w-9 shrink-0 text-right font-mono text-[0.7rem] tabular-nums text-muted">
-          {value}
+        <output className="w-12 shrink-0 text-right font-mono text-[0.7rem] tabular-nums text-muted">
+          {String(Number.parseFloat(value.toFixed(3)))}
         </output>
       </span>
     </CtrlRow>

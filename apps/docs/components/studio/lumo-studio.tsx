@@ -35,6 +35,7 @@ export function LumoStudio() {
   const [config, setConfig] = React.useState<Config>(() => presetOf(FIRST));
   const [template, setTemplate] = React.useState(FIRST.defaultTemplate);
   const [canvasBg, setCanvasBg] = React.useState(FALLBACK_BG);
+  const [railOpen, setRailOpen] = React.useState(true);
 
   React.useEffect(() => {
     const token = new URLSearchParams(window.location.search).get("s");
@@ -95,29 +96,45 @@ export function LumoStudio() {
   };
 
   return (
-    <div className="mx-auto flex min-h-0 w-full max-w-[112rem] flex-1 flex-col gap-4 lg:flex-row">
-      <aside className="min-h-0 w-full shrink-0 lg:w-[22rem]">
-        <LumoRail
-          studio={studio}
-          studios={studios}
-          config={config}
-          template={template}
-          templateNames={Object.keys(studio.templates)}
-          canvasBg={canvasBg}
-          onPatch={patch}
-          onAtmosphere={changeAtmosphere}
-          onTemplate={applyTemplate}
-          onCanvasBg={setCanvasBg}
-          onReset={reset}
-          onShare={share}
-          onExport={exportCode}
-        />
-      </aside>
+    <div
+      className={`mx-auto flex min-h-0 w-full max-w-[112rem] flex-1 flex-col lg:flex-row ${
+        railOpen ? "gap-4" : "gap-0"
+      }`}
+    >
+      <div
+        aria-hidden={!railOpen}
+        className={`grid shrink-0 overflow-hidden transition-all duration-300 ease-soft lg:[grid-template-rows:none] ${
+          railOpen
+            ? "[grid-template-rows:1fr] opacity-100 lg:w-[22rem]"
+            : "pointer-events-none [grid-template-rows:0fr] opacity-0 lg:w-0"
+        }`}
+      >
+        <aside className="min-h-0 w-full overflow-hidden lg:h-full lg:w-[22rem]">
+          <LumoRail
+            studio={studio}
+            studios={studios}
+            config={config}
+            template={template}
+            templateNames={Object.keys(studio.templates)}
+            canvasBg={canvasBg}
+            onPatch={patch}
+            onAtmosphere={changeAtmosphere}
+            onTemplate={applyTemplate}
+            onCanvasBg={setCanvasBg}
+            onReset={reset}
+            onShare={share}
+            onExport={exportCode}
+            onCollapse={() => setRailOpen(false)}
+          />
+        </aside>
+      </div>
       <LumoStage
         studio={studio}
         config={config}
         canvasBg={canvasBg}
         theme={effectiveTheme}
+        railOpen={railOpen}
+        onExpandRail={() => setRailOpen(true)}
       />
     </div>
   );

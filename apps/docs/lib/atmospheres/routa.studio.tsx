@@ -50,7 +50,7 @@ const base: RoutaConfig = {
 };
 
 const templates: Record<string, RoutaConfig> = {
-  "savi ground": base,
+  "ground": base,
   "dark key": { ...base, mode: "emissive" },
   "finer frost": { ...base, cellScale: 5.2, crackWidth: 0.038, uneven: 0.5 },
   "heavy heave": { ...base, heave: 0.12, cellScale: 2.9 },
@@ -123,7 +123,7 @@ export const routaStudio = defineStudio<RoutaConfig>({
   name: "routa",
   label: "routa",
   blurb: "ground frost heaving low cells from underneath",
-  defaultTemplate: "savi ground",
+  defaultTemplate: "ground",
   stageClassName: "",
   templates,
   snippet,

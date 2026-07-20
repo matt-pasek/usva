@@ -1,5 +1,5 @@
 "use client";
-import { captureAtmosphere } from "@matt-pasek/usva";
+import { Button, captureAtmosphere } from "@matt-pasek/usva";
 import * as React from "react";
 import type { Config } from "@/components/docs/playground";
 import type { ErasedStudio } from "@/lib/atmospheres";
@@ -20,11 +20,15 @@ export function LumoStage({
   config,
   canvasBg,
   theme,
+  railOpen,
+  onExpandRail,
 }: {
   studio: ErasedStudio;
   config: Config;
   canvasBg: string;
   theme: string;
+  railOpen: boolean;
+  onExpandRail: () => void;
 }) {
   const stageRef = React.useRef<HTMLDivElement | null>(null);
   const [status, setStatus] = React.useState<"idle" | "saving" | "error">(
@@ -48,7 +52,7 @@ export function LumoStage({
   };
 
   return (
-    <div className="relative flex-1 overflow-hidden rounded-xl border border-border">
+    <div className="relative min-h-[60svh] flex-1 overflow-hidden rounded-xl border border-border lg:min-h-0">
       <div
         ref={stageRef}
         data-theme={theme}
@@ -62,11 +66,38 @@ export function LumoStage({
         {studio.label}
       </span>
 
-      <button
-        type="button"
+      {!railOpen && (
+        <Button
+          variant="glass"
+          shape="pill"
+          size="sm"
+          onClick={onExpandRail}
+          className="absolute right-3 top-3 font-mono uppercase tracking-[0.14em]"
+        >
+          <svg
+            aria-hidden="true"
+            viewBox="0 0 24 24"
+            className="size-3.5"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M9 6l6 6-6 6" />
+            <path d="M4 4v16" />
+          </svg>
+          controls
+        </Button>
+      )}
+
+      <Button
+        variant="glass"
+        shape="pill"
+        size="sm"
         onClick={download}
         disabled={status === "saving"}
-        className="absolute bottom-3 left-3 flex items-center gap-2 rounded-full border border-white/15 bg-black/40 px-3.5 py-1.5 font-mono text-[0.7rem] text-white/90 outline-none backdrop-blur-sm transition-colors duration-150 ease-soft hover:bg-black/55 focus-visible:ring-focus disabled:opacity-60"
+        className="absolute bottom-3 left-3 font-mono"
       >
         <svg
           aria-hidden="true"
@@ -85,7 +116,7 @@ export function LumoStage({
           : status === "error"
             ? "no canvas"
             : "download png"}
-      </button>
+      </Button>
     </div>
   );
 }
