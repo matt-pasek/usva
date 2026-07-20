@@ -5,13 +5,22 @@ import { SITE_ORIGIN } from "@/lib/site";
 const pages = [
   "",
   "/design-language",
+  "/design-language/color",
+  "/design-language/type",
+  "/design-language/space",
+  "/design-language/depth",
+  "/design-language/motion",
+  "/design-language/iconography",
+  "/design-language/intensity",
+  "/design-language/voice",
+  "/design-language/wordmark",
+  "/design-language/accessibility",
+  "/design-language/tokens",
   "/docs/get-started",
   "/docs/get-started/installation",
   "/docs/get-started/theming",
   "/docs/get-started/for-agents",
   "/docs/get-started/index",
-  "/tokens",
-  "/recipes",
 ];
 
 const routes = [

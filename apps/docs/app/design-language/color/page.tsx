@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
+import { ChapterShell } from "@/components/design-language/chapter-shell";
+import { ColorRoles } from "@/components/design-language/color-roles";
 import { THEMES } from "@/lib/catalog";
 import { buildTokenReference } from "@/lib/token-reference";
 
 export const metadata: Metadata = {
-  title: "Tokens",
+  title: "Color · Design language",
   description:
-    "Every semantic role token in usva., rendered live in kajo, sisu and savi at once.",
+    "The semantic role tokens of usva. You never write a hex; you write a role, and the theme decides what it means, live in kajo, sisu and savi at once.",
 };
 
 const ROLE_NOTES: Record<string, string> = {
@@ -41,42 +43,35 @@ const TIERS: Record<string, "text" | "decorative"> = {
   faint: "decorative",
 };
 
-export default function TokensPage() {
+export default function ColorChapter() {
   const { color } = buildTokenReference();
 
   return (
-    <main className="mx-auto flex max-w-6xl flex-col gap-10 px-6 py-16 sm:px-10">
-      <header className="flex max-w-2xl flex-col gap-3">
-        <span className="font-mono text-xs uppercase tracking-widest text-muted">
-          tokens
-        </span>
-        <h1 className="text-4xl font-extrabold tracking-tight text-ink">
-          {color.length} roles, three themes
-        </h1>
-        <p className="text-muted">
-          you never write a hex. you write a role, and the theme decides what it
-          means. this table is generated from the tokens package, so it cannot
-          drift from what ships. every swatch below is live: each column is a
-          real theme scope, painting the same class.
-        </p>
-      </header>
-
-      <section className="flex flex-col gap-3 rounded-lg border border-border bg-surface p-5">
-        <h2 className="text-sm font-semibold text-ink">the text tier rule</h2>
-        <p className="max-w-2xl text-sm text-muted">
-          <code className="font-mono text-ink">ink</code> and{" "}
-          <code className="font-mono text-ink">muted</code> both clear 4.5:1 on
-          every surface role, so anything a reader has to understand goes in one
-          of those two. that includes the things people quietly downgrade: units
-          on a stat, placeholder text, a group label.{" "}
-          <code className="font-mono text-ink">faint</code> sits near 2:1 on
-          purpose. it is for decoration, a divider glyph, a dimmed icon behind
-          content, and it must never be the only thing carrying a piece of
-          information.
-        </p>
-      </section>
+    <ChapterShell
+      slug="color"
+      shapedBy={["personal-website", "sisu-plus"]}
+      lede={
+        <>
+          {color.length} role tokens, and you never write a hex. you write a
+          role, the theme decides what it means, and the same call site works in
+          all three. two of these rules are worth saying out loud, because they
+          are the two people get wrong.
+        </>
+      }
+    >
+      <ColorRoles total={color.length} />
 
       <section className="flex flex-col gap-3">
+        <div className="flex max-w-2xl flex-col gap-2">
+          <h2 className="font-bold text-xl text-ink tracking-tight">
+            all {color.length} roles, three themes
+          </h2>
+          <p className="text-muted text-sm">
+            generated from the tokens package, so it cannot drift from what
+            ships. every swatch is live: each column is a real theme scope,
+            painting the same class.
+          </p>
+        </div>
         <div className="overflow-x-auto rounded-lg border border-border">
           <table className="w-full min-w-[42rem] border-collapse text-left text-sm">
             <thead>
@@ -99,7 +94,11 @@ export default function TokensPage() {
             </thead>
             <tbody>
               {color.map(({ name }) => (
-                <tr key={name} className="border-b border-border last:border-0">
+                <tr
+                  key={name}
+                  id={name}
+                  className="scroll-mt-28 border-b border-border last:border-0"
+                >
                   <td className="whitespace-nowrap p-3 align-middle">
                     <code className="font-mono text-xs text-ink">{name}</code>
                     {TIERS[name] ? (
@@ -137,10 +136,7 @@ export default function TokensPage() {
             </tbody>
           </table>
         </div>
-        <p className="text-xs text-muted">
-          the table scrolls sideways on a narrow screen. the page does not.
-        </p>
       </section>
-    </main>
+    </ChapterShell>
   );
 }

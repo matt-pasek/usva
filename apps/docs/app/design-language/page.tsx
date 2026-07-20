@@ -1,15 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ColorRoles } from "@/components/language/color-roles";
-import { IntensityDial } from "@/components/language/intensity-dial";
-import { MotionTiers } from "@/components/language/motion-tiers";
-import { TypeScale } from "@/components/language/type-scale";
-import { buildTokenReference } from "@/lib/token-reference";
+import { DesignLanguageHero } from "@/components/design-language/dl-hero";
+import { INTENSITY_BY_LAYER, LAYER_LABEL, type Layer } from "@/lib/catalog";
+import { DL_CHAPTERS, dlHref } from "@/lib/design-language";
 
 export const metadata: Metadata = {
   title: "Design language",
   description:
-    "The rules behind usva.: one type family, the role tokens, three motion registers, and a dial that shows exactly how much attention a screen is allowed to ask for.",
+    "The rules behind usva.: one grammar spoken in three registers, the role tokens, the type, the motion, and a dial that shows exactly how much attention a screen is allowed to ask for.",
 };
 
 const PRINCIPLES = [
@@ -31,24 +29,33 @@ const PRINCIPLES = [
   },
 ];
 
-export default function DesignLanguagePage() {
-  const { color } = buildTokenReference();
+const LADDER: { layer: Layer; blurb: string }[] = [
+  {
+    layer: "primitive",
+    blurb: "the button, the input, the badge. they do the least, on purpose.",
+  },
+  {
+    layer: "pattern",
+    blurb: "cards, headers, lists. they organise what the primitives hold.",
+  },
+  {
+    layer: "motion",
+    blurb: "reveals and transitions. they lead the eye; they do not perform.",
+  },
+  {
+    layer: "sula",
+    blurb: "the fluid material. it takes the focus, and only one per region.",
+  },
+  {
+    layer: "atmosphere",
+    blurb: "the environment behind everything. the room, not an object.",
+  },
+];
 
+export default function DesignLanguageHub() {
   return (
-    <main className="mx-auto flex max-w-5xl flex-col gap-20 px-6 py-16 sm:px-10">
-      <header className="@container flex max-w-2xl flex-col gap-4">
-        <span className="font-mono text-muted text-xs uppercase tracking-widest">
-          design language
-        </span>
-        <h1 className="font-extrabold text-[clamp(2.25rem,6cqi,3.5rem)] text-ink leading-[1.02] tracking-[-0.03em]">
-          the rules, and why they are the rules
-        </h1>
-        <p className="text-muted">
-          a component library tells you what exists. a design language tells you
-          what to do with it, and what not to. this page is the second one. the
-          last section is a dial you can drag, and it will refuse you.
-        </p>
-      </header>
+    <main className="@container flex flex-col gap-10">
+      <DesignLanguageHero />
 
       <section className="flex flex-col gap-6">
         <h2 className="font-bold text-2xl text-ink tracking-tight">
@@ -69,87 +76,77 @@ export default function DesignLanguagePage() {
 
       <section className="flex flex-col gap-6">
         <div className="flex max-w-2xl flex-col gap-3">
-          <h2 className="font-bold text-2xl text-ink tracking-tight">type</h2>
+          <h2 className="font-bold text-2xl text-ink tracking-tight">
+            the five degrees
+          </h2>
           <p className="text-muted">
-            one family. Fira Sans carries the display line and the smallest
-            label, and a second sans would read as indecision, not range. the
-            personality comes from the weight extremes and from tracking that
-            gets tighter as the type gets bigger.
-          </p>
-          <p className="text-muted text-sm">
-            the mono is the only permitted second voice, and it has exactly one
-            job: structural annotation. indices, tags, metadata, code. never
-            prose. the moment a paragraph is set in mono it stops being a
-            document and starts being terminal cosplay.
+            everything usva ships sits at one of five volumes, from the
+            primitive that recedes to the atmosphere that is the whole room. a
+            screen is tuned by choosing how high up this ladder it is allowed to
+            climb. that choice has a page of its own.
           </p>
         </div>
-        <TypeScale />
-      </section>
-
-      <section className="flex flex-col gap-6">
-        <div className="flex max-w-2xl flex-col gap-3">
-          <h2 className="font-bold text-2xl text-ink tracking-tight">color</h2>
-          <p className="text-muted">
-            {color.length} role tokens, and you never write a hex. you write a
-            role, the theme decides what it means, and the same call site works
-            in all three. two of these rules are worth saying out loud, because
-            they are the two people get wrong.
-          </p>
-        </div>
-        <ColorRoles total={color.length} />
         <Link
-          href="/tokens"
-          className="w-fit rounded-md font-mono text-accent text-xs underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-2"
+          href={dlHref("intensity")}
+          className="flex flex-col divide-y divide-border overflow-hidden rounded-lg border border-border bg-surface transition-colors duration-150 ease-soft hover:border-border-strong"
         >
-          all {color.length} roles, side by side →
+          {LADDER.map(({ layer, blurb }, index) => (
+            <div key={layer} className="flex items-center gap-4 p-4">
+              <span className="font-mono text-sm text-faint tabular-nums">
+                {index + 1}
+              </span>
+              <span className="w-28 shrink-0 font-mono text-[0.7rem] uppercase tracking-[0.14em] text-accent/80">
+                {INTENSITY_BY_LAYER[layer]}
+              </span>
+              <span className="flex min-w-0 flex-col">
+                <span className="text-sm font-semibold text-ink">
+                  {LAYER_LABEL[layer]}
+                </span>
+                <span className="text-sm text-muted">{blurb}</span>
+              </span>
+            </div>
+          ))}
         </Link>
       </section>
 
       <section className="flex flex-col gap-6">
-        <div className="flex max-w-2xl flex-col gap-3">
-          <h2 className="font-bold text-2xl text-ink tracking-tight">motion</h2>
-          <p className="text-muted">
-            every theme ships the same four duration tiers and the same three
-            easings, and sets them to different values. that is the whole
-            mechanism. a component asks for{" "}
-            <code className="font-mono text-ink text-sm">duration-slow</code>{" "}
-            and gets kajo's long spring or sisu's short damped one, and never
-            knows the difference.
-          </p>
-        </div>
-        <MotionTiers />
-      </section>
-
-      <section className="flex flex-col gap-6">
-        <div className="flex max-w-2xl flex-col gap-3">
-          <h2 className="font-bold text-2xl text-ink tracking-tight">
-            the dial
-          </h2>
-          <p className="text-muted">
-            one screen, four stops. the skeleton is identical at every stop:
-            same header, same three stats, same toolbar, in the same places. all
-            that changes is how much energy is layered on top, and therefore how
-            much of your attention the screen is asking for.
-          </p>
-          <p className="text-muted text-sm">
-            drag it, click a stop, or focus the rail and use the arrow keys.
-            then try to add a second sula element, and read what happens.
-          </p>
-        </div>
-        <IntensityDial />
-
-        <div className="flex max-w-2xl flex-col gap-2 rounded-lg border border-border bg-surface p-5">
-          <h3 className="font-semibold text-ink text-sm">
-            the rule, stated once, in case you skipped the dial
-          </h3>
-          <p className="text-muted text-sm">
-            one sula element per region. a region is a bounded area competing
-            for a single focus: not a page, not a component. two liquid fields
-            in the same region cancel each other out. two in different regions,
-            one ambient at the boundary and one focal at the top, do not, and
-            that pairing ships on my own site. the interesting part of a rule is
-            always its edge.
-          </p>
+        <h2 className="font-bold text-2xl text-ink tracking-tight">
+          the chapters
+        </h2>
+        <div className="grid gap-4 sm:grid-cols-2">
+          {DL_CHAPTERS.map((chapter) => (
+            <Link
+              key={chapter.slug}
+              href={dlHref(chapter.slug)}
+              className="group flex flex-col gap-2 rounded-lg border border-border bg-surface p-5 transition-colors duration-150 ease-soft hover:border-border-strong"
+            >
+              <span className="flex items-baseline gap-2">
+                <span className="font-mono text-xs text-faint tabular-nums">
+                  {chapter.number}
+                </span>
+                <span className="font-semibold text-ink group-hover:text-accent">
+                  {chapter.title}
+                </span>
+              </span>
+              <span className="text-sm text-muted">{chapter.blurb}</span>
+            </Link>
+          ))}
+          <Link
+            href="/themes"
+            className="group flex flex-col gap-2 rounded-lg border border-border bg-surface p-5 transition-colors duration-150 ease-soft hover:border-border-strong"
+          >
+            <span className="flex items-baseline gap-2">
+              <span className="font-mono text-xs text-faint tabular-nums">
+                ↗
+              </span>
+              <span className="font-semibold text-ink group-hover:text-accent">
+                themes
+              </span>
+            </span>
+            <span className="text-sm text-muted">
+              kajo, sisu, savi. the three registers, each on its own page.
+            </span>
+          </Link>
         </div>
       </section>
     </main>
