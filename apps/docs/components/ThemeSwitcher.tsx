@@ -1,5 +1,6 @@
 "use client";
 import { SulaSegmented } from "@matt-pasek/usva";
+import { usePathname, useRouter } from "next/navigation";
 import { THEMES } from "@/lib/catalog";
 import { type ThemeId, useTheme } from "./theme-provider";
 
@@ -13,6 +14,14 @@ const ITEMS = THEMES.map((id) => ({ value: id, label: id }));
  */
 export function ThemeSwitcher() {
   const { theme, setTheme } = useTheme();
+  const pathname = usePathname();
+  const router = useRouter();
+
+  const onValueChange = (value: string) => {
+    const next = value as ThemeId;
+    setTheme(next);
+    if (pathname.startsWith("/themes/")) router.push(`/themes/${next}`);
+  };
 
   return (
     <SulaSegmented
@@ -22,7 +31,7 @@ export function ThemeSwitcher() {
       size="sm"
       items={ITEMS}
       value={theme}
-      onValueChange={(value) => setTheme(value as ThemeId)}
+      onValueChange={onValueChange}
     />
   );
 }
