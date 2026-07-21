@@ -9,5 +9,5 @@ import { ThemeView } from "./theme-view";
  */
 export function LiveThemeView() {
   const { theme } = useTheme();
-  return <ThemeView theme={theme} />;
+  return <ThemeView theme={theme} live />;
 }

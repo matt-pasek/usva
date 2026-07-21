@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import type { ThemeId } from "@/components/theme-provider";
 import { THEMES } from "@/lib/catalog";
-import { THEME_DOCS, ThemeView } from "../theme-view";
+import { lexeme } from "@/lib/lexicon";
+import { THEME_DOCS } from "@/lib/themes";
+import { ThemeView } from "../theme-view";
 import { ThemeSync } from "./theme-sync";
 
 export function generateStaticParams(): { theme: string }[] {
@@ -18,9 +20,10 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { theme } = await params;
   const doc = THEME_DOCS[theme as ThemeId];
-  if (!doc) return {};
+  const word = lexeme(theme);
+  if (!doc || !word) return {};
   return {
-    title: `${doc.word}, ${doc.gloss}`,
+    title: `${word.word}, ${word.sense}`,
     description: doc.lede,
   };
 }
