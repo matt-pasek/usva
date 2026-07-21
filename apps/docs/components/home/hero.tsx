@@ -8,6 +8,7 @@ import {
 } from "motion/react";
 import Link from "next/link";
 import { useRef } from "react";
+import { Wordmark } from "@/components/wordmark";
 import { counts } from "@/lib/catalog";
 import { HEAVE } from "./home-motion";
 import { Rise } from "./tiivistyma";
@@ -64,9 +65,7 @@ export function Hero() {
         >
           <div className="@container relative mx-auto w-full max-w-6xl">
             <Rise delay={0.7}>
-              <p className="text-center text-xl font-extrabold leading-none tracking-[-0.02em] text-ink sm:text-3xl @5xl:text-left">
-                usva<span className="text-accent-alt">.</span>
-              </p>
+              <Wordmark className="text-center text-xl sm:text-3xl @5xl:text-left" />
             </Rise>
 
             <h1 className="mt-3 text-[clamp(3rem,15.5cqi,11.5rem)] leading-[0.9] tracking-[-0.04em] text-ink sm:mt-4">

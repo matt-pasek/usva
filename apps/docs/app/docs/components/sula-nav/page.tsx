@@ -183,8 +183,8 @@ import Link from "next/link";
 <header className="fixed inset-x-0 top-0 z-50 flex justify-center p-4">
   <SulaNav
     linkComponent={Link}
-    brand={<span>usva.</span>}
-    brandLabel="usva home"
+    brand={<span>acme</span>}
+    brandLabel="acme home"
     activeView={view}
     onViewChange={setView}
     activeItem={section}

@@ -1,5 +1,6 @@
 "use client";
 import { Button, captureAtmosphere } from "@matt-pasek/usva";
+import { Download, PanelLeftOpen } from "lucide-react";
 import * as React from "react";
 import type { Config } from "@/components/docs/playground";
 import type { ErasedStudio } from "@/lib/atmospheres";
@@ -74,19 +75,11 @@ export function LumoStage({
           onClick={onExpandRail}
           className="absolute right-3 top-3 font-mono uppercase tracking-[0.14em]"
         >
-          <svg
+          <PanelLeftOpen
             aria-hidden="true"
-            viewBox="0 0 24 24"
+            strokeWidth={1.8}
             className="size-3.5"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <path d="M9 6l6 6-6 6" />
-            <path d="M4 4v16" />
-          </svg>
+          />
           controls
         </Button>
       )}
@@ -99,18 +92,7 @@ export function LumoStage({
         disabled={status === "saving"}
         className="absolute bottom-3 left-3 font-mono"
       >
-        <svg
-          aria-hidden="true"
-          viewBox="0 0 24 24"
-          className="size-3.5"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14" />
-        </svg>
+        <Download aria-hidden="true" strokeWidth={1.8} className="size-3.5" />
         {status === "saving"
           ? "capturing…"
           : status === "error"

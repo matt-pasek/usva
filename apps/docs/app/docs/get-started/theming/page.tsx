@@ -91,9 +91,9 @@ export default function ThemingPage() {
           <code className="font-mono text-ink">surface-2</code>. every component
           assumes it. and keep <code className="font-mono text-ink">faint</code>{" "}
           decorative: it is allowed to be quiet precisely because nothing
-          depends on it being read. the full table is at{" "}
-          <Link className="text-accent underline" href="/tokens">
-            /tokens
+          depends on it being read. the full table is in{" "}
+          <Link className="text-accent underline" href="/design-language/color">
+            the color chapter
           </Link>
           .
         </p>

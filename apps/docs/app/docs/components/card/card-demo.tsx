@@ -11,6 +11,7 @@ import {
   CardIcon,
   CardTitle,
 } from "@matt-pasek/usva";
+import { Zap } from "lucide-react";
 import { Playground } from "@/components/docs/playground";
 
 const SURFACES = ["elevated", "flat", "glass", "outline"] as const;
@@ -123,12 +124,11 @@ export function CardDemo() {
             {c.row ? (
               <>
                 <CardIcon>
-                  <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                    <path
-                      d="M13 2 4 14h6l-1 8 9-12h-6l1-8Z"
-                      fill="currentColor"
-                    />
-                  </svg>
+                  <Zap
+                    aria-hidden="true"
+                    fill="currentColor"
+                    strokeWidth={1.8}
+                  />
                 </CardIcon>
                 <div className="flex flex-col gap-1">
                   <CardEyebrow>Deployment</CardEyebrow>

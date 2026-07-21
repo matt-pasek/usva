@@ -1,6 +1,7 @@
 "use client";
 import { Button } from "@matt-pasek/usva";
 import { cn } from "@matt-pasek/usva/cn";
+import { Copy } from "lucide-react";
 import { Playground } from "@/components/docs/playground";
 
 const VARIANTS = [
@@ -75,21 +76,6 @@ const snippetFor = (c: Config): string => {
 <Button${attrs ? ` ${attrs}` : ""}>${child}</Button>`;
 };
 
-const CopyGlyph = () => (
-  <svg
-    viewBox="0 0 16 16"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="1.3"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    aria-hidden="true"
-  >
-    <rect x="5.5" y="5.5" width="8" height="8" rx="1.5" />
-    <path d="M10.5 3.5A1.5 1.5 0 0 0 9 2H4a2 2 0 0 0-2 2v5a1.5 1.5 0 0 0 1.5 1.5" />
-  </svg>
-);
-
 export function ButtonDemo() {
   return (
     <Playground<Config>
@@ -156,7 +142,11 @@ export function ButtonDemo() {
             status={c.loading ? "loading" : "idle"}
             loadingText={c.iconOnly ? undefined : "Saving"}
           >
-            {c.iconOnly ? <CopyGlyph /> : c.label}
+            {c.iconOnly ? (
+              <Copy aria-hidden="true" size={16} strokeWidth={1.8} />
+            ) : (
+              c.label
+            )}
           </Button>
         </div>
       )}

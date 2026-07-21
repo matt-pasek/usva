@@ -1,5 +1,6 @@
 "use client";
 import { List, ListItem } from "@matt-pasek/usva";
+import { ArrowRight, Check } from "lucide-react";
 import { Playground } from "@/components/docs/playground";
 
 const AS = ["ul", "ol"] as const;
@@ -24,46 +25,12 @@ const templates: Record<string, Config> = {
   plain: { ...base, marker: "none", divided: true },
 };
 
-function CheckIcon() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-    >
-      <title>Check</title>
-      <path d="M20 6 9 17l-5-5" />
-    </svg>
-  );
-}
-
-function ArrowIcon() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-    >
-      <title>Arrow</title>
-      <path d="M5 12h14M13 6l6 6-6 6" />
-    </svg>
-  );
-}
-
 const markerNode = (m: Config["marker"]) => {
   switch (m) {
     case "check":
-      return <CheckIcon />;
+      return <Check aria-hidden="true" strokeWidth={1.8} />;
     case "arrow":
-      return <ArrowIcon />;
+      return <ArrowRight aria-hidden="true" strokeWidth={1.8} />;
     case "dot":
       return <>&bull;</>;
     case "dash":

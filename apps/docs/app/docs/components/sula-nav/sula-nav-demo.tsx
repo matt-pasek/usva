@@ -1,5 +1,6 @@
 "use client";
 import { SulaNav, type SulaNavProps, type SulaNavView } from "@matt-pasek/usva";
+import { Briefcase, Home, PenLine, Search, Sparkles, User } from "lucide-react";
 import type { ComponentProps } from "react";
 import { useState } from "react";
 import { Playground } from "@/components/docs/playground";
@@ -17,63 +18,33 @@ function DemoLink({ href, onClick, ...rest }: ComponentProps<"a">) {
   );
 }
 
-function Glyph({ d }: { d: string }) {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      width="16"
-      height="16"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.75"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-    >
-      <path d={d} />
-    </svg>
-  );
-}
-
-function Spark() {
-  return (
-    <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
-      <title>Playground</title>
-      <path
-        d="M12 3l2.2 6.1L20 12l-5.8 2.9L12 21l-2.2-6.1L4 12l5.8-2.9z"
-        fill="currentColor"
-      />
-    </svg>
-  );
-}
-
 const VIEWS: SulaNavView[] = [
   {
     href: "/",
     label: "Site",
-    icon: <Glyph d="M3 11l9-7 9 7M5 10v10h14V10" />,
+    icon: <Home aria-hidden="true" size={16} strokeWidth={1.75} />,
     items: [
       {
         href: "#home",
         label: "Home",
-        icon: <Glyph d="M3 11l9-7 9 7M5 10v10h14V10" />,
+        icon: <Home aria-hidden="true" size={16} strokeWidth={1.75} />,
       },
       {
         href: "#work",
         label: "Work",
-        icon: <Glyph d="M4 7h16v13H4zM9 7V4h6v3" />,
+        icon: <Briefcase aria-hidden="true" size={16} strokeWidth={1.75} />,
       },
       {
         href: "#about",
         label: "About",
-        icon: <Glyph d="M12 12a4 4 0 100-8 4 4 0 000 8zM5 20a7 7 0 0114 0" />,
+        icon: <User aria-hidden="true" size={16} strokeWidth={1.75} />,
       },
     ],
   },
   {
     href: "/writing",
     label: "Writing",
-    icon: <Glyph d="M4 20h16M6 16l9-9 3 3-9 9H6z" />,
+    icon: <PenLine aria-hidden="true" size={16} strokeWidth={1.75} />,
     items: [
       { href: "#latest", label: "Latest" },
       { href: "#archive", label: "Archive" },
@@ -82,7 +53,7 @@ const VIEWS: SulaNavView[] = [
   {
     href: "/play",
     label: "Playground",
-    icon: <Spark />,
+    icon: <Sparkles aria-hidden="true" size={18} strokeWidth={1.75} />,
     items: [{ href: "#play", label: "Playground" }],
   },
 ];
@@ -127,7 +98,7 @@ function useSatellites(on: boolean): SulaNavProps["satellites"] {
       label: "Search",
       children: (
         <button type="button" className={satelliteBtn} aria-label="Search">
-          <Glyph d="M10 4a6 6 0 100 12 6 6 0 000-12M20 20l-4.5-4.5" />
+          <Search aria-hidden="true" size={16} strokeWidth={1.75} />
         </button>
       ),
     },
@@ -170,8 +141,8 @@ function Preview({ c }: { c: Config }) {
         activeItem={item}
         onNavigate={setItem}
         satellites={satellites}
-        brand={<span className="tracking-tight">usva.</span>}
-        brandLabel="usva home"
+        brand={<span className="tracking-tight">acme</span>}
+        brandLabel="acme home"
       />
     </div>
   );
@@ -197,8 +168,8 @@ import Link from "next/link";
 <header className="fixed inset-x-0 top-0 z-50 flex justify-center p-4">
   <SulaNav
     linkComponent={Link}
-    brand={<span>usva.</span>}
-    brandLabel="usva home"
+    brand={<span>acme</span>}
+    brandLabel="acme home"
     activeView={view}
     onViewChange={setView}
     activeItem={section}

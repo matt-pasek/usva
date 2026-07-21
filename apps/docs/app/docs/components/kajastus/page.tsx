@@ -66,9 +66,8 @@ export default function KajastusPage() {
           the glow spreading along the horizon, arrived overhead: a curved roof
           of folded light arching over the viewport and running off past both
           edges, bright where a fold turns and you look through more of it. the
-          kajo showpiece and the heaviest atmosphere in the library. most of the
-          frame stays black, and a corridor of low density is cut through the
-          field so the header type keeps its ground.
+          kajo showpiece and the heaviest atmosphere in the library. a corridor
+          of low density is cut through the field so the header type keeps its ground.
         </>
       }
       composition={{

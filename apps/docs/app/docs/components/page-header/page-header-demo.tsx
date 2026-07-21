@@ -9,41 +9,8 @@ import {
   ToggleChip,
   ToggleChipGroup,
 } from "@matt-pasek/usva";
+import { Check, Pencil } from "lucide-react";
 import { useState } from "react";
-
-function PencilIcon() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className="size-4"
-      aria-hidden="true"
-    >
-      <path d="m14.5 5 4.5 4.5M4 20l4.2-1 10.1-10.1a3.2 3.2 0 0 0-4.5-4.5L3.7 14.5 3 20h1Z" />
-    </svg>
-  );
-}
-
-function CheckIcon() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2.3"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className="size-4"
-      aria-hidden="true"
-    >
-      <path d="M5 12.5 9.5 17 19 7" />
-    </svg>
-  );
-}
 
 const ALL_STATS = [
   ["grade-avg", "Grade avg.", "4.1", "4 graded"],
@@ -85,7 +52,11 @@ export function EditableDemo() {
           active={editing}
           onClick={() => setEditing((current) => !current)}
         >
-          {editing ? <CheckIcon /> : <PencilIcon />}
+          {editing ? (
+            <Check aria-hidden="true" strokeWidth={1.8} className="size-4" />
+          ) : (
+            <Pencil aria-hidden="true" strokeWidth={1.8} className="size-4" />
+          )}
         </Button>
       }
       controlsOpen={editing}

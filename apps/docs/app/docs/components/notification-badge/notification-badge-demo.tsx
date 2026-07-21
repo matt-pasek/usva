@@ -1,5 +1,6 @@
 "use client";
 import { Button, NotificationBadge } from "@matt-pasek/usva";
+import { Bell } from "lucide-react";
 import { Playground } from "@/components/docs/playground";
 
 const TONES = ["danger", "accent", "accent-alt", "warning"] as const;
@@ -26,18 +27,6 @@ const templates: Record<string, Config> = {
   "presence dot": { ...base, dot: true, tone: "accent-alt" },
   "show zero": { ...base, count: 0, showZero: true },
 };
-
-const Bell = () => (
-  <svg
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth={1.5}
-    aria-hidden="true"
-  >
-    <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10.3 21a2 2 0 0 0 3.4 0" />
-  </svg>
-);
 
 const snippetFor = (c: Config): string => {
   const attrs = [
@@ -110,7 +99,7 @@ export function NotificationBadgeDemo() {
           showZero={c.showZero}
         >
           <Button variant="outline" iconOnly aria-label="Notifications">
-            <Bell />
+            <Bell aria-hidden="true" strokeWidth={1.8} />
           </Button>
         </NotificationBadge>
       )}

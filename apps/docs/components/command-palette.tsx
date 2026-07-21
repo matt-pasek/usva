@@ -93,7 +93,7 @@ const RESULTS: Result[] = [
   ...ROLE_NAMES.map((role) => ({
     id: `token:${role}`,
     group: "tokens" as const,
-    href: `/tokens#${role}`,
+    href: `/design-language/color#${role}`,
     label: role,
     detail: "role token",
     haystack: [role, "token", "color", "role"],
@@ -236,7 +236,7 @@ export function CommandPalette({
           {results.length === 0 ? (
             <p className="text-pretty p-4 text-sm text-muted">
               {query.trim()
-                ? `nothing matches "${query.trim()}". the vocabulary is Finnish in places: try sula, utu, kajo, or just type what the thing does.`
+                ? `nothing matches "${query.trim()}". the vocabulary runs to nature words: try sula, utu, kajo, or just type what the thing does.`
                 : "type to cut across the taxonomy. components, atmospheres, themes, role tokens. every component arrives with its layer and its intensity attached, because you do not get to take one without its grammar."}
             </p>
           ) : (

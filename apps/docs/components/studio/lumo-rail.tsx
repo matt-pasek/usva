@@ -1,5 +1,6 @@
 "use client";
 import { Button } from "@matt-pasek/usva";
+import { ChevronRight, Code2, PanelRightClose } from "lucide-react";
 import * as React from "react";
 import { CtrlColor, CtrlGrid, CtrlSelect } from "@/components/docs/controls";
 import { Lab } from "@/components/docs/lab";
@@ -39,18 +40,11 @@ function FieldStack({
             <span className="font-mono text-[0.65rem] tabular-nums text-muted">
               {advanced.length}
             </span>
-            <svg
+            <ChevronRight
               aria-hidden="true"
-              viewBox="0 0 24 24"
+              strokeWidth={1.8}
               className="ml-auto size-3.5 text-muted transition-transform duration-150 ease-soft group-open:rotate-90"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M9 6l6 6-6 6" />
-            </svg>
+            />
           </summary>
           <CtrlGrid className="mt-2 grid-cols-1 sm:grid-cols-1">
             {advanced.map((field) => (
@@ -129,19 +123,11 @@ export function LumoRail({
           onClick={onCollapse}
           className="font-mono uppercase tracking-[0.14em] text-muted hover:text-ink"
         >
-          <svg
+          <PanelRightClose
             aria-hidden="true"
-            viewBox="0 0 24 24"
+            strokeWidth={1.8}
             className="size-3.5"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <path d="M15 6l-6 6 6 6" />
-            <path d="M20 4v16" />
-          </svg>
+          />
           hide
         </Button>
       </div>
@@ -184,18 +170,7 @@ export function LumoRail({
           onClick={exportCode}
           className="w-full font-mono"
         >
-          <svg
-            aria-hidden="true"
-            viewBox="0 0 24 24"
-            className="size-4"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <path d="M8 6l-5 6 5 6M16 6l5 6-5 6" />
-          </svg>
+          <Code2 aria-hidden="true" strokeWidth={1.8} className="size-4" />
           {copied ? "copied to clipboard" : "export code"}
         </Button>
         <div className="flex gap-2">

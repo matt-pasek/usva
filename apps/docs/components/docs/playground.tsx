@@ -1,5 +1,6 @@
 "use client";
 import { CodeSnippet } from "@matt-pasek/usva";
+import { ChevronRight } from "lucide-react";
 import * as React from "react";
 import {
   ControlsHead,
@@ -127,18 +128,11 @@ export function Playground<C extends Config>({
                     <span className="font-mono text-[0.65rem] tabular-nums text-muted">
                       {fields.filter((field) => field.advanced).length}
                     </span>
-                    <svg
+                    <ChevronRight
                       aria-hidden="true"
-                      viewBox="0 0 24 24"
+                      strokeWidth={1.8}
                       className="ml-auto size-3.5 text-muted transition-transform duration-150 ease-soft group-open:rotate-90"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <path d="M9 6l6 6-6 6" />
-                    </svg>
+                    />
                   </summary>
                   <CtrlGrid className="mt-2">
                     {fields

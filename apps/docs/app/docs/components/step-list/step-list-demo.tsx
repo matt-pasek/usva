@@ -1,6 +1,7 @@
 "use client";
 import { type Step, StepList } from "@matt-pasek/usva";
-import * as React from "react";
+import { Box, PenLine, RefreshCw, Send, TrendingUp } from "lucide-react";
+import type * as React from "react";
 import { Playground } from "@/components/docs/playground";
 
 type Config = {
@@ -9,40 +10,12 @@ type Config = {
   icons: boolean;
 };
 
-const iconProps = {
-  viewBox: "0 0 24 24",
-  fill: "none",
-  stroke: "currentColor",
-  strokeWidth: 2,
-  strokeLinecap: "round" as const,
-  strokeLinejoin: "round" as const,
-  "aria-hidden": true,
-};
-
 const ICONS: React.ReactNode[] = [
-  <svg key="sketch" {...iconProps}>
-    <path d="M12 20h9" />
-    <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z" />
-  </svg>,
-  <svg key="build" {...iconProps}>
-    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z" />
-    <path d="m3.3 7 8.7 5 8.7-5" />
-    <path d="M12 22V12" />
-  </svg>,
-  <svg key="ship" {...iconProps}>
-    <path d="m22 2-7 20-4-9-9-4Z" />
-    <path d="M22 2 11 13" />
-  </svg>,
-  <svg key="measure" {...iconProps}>
-    <path d="M3 3v18h18" />
-    <path d="m7 15 4-4 3 3 5-6" />
-  </svg>,
-  <svg key="iterate" {...iconProps}>
-    <path d="M3 12a9 9 0 0 1 15-6.7L21 8" />
-    <path d="M21 3v5h-5" />
-    <path d="M21 12a9 9 0 0 1-15 6.7L3 16" />
-    <path d="M3 21v-5h5" />
-  </svg>,
+  <PenLine key="sketch" aria-hidden="true" strokeWidth={1.8} />,
+  <Box key="build" aria-hidden="true" strokeWidth={1.8} />,
+  <Send key="ship" aria-hidden="true" strokeWidth={1.8} />,
+  <TrendingUp key="measure" aria-hidden="true" strokeWidth={1.8} />,
+  <RefreshCw key="iterate" aria-hidden="true" strokeWidth={1.8} />,
 ];
 
 const POOL: Required<Pick<Step, "title" | "body">>[] = [

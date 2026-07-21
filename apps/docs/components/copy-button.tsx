@@ -1,38 +1,14 @@
 "use client";
 import { Button } from "@matt-pasek/usva";
+import { Check, Copy } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 const CopyIcon = () => (
-  <svg
-    viewBox="0 0 16 16"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="1.3"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    className="size-3.5"
-    aria-hidden="true"
-  >
-    <title>{""}</title>
-    <rect x="5.5" y="5.5" width="8" height="8" rx="1.5" />
-    <path d="M10.5 3.5A1.5 1.5 0 0 0 9 2H4a2 2 0 0 0-2 2v5a1.5 1.5 0 0 0 1.5 1.5" />
-  </svg>
+  <Copy className="size-3.5" strokeWidth={1.6} aria-hidden />
 );
 
 const CheckIcon = () => (
-  <svg
-    viewBox="0 0 16 16"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="1.6"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    className="size-3.5"
-    aria-hidden="true"
-  >
-    <title>{""}</title>
-    <path d="m3 8.5 3.5 3.5L13 4.5" />
-  </svg>
+  <Check className="size-3.5" strokeWidth={1.6} aria-hidden />
 );
 
 export interface CopyButtonProps {

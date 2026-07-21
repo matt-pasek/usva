@@ -1,32 +1,19 @@
 "use client";
 import { SulaFab, type SulaFabAction } from "@matt-pasek/usva";
+import { List, MessageSquare, Plus } from "lucide-react";
 import { Playground } from "@/components/docs/playground";
 
-function Glyph({ d }: { d: string }) {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      width="18"
-      height="18"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.75"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-    >
-      <path d={d} />
-    </svg>
-  );
-}
-
 const ACTIONS: SulaFabAction[] = [
-  { icon: <Glyph d="M12 5v14M5 12h14" />, label: "New note" },
-  { icon: <Glyph d="M4 7h16M4 12h16M4 17h10" />, label: "New list" },
   {
-    icon: (
-      <Glyph d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
-    ),
+    icon: <Plus aria-hidden="true" size={18} strokeWidth={1.75} />,
+    label: "New note",
+  },
+  {
+    icon: <List aria-hidden="true" size={18} strokeWidth={1.75} />,
+    label: "New list",
+  },
+  {
+    icon: <MessageSquare aria-hidden="true" size={18} strokeWidth={1.75} />,
     label: "Message",
   },
 ];
