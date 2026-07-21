@@ -1,99 +1,35 @@
 "use client";
 import { SulaNav, type SulaNavItem, type SulaNavView } from "@matt-pasek/usva";
+import { BookOpen, Contrast, Shapes, Sparkles, Type } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { CommandPalette } from "./command-palette";
 import { ThemeSwitcher } from "./ThemeSwitcher";
+import { Wordmark } from "./wordmark";
 
-const icon = (children: React.ReactNode) => (
-  <svg
-    viewBox="0 0 24 24"
-    width="20"
-    height="20"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="1.8"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    className="size-5 shrink-0"
-    aria-hidden="true"
-  >
-    <title>{""}</title>
-    {children}
-  </svg>
-);
+const ICON = "size-5 shrink-0";
 
 const ROUTES: SulaNavItem[] = [
   {
     href: "/docs",
     label: "docs",
-    icon: icon(
-      <>
-        <path d="M12 7.5v13" />
-        <path d="M12 7.5C12 5.6 10 4 7.5 4H3v12.5h4.5c2.5 0 4.5 1.6 4.5 4z" />
-        <path d="M12 7.5C12 5.6 14 4 16.5 4H21v12.5h-4.5c-2.5 0-4.5 1.6-4.5 4z" />
-      </>,
-    ),
+    icon: <BookOpen className={ICON} strokeWidth={1.8} aria-hidden />,
   },
   {
     href: "/design-language",
     label: "design language",
-    icon: icon(
-      <>
-        <path d="M3.5 13.5h7v7h-7z" />
-        <path d="M15 3.5 21 13h-12z" />
-      </>,
-    ),
+    icon: <Shapes className={ICON} strokeWidth={1.8} aria-hidden />,
   },
   {
     href: "/themes",
     label: "themes",
-    icon: icon(
-      <>
-        <circle cx="12" cy="12" r="8.5" />
-        <path
-          d="M12 3.5a8.5 8.5 0 0 1 0 17z"
-          fill="currentColor"
-          stroke="none"
-        />
-      </>,
-    ),
-  },
-  {
-    href: "/tokens",
-    label: "tokens",
-    icon: icon(
-      <>
-        <path d="M12 3 21 9.5 12 21 3 9.5z" />
-        <path d="M3 9.5h18" />
-        <path d="M9 9.5 12 21l3-11.5" />
-      </>,
-    ),
-  },
-  {
-    href: "/recipes",
-    label: "recipes",
-    icon: icon(
-      <>
-        <path d="M9.5 6.5H21" />
-        <path d="M9.5 12H21" />
-        <path d="M9.5 17.5H21" />
-        <circle cx="4.5" cy="6.5" r="1.4" />
-        <circle cx="4.5" cy="12" r="1.4" />
-        <circle cx="4.5" cy="17.5" r="1.4" />
-      </>,
-    ),
+    icon: <Contrast className={ICON} strokeWidth={1.8} aria-hidden />,
   },
   {
     href: "/studio",
     label: "studio",
-    icon: icon(
-      <>
-        <circle cx="12" cy="12" r="4" />
-        <path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5 19 19M19 5l-1.5 1.5M6.5 17.5 5 19" />
-      </>,
-    ),
+    icon: <Sparkles className={ICON} strokeWidth={1.8} aria-hidden />,
   },
 ];
 
@@ -101,7 +37,7 @@ const VIEWS: SulaNavView[] = [
   {
     href: "/",
     label: "usva",
-    icon: icon(<path d="M4 12h16" />),
+    icon: <Type className={ICON} strokeWidth={1.8} aria-hidden />,
     items: ROUTES,
   },
 ];
@@ -150,11 +86,7 @@ export function SiteNav({ onOpenSearch }: { onOpenSearch?: () => void }) {
         labelsFrom="xl"
         collapseBelow="md"
         menuLabel="Menu"
-        brand={
-          <>
-            usva<span className="text-accent-alt">.</span>
-          </>
-        }
+        brand={<Wordmark />}
         brandHref="/"
         brandLabel="usva, home"
         satellites={[

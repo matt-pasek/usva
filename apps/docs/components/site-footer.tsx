@@ -2,32 +2,35 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { counts } from "@/lib/catalog";
+import { Wordmark } from "./wordmark";
 
 const footerLink =
   "outline-none transition-tint duration-fast ease-soft hover:text-ink focus-visible:ring-focus";
 
 const GROUPS = [
   {
-    heading: "library",
-    links: [
-      { href: "/docs/components", label: "components" },
-      { href: "/tokens", label: "tokens" },
-      { href: "/themes", label: "themes" },
-      { href: "/recipes", label: "recipes" },
-    ],
-  },
-  {
-    heading: "language",
-    links: [
-      { href: "/design-language", label: "design language" },
-    ],
-  },
-  {
     heading: "start",
     links: [
       { href: "/docs/get-started", label: "get started" },
       { href: "/docs/get-started/installation", label: "installation" },
       { href: "/docs/get-started/for-agents", label: "for agents" },
+    ],
+  },
+  {
+    heading: "library",
+    links: [
+      { href: "/docs/components", label: "components" },
+      { href: "/themes", label: "themes" },
+      { href: "/studio", label: "studio" },
+    ],
+  },
+  {
+    heading: "design",
+    links: [
+      { href: "/design-language", label: "overview" },
+      { href: "/design-language/voice", label: "voice" },
+      { href: "/design-language/accessibility", label: "accessibility" },
+      { href: "/design-language/tokens", label: "tokens" },
     ],
   },
 ];
@@ -43,9 +46,9 @@ export function SiteFooter() {
           <div className="flex flex-col gap-2">
             <Link
               href="/"
-              className="text-lg font-semibold tracking-tight text-ink outline-none focus-visible:ring-focus"
+              className="text-lg"
             >
-              usva<span className="text-accent-alt">.</span>
+              <Wordmark />
             </Link>
             <p className="max-w-xs text-sm text-muted">
               a highly opinionated design system and component library, free to
