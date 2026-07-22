@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { CATALOG, THEMES } from "@/lib/catalog";
+import { CATALOG, SUB_EXPORTS, THEMES } from "@/lib/catalog";
 import { SITE_ORIGIN } from "@/lib/site";
 
 const pages = [
@@ -29,6 +29,7 @@ const routes = [
   ...pages,
   ...THEMES.map((theme) => `/themes/${theme}`),
   ...CATALOG.map((entry) => `/docs/components/${entry.slug}`),
+  ...SUB_EXPORTS.map((entry) => `/docs/components/${entry.slug}`),
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {

@@ -10,13 +10,27 @@ import {
   useRef,
   useState,
 } from "react";
-import { CATALOG, type CatalogEntry, LAYER_LABEL, THEMES } from "@/lib/catalog";
+import {
+  CATALOG,
+  type CatalogEntry,
+  LAYER_LABEL,
+  SUB_EXPORTS,
+  THEMES,
+} from "@/lib/catalog";
+import { DL_CHAPTERS, dlHref } from "@/lib/design-language";
 
-type Group = "components" | "atmospheres" | "themes" | "tokens" | "get started";
+type Group =
+  | "components"
+  | "atmospheres"
+  | "design language"
+  | "themes"
+  | "tokens"
+  | "get started";
 
 const GROUP_ORDER: Group[] = [
   "components",
   "atmospheres",
+  "design language",
   "themes",
   "tokens",
   "get started",
@@ -77,6 +91,22 @@ const componentResult = (entry: CatalogEntry): Result => ({
 
 const RESULTS: Result[] = [
   ...CATALOG.map(componentResult),
+  ...SUB_EXPORTS.map((sub) => ({
+    id: `component:${sub.slug}`,
+    group: "components" as const,
+    href: `/docs/components/${sub.slug}`,
+    label: sub.slug,
+    detail: `comes with ${sub.parent}`,
+    haystack: [sub.slug, sub.name, sub.parent],
+  })),
+  ...DL_CHAPTERS.map((chapter) => ({
+    id: `chapter:${chapter.slug}`,
+    group: "design language" as const,
+    href: dlHref(chapter.slug),
+    label: chapter.title,
+    detail: chapter.blurb,
+    haystack: [chapter.title, chapter.blurb, chapter.group],
+  })),
   ...THEMES.map((theme) => ({
     id: `theme:${theme}`,
     group: "themes" as const,

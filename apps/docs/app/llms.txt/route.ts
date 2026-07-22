@@ -1,9 +1,11 @@
+import { ROLE_NAMES } from "@matt-pasek/usva-tokens";
 import {
   byLayer,
   counts,
   INTENSITY_BY_LAYER,
   LAYER_LABEL,
   type Layer,
+  subExportsOf,
   THEMES,
 } from "@/lib/catalog";
 import { PACKAGE_NAME, registryUrl, SITE_ORIGIN } from "@/lib/site";
@@ -27,7 +29,13 @@ const layerSection = (layer: Layer): string => {
     const rules = entry.rules?.length
       ? entry.rules.map((rule) => `\n    ! ${rule}`).join("")
       : "";
-    return `- ${entry.slug} (${entry.name}): ${entry.summary}${provenance}\n    docs: ${SITE_ORIGIN}/docs/components/${entry.slug}\n    registry: ${registryUrl(entry.slug)}${rules}`;
+    const subs = subExportsOf(entry.slug)
+      .map(
+        (sub) =>
+          `\n    + ${sub.name}, included with this one: ${SITE_ORIGIN}/docs/components/${sub.slug}`,
+      )
+      .join("");
+    return `- ${entry.slug} (${entry.name}): ${entry.summary}${provenance}\n    docs: ${SITE_ORIGIN}/docs/components/${entry.slug}\n    registry: ${registryUrl(entry.slug)}${subs}${rules}`;
   });
   return [
     `## ${LAYER_LABEL[layer]} (${entries.length}) · intensity: ${INTENSITY_BY_LAYER[layer]}`,
@@ -59,7 +67,7 @@ const body = (): string =>
     "",
     "## Colour",
     "",
-    "24 semantic role tokens, never a raw hex. `ink` and `muted` clear 4.5:1 on every surface",
+    `${ROLE_NAMES.length} semantic role tokens, never a raw hex. \`ink\` and \`muted\` clear 4.5:1 on every surface`,
     "role and carry information. `faint` is decorative and must never be the only thing",
     `carrying meaning. Full table: ${SITE_ORIGIN}/design-language/color`,
     "",
@@ -71,6 +79,7 @@ const body = (): string =>
     "",
     "## Pages",
     "",
+    `- ${SITE_ORIGIN}/docs`,
     `- ${SITE_ORIGIN}/docs/get-started`,
     `- ${SITE_ORIGIN}/docs/get-started/installation`,
     `- ${SITE_ORIGIN}/docs/get-started/theming`,
@@ -87,6 +96,8 @@ const body = (): string =>
     `- ${SITE_ORIGIN}/design-language/wordmark`,
     `- ${SITE_ORIGIN}/design-language/accessibility`,
     `- ${SITE_ORIGIN}/design-language/tokens`,
+    `- ${SITE_ORIGIN}/themes`,
+    `- ${SITE_ORIGIN}/studio`,
     "",
   ].join("\n");
 

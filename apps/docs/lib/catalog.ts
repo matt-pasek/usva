@@ -615,6 +615,18 @@ export const CATALOG: CatalogEntry[] = [
   ...atmospheres,
 ];
 
+export const SUB_EXPORTS: { slug: string; name: string; parent: string }[] = [
+  { slug: "avatar-group", name: "AvatarGroup", parent: "avatar" },
+  { slug: "glow-card", name: "GlowCard", parent: "card" },
+  { slug: "reveal-group", name: "RevealGroup", parent: "reveal" },
+  { slug: "skeleton-mirror", name: "SkeletonMirror", parent: "skeleton" },
+];
+
+export const subExportsOf = (
+  slug: string,
+): { slug: string; name: string; parent: string }[] =>
+  SUB_EXPORTS.filter((entry) => entry.parent === slug);
+
 export const byLayer = (layer: Layer): CatalogEntry[] =>
   CATALOG.filter((entry) => entry.layer === layer);
 
