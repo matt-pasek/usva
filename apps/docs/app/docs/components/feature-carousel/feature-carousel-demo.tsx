@@ -31,8 +31,8 @@ const CARD_SETS: Record<(typeof SETS)[number], FeatureCard[]> = {
   ],
   single: [
     {
-      title: "One feature, held still",
-      body: "A lone card renders static, no rail, no timer.",
+      title: "one feature, held still",
+      body: "a lone card renders static, no rail, no timer.",
     },
   ],
 };

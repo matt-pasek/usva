@@ -33,9 +33,9 @@ const templates: Record<string, Config> = {
   },
   product: {
     ...base,
-    title: "Add usva to your stack.",
-    body: "One source, shipped two ways: an installed package and a copy-paste registry.",
-    ctaLabel: "Read the docs",
+    title: "add usva to your stack.",
+    body: "one source, shipped two ways: an installed package and a copy-paste registry.",
+    ctaLabel: "read the docs",
     footer: false,
   },
 };
@@ -49,9 +49,7 @@ const snippetFor = (c: Config): string => {
   lines.push(`  action={<Button>${c.ctaLabel}</Button>}`);
   if (c.footer) {
     if (c.footerLabel) lines.push(`  footerLabel="${c.footerLabel}"`);
-    lines.push(
-      `  footer={<><Chip>Fintech</Chip><Chip>Health</Chip></>}`,
-    );
+    lines.push(`  footer={<><Chip>Fintech</Chip><Chip>Health</Chip></>}`);
   }
   const imports = c.footer ? "Button, Chip, CtaBanner" : "Button, CtaBanner";
   return `import { ${imports} } from "@matt-pasek/usva";
@@ -89,13 +87,9 @@ export function CtaBannerDemo() {
           action={<Button>{c.ctaLabel}</Button>}
           footerLabel={c.footer ? c.footerLabel || undefined : undefined}
           footer={
-            c.footer ? (
-              <>
-                {PROOF.map((label) => (
-                  <Chip key={label}>{label}</Chip>
-                ))}
-              </>
-            ) : undefined
+            c.footer
+              ? PROOF.map((label) => <Chip key={label}>{label}</Chip>)
+              : undefined
           }
         />
       )}

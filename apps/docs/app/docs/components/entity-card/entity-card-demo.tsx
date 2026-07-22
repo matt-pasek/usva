@@ -30,7 +30,7 @@ const base: Config = {
   media: true,
   actions: true,
   title: "Aurora tokens",
-  body: "A layered token pipeline that emits Tailwind v4 and DTCG from one source of truth.",
+  body: "A layered token pipeline that emits Tailwind v4 and DTCG.",
 };
 
 const templates: Record<string, Config> = {
@@ -40,7 +40,7 @@ const templates: Record<string, Config> = {
     variant: "row",
     interactive: true,
     title: "Discrete Mathematics",
-    body: "MA-140 · 4 cr · a compact row that keeps media, meta, and title in one line-up.",
+    body: "MA-140 · 4 cr · tue & thu, 10:15",
   },
   showcase: {
     ...base,

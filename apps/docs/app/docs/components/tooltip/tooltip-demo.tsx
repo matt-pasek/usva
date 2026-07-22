@@ -19,7 +19,7 @@ const templates: Record<string, Config> = {
   hint: base,
   "further offset": {
     ...base,
-    content: "Sits further from the trigger",
+    content: "sits further from the trigger",
     sideOffset: 12,
   },
 };

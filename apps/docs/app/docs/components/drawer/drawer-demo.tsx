@@ -38,7 +38,7 @@ const templates: Record<string, Config> = {
     size: "lg",
     title: "Rebuilding the degree planner",
     description:
-      "The slide-up sheet is the same primitive anchored to another edge.",
+      "the slide-up sheet is the same primitive anchored to another edge.",
   },
   glass: { ...base, surface: "glass", title: "Filters" },
   "left rail": { ...base, side: "left", size: "sm", title: "Settings" },

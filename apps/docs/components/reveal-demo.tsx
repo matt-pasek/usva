@@ -23,10 +23,10 @@ export function RevealDemo() {
     <div className="flex flex-col gap-4">
       <div className="flex items-center gap-3">
         <Button size="sm" variant="soft" onClick={() => setRun((n) => n + 1)}>
-          Replay
+          replay
         </Button>
         <span className="text-xs text-muted">
-          Each reveal is assigned by content role, not position.
+          each reveal is assigned by content role, not position.
         </span>
       </div>
       <div key={run} className="grid gap-3 sm:grid-cols-2">

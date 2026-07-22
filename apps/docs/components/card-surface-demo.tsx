@@ -11,18 +11,19 @@ import {
 import * as React from "react";
 
 const options: { value: CardSurface; label: string }[] = [
-  { value: "elevated", label: "Elevated" },
-  { value: "flat", label: "Flat" },
-  { value: "glass", label: "Glass" },
-  { value: "outline", label: "Outline" },
+  { value: "elevated", label: "elevated" },
+  { value: "flat", label: "flat" },
+  { value: "glass", label: "glass" },
+  { value: "outline", label: "outline" },
 ];
 
 const blurb: Record<CardSurface, string> = {
   elevated:
-    "The default — lit-from-above fill, rim light, and a floating shadow.",
-  flat: "A quiet surface with no lift. The dashboard workhorse.",
-  glass: "Translucent, blurring whatever sits behind it. Use it purposefully.",
-  outline: "Transparent, carried by its border alone.",
+    "the default. lit-from-above fill, a rim light and a floating shadow.",
+  flat: "a quiet surface with no lift. the dashboard workhorse.",
+  glass:
+    "translucent, and it blurs whatever sits behind it. it needs something worth blurring.",
+  outline: "transparent, carried by its border alone.",
 };
 
 export function CardSurfaceDemo() {
@@ -35,9 +36,9 @@ export function CardSurfaceDemo() {
         items={options}
         value={surface}
         onValueChange={(v) => setSurface(v as CardSurface)}
-        aria-label="Card surface"
+        aria-label="card surface"
       />
-      {/* A patterned backdrop so glass + outline read honestly against something. */}
+      {/* A patterned backdrop so glass and outline have something to sit against. */}
       <div className="relative overflow-hidden rounded-xl border border-border bg-surface-2 p-6">
         <div
           aria-hidden="true"
@@ -46,7 +47,7 @@ export function CardSurfaceDemo() {
         <Card surface={surface} className="relative">
           <CardHeader>
             <CardEyebrow>surface = &quot;{surface}&quot;</CardEyebrow>
-            <CardTitle>Pick a surface</CardTitle>
+            <CardTitle>pick a surface</CardTitle>
           </CardHeader>
           <CardBody>
             <p className="text-sm text-muted">{blurb[surface]}</p>

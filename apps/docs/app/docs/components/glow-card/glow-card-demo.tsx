@@ -18,8 +18,8 @@ type Config = {
 
 const base: Config = {
   surface: "elevated",
-  eyebrow: "Interactive",
-  title: "Hover near the edges",
+  eyebrow: "interactive",
+  title: "hover near the edges",
 };
 
 const templates: Record<string, Config> = {

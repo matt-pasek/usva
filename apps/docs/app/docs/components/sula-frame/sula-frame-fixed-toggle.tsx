@@ -12,12 +12,12 @@ export function SulaFrameFixedToggle() {
         aria-pressed={on}
         className="w-fit rounded-lg bg-accent px-4 py-2 text-sm text-bg"
       >
-        {on ? "Remove the page frame" : "Frame the whole viewport"}
+        {on ? "remove the page frame" : "frame the whole viewport"}
       </button>
       <p className="text-xs text-muted">
         {on
-          ? "The liquid edge now hugs the browser viewport. Move the cursor to any edge to goo it, or turn it back off."
-          : "Turns on a position:fixed frame around this whole tab, inset by 12px."}
+          ? "the liquid edge now hugs the browser viewport. move the cursor to any edge to goo it, or turn it back off."
+          : "turns on a fixed frame around this whole tab, inset by 12px."}
       </p>
       {on ? <SulaFrame fixed inset={12} thickness={3} /> : null}
     </div>

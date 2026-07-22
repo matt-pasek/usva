@@ -11,17 +11,17 @@ import {
 import * as React from "react";
 
 const options: { value: CardHighlight; label: string }[] = [
-  { value: "none", label: "None" },
-  { value: "wash", label: "Wash" },
-  { value: "edge", label: "Edge" },
-  { value: "ring", label: "Ring" },
+  { value: "none", label: "none" },
+  { value: "wash", label: "wash" },
+  { value: "edge", label: "edge" },
+  { value: "ring", label: "ring" },
 ];
 
 const blurb: Record<CardHighlight, string> = {
-  none: "The default surface — rim light and floating shadow, no accent.",
-  wash: "A radial accent wash bleeds atmosphere across the surface.",
-  edge: "A single accent hairline lights the top edge.",
-  ring: "The accent glow ring hugs the whole border for a live, selected feel.",
+  none: "the default surface. rim light and floating shadow, no accent.",
+  wash: "a radial accent wash bleeds atmosphere across the surface.",
+  edge: "a single accent hairline lights the top edge.",
+  ring: "the accent glow ring hugs the whole border. reads as selected.",
 };
 
 export function CardHighlightDemo() {
@@ -34,12 +34,12 @@ export function CardHighlightDemo() {
         items={options}
         value={highlight}
         onValueChange={(v) => setHighlight(v as CardHighlight)}
-        aria-label="Card highlight"
+        aria-label="card highlight"
       />
       <Card highlight={highlight}>
         <CardHeader>
           <CardEyebrow>highlight = &quot;{highlight}&quot;</CardEyebrow>
-          <CardTitle>Pick a highlight</CardTitle>
+          <CardTitle>pick a highlight</CardTitle>
         </CardHeader>
         <CardBody>
           <p className="text-sm text-muted">{blurb[highlight]}</p>

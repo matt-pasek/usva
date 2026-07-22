@@ -26,8 +26,8 @@ export function GroundNote({ name }: { name: string }) {
       <div className="p-6 sm:p-10">
         <p className="text-sm text-muted">
           {name} is light in a void, and clay gives it nothing to be brighter
-          than. On savi it renders nothing at all, so the demos below keep a
-          dark ground of their own. Reach for kynnös or väre on this theme.
+          than. on savi it renders nothing at all, so the demos below keep a
+          dark ground of their own. reach for kynnös or väre on this theme.
         </p>
       </div>
     </div>

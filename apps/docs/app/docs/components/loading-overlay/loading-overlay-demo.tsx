@@ -89,7 +89,7 @@ export function LoadingOverlayDemo() {
       render={(c) => (
         <div className="relative h-56 w-full overflow-hidden rounded-2xl border border-border bg-surface p-6">
           <p className="text-sm text-muted">
-            Content underneath, dimmed by the overlay.
+            content underneath, dimmed by the overlay.
           </p>
           <LoadingOverlay
             contain="parent"

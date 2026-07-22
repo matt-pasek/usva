@@ -27,7 +27,7 @@ export function FieldGroupDemo() {
           />
         </FieldControl>
         <FieldDescription>
-          Type without an @ to trip the error state.
+          type without an @ to trip the error state.
         </FieldDescription>
         {invalid ? <FieldError>Enter a valid email address.</FieldError> : null}
       </FieldGroup>

@@ -35,20 +35,20 @@ const templates: Record<string, Config> = {
     ...base,
     surface: "glass",
     title: "Sign in",
-    description: "A blurred pane that keeps the page visible behind it.",
+    description: "a blurred pane that keeps the page visible behind it.",
     confirm: false,
   },
   "accent wash": {
     ...base,
     highlight: "wash",
     title: "You're invited",
-    description: "An accent wash warms the surface from the top corner.",
+    description: "an accent wash warms the surface from the top corner.",
   },
   "non-modal": {
     ...base,
     modal: "false",
     title: "Heads up",
-    description: "The page stays scrollable and clickable behind this one.",
+    description: "the page stays scrollable and clickable behind this one.",
     confirm: false,
   },
 };

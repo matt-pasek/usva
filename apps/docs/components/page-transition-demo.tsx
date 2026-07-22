@@ -24,7 +24,7 @@ function OverviewView() {
         <StatChip label="builds" value="18" />
       </div>
       <p className="max-w-prose text-sm leading-relaxed text-muted">
-        The summary at a glance. Switch tabs and the whole view lifts out while
+        the summary at a glance. switch tabs and the whole view lifts out while
         the next one fades up from below.
       </p>
     </div>

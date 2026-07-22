@@ -173,9 +173,9 @@ export function BackgroundDemo() {
   return (
     <PageHeader
       headingLevel="h2"
-      title="Bring your own"
+      title="bring your own"
       titleAccent="background."
-      meta="A gradient, a canvas, a shader. Anything you can render."
+      meta="a gradient, a canvas, a shader. anything you can render."
       background={
         <div className="absolute inset-0 bg-[radial-gradient(120%_160%_at_0%_0%,var(--color-accent),transparent_55%)]" />
       }
