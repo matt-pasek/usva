@@ -54,8 +54,7 @@ export default function ColorChapter() {
         <>
           {color.length} role tokens, and you never write a hex. you write a
           role, the theme decides what it means, and the same call site works in
-          all three. two of these rules are worth saying out loud, because they
-          are the two people get wrong.
+          all three.
         </>
       }
     >

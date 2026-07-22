@@ -7,7 +7,7 @@ import { THEMES } from "@/lib/catalog";
 export const metadata: Metadata = {
   title: "Wordmark · Design language",
   description:
-    "usva. the period is load-bearing: accent-alt made visible, the paired second voice. one specimen rendered in all three themes, and the four ways to get it wrong.",
+    "usva. The period is load-bearing: accent-alt made visible, the paired second voice. One specimen rendered in all three themes, and the four ways to get it wrong.",
 };
 
 const PERIOD_NOTE: Record<string, string> = {
@@ -33,7 +33,7 @@ export default function WordmarkChapter() {
           part. it is{" "}
           <code className="font-mono text-base text-ink">accent-alt</code> made
           visible: the paired second voice, the one that answers. the same mark
-          reads differently in each theme, and that is the point.
+          reads differently in each theme.
         </>
       }
     >

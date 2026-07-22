@@ -48,11 +48,11 @@ export function ColorRoles({ total }: { total: number }) {
             the two accents
           </h2>
           <p className="text-muted text-sm">
-            one accent is a monologue. two are a language. every place usva
-            shows its own construction, a token name, a registry slug, the
-            period in the wordmark, it uses the pair. what it is not for:
-            decorating things at random. if both accents are on screen and
-            neither means anything, you have spent the whole budget on nothing.
+            two accents, not one. every place usva shows its own construction, a
+            token name, a registry slug, the period in the wordmark, it uses the
+            pair. what it is not for: decorating things at random. if both
+            accents are on screen and neither means anything, you have spent the
+            whole budget on nothing.
           </p>
         </div>
         <div className="flex flex-col divide-y divide-border overflow-hidden rounded-lg border border-border bg-surface">

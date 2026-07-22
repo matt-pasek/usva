@@ -51,7 +51,7 @@ export function MotionTiers() {
         </Button>
         <p className="text-muted text-xs">
           {reduced
-            ? "reduced motion is on, so they all just arrive. that is the correct behaviour, and it is the same code."
+            ? "reduced motion is on, so they all just arrive. no separate path, the tokens go to zero."
             : "same distance, same trigger, three themes. watch kajo overshoot and sisu refuse to."}
         </p>
       </div>
