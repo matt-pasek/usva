@@ -2,6 +2,7 @@ import { CodeSnippet } from "@matt-pasek/usva";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { InstallBlock } from "@/components/install-block";
+import { counts } from "@/lib/catalog";
 import { PACKAGE_NAME } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -12,8 +13,8 @@ export const metadata: Metadata = {
 
 const packageWins = [
   "you want fixes and new variants to arrive with a bun update, not a diff review",
-  "you are using a lot of it, and 70 vendored files is not a codebase you want to own",
-  "you care that the registry source and the package source are asserted byte-identical in CI, and you would rather let the package be the one that moves",
+  `you are using a lot of it, and ${counts.total} vendored components is not a codebase you want to own`,
+  "you would rather the package be the thing that moves, and your tree stay still",
 ];
 
 const registryWins = [

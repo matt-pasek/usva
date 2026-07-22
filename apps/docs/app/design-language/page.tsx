@@ -25,7 +25,7 @@ const PRINCIPLES = [
   },
   {
     title: "coherence beats proliferation",
-    body: "I would rather have fifteen components you can predict than ninety you have to check. every new one has to earn its place against the ones already here, and most candidates lose.",
+    body: "I would rather have fifteen components you can predict than three hundred you have to check. every new one has to earn its place against the ones already here, and most candidates lose.",
   },
 ];
 
