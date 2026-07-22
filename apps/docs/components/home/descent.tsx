@@ -8,6 +8,7 @@ import {
   Button,
   Kajastus,
   Kynnos,
+  Loimu,
   Panel,
   ProgressRow,
 } from "@matt-pasek/usva";
@@ -558,10 +559,15 @@ function Star({
  * viewport, so nothing crops its light, and the ground fade at the bottom is
  * the horizon handing over to the page rather than a hard edge.
  */
+const ROOMS = {
+  kajo: { Atmosphere: Kajastus, word: "kajastus" },
+  sisu: { Atmosphere: Loimu, word: "loimu" },
+  savi: { Atmosphere: Kynnos, word: "kynnös" },
+} as const;
+
 function Room() {
   const { theme } = useTheme();
-  const ground = theme === "savi";
-  const Atmosphere = ground ? Kynnos : Kajastus;
+  const { Atmosphere, word } = ROOMS[theme] ?? ROOMS.kajo;
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -602,8 +608,7 @@ function Room() {
               standing in, and you are standing in one right now.
             </p>
             <p className="mt-3 font-mono text-xs text-ink/80">
-              ↳ {counts.atmospheres} of them. this one is{" "}
-              {ground ? "kynnös" : "kajastus"}.
+              ↳ {counts.atmospheres} of them. this one is {word}.
             </p>
           </Scrub>
 

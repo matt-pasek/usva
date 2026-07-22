@@ -67,9 +67,8 @@ export default function ColorChapter() {
             all {color.length} roles, three themes
           </h2>
           <p className="text-muted text-sm">
-            generated from the tokens package, so it cannot drift from what
-            ships. every swatch is live: each column is a real theme scope,
-            painting the same class.
+            every swatch is live: each column is a real theme scope, painting
+            the same class.
           </p>
         </div>
         <div className="overflow-x-auto rounded-lg border border-border">

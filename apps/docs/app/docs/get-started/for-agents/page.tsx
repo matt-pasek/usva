@@ -44,9 +44,7 @@ export default function ForAgentsPage() {
           </Link>
           . it lists all {counts.total} components with their layer, their
           intensity and a one line summary, plus the composition prohibitions
-          and the registry URL for each. it is generated from the same catalog
-          that renders this site, so it cannot advertise a component that does
-          not exist and it cannot miss one that does.
+          and the registry URL for each.
         </p>
       </section>
 

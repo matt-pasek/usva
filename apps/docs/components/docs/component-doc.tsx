@@ -205,7 +205,6 @@ export function ComponentDoc({
       <div className="mt-4 flex flex-wrap gap-1.5">
         <Pill accent>intensity · {resolvedIntensity}</Pill>
         <Pill>rsc · {client ? "client" : "server"}</Pill>
-        <Pill>a11y · verified</Pill>
         <Pill>since {since}</Pill>
       </div>
 

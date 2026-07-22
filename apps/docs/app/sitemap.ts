@@ -20,7 +20,9 @@ const pages = [
   "/docs/get-started/installation",
   "/docs/get-started/theming",
   "/docs/get-started/for-agents",
-  "/docs/get-started/index",
+  "/docs",
+  "/themes",
+  "/studio",
 ];
 
 const routes = [

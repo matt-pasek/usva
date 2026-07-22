@@ -92,7 +92,7 @@ export default function DesignLanguageHub() {
         >
           {LADDER.map(({ layer, blurb }, index) => (
             <div key={layer} className="flex items-center gap-4 p-4">
-              <span className="font-mono text-sm text-faint tabular-nums">
+              <span className="font-mono text-sm text-muted tabular-nums">
                 {index + 1}
               </span>
               <span className="w-28 shrink-0 font-mono text-[0.7rem] uppercase tracking-[0.14em] text-accent/80">
@@ -121,7 +121,7 @@ export default function DesignLanguageHub() {
               className="group flex flex-col gap-2 rounded-lg border border-border bg-surface p-5 transition-colors duration-150 ease-soft hover:border-border-strong"
             >
               <span className="flex items-baseline gap-2">
-                <span className="font-mono text-xs text-faint tabular-nums">
+                <span className="font-mono text-xs text-muted tabular-nums">
                   {chapter.number}
                 </span>
                 <span className="font-semibold text-ink group-hover:text-accent">
@@ -136,7 +136,10 @@ export default function DesignLanguageHub() {
             className="group flex flex-col gap-2 rounded-lg border border-border bg-surface p-5 transition-colors duration-150 ease-soft hover:border-border-strong"
           >
             <span className="flex items-baseline gap-2">
-              <span className="font-mono text-xs text-faint tabular-nums">
+              <span
+                aria-hidden="true"
+                className="font-mono text-xs text-faint tabular-nums"
+              >
                 ↗
               </span>
               <span className="font-semibold text-ink group-hover:text-accent">

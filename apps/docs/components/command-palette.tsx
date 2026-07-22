@@ -54,11 +54,6 @@ const GET_STARTED: { label: string; href: string; detail: string }[] = [
     href: "/docs/get-started/for-agents",
     detail: "llms.txt and the skill. no MCP server, and I will not pretend.",
   },
-  {
-    label: "index",
-    href: "/docs/get-started/index",
-    detail: "every component, one flat list.",
-  },
 ];
 
 const THEME_DETAIL: Record<(typeof THEMES)[number], string> = {

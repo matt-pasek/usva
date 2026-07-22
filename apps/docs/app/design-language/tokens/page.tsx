@@ -7,7 +7,7 @@ import { TokenReference } from "@/components/design-language/token-reference";
 export const metadata: Metadata = {
   title: "Tokens · Design language",
   description:
-    "The reference and the exports. Every non-colour token in one place, plus the DTCG and Tokens Studio files, generated from the tokens package so they cannot drift.",
+    "The reference and the exports. Every non-colour token in one place, plus the DTCG and Tokens Studio files.",
 };
 
 function Heading({ children }: { children: React.ReactNode }) {
