@@ -26,12 +26,14 @@ export function LexiconList() {
                   className="grid gap-1.5 p-5 sm:grid-cols-[9rem_1fr] sm:gap-6"
                 >
                   <dt className="flex flex-col gap-0.5">
-                    <span className="flex items-baseline gap-2">
+                    <span className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
                       <span className="font-semibold text-ink text-lg tracking-tight">
                         {entry.word}
                         <span className="text-accent-alt">.</span>
                       </span>
-                      <span className="text-muted text-xs">{entry.ipa}</span>
+                      <span className="whitespace-nowrap text-muted text-xs">
+                        {entry.ipa}
+                      </span>
                     </span>
                     <span className="font-mono text-[0.6rem] text-muted uppercase tracking-widest">
                       {entry.labels}

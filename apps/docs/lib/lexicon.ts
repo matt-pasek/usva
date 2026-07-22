@@ -4,10 +4,11 @@
  * copy) chosen so the word already behaves like the thing it labels. Pages read
  * their glosses from here.
  *
- * Rule for anything rendered to a user: give the sense and then our reading,
+ * Rule for anything rendered to a user: give the sense and then my reading,
  * as "X is Y, ...". Never "X is Finnish for Y" and never name the language.
+ * The voice is first person singular throughout: I, never we.
  *
- * A reading has two beats. `reading` is the phenomenon as we see it, written
+ * A reading has two beats. `reading` is the phenomenon as I see it, written
  * from what the thing actually does on screen rather than from the dictionary.
  * `psychology` is the leap: why that feeling belongs to this part of the system.
  */
@@ -28,7 +29,7 @@ export interface Lexeme {
   group: LexemeGroup;
   /** the plain sense of the word. */
   sense: string;
-  /** the phenomenon as we read it. */
+  /** the phenomenon as I read it. */
   reading: string;
   /** the psychology, not the physics: why this word, for this thing. */
   psychology: string;
