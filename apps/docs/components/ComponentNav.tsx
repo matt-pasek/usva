@@ -82,7 +82,7 @@ const componentGroups = (): Group[] => [
   layerGroup("pattern"),
   layerGroup("motion"),
   layerGroup("sula"),
-  layerGroup("atmosphere")
+  layerGroup("atmosphere"),
 ];
 
 function GroupHeader({ group }: { group: Group }) {
@@ -136,10 +136,7 @@ export function ComponentNav({ orientation = "vertical" }: Props) {
   const groups = componentGroups();
 
   if (orientation === "horizontal") {
-    const items = [
-      ...GET_STARTED,
-      ...groups.flatMap((g) => g.items),
-    ];
+    const items = [...GET_STARTED, ...groups.flatMap((g) => g.items)];
     return (
       <nav
         aria-label="Documentation"

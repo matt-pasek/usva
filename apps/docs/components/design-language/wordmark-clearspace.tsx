@@ -4,7 +4,8 @@ import { motion, useReducedMotion } from "motion/react";
 import { useEffect, useState } from "react";
 
 const INK = "leading-none [text-box:trim-both_ex_alphabetic]";
-const SLOT = "absolute top-1/2 -translate-y-1/2 grid size-[1ex] place-items-center";
+const SLOT =
+  "absolute top-1/2 -translate-y-1/2 grid size-[1ex] place-items-center";
 
 function GhostU({ id, rotate }: { id: string; rotate: number }) {
   return (
@@ -16,7 +17,9 @@ function GhostU({ id, rotate }: { id: string; rotate: number }) {
       transition={{ duration: 1.1, ease: "easeOut" }}
       className={`pointer-events-none select-none text-ink/15 ${INK}`}
     >
-      <span className="block" style={{ rotate: `${rotate}deg` }}>u</span>
+      <span className="block" style={{ rotate: `${rotate}deg` }}>
+        u
+      </span>
     </motion.span>
   );
 }
@@ -45,7 +48,10 @@ export function WordmarkClearspace() {
           <span className="relative inline-block">
             u
             {!inSlots && (
-              <span className="absolute inset-0 grid place-items-center" aria-hidden>
+              <span
+                className="absolute inset-0 grid place-items-center"
+                aria-hidden
+              >
                 <GhostU id="clearspace-l" rotate={-90} />
                 <GhostU id="clearspace-r" rotate={90} />
               </span>

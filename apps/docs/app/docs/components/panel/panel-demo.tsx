@@ -5,16 +5,50 @@ import { Playground } from "@/components/docs/playground";
 
 type RunStatus = "live" | "building" | "failed" | "queued";
 
-const runs: { branch: string; hash: string; when: string; status: RunStatus }[] =
-  [
-    { branch: "feat/docs", hash: "1ec3bbc", when: "just now", status: "building" },
-    { branch: "fix/hero-split", hash: "0df772e", when: "14m ago", status: "live" },
-    { branch: "chore/tokens", hash: "c74cf7c", when: "1h ago", status: "live" },
-    { branch: "feat/color-field", hash: "fa17ccd", when: "3h ago", status: "live" },
-    { branch: "fix/bento-grid", hash: "9d2d01e", when: "5h ago", status: "failed" },
-    { branch: "feat/segmented", hash: "8b21f04", when: "yesterday", status: "live" },
-    { branch: "chore/registry", hash: "a90c7d1", when: "yesterday", status: "queued" },
-  ];
+const runs: {
+  branch: string;
+  hash: string;
+  when: string;
+  status: RunStatus;
+}[] = [
+  {
+    branch: "feat/docs",
+    hash: "1ec3bbc",
+    when: "just now",
+    status: "building",
+  },
+  {
+    branch: "fix/hero-split",
+    hash: "0df772e",
+    when: "14m ago",
+    status: "live",
+  },
+  { branch: "chore/tokens", hash: "c74cf7c", when: "1h ago", status: "live" },
+  {
+    branch: "feat/color-field",
+    hash: "fa17ccd",
+    when: "3h ago",
+    status: "live",
+  },
+  {
+    branch: "fix/bento-grid",
+    hash: "9d2d01e",
+    when: "5h ago",
+    status: "failed",
+  },
+  {
+    branch: "feat/segmented",
+    hash: "8b21f04",
+    when: "yesterday",
+    status: "live",
+  },
+  {
+    branch: "chore/registry",
+    hash: "a90c7d1",
+    when: "yesterday",
+    status: "queued",
+  },
+];
 
 const statusStyle: Record<RunStatus, { dot: string; label: string }> = {
   live: { dot: "bg-accent-alt", label: "text-accent-alt" },
@@ -34,9 +68,7 @@ function DeploymentList() {
             className="flex items-center justify-between gap-4 border-b border-border/60 py-3 first:pt-0 last:border-0 last:pb-0"
           >
             <div className="flex min-w-0 items-center gap-3">
-              <span
-                className={cn("size-2 shrink-0 rounded-full", style.dot)}
-              />
+              <span className={cn("size-2 shrink-0 rounded-full", style.dot)} />
               <div className="min-w-0">
                 <p className="truncate text-sm font-medium text-ink">
                   {run.branch}

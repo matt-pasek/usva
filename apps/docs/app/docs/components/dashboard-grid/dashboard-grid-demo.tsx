@@ -71,11 +71,12 @@ function Widget({ label }: { label: string }) {
 }
 
 function seedFor(bounds: { columns: number; rows: number }): GridItem[] {
-  return SEED.reduce<GridItem[]>((placed, entry) => {
-    const clamped = clampItem(entry, bounds);
-    const slot = findOpenSlot(placed, clamped, bounds);
-    return slot ? [...placed, slot] : placed;
-  }, []);
+  const placed: GridItem[] = [];
+  for (const entry of SEED) {
+    const slot = findOpenSlot(placed, clampItem(entry, bounds), bounds);
+    if (slot) placed.push(slot);
+  }
+  return placed;
 }
 
 function Preview(c: Config) {

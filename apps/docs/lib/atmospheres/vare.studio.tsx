@@ -59,7 +59,7 @@ const green: VareConfig = {
 };
 
 const templates: Record<string, VareConfig> = {
-  "ground": green,
+  ground: green,
   "dimmed & slow": { ...green, speed: 0.6, opacity: 0.7 },
   "ignores pointer": { ...green, interactive: false },
   faster: { ...green, speed: 1.6 },

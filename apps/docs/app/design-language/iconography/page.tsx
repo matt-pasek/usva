@@ -70,11 +70,11 @@ export default function IconographyChapter() {
             Lucide
           </a>
           , taken at the usva grid: 24×24, stroke 1.8,{" "}
-          <code className="font-mono text-ink text-xs">currentColor</code>. every
-          glyph on this page is a live component off that set, so it inherits the
-          theme and there is no icon to redraw per brand. the wordmark is the one
-          exception, and it is not an icon at all: it is set in type, four
-          letters and an accent-alt period, never a path.
+          <code className="font-mono text-ink text-xs">currentColor</code>.
+          every glyph on this page is a live component off that set, so it
+          inherits the theme and there is no icon to redraw per brand. the
+          wordmark is the one exception, and it is not an icon at all: it is set
+          in type, four letters and an accent-alt period, never a path.
         </p>
       </section>
     </ChapterShell>

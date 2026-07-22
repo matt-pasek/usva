@@ -31,7 +31,7 @@ const ORNAMENT =
 const snippetFor = (c: Config): string => {
   const attrs = [
     c.attribution && `attribution="${c.attribution}"`,
-    c.ornament && "ornament={" + ORNAMENT + "}",
+    c.ornament && `ornament={${ORNAMENT}}`,
   ]
     .filter(Boolean)
     .join("\n  ");

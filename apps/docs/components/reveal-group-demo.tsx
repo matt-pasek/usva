@@ -7,14 +7,7 @@ import {
 } from "@matt-pasek/usva";
 import { Playground } from "@/components/docs/playground";
 
-const VARIANTS = [
-  "tick",
-  "veil",
-  "cast",
-  "surface",
-  "focus",
-  "lean",
-] as const;
+const VARIANTS = ["tick", "veil", "cast", "surface", "focus", "lean"] as const;
 
 const CARDS = [
   "Tokens",

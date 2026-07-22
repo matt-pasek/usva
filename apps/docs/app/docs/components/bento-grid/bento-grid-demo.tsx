@@ -27,9 +27,7 @@ const base: Config = {
   animate: true,
 };
 
-const contentSpans = (
-  c: Config,
-): [number, number, number] => {
+const contentSpans = (c: Config): [number, number, number] => {
   const side = c.columns - c.focalSpan;
   if (side <= 0) return [1, 1, Math.max(1, c.columns - 2)];
   if (c.focalRowSpan >= 2) return [side, side, c.columns];
@@ -156,46 +154,46 @@ export function BentoGridDemo() {
       render={(c) => {
         const [m1, m2, info] = contentSpans(c);
         return (
-        <BentoGrid columns={c.columns} className="w-full">
-          <BentoCard
-            span={c.focalSpan}
-            rowSpan={c.focalRowSpan}
-            highlight={c.highlight}
-          >
-            <BentoText
-              label="Problem"
-              title="Students could not see their whole degree."
-              body="Requirements were spread across four systems, none of which agreed with the others."
-            />
-          </BentoCard>
-          <BentoCard span={m1}>
-            <BentoMetric
-              key={`u-${c.animate}`}
-              animate={c.animate}
-              value="2.4"
-              suffix="k"
-              label="active users"
-            />
-          </BentoCard>
-          <BentoCard span={m2}>
-            <BentoMetric
-              key={`h-${c.animate}`}
-              animate={c.animate}
-              value="94"
-              suffix="%"
-              label="hit ratio"
-            />
-          </BentoCard>
-          <BentoCard span={info}>
-            <BentoInfo label="Stack">
-              <div className="flex flex-wrap gap-1.5">
-                <Chip>React</Chip>
-                <Chip>Tailwind</Chip>
-                <Chip>Base UI</Chip>
-              </div>
-            </BentoInfo>
-          </BentoCard>
-        </BentoGrid>
+          <BentoGrid columns={c.columns} className="w-full">
+            <BentoCard
+              span={c.focalSpan}
+              rowSpan={c.focalRowSpan}
+              highlight={c.highlight}
+            >
+              <BentoText
+                label="Problem"
+                title="Students could not see their whole degree."
+                body="Requirements were spread across four systems, none of which agreed with the others."
+              />
+            </BentoCard>
+            <BentoCard span={m1}>
+              <BentoMetric
+                key={`u-${c.animate}`}
+                animate={c.animate}
+                value="2.4"
+                suffix="k"
+                label="active users"
+              />
+            </BentoCard>
+            <BentoCard span={m2}>
+              <BentoMetric
+                key={`h-${c.animate}`}
+                animate={c.animate}
+                value="94"
+                suffix="%"
+                label="hit ratio"
+              />
+            </BentoCard>
+            <BentoCard span={info}>
+              <BentoInfo label="Stack">
+                <div className="flex flex-wrap gap-1.5">
+                  <Chip>React</Chip>
+                  <Chip>Tailwind</Chip>
+                  <Chip>Base UI</Chip>
+                </div>
+              </BentoInfo>
+            </BentoCard>
+          </BentoGrid>
         );
       }}
     />

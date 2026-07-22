@@ -41,8 +41,8 @@ export function IconSpecimens() {
 
       <div className="flex flex-col gap-3 rounded-lg border border-border bg-surface p-5">
         <p className="text-muted text-sm">
-          one glyph, inheriting. it takes the size of the text it sits in and the
-          colour of the role around it, because it is drawn in{" "}
+          one glyph, inheriting. it takes the size of the text it sits in and
+          the colour of the role around it, because it is drawn in{" "}
           <code className="font-mono text-ink text-xs">currentColor</code> and
           sized to match.
         </p>

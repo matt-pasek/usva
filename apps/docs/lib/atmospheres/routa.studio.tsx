@@ -50,7 +50,7 @@ const base: RoutaConfig = {
 };
 
 const templates: Record<string, RoutaConfig> = {
-  "ground": base,
+  ground: base,
   "dark key": { ...base, mode: "emissive" },
   "finer frost": { ...base, cellScale: 5.2, crackWidth: 0.038, uneven: 0.5 },
   "heavy heave": { ...base, heave: 0.12, cellScale: 2.9 },

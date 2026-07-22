@@ -1,7 +1,6 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { counts } from "@/lib/catalog";
 import { Wordmark } from "./wordmark";
 
 const footerLink =
@@ -44,10 +43,7 @@ export function SiteFooter() {
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-10 px-6 py-12 sm:px-10">
         <div className="flex flex-col gap-10 sm:flex-row sm:justify-between">
           <div className="flex flex-col gap-2">
-            <Link
-              href="/"
-              className="text-lg"
-            >
+            <Link href="/" className="text-lg">
               <Wordmark />
             </Link>
             <p className="max-w-xs text-sm text-muted">

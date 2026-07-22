@@ -4,7 +4,6 @@ import { Button, Kajastus } from "@matt-pasek/usva";
 import { motion, useReducedMotion, type Variants } from "motion/react";
 import Link from "next/link";
 import { Wordmark } from "@/components/wordmark";
-import { counts } from "@/lib/catalog";
 import { lexeme } from "@/lib/lexicon";
 
 const USVA = lexeme("usva");

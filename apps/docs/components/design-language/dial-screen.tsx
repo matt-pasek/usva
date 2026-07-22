@@ -18,8 +18,8 @@ import {
   ToolbarActions,
   ToolbarGroup,
 } from "@matt-pasek/usva";
-import { AnimatePresence, motion } from "motion/react";
 import { RotateCw, Workflow } from "lucide-react";
+import { AnimatePresence, motion } from "motion/react";
 import type * as React from "react";
 import { SULA_STOP } from "./dial-model";
 

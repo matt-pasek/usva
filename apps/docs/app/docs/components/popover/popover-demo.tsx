@@ -95,10 +95,7 @@ export function PopoverDemo() {
       ]}
       snippet={snippetFor}
       render={(c) => (
-        <Popover
-          key={`${c.side}-${c.align}-${c.sideOffset}`}
-          defaultOpen
-        >
+        <Popover key={`${c.side}-${c.align}-${c.sideOffset}`} defaultOpen>
           <Popover.Trigger className="rounded-md border border-border bg-surface px-4 py-2 text-sm text-ink transition-colors hover:bg-surface-2">
             Open popover
           </Popover.Trigger>
