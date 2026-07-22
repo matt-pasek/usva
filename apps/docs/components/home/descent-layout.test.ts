@@ -1,21 +1,38 @@
 import { describe, expect, test } from "vitest";
+import { byLayer } from "@/lib/catalog";
+import { LEXICON } from "@/lib/lexicon";
 import { ATMOSPHERE_LINKS } from "./descent-layout";
 
 describe("descent layout", () => {
   test("names every atmosphere in the catalog, lowercase", () => {
-    expect(ATMOSPHERE_LINKS.map((entry) => entry.slug).sort()).toEqual([
-      "hehku",
-      "kajastus",
-      "kuulto",
-      "kynnos",
-      "loimu",
-      "utu",
-      "vare",
-    ]);
+    expect(ATMOSPHERE_LINKS.map((entry) => entry.slug).sort()).toEqual(
+      byLayer("atmosphere")
+        .map((entry) => entry.slug)
+        .sort(),
+    );
 
     for (const entry of ATMOSPHERE_LINKS) {
       expect(entry.slug).toBe(entry.slug.toLowerCase());
+      expect(entry.word).toBe(entry.word.toLowerCase());
       expect(entry.descriptor).toBe(entry.descriptor.toLowerCase());
+    }
+  });
+
+  test("shows the lexicon's gloss rather than a second copy of it", () => {
+    for (const entry of ATMOSPHERE_LINKS) {
+      const lexeme = LEXICON.find((item) => item.word === entry.word);
+      expect(lexeme?.labels).toBe(entry.descriptor);
+    }
+  });
+
+  test("keeps the word's diacritics while the href stays ascii", () => {
+    const kynnos = ATMOSPHERE_LINKS.find((entry) => entry.slug === "kynnos");
+    const vare = ATMOSPHERE_LINKS.find((entry) => entry.slug === "vare");
+
+    expect(kynnos?.word).toBe("kynnös");
+    expect(vare?.word).toBe("väre");
+    for (const entry of ATMOSPHERE_LINKS) {
+      expect(entry.slug).toMatch(/^[a-z-]+$/);
     }
   });
 

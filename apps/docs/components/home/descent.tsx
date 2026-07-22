@@ -537,11 +537,11 @@ function Star({
       <motion.span style={reduced ? undefined : { y }} className="block">
         <Link
           href={`/docs/components/${entry.slug}`}
-          className="group flex flex-col items-center gap-1 rounded-md p-2 outline-none focus-visible:ring-focus"
+          className="group flex flex-col items-center gap-1 whitespace-nowrap rounded-md p-2 outline-none focus-visible:ring-focus"
           style={{ textShadow: "0 2px 14px var(--usva-bg)" }}
         >
           <span className="text-xl font-extrabold tracking-[-0.03em] text-ink/65 transition-tint group-hover:text-ink sm:text-2xl">
-            {entry.slug}
+            {entry.word}
           </span>
           <span className="font-mono text-[0.6875rem] uppercase tracking-[0.18em] text-muted transition-tint group-hover:text-ink">
             {entry.descriptor}
