@@ -139,7 +139,7 @@ export function Fork() {
             <ul className="flex flex-col gap-2">
               <Trait>source lands in your tree</Trait>
               <Trait>fork freely, no upstream</Trait>
-              <Trait>ci asserts parity with the package</Trait>
+              <Trait>identical to the package source</Trait>
             </ul>
           </motion.div>
         </div>

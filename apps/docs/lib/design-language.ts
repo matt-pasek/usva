@@ -82,7 +82,7 @@ export const DL_CHAPTERS: DLChapter[] = [
     number: "10",
     title: "accessibility",
     group: "the practice",
-    blurb: "the floor, checked by a machine.",
+    blurb: "the floor is AA.",
   },
   {
     slug: "tokens",

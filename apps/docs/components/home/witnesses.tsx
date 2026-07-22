@@ -409,7 +409,7 @@ export function Witnesses() {
           </Scrub>
           <Scrub>
             <p className="mt-5 max-w-2xl text-muted">
-              a design system has one honest credential:{" "}
+              the test of a design system is{" "}
               <span className="text-ink">what it already runs</span>. usva runs{" "}
               <span className="text-ink">
                 two apps that pull in opposite directions

@@ -57,9 +57,8 @@ export default function ForAgentsPage() {
           the plan is a skill file that lives in the repo: the intensity rules,
           the one-sula-per-region prohibition, the token tiers, and the registry
           commands, in the format a coding agent already knows how to load. it
-          is not written. when it is, it will be in the repository rather than
-          behind a service, so it can be vendored, read and diffed like any
-          other file.
+          is not written. when it is, it will live in the repository, so you can
+          vendor it and diff it like any other file.
         </p>
       </section>
 

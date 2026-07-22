@@ -34,19 +34,13 @@ export default function AccessibilityChapter() {
     <ChapterShell
       slug="accessibility"
       shapedBy={["personal-website", "sisu-plus"]}
-      lede={
-        <>
-          beauty that stays usable is not a slogan, it is a constraint. the
-          floor is AA, and it is checked by a machine rather than a promise.
-        </>
-      }
+      lede={<>beauty that stays usable has a floor, and the floor is AA.</>}
     >
       <section className="flex flex-col gap-4">
         <div className="flex max-w-2xl flex-col gap-2">
           <Heading>the contrast matrix</Heading>
           <p className="text-muted text-sm">
-            every text tier against every surface, in each theme. if a
-            pairing ever failed, this table would be the first to say so.
+            every text tier against every surface, in each theme.
           </p>
         </div>
         <ContrastMatrix />
