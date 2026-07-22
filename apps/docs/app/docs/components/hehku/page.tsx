@@ -68,11 +68,10 @@ export default function HehkuPage() {
       client
       description={
         <>
-          one continuous ribbon of light, a closed torus knot heated like a
-          filament, coiling slowly through void with no ends and no seam. thin
-          runs are cold violet; where the coil bunches and looks through itself
-          the accumulated light blooms toward white. the quieter of the two kajo
-          backgrounds.
+          one continuous ribbon of light heated like a filament, coiling slowly
+          through the void with no ends and no seam. thin runs are cold violet;
+          where the coil bunches and looks through itself the light gathers and
+          blooms toward white.
         </>
       }
       composition={{
@@ -100,7 +99,7 @@ export default function HehkuPage() {
       }
     >
       <div className="mt-9">
-        <GroundNote name="Hehku" />
+        <GroundNote name="hehku" />
       </div>
 
       <HehkuPlayground />

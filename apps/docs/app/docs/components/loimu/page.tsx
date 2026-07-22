@@ -27,7 +27,7 @@ const props = [
     name: "interactive",
     type: "boolean",
     defaultValue: "true",
-    desc: "adds a vortex to the curl field at the eased cursor; the streamers bend toward it from a distance.",
+    desc: "the streamers bend toward your cursor from a distance, following it with a lag.",
   },
   {
     name: "opacity",
@@ -59,11 +59,10 @@ export default function LoimuPage() {
       client
       description={
         <>
-          light arrives from something enormous and off-frame, already organised
-          into long parallel streamers advected by a curl field, and decays to
-          nothing before the frame edge. it is designed to sit under a
-          three-layer CSS scrim that keeps one diagonal wedge and destroys the
-          rest: <b>the scrim does the cutting, never the shader</b>.
+          light arrives from something enormous and off-frame, drawn into long
+          parallel streamers that decay to nothing before the edge. it expects a
+          scrim over it, keeping one diagonal wedge and cutting the rest:{" "}
+          <b>the scrim does that work, never the atmosphere</b>.
         </>
       }
       composition={{
@@ -90,7 +89,7 @@ export default function LoimuPage() {
         </>
       }
     >
-      <GroundNote name="Loimu" />
+      <GroundNote name="loimu" />
 
       <LoimuPlayground />
 

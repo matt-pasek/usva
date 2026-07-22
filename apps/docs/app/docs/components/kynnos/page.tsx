@@ -66,10 +66,9 @@ export default function KynnosPage() {
       description={
         <>
           freshly turned earth, still spinning on a wheel far slower than you
-          first notice. a screen-space heightfield lit by one raking key, with
-          Oren-Nayar diffuse, crevice occlusion and no specular term anywhere.
-          the light is the dial: a theme swap flips clay to brushed metal
-          without touching the shader.
+          first notice. one low raking light does all of it, and the ground
+          keeps no shine of its own. swap the theme and the same furrows read as
+          clay, or as brushed metal.
         </>
       }
       composition={{

@@ -58,12 +58,11 @@ export default function VarePage() {
       client
       description={
         <>
-          a few broad wavefronts cross the frame from off-frame right and
-          interfere. on a dark ground the iso-phase crests emit; on savi the
-          same phases become relief pressed into clay, troughs holding a warm
-          damp pigment. <b>the failure mode is moire</b>: the domain warp, the
-          per-front jitter and the thickness noise are the defences, and taking
-          them to zero snaps the bands into a diagram.
+          a few broad wavefronts cross the frame from off to the right and
+          interfere. on a dark ground the crests glow; on savi the same ripples
+          press into clay, troughs holding a warm damp pigment.{" "}
+          <b>it needs its irregularity</b>: tune that out and the bands snap
+          into a striped diagram.
         </>
       }
       composition={{

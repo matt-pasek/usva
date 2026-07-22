@@ -32,7 +32,7 @@ const props = [
     name: "bands",
     type: "number",
     defaultValue: "5",
-    desc: "how many glowing contour-shells stack through the body.",
+    desc: "how many glowing bands stack through the body.",
   },
   {
     name: "colors",
@@ -64,9 +64,9 @@ export default function UtuPage() {
       client
       description={
         <>
-          morning fog made into a field. on dark ground it is one luminous body,
-          raymarched as stacked contour-shells; on savi the same density reads
-          as damp soaking into clay, transparent where the ground stayed dry.
+          morning fog made into a field. on dark ground it is one luminous body
+          with depth you can see into; on savi the same density reads as damp
+          soaking into clay, transparent where the ground stayed dry.
         </>
       }
       composition={{

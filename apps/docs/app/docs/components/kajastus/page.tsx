@@ -65,9 +65,9 @@ export default function KajastusPage() {
         <>
           the glow spreading along the horizon, arrived overhead: a curved roof
           of folded light arching over the viewport and running off past both
-          edges, bright where a fold turns and you look through more of it. the
-          kajo showpiece and the heaviest atmosphere in the library. a corridor
-          of low density is cut through the field so the header type keeps its ground.
+          edges, bright where a fold turns and you look through more of it. a
+          corridor of low density runs through the middle, so header type keeps
+          its ground.
         </>
       }
       composition={{
@@ -78,6 +78,7 @@ export default function KajastusPage() {
         no: [
           "never on a ground it cannot outshine. on savi it renders nothing",
           "one vault per page. it is the room, nothing else competes",
+          "the most expensive of the eight to draw. give it a page worth the cost, and do not pair it with a second moving field",
         ],
       }}
       a11y={
@@ -95,7 +96,7 @@ export default function KajastusPage() {
       }
     >
       <div className="mt-9">
-        <GroundNote name="Kajastus" />
+        <GroundNote name="kajastus" />
       </div>
 
       <KajastusPlayground />
