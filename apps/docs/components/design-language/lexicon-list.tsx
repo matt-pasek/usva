@@ -5,6 +5,7 @@ const GROUPS: { group: LexemeGroup; label: string }[] = [
   { group: "theme", label: "the three registers" },
   { group: "atmosphere", label: "the atmospheres" },
   { group: "material", label: "the fluid material" },
+  { group: "motion", label: "the motion" },
 ];
 
 export function LexiconList() {
@@ -36,9 +37,14 @@ export function LexiconList() {
                       {entry.labels}
                     </span>
                   </dt>
-                  <dd className="text-muted text-sm leading-relaxed">
-                    <span className="text-ink">{entry.sense}.</span>
-                    {entry.reading ? ` ${entry.reading}` : ""}
+                  <dd className="flex flex-col gap-2 text-muted text-sm leading-relaxed">
+                    <p>
+                      <span className="text-ink">{entry.sense}.</span>{" "}
+                      {entry.reading}
+                    </p>
+                    <p className="border-border border-l-2 pl-3 text-muted">
+                      {entry.psychology}
+                    </p>
                   </dd>
                 </div>
               ))}

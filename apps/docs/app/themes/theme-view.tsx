@@ -31,6 +31,9 @@ export function ThemeView({
             <span className="text-base text-muted">{word?.ipa}</span>{" "}
             <span className="text-muted">({word?.sense})</span>. {word?.reading}
           </p>
+          <p className="max-w-2xl border-border border-l-2 pl-4 text-muted">
+            {word?.psychology}
+          </p>
           {doc.body.map((paragraph) => (
             <p key={paragraph.slice(0, 24)} className="max-w-2xl text-muted">
               {paragraph}
