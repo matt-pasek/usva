@@ -7,7 +7,7 @@ import { ChecklistCardDemo } from "./checklist-card-demo";
 export const metadata: Metadata = {
   title: "Checklist Card",
   description:
-    "A card of short, ticked reassurances for the feature and privacy claims on a landing page.",
+    "Short ticked reassurances as a real list, so the reader gets the count and the order.",
 };
 
 const props = [

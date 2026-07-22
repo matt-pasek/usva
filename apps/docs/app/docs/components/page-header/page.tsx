@@ -13,7 +13,7 @@ import {
 export const metadata: Metadata = {
   title: "Page Header",
   description:
-    "The header a view opens with: an eyebrow, title, stats, an aside, and an editable control tray.",
+    "The top of a screen: eyebrow, title, the stats worth reading first, an aside, and an editable control tray.",
 };
 
 const props = [

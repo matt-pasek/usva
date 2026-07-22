@@ -7,7 +7,7 @@ import { BadgeDemo } from "./badge-demo";
 export const metadata: Metadata = {
   title: "Badge",
   description:
-    "A compact status label with six semantic tones and a monospace uppercase variant for tags and metadata.",
+    "The status of the thing it sits on. Six semantic tones, plus a monospace uppercase variant for tags and metadata. It labels, it never clicks.",
 };
 
 const props = [

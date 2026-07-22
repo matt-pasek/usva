@@ -7,7 +7,7 @@ import { ToolbarDemo } from "./toolbar-demo";
 export const metadata: Metadata = {
   title: "Toolbar",
   description:
-    "A horizontal action bar over a working surface: grouped controls on the left, a trailing actions cluster on the right.",
+    "The controls above a view: grouped filters, counts and a legend on the left, actions on the right.",
 };
 
 const props = [
@@ -47,8 +47,8 @@ export default function ToolbarPage() {
       description={
         <>
           a horizontal bar over a working surface: groups of related controls on
-          the left, a trailing actions cluster on the right, and it wraps instead
-          of clipping.
+          the left, a trailing actions cluster on the right, and it wraps
+          instead of clipping.
         </>
       }
       composition={{

@@ -9,7 +9,7 @@ import { SulaLoaderDemo } from "./sula-loader-demo";
 export const metadata: Metadata = {
   title: "Sula Loader",
   description:
-    "A liquid-glass loader for a wait you want felt, looping only while it is mounted.",
+    "For a wait you want felt. A liquid-glass metaball spinner that loops only while it is mounted.",
 };
 
 const props = [

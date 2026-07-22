@@ -7,7 +7,7 @@ import { EmptyStateDemo } from "./empty-state-demo";
 export const metadata: Metadata = {
   title: "Empty State",
   description:
-    "A centered placeholder for a zero-data view: an icon, a message, and the one action that fills it.",
+    "Nothing here yet, and the one thing to do about it: an icon, a message, and a single action.",
 };
 
 const props = [

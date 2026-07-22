@@ -7,7 +7,7 @@ import { CheckboxDemo } from "./checkbox-demo";
 export const metadata: Metadata = {
   title: "Checkbox",
   description:
-    "An accessible checkbox primitive with label and description support, built on Base UI Checkbox + Field.",
+    "An independent yes or no, for options that do not exclude each other. Label and description support, on Base UI Checkbox and Field.",
 };
 
 const props = [

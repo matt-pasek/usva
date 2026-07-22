@@ -7,7 +7,7 @@ import { SelectDemo } from "./select-demo";
 export const metadata: Metadata = {
   title: "Select",
   description:
-    "A trigger that opens a listbox to pick one value from a list.",
+    "One value out of many, when the list is too long to lay out flat.",
 };
 
 const props = [

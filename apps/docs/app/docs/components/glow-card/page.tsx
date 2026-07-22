@@ -7,7 +7,7 @@ import { GlowCardDemo } from "./glow-card-demo";
 export const metadata: Metadata = {
   title: "Glow Card",
   description:
-    "A Card whose border lights up on the edge facing the pointer, so a single card earns the directional glow the BentoGrid shares across a grid.",
+    "A Card whose border lights the edge facing your pointer, so one card earns the directional glow BentoGrid shares across a grid.",
 };
 
 const props = [

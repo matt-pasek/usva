@@ -7,7 +7,7 @@ import { SulaNavDemo } from "./sula-nav-demo";
 export const metadata: Metadata = {
   title: "Sula Nav",
   description:
-    "A navigation bar whose parts merge and pinch apart as you move between views.",
+    "Navigation whose parts merge and pinch apart as you move between views.",
 };
 
 const props = [

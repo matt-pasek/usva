@@ -7,7 +7,7 @@ import { ButtonDemo } from "./button-demo";
 export const metadata: Metadata = {
   title: "Button",
   description:
-    "The primary action primitive with six variants, three sizes, and a built-in loading, success and error machine.",
+    "The one thing you want pressed. Six variants, three sizes, and a built-in loading, success and error machine.",
 };
 
 const props = [

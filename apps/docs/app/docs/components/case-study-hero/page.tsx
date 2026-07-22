@@ -7,7 +7,7 @@ import { CaseStudyHeroDemo } from "./case-study-hero-demo";
 export const metadata: Metadata = {
   title: "Case Study Hero",
   description:
-    "The opener at the top of a case study: a two-tone display headline keyed to the study's own color, with eyebrow, tagline, meta, and media slots.",
+    "Opens a piece of work with a two-tone display headline keyed to the study's own colour, over eyebrow, tagline, meta and media slots.",
 };
 
 const props = [
@@ -98,8 +98,8 @@ export default function CaseStudyHeroPage() {
       }}
       a11y={
         <>
-          headingLevel keeps the outline honest · the link renders once, never
-          per breakpoint · external links get{" "}
+          headingLevel keeps the document outline correct · the link renders
+          once, never per breakpoint · external links get{" "}
           <code className="font-mono text-xs">rel="noopener noreferrer"</code>{" "}
           and a screen-reader new-tab hint
         </>

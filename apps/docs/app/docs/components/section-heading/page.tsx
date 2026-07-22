@@ -8,7 +8,7 @@ import { PropsTable } from "@/components/docs/props-table";
 export const metadata: Metadata = {
   title: "Section Heading",
   description:
-    "A display heading: a mono uppercase eyebrow over a large fluid title, to open a section.",
+    "The loud way to start a section: a mono uppercase eyebrow over a large fluid display title.",
 };
 
 const props = [

@@ -7,7 +7,7 @@ import { HintPopoverDemo } from "./hint-popover-demo";
 export const metadata: Metadata = {
   title: "Hint Popover",
   description:
-    "A hint that appears on hover, like a tooltip, but with room for a button you can actually click.",
+    "The explanation a tooltip cannot hold, because this one has a button you can actually click.",
 };
 
 const props = [

@@ -7,7 +7,7 @@ import { DisclosureRowDemo } from "./disclosure-row-demo";
 export const metadata: Metadata = {
   title: "Disclosure Row",
   description:
-    "A row that expands to reveal a panel beneath it, with the whole row as the toggle.",
+    "A row that opens. The chevron and the expanded state, with the whole row as the toggle.",
 };
 
 const props = [

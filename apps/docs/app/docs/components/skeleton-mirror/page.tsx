@@ -77,10 +77,10 @@ export default function SkeletonMirrorPage() {
       }}
       a11y={
         <>
-          a labelled{" "}
-          <code className="font-mono text-xs">role="status"</code> region · the
-          greyed markup is <code className="font-mono text-xs">aria-hidden</code>{" "}
-          · the sheen stops under reduced motion
+          a labelled <code className="font-mono text-xs">role="status"</code>{" "}
+          region · the greyed markup is{" "}
+          <code className="font-mono text-xs">aria-hidden</code> · the sheen
+          stops under reduced motion
         </>
       }
       dependencies={<>Skeleton from the same package</>}

@@ -7,7 +7,7 @@ import { SulaFrameDemo } from "./sula-frame-demo";
 export const metadata: Metadata = {
   title: "Sula Frame",
   description:
-    "A liquid border that hugs a card, or the whole viewport, and leans toward your cursor.",
+    "Hugs a card, or the whole viewport, with a liquid border that leans toward your cursor.",
 };
 
 const props = [

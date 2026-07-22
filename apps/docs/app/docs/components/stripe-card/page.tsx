@@ -7,7 +7,7 @@ import { StripeCardDemo } from "./stripe-card-demo";
 export const metadata: Metadata = {
   title: "Stripe Card",
   description:
-    "A compact row-card for one entity, with a leading color stripe that keys it to a category.",
+    "A card keyed by colour so a long list sorts by eye. The stripe is data, not decoration.",
 };
 
 const props = [

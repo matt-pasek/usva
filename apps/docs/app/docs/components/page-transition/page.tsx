@@ -8,7 +8,7 @@ import { PageTransitionDemo } from "@/components/page-transition-demo";
 export const metadata: Metadata = {
   title: "Page Transition",
   description:
-    "A route transition that fades and lifts content in, then softly out, keyed on a routeKey so it works with any router.",
+    "Fades and lifts content in, then softly out, keyed on any routeKey so it works with any router.",
 };
 
 const usage = `"use client";

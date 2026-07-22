@@ -7,7 +7,7 @@ import { SulaFabDemo } from "./sula-fab-demo";
 export const metadata: Metadata = {
   title: "Sula Fab",
   description:
-    "A floating action button whose actions emerge as liquid beads and pinch back on close.",
+    "Actions that emerge as liquid beads from a floating button, and pinch back on close.",
 };
 
 const props = [

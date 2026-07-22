@@ -7,7 +7,7 @@ import { BentoGridDemo } from "./bento-grid-demo";
 export const metadata: Metadata = {
   title: "Bento Grid",
   description:
-    "A responsive bento grid whose cards share one accent wash and hover shine, so a wall of cards reads as a single lit surface.",
+    "Cells of different weights in one grid, sharing one accent wash and hover shine so a wall of cards reads as a single lit surface.",
 };
 
 const props = [

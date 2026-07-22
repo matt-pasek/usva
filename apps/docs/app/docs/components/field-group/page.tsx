@@ -8,7 +8,7 @@ import { FieldGroupDemo } from "./field-group-demo";
 export const metadata: Metadata = {
   title: "Field Group",
   description:
-    "A form field that keeps its label, control, description, and error message together as one accessible unit.",
+    "Label, control, description and error, wired together as one accessible unit.",
 };
 
 const props = [

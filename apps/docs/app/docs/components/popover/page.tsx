@@ -7,7 +7,7 @@ import { PopoverDemo } from "./popover-demo";
 export const metadata: Metadata = {
   title: "Popover",
   description:
-    "A small panel you click open, anchored to its trigger, with the page still live behind it.",
+    "Rich content anchored to a trigger, clickable, with the page still live behind it.",
 };
 
 const props = [

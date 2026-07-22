@@ -7,7 +7,7 @@ import { StatBentoDemo } from "./stat-bento-demo";
 export const metadata: Metadata = {
   title: "Stat Bento",
   description:
-    "A strip of headline numbers: big values with accent suffixes and a short label under each.",
+    "The numbers you lead with, at display scale: big values with accent suffixes and a short label under each.",
 };
 
 const props = [

@@ -7,7 +7,7 @@ import { FooterDemo } from "./footer-demo";
 export const metadata: Metadata = {
   title: "Footer",
   description:
-    "A marketing footer: brand slot, titled link columns or a flat row, and an optional bottom bar.",
+    "The bottom of the site: a brand slot, titled link columns when there is a lot, one flat row when there is not.",
 };
 
 const props = [

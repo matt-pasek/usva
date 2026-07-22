@@ -7,7 +7,7 @@ import { RoadmapTimelineDemo } from "./roadmap-timeline-demo";
 export const metadata: Metadata = {
   title: "Roadmap Timeline",
   description:
-    "A status board of milestones, joined by a connector track that fills up to wherever you are now.",
+    "What shipped, what is in flight, what is planned, joined by a connector track that fills up to wherever you are now.",
 };
 
 const props = [

@@ -7,7 +7,7 @@ import { HeroSplitDemo } from "./hero-split-demo";
 export const metadata: Metadata = {
   title: "Hero Split",
   description:
-    "The landing hero: copy on one side, a product visual on the other, over an optional background slot.",
+    "Copy on one side, the proof on the other, over an optional background. Both sized off the container rather than the window.",
 };
 
 const props = [

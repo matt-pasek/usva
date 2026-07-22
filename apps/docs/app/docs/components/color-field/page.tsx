@@ -7,7 +7,7 @@ import { ColorFieldDemo } from "./color-field-demo";
 export const metadata: Metadata = {
   title: "Color Field",
   description:
-    "A native color swatch paired with a validated hex input. Built for overriding a role token, not for hardcoding a color onto a component.",
+    "Picks a colour and shows you the value. The swatch is the control, and it is for overriding a role token, never for hardcoding one.",
 };
 
 const props = [

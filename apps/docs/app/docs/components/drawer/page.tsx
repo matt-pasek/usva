@@ -7,7 +7,7 @@ import { DrawerDemo } from "./drawer-demo";
 export const metadata: Metadata = {
   title: "Drawer",
   description:
-    "An edge-anchored modal panel built on Base UI Dialog, with focus trap, scroll lock and Escape handled for you.",
+    "Slides in from an edge and behaves like a dialog: focus trap, scroll lock and Escape, handled for you.",
 };
 
 const props = [
@@ -50,7 +50,8 @@ export default function DrawerPage() {
       description={
         <>
           the same anatomy as Dialog, pinned to an edge instead of centered. a
-          panel slides in from any side; a bottom sheet is just side=&quot;bottom&quot;.
+          panel slides in from any side; a bottom sheet is just
+          side=&quot;bottom&quot;.
         </>
       }
       composition={{

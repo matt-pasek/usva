@@ -7,7 +7,7 @@ import { EntityCardDemo } from "./entity-card-demo";
 export const metadata: Metadata = {
   title: "Entity Card",
   description:
-    "A card you assemble from parts (media, meta, title, body, actions) that render as a project tile, list row, or showcase card.",
+    "Media, meta, title, body, actions. Assemble them into a project tile, a list row, or a showcase card.",
 };
 
 const props = [

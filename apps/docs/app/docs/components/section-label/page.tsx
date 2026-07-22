@@ -8,7 +8,7 @@ import { PropsTable } from "@/components/docs/props-table";
 export const metadata: Metadata = {
   title: "Section Label",
   description:
-    "A heading row that names a region: an optional mono index, an uppercase title, an accent hairline, and a trailing aside.",
+    "The quiet way to start a section: an optional mono index, an uppercase title, an accent hairline, and a trailing aside.",
 };
 
 const props = [
@@ -51,8 +51,8 @@ export default function SectionLabelPage() {
       description={
         <>
           a heading row that names a region: a mono index, a title, an accent
-          hairline, and a trailing aside. add a description and it becomes a full
-          section header.
+          hairline, and a trailing aside. add a description and it becomes a
+          full section header.
         </>
       }
       composition={{

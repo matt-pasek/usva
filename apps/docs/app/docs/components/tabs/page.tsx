@@ -7,7 +7,7 @@ import { TabsDemo } from "./tabs-demo";
 export const metadata: Metadata = {
   title: "Tabs",
   description:
-    "A row of tabs that shows one panel at a time.",
+    "Peer views in one region, one panel at a time. Not steps, and never a way to hide required fields.",
 };
 
 const rootProps = [

@@ -8,7 +8,7 @@ import { KuultoPlayground } from "./kuulto-demo";
 export const metadata: Metadata = {
   title: "Kuulto",
   description:
-    "A vast sheet of creased silk, lit from three sides so its colour is only what the light does to the folds.",
+    "Creased silk on a scale you stand inside, lit from three sides so its colour is only what the light does to the folds.",
 };
 
 const props = [
@@ -96,7 +96,7 @@ export default function KuultoPage() {
       }
     >
       <div className="mt-9">
-        <GroundNote name="Kuulto" />
+        <GroundNote name="kuulto" />
       </div>
 
       <KuultoPlayground />

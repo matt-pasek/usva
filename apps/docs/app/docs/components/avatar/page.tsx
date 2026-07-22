@@ -7,7 +7,7 @@ import { AvatarDemo } from "./avatar-demo";
 export const metadata: Metadata = {
   title: "Avatar",
   description:
-    "A styled-only avatar primitive with image/fallback handling, built on Base UI Avatar.",
+    "One person, as an image or as their initials, with fallback handling on Base UI Avatar.",
 };
 
 const props = [
@@ -55,9 +55,7 @@ export default function AvatarPage() {
     <ComponentDoc
       slug="avatar"
       client
-      description={
-        <>a person, as an image or their initials.</>
-      }
+      description={<>a person, as an image or their initials.</>}
       composition={{
         ok: [
           "sits in EntityCard, comment rows, nav account corners",

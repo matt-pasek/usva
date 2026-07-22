@@ -8,7 +8,7 @@ import { PropsTable } from "@/components/docs/props-table";
 export const metadata: Metadata = {
   title: "Log Line",
   description:
-    "A single log line with a severity color, source, repeat count and optional expandable detail.",
+    "One machine event: a severity rail, a level, a source, a repeat count, and the detail if you want it.",
 };
 
 const props = [

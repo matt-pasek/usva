@@ -7,7 +7,7 @@ import { DropdownMenuDemo } from "./dropdown-menu-demo";
 export const metadata: Metadata = {
   title: "Dropdown Menu",
   description:
-    "An accessible dropdown menu primitive with trigger, portal-positioned menu, and roving-focus items, built on Base UI Menu.",
+    "Actions anchored to what triggered them, with roving focus and portal positioning. Actions, not navigation.",
 };
 
 const props = [

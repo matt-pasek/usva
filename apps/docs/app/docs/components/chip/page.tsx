@@ -7,7 +7,7 @@ import { ChipDemo } from "./chip-demo";
 export const metadata: Metadata = {
   title: "Chip",
   description:
-    "A compact pill for tags, filters and counts. Six tones, an optional value segment, and a dismissable remove button.",
+    "A tag, a filter, a stack entry. Six tones, an optional value segment, and a remove button when it is a filter.",
 };
 
 const props = [

@@ -7,7 +7,7 @@ import { SpinnerDemo } from "./spinner-demo";
 export const metadata: Metadata = {
   title: "Spinner",
   description:
-    "A loading spinner for work with no measurable end, plus a PageLoader wrapper.",
+    "An indeterminate wait, inline and small, plus a PageLoader wrapper for the whole view.",
 };
 
 const props = [

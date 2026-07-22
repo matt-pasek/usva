@@ -7,7 +7,7 @@ import { ListDemo } from "./list-demo";
 export const metadata: Metadata = {
   title: "List",
   description:
-    "A vertical stack of list items with an optional marker and dividers between them.",
+    "An ordered or unordered list a screen reader counts, with optional markers and dividers.",
 };
 
 const props = [
@@ -43,7 +43,10 @@ export default function ListPage() {
       description={
         <>
           a vertical stack of items, each with an optional marker.{" "}
-          <b>the marker is decoration, so the text carries the meaning on its own</b>.
+          <b>
+            the marker is decoration, so the text carries the meaning on its own
+          </b>
+          .
         </>
       }
       composition={{

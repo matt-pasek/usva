@@ -8,7 +8,7 @@ import { PropsTable } from "@/components/docs/props-table";
 export const metadata: Metadata = {
   title: "Skeleton",
   description:
-    "A grey block in the shape of a piece of content, shown while that content loads.",
+    "The shape of the content before it arrives, as a grey block sized to what is loading.",
 };
 
 const props = [

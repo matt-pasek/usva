@@ -7,7 +7,7 @@ import { ProgressRowDemo } from "./progress-row-demo";
 export const metadata: Metadata = {
   title: "Progress Row",
   description:
-    "A labelled progress bar with a value-over-max figure, a keyed bar color, and a status slot.",
+    "A label, a count and a bar, as one row in a list of many, with a keyed bar colour and a status slot.",
 };
 
 const props = [

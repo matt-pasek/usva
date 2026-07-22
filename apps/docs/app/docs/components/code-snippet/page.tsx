@@ -7,7 +7,7 @@ import { CodeSnippetDemo } from "./code-snippet-demo";
 export const metadata: Metadata = {
   title: "CodeSnippet",
   description:
-    "A highlighted code block with a copy button. The syntax palette is painted with the role tokens, so it reskins with the theme.",
+    "Highlighted code with the copy button already there. The syntax palette is painted with role tokens, so it reskins with the theme.",
 };
 
 const props = [

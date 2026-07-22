@@ -8,7 +8,7 @@ import { ToastDemo } from "./toast-demo";
 export const metadata: Metadata = {
   title: "Toast",
   description:
-    "A brief message announcing something happened, fired from anywhere with toast().",
+    "The result of something you just did, fired imperatively from anywhere with toast().",
 };
 
 const toastOptions = [
@@ -86,11 +86,7 @@ export default function ToastPage() {
           down or right to dismiss
         </>
       }
-      dependencies={
-        <>
-          <code className="font-mono text-xs">@base-ui/react</code>
-        </>
-      }
+      dependencies={<code className="font-mono text-xs">@base-ui/react</code>}
     >
       <DemoPanel>
         <ToastDemo />

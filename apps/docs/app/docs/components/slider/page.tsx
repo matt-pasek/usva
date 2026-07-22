@@ -7,7 +7,7 @@ import { SliderDemo } from "./slider-demo";
 export const metadata: Metadata = {
   title: "Slider",
   description:
-    "A single-thumb track for picking one number by feel.",
+    "A value on a continuum, picked by feel, where the trend matters more than the exact number.",
 };
 
 const props = [

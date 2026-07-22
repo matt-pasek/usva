@@ -7,7 +7,7 @@ import { SulaSegmentedDemo } from "./sula-segmented-demo";
 export const metadata: Metadata = {
   title: "Sula Segmented",
   description:
-    "A segmented control whose active indicator is a liquid droplet that pinches off the old segment and merges into the new one.",
+    "Pinches a droplet off the old segment and merges it into the new one, as the active indicator.",
 };
 
 const props = [

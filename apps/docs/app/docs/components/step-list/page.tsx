@@ -7,7 +7,7 @@ import { StepListDemo } from "./step-list-demo";
 export const metadata: Metadata = {
   title: "Step List",
   description:
-    "A vertical numbered process with a connector spine, a title and body per step, for how-it-works and onboarding.",
+    "An ordered procedure down a connector spine, one step per row with room for an icon.",
 };
 
 const props = [

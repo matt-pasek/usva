@@ -7,7 +7,7 @@ import { PullquoteDemo } from "./pullquote-demo";
 export const metadata: Metadata = {
   title: "Pullquote",
   description:
-    "A centered pull quote with an optional attribution and a decorative ornament slot above it.",
+    "One sentence pulled out and made large, with an attribution and a decorative ornament slot above it.",
 };
 
 const props = [

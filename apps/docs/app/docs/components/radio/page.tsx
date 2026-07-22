@@ -7,7 +7,7 @@ import { RadioDemo } from "./radio-demo";
 export const metadata: Metadata = {
   title: "Radio",
   description:
-    "A radio group where each option carries its own label and optional description.",
+    "Exactly one of a few, each option carrying its own label and description. More than five and you want a Select.",
 };
 
 const groupProps = [

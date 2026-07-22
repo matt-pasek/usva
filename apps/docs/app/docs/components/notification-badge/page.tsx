@@ -7,7 +7,7 @@ import { NotificationBadgeDemo } from "./notification-badge-demo";
 export const metadata: Metadata = {
   title: "Notification Badge",
   description:
-    "A small count or dot pinned to the corner of an icon or button, capped at a max.",
+    "An unread count pinned to the corner of an icon or button, capped at a max. It wraps, it does not replace.",
 };
 
 const props = [

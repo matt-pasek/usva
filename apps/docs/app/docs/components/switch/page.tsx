@@ -7,7 +7,7 @@ import { SwitchDemo } from "./switch-demo";
 export const metadata: Metadata = {
   title: "Switch",
   description:
-    "An on/off control that takes effect immediately, with a label and optional description.",
+    "A setting that takes effect immediately. No save button follows it.",
 };
 
 const props = [

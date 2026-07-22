@@ -7,7 +7,7 @@ import { CtaBannerDemo } from "./cta-banner-demo";
 export const metadata: Metadata = {
   title: "CTA Banner",
   description:
-    "The panel that closes a marketing page: an accent wash, copy, an action, and an optional proof row.",
+    "The ask at the end of a page: accent wash, copy, an action, and an optional proof row. Everything below the title is optional.",
 };
 
 const props = [

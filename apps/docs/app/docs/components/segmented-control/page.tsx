@@ -7,7 +7,7 @@ import { SegmentedControlDemo } from "./segmented-control-demo";
 export const metadata: Metadata = {
   title: "Segmented Control",
   description:
-    "A row of segments where one is selected at a time, with the choice carried by a sliding indicator.",
+    "A few exclusive options, all visible at once, with the choice carried by a sliding indicator. The plain one, for dense UI.",
 };
 
 const props = [

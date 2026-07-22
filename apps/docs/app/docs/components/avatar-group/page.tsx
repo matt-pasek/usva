@@ -7,7 +7,7 @@ import { AvatarGroupDemo } from "./avatar-group-demo";
 export const metadata: Metadata = {
   title: "Avatar Group",
   description:
-    "An overlapping stack of avatars with an optional +N overflow chip and a caption, for social proof and shared ownership.",
+    "Overlapping avatars with a +N overflow chip and a caption, for social proof and shared ownership.",
 };
 
 const props = [

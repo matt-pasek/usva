@@ -8,7 +8,7 @@ import { PropsTable } from "@/components/docs/props-table";
 export const metadata: Metadata = {
   title: "Label",
   description:
-    "The name of a form control that focuses it on click, with disabled and monospace variants.",
+    "Names a control and clicks through to it, with disabled and monospace variants. Never decorate a heading with it.",
 };
 
 const props = [

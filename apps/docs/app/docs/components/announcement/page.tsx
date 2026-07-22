@@ -7,7 +7,7 @@ import { AnnouncementDemo } from "./announcement-demo";
 export const metadata: Metadata = {
   title: "Announcement",
   description:
-    "A pill that pairs a solid leading badge with a short label, for release notes and callouts. Optionally renders as a link with a trailing arrow.",
+    "One line above the fold for a release or a warning you cannot bury. Solid leading badge, short label, optional link with a trailing arrow.",
 };
 
 const props = [

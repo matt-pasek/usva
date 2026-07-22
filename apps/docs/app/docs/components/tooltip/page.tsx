@@ -7,7 +7,7 @@ import { TooltipDemo } from "./tooltip-demo";
 export const metadata: Metadata = {
   title: "Tooltip",
   description:
-    "A short label that appears on hover or focus to name an icon button, a shortcut, or text too clipped to read.",
+    "Names an unlabelled control on hover or focus. It holds no action, and never the only copy of the truth.",
 };
 
 const props = [
@@ -47,8 +47,8 @@ export default function TooltipPage() {
       description={
         <>
           a short label that surfaces on hover or focus and says what a thing
-          is: the name of an icon button, a keyboard shortcut, a word too clipped
-          to read. never more than you can take in at a glance.
+          is: the name of an icon button, a keyboard shortcut, a word too
+          clipped to read. never more than you can take in at a glance.
         </>
       }
       composition={{

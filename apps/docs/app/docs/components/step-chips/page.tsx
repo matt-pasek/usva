@@ -7,7 +7,7 @@ import { StepChipsDemo } from "./step-chips-demo";
 export const metadata: Metadata = {
   title: "Step Chips",
   description:
-    "A short numbered sequence of steps in one row, joined by arrows.",
+    "Three or four steps in one row, joined by arrows that live inside the list where they belong.",
 };
 
 const props = [

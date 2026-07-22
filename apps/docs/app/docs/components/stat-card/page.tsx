@@ -8,7 +8,7 @@ import { PropsTable } from "@/components/docs/props-table";
 export const metadata: Metadata = {
   title: "Stat Card",
   description:
-    "One metric in a tile: a big value, a colored trend, and an optional sparkline.",
+    "One metric in a tile: a big value, a coloured trend, an optional sparkline, and a note on why it moved.",
 };
 
 const props = [

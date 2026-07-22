@@ -7,7 +7,7 @@ import { PanelDemo } from "./panel-demo";
 export const metadata: Metadata = {
   title: "Panel",
   description:
-    "A full-height dashboard card whose header stays fixed while the body scrolls, sized to fill a grid cell.",
+    "The dashboard workhorse: a titled region whose header stays fixed while the body scrolls, sized to fill a grid cell.",
 };
 
 const props = [

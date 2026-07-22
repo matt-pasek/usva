@@ -7,7 +7,7 @@ import { SulaFieldPlayground } from "./sula-field-demo";
 export const metadata: Metadata = {
   title: "Sula Field",
   description:
-    "An ambient field of liquid-glass masses that drift and merge slowly behind your content.",
+    "Liquid-glass masses drifting and merging slowly behind your content.",
 };
 
 const props = [

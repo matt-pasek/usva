@@ -8,7 +8,7 @@ import { RevealDemo } from "@/components/reveal-demo";
 export const metadata: Metadata = {
   title: "Reveal",
   description:
-    "A scroll-reveal system: six role-based variants that resolve out of mist, plus a stagger group and an intensity knob.",
+    "Six role-based scroll reveals that resolve out of mist, plus a stagger group and an intensity knob.",
 };
 
 const usage = `import { Reveal, RevealGroup } from "@matt-pasek/usva";

@@ -7,7 +7,7 @@ import { LoadingOverlayDemo } from "./loading-overlay-demo";
 export const metadata: Metadata = {
   title: "Loading Overlay",
   description:
-    "A dimming scrim with a centered spinner, over its parent or the whole viewport while content loads.",
+    "Covers the region that is busy and only that region: a dimming scrim, a centred spinner, and refcounted scroll lock.",
 };
 
 const props = [

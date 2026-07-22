@@ -7,7 +7,7 @@ import { ToggleChipDemo } from "./toggle-chip-demo";
 export const metadata: Metadata = {
   title: "Toggle Chip",
   description:
-    "A row of pressable chips for picking what a view shows. Bounded multi-select, or one-of-many.",
+    "Chips that stay pressed: a filter you turn on rather than a tag you read. Bounded multi-select, or one-of-many.",
 };
 
 const groupProps = [

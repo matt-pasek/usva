@@ -8,7 +8,7 @@ import { PropsTable } from "@/components/docs/props-table";
 export const metadata: Metadata = {
   title: "Stat Chip",
   description:
-    "A compact pill pairing a label, a figure and an optional unit for inline metrics.",
+    "One number in a pill: a credit balance, a quota, a count you keep glancing at.",
 };
 
 const props = [

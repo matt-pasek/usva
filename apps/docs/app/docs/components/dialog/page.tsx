@@ -7,7 +7,7 @@ import { DialogDemo } from "./dialog-demo";
 export const metadata: Metadata = {
   title: "Dialog",
   description:
-    "A modal dialog primitive with backdrop, focus trap, and scroll lock, built on Base UI Dialog.",
+    "Interrupts, on purpose. Focus trapped, scroll locked, Escape closes, on Base UI Dialog.",
 };
 
 const props = [

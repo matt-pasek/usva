@@ -10,7 +10,7 @@ import { CardDemo } from "./card-demo";
 export const metadata: Metadata = {
   title: "Card",
   description:
-    "A composable surface with header, body, and footer regions plus eyebrow, title, icon, badge, and action parts.",
+    "The surface that groups things. Header, body and footer regions, plus eyebrow, title, icon, badge and action parts.",
 };
 
 const props = [

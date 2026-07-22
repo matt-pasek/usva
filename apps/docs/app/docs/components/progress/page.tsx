@@ -7,7 +7,7 @@ import { ProgressDemo } from "./progress-demo";
 export const metadata: Metadata = {
   title: "Progress",
   description:
-    "A progress bar with determinate and indeterminate modes, three sizes, and an optional accent glow.",
+    "How far along a determinate task is. Three sizes, an indeterminate mode, and an optional accent glow.",
 };
 
 const props = [
@@ -43,8 +43,8 @@ export default function ProgressPage() {
       description={
         <>
           a bar that fills to show how far along something is, or shimmers when
-          the end is unknown. <b>it renders no text, so it always needs a
-          label</b>.
+          the end is unknown.{" "}
+          <b>it renders no text, so it always needs a label</b>.
         </>
       }
       composition={{

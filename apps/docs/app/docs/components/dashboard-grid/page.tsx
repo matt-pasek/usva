@@ -7,7 +7,7 @@ import { GridDemo } from "./dashboard-grid-demo";
 export const metadata: Metadata = {
   title: "Dashboard Grid",
   description:
-    "A widget board the user arranges by pointer or keyboard: drag to move, drag an edge to resize, and nothing overlaps.",
+    "Drag to move, drag an edge to resize, keyboard included. Widgets the user arranges, and nothing overlaps.",
 };
 
 const gridProps = [

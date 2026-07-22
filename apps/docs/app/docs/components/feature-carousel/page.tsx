@@ -7,7 +7,7 @@ import { FeatureCarouselDemo } from "./feature-carousel-demo";
 export const metadata: Metadata = {
   title: "Feature Carousel",
   description:
-    "An auto-advancing feature showcase where one large card cross-fades between entries, with a rail to jump between them.",
+    "Features one at a time, advancing on their own and pausing when you look closer, with a rail to jump between them.",
 };
 
 const props = [

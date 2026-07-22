@@ -7,7 +7,7 @@ import { TerminalDemo } from "./terminal-demo";
 export const metadata: Metadata = {
   title: "Terminal",
   description:
-    "A one-line shell command behind a prompt, with a copy button that skips the prompt.",
+    "A shell command behind a prompt, with a copy button that skips the prompt.",
 };
 
 const props = [
