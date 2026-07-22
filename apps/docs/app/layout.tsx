@@ -6,10 +6,17 @@ import { SiteNav } from "@/components/site-nav";
 import { ThemeProvider, themeScript } from "@/components/theme-provider";
 import { SITE_ORIGIN } from "@/lib/site";
 
+/**
+ * Metadata is Sentence case, everywhere, and that is not a lapse in the voice.
+ * On-page copy is lowercase because usva is speaking in its own room. Metadata
+ * renders in someone else's chrome, a tab, a search result, a link unfurl, with
+ * nothing around it to show that the lowercase is a system rather than a typo.
+ * The brand keeps its own casing wherever it appears: `usva.`, never `Usva.`.
+ */
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_ORIGIN),
   title: {
-    default: "usva. · beautiful, usable React components",
+    default: "usva. · Beautiful, usable React components",
     template: "%s · usva.",
   },
   description:

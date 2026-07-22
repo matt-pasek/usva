@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { LiveThemeView } from "./live-theme-view";
 
 export const metadata: Metadata = {
-  title: "themes",
+  title: "Themes",
   description:
-    "kajo, sisu, savi. the three registers of the usva design language, shown in the one you are in.",
+    "Kajo, sisu, savi. The three registers of the usva design language, shown in the one you are in.",
 };
 
 export default function ThemesIndex() {
