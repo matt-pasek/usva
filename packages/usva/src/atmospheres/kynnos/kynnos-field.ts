@@ -3,7 +3,7 @@ import type { BlendMode, Rgb } from "../atmospheres-core/atmospheres-color.js";
 export interface KynnosParams {
   /** Wheel origin in normalized units, y up, relative to the container centre. */
   origin: [number, number];
-  /** Radians per second. One revolution per ~90s at the default. */
+  /** Radians per second. One revolution per ~10min at the default. */
   spin: number;
   /** Furrows per unit radius. */
   furrowFreq: number;
@@ -42,25 +42,25 @@ export interface KynnosParams {
 }
 
 export const KYNNOS_DEFAULTS: KynnosParams = {
-  origin: [-1.05, 0.78],
-  spin: (2 * Math.PI) / 90,
-  furrowFreq: 16,
-  warpAmt: 2.8,
+  origin: [0.62, 1],
+  spin: 0.01,
+  furrowFreq: 10,
+  warpAmt: 4.4,
   warpFreq: 2.1,
-  breakAmt: 0.22,
-  ridgeShape: 1.9,
-  depth: 0.03,
-  slope: 1,
-  microScale: 180,
-  microAmt: 0.34,
-  crackScale: 90,
-  crackAmt: 0.5,
-  ao: 0.9,
-  rough: 0.9,
-  ambient: 0.42,
-  key: 0.78,
-  drift: 0.012,
-  dither: 0.006,
+  breakAmt: 0.1,
+  ridgeShape: 1.5,
+  depth: 0.06,
+  slope: 2,
+  microScale: 190,
+  microAmt: 0.38,
+  crackScale: 70,
+  crackAmt: 0.05,
+  ao: 0.75,
+  rough: 1,
+  ambient: 0.5,
+  key: 1.05,
+  drift: 0.028,
+  dither: 0,
 };
 
 /**
@@ -187,4 +187,4 @@ export function buildColors(
 }
 
 /** A raking key. Low z is what makes a 2cm groove throw a shadow. */
-export const DEFAULT_LIGHT: [number, number, number] = [-0.72, 0.5, 0.34];
+export const DEFAULT_LIGHT: [number, number, number] = [-0.72, 0.5, 0.54];

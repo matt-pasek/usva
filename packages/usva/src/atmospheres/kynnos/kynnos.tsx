@@ -32,7 +32,7 @@ export interface KynnosLight {
 }
 
 export interface KynnosProps extends React.HTMLAttributes<HTMLDivElement> {
-  /** Wheel and drift rate multiplier. Defaults to 1, about 90s per revolution. */
+  /** Wheel and drift rate multiplier. Defaults to 1, about 10min per revolution. */
   speed?: number;
   /** Overrides the material. Defaults from the ground: light clay, dark metal. */
   mode?: BlendMode;
