@@ -207,9 +207,9 @@ export const THEME_DOCS: Record<ThemeId, ThemeDoc> = {
       "screenshots and decks and print",
     ],
     notThis: [
-      "an atmosphere at full strength",
-      "leaning on faint for anything readable",
-      "the loud hero",
+      "a launch page that has to stop someone mid-scroll",
+      "a dim room where the screen is the only light",
+      "a surface embedded in a host app that is already dark",
     ],
     specimen: {
       kind: "reading",
