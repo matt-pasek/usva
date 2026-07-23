@@ -117,7 +117,9 @@ export const Editable: Story = {
         titleAccent="Mateusz."
         aside={<PageHeaderMetric value="42%" caption="Credit trajectory" />}
         action={
-          <Button variant="outline" iconOnly
+          <Button
+            variant="outline"
+            iconOnly
             aria-label={editing ? "Done editing" : "Edit header"}
             active={editing}
             onClick={() => setEditing((current) => !current)}
