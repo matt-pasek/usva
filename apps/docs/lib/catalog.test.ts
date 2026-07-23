@@ -1,10 +1,11 @@
-import { readdirSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, test } from "vitest";
 import {
   byLayer,
   CATALOG,
   counts,
+  DARK_ONLY,
   INTENSITY_BY_LAYER,
   type Layer,
 } from "./catalog";
@@ -50,6 +51,44 @@ describe.each(Object.keys(LAYER_DIRS) as Layer[])("%s parity", (layer) => {
 test("slugs are unique", () => {
   const slugs = CATALOG.map((e) => e.slug);
   expect(new Set(slugs).size).toBe(slugs.length);
+});
+
+describe("dark-only atmospheres", () => {
+  /** The renderer's own table, read rather than imported: hiddenOnGround lives
+   * in a "use client" chunk and cannot be called from a server page. */
+  const groundTable = (): Record<string, string> => {
+    const src = readFileSync(
+      join(SRC, "atmospheres/atmospheres-core/atmospheres-ground.ts"),
+      "utf8",
+    );
+    const block = src.match(
+      /LIGHT_GROUND_SUPPORT = \{([\s\S]*?)\} as const/,
+    )?.[1];
+    if (!block) throw new Error("LIGHT_GROUND_SUPPORT is no longer parseable");
+    return Object.fromEntries(
+      [...block.matchAll(/(\w+):\s*"(\w+)"/g)].map(
+        (m) => [m[1], m[2]] as const,
+      ),
+    );
+  };
+
+  test("the table still parses and covers every atmosphere", () => {
+    const table = groundTable();
+    expect(Object.keys(table).sort()).toEqual(
+      byLayer("atmosphere")
+        .map((e) => e.slug)
+        .sort(),
+    );
+  });
+
+  test("DARK_ONLY matches every atmosphere that refuses a light ground", () => {
+    const table = groundTable();
+    const refuses = Object.entries(table)
+      .filter(([, support]) => support === "forbid" || support === "restrict")
+      .map(([name]) => name)
+      .sort();
+    expect([...DARK_ONLY].sort()).toEqual(refuses);
+  });
 });
 
 test("every entry has a real summary", () => {

@@ -9,11 +9,6 @@ export const metadata: Metadata = {
 
 const next = [
   {
-    href: "/docs/get-started/installation",
-    title: "installation",
-    body: "the fork: install it as a package, or copy the source in. both are supported, per component.",
-  },
-  {
     href: "/docs/get-started/theming",
     title: "theming",
     body: "retheme the whole thing by moving role tokens. you do not fork a component to change a colour.",
@@ -27,15 +22,15 @@ const next = [
 
 export default function GetStartedPage() {
   return (
-    <main className="mx-auto flex max-w-3xl flex-col gap-12 px-6 py-16 sm:px-10">
-      <header className="flex flex-col gap-4">
+    <main className="@container flex flex-col gap-8">
+      <header className="flex flex-col gap-3">
         <span className="font-mono text-xs uppercase tracking-widest text-muted">
           get started
         </span>
-        <h1 className="text-4xl font-extrabold tracking-tight text-ink">
+        <h1 className="font-extrabold text-[clamp(2rem,5cqi,3rem)] text-ink leading-[1.04] tracking-[-0.03em]">
           beauty that stays usable
         </h1>
-        <p className="text-lg text-muted">
+        <p className="max-w-2xl text-lg text-muted">
           usva. is a React design language with a component library attached,
           not the other way round. {counts.primitives} primitives and{" "}
           {counts.patterns} patterns that recede and structure, {counts.sula}{" "}
@@ -45,11 +40,11 @@ export default function GetStartedPage() {
         </p>
       </header>
 
-      <section className="flex flex-col gap-4">
-        <h2 className="text-sm font-mono uppercase tracking-widest text-muted">
+      <section className="flex max-w-2xl flex-col gap-2">
+        <h2 className="font-bold text-ink text-xl tracking-tight">
           the one rule
         </h2>
-        <p className="text-muted">
+        <p className="text-muted text-sm">
           intensity is a property of the layer, not of your taste. core recedes.
           patterns structure. sula asserts, and only one sula element belongs in
           any one region. an atmosphere is not a component you place, it is the
@@ -59,19 +54,39 @@ export default function GetStartedPage() {
       </section>
 
       <section className="grid gap-4 sm:grid-cols-2">
-        {next.map((item) => (
+        <Link
+          className="group flex flex-col gap-2 rounded-lg border border-border-strong bg-surface p-5 transition-colors duration-150 ease-soft hover:border-accent sm:col-span-2"
+          href="/docs/get-started/installation"
+        >
+          <span className="flex items-baseline gap-2">
+            <span className="font-mono text-muted text-xs tabular-nums">
+              01
+            </span>
+            <span className="font-semibold text-ink group-hover:text-accent">
+              installation
+            </span>
+          </span>
+          <span className="text-muted text-sm">
+            two ways in, and you pick per component rather than once for the
+            project. about five minutes to a button on your own screen.
+          </span>
+        </Link>
+
+        {next.map((item, index) => (
           <Link
             key={item.href}
-            className="flex flex-col gap-2 rounded-lg border border-border bg-surface p-5 transition-colors hover:border-border-strong"
+            className="group flex flex-col gap-2 rounded-lg border border-border bg-surface p-5 transition-colors duration-150 ease-soft hover:border-border-strong"
             href={item.href}
           >
-            <span className="font-mono text-sm text-ink">
-              {item.title}{" "}
-              <span aria-hidden="true" className="text-accent">
-                →
+            <span className="flex items-baseline gap-2">
+              <span className="font-mono text-muted text-xs tabular-nums">
+                {String(index + 2).padStart(2, "0")}
+              </span>
+              <span className="font-semibold text-ink group-hover:text-accent">
+                {item.title}
               </span>
             </span>
-            <span className="text-sm text-muted">{item.body}</span>
+            <span className="text-muted text-sm">{item.body}</span>
           </Link>
         ))}
       </section>

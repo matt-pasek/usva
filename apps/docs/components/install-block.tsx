@@ -15,14 +15,12 @@ export function InstallBlock({
     <div className="flex flex-col gap-4">
       <div className="flex flex-col gap-1.5">
         <p className="text-sm text-muted">
-          As a package dependency (recommended):
+          as a package dependency, and the one to reach for first:
         </p>
         <Terminal command={`bun add ${packageName}`} />
       </div>
       <div className="flex flex-col gap-1.5">
-        <p className="text-sm text-muted">
-          Or copy the source into your project via shadcn:
-        </p>
+        <p className="text-sm text-muted">or copy the source in, via shadcn:</p>
         <Terminal command={`npx shadcn add ${registryUrl(registryName)}`} />
       </div>
     </div>

@@ -12,15 +12,15 @@ export const metadata: Metadata = {
 
 export default function ForAgentsPage() {
   return (
-    <main className="mx-auto flex max-w-3xl flex-col gap-12 px-6 py-16 sm:px-10">
+    <main className="@container flex flex-col gap-8">
       <header className="flex flex-col gap-3">
         <span className="font-mono text-xs uppercase tracking-widest text-muted">
           get started · for agents
         </span>
-        <h1 className="text-4xl font-extrabold tracking-tight text-ink">
+        <h1 className="font-extrabold text-[clamp(2rem,5cqi,3rem)] text-ink leading-[1.04] tracking-[-0.03em]">
           most of the people reading this are not people
         </h1>
-        <p className="text-muted">
+        <p className="max-w-2xl text-lg text-muted">
           a design system is a set of rules about what to reach for and what to
           leave alone. that is exactly the kind of thing an agent gets wrong by
           default: it will happily put three attention-heavy components in one
@@ -30,7 +30,7 @@ export default function ForAgentsPage() {
       </header>
 
       <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-bold text-ink">
+        <h2 className="font-bold text-ink text-xl tracking-tight">
           llms.txt <span className="font-mono text-sm text-accent">live</span>
         </h2>
         <p className="text-muted">
@@ -49,7 +49,7 @@ export default function ForAgentsPage() {
       </section>
 
       <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-bold text-ink">
+        <h2 className="font-bold text-ink text-xl tracking-tight">
           a skill file{" "}
           <span className="font-mono text-sm text-muted">not yet</span>
         </h2>

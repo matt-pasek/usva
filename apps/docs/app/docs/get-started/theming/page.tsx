@@ -1,7 +1,7 @@
 import { CodeSnippet } from "@matt-pasek/usva";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { THEMES } from "@/lib/catalog";
+import { DARK_ONLY, THEMES } from "@/lib/catalog";
 
 export const metadata: Metadata = {
   title: "Theming",
@@ -29,15 +29,15 @@ const scope = `<section data-theme="sisu">
 
 export default function ThemingPage() {
   return (
-    <main className="mx-auto flex max-w-3xl flex-col gap-12 px-6 py-16 sm:px-10">
+    <main className="@container flex flex-col gap-8">
       <header className="flex flex-col gap-3">
         <span className="font-mono text-xs uppercase tracking-widest text-muted">
           get started · theming
         </span>
-        <h1 className="text-4xl font-extrabold tracking-tight text-ink">
+        <h1 className="font-extrabold text-[clamp(2rem,5cqi,3rem)] text-ink leading-[1.04] tracking-[-0.03em]">
           reskin it, do not fork it
         </h1>
-        <p className="text-muted">
+        <p className="max-w-2xl text-lg text-muted">
           no component in usva. contains a colour. every one of them consumes a
           role: <code className="font-mono text-ink">surface</code>,{" "}
           <code className="font-mono text-ink">accent</code>,{" "}
@@ -49,7 +49,9 @@ export default function ThemingPage() {
       </header>
 
       <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-bold text-ink">use a theme that ships</h2>
+        <h2 className="font-bold text-ink text-xl tracking-tight">
+          use a theme that ships
+        </h2>
         <p className="text-muted">
           import the theme CSS and put its name on any element. it cascades, so{" "}
           <code className="font-mono text-ink">&lt;html&gt;</code> themes the
@@ -71,13 +73,51 @@ export default function ThemingPage() {
       </section>
 
       <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-bold text-ink">write your own</h2>
+        <h2 className="font-bold text-ink text-xl tracking-tight">
+          write your own
+        </h2>
         <p className="text-muted">
           a theme is one selector and a list of roles. override the ones you
           care about, inherit the rest.
         </p>
         <CodeSnippet label="your-theme.css" language="css" code={brandTheme} />
         <CodeSnippet language="xml" code={apply} />
+      </section>
+
+      <section className="flex flex-col gap-4">
+        <h2 className="font-bold text-ink text-xl tracking-tight">
+          bg is not just a colour, it is the ground
+        </h2>
+        <p className="text-muted">
+          the one role that does more than paint. every atmosphere reads{" "}
+          <code className="font-mono text-ink">bg</code> to decide what material
+          it is: on a dark ground it emits light, on a light one it stains like
+          pigment soaking into clay. the same component, two materials, decided
+          by one variable you set.
+        </p>
+        <p className="text-muted">
+          and some of them have no light-ground form at all.{" "}
+          {DARK_ONLY.map((name, i) => (
+            <span key={name}>
+              {i > 0 ? ", " : ""}
+              <Link
+                className="text-accent underline"
+                href={`/docs/components/${name}`}
+              >
+                {name}
+              </Link>
+            </span>
+          ))}{" "}
+          are light thrown into a void, and a void is what they need. give them
+          a pale <code className="font-mono text-ink">bg</code> and they render
+          nothing rather than render badly. that is deliberate, and it is worth
+          knowing before you wonder where your hero went.
+        </p>
+        <p className="text-sm text-muted">
+          you can always say which you meant with{" "}
+          <code className="font-mono text-ink">mode</code>, but the default
+          reads the ground, and the default is usually right.
+        </p>
       </section>
 
       <section className="flex flex-col gap-3 rounded-lg border border-border bg-surface p-5">
@@ -100,7 +140,7 @@ export default function ThemingPage() {
       </section>
 
       <section className="flex flex-col gap-3">
-        <h2 className="text-xl font-bold text-ink">
+        <h2 className="font-bold text-ink text-xl tracking-tight">
           when forking is the right call
         </h2>
         <p className="text-muted">

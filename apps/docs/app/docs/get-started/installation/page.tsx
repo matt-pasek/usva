@@ -1,6 +1,7 @@
-import { CodeSnippet } from "@matt-pasek/usva";
+import { Button, CodeSnippet } from "@matt-pasek/usva";
 import type { Metadata } from "next";
 import Link from "next/link";
+import { DemoPanel } from "@/components/docs/demo-panel";
 import { InstallBlock } from "@/components/install-block";
 import { counts } from "@/lib/catalog";
 import { PACKAGE_NAME } from "@/lib/site";
@@ -40,20 +41,20 @@ const setup = `@import "tailwindcss";
 const usage = `import { Button } from "${PACKAGE_NAME}";
 
 export function Save() {
-  return <Button variant="primary">save</Button>;
+  return <Button variant="solid">save</Button>;
 }`;
 
 export default function InstallationPage() {
   return (
-    <main className="mx-auto flex max-w-3xl flex-col gap-12 px-6 py-16 sm:px-10">
+    <main className="@container flex flex-col gap-8">
       <header className="flex flex-col gap-3">
         <span className="font-mono text-xs uppercase tracking-widest text-muted">
           get started · installation
         </span>
-        <h1 className="text-4xl font-extrabold tracking-tight text-ink">
+        <h1 className="font-extrabold text-[clamp(2rem,5cqi,3rem)] text-ink leading-[1.04] tracking-[-0.03em]">
           two ways in
         </h1>
-        <p className="text-muted">
+        <p className="max-w-2xl text-lg text-muted">
           every component ships both as part of the package and as copyable
           source in the registry, from one codebase. you do not pick once for
           the project. you pick per component, and you can change your mind
@@ -61,8 +62,34 @@ export default function InstallationPage() {
         </p>
       </header>
 
+      <section className="flex flex-col gap-3 rounded-lg border border-border bg-surface p-5">
+        <h2 className="font-semibold text-ink">what it expects to find</h2>
+        <p className="text-sm text-muted">
+          React 18 or 19, and{" "}
+          <b className="font-semibold text-ink">Tailwind v4</b>. the v4 part is
+          not negotiable: the tokens ship as a{" "}
+          <code className="font-mono text-ink">@theme</code> block and an{" "}
+          <code className="font-mono text-ink">@import</code>, neither of which
+          v3 can read. there is no config file to write and no plugin to
+          register.
+        </p>
+        <p className="text-sm text-muted">
+          it works wherever React does.{" "}
+          <b className="font-semibold text-ink">Next</b>, including the app
+          router and server components: every component that needs the client
+          declares it, and the build splits client from server per file, so
+          there is no wrapping and no{" "}
+          <code className="font-mono text-ink">ssr: false</code>.{" "}
+          <b className="font-semibold text-ink">Vite</b> and{" "}
+          <b className="font-semibold text-ink">Astro</b> the same, on React 18
+          or 19.
+        </p>
+      </section>
+
       <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-bold text-ink">the commands</h2>
+        <h2 className="font-bold text-ink text-xl tracking-tight">
+          the commands
+        </h2>
         <InstallBlock registryName="button" />
         <p className="text-sm text-muted">
           the tokens package comes along with the npm install. if you copy
@@ -103,7 +130,7 @@ export default function InstallationPage() {
       </section>
 
       <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-bold text-ink">
+        <h2 className="font-bold text-ink text-xl tracking-tight">
           the cn util, if you copy source
         </h2>
         <p className="text-muted">
@@ -125,7 +152,9 @@ export default function InstallationPage() {
       </section>
 
       <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-bold text-ink">wire up the CSS</h2>
+        <h2 className="font-bold text-ink text-xl tracking-tight">
+          wire up the CSS
+        </h2>
         <p className="text-muted">
           usva. is Tailwind v4. the roles arrive as CSS variables and as
           utilities, so a component can say{" "}
@@ -142,8 +171,24 @@ export default function InstallationPage() {
       </section>
 
       <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-bold text-ink">then use it</h2>
+        <h2 className="font-bold text-ink text-xl tracking-tight">
+          then use it
+        </h2>
         <CodeSnippet label="anywhere" language="tsx" code={usage} />
+        <DemoPanel label="what you should be seeing" note="rendered here, now">
+          <div className="flex flex-wrap items-center gap-3">
+            <Button variant="solid">save</Button>
+            <Button variant="outline">cancel</Button>
+            <Button variant="ghost">skip</Button>
+          </div>
+        </DemoPanel>
+        <p className="text-sm text-muted">
+          that is the real component, on this page, from the same package you
+          just installed. tab to it and it takes a focus ring; the colour moves
+          over 150ms and the surface does not. if yours came out unstyled, the{" "}
+          <code className="font-mono text-ink">@source</code> line above is
+          almost always the reason.
+        </p>
         <p className="text-sm text-muted">
           next:{" "}
           <Link

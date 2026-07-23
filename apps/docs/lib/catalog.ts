@@ -635,6 +635,8 @@ export const bySlug = (slug: string): CatalogEntry | undefined =>
 
 export const THEMES = ["kajo", "sisu", "savi"] as const;
 
+export const DARK_ONLY = ["kuulto", "hehku", "loimu", "kajastus"] as const;
+
 export const counts = {
   primitives: byLayer("primitive").length,
   patterns: byLayer("pattern").length,
