@@ -164,8 +164,14 @@ void main() {
 
   // Tonemapped on luminance, not per channel: the hot lobe of a fold stays
   // violet instead of clipping to white, and only the very peak heats up.
+  //
+  // The shoulder is Reinhard, not 1 - exp(-lm). The centreline's meander swings
+  // the whole frame's brightness threefold over a few minutes, and at the top of
+  // that swing the exponential reached 1.0 across a fifth of the frame: flat,
+  // fully opaque, folds and corridor gone. Reinhard only approaches 1, so a
+  // surge stays a surge. uExposure is 11 to put the opening seconds back.
   float lm = max(col.r, max(col.g, col.b));
-  float peak = 1.0 - exp(-lm);
+  float peak = lm / (1.0 + lm);
   // Re-saturating exponent: rays that crossed both the green floor and the
   // violet folds average out milky, and the pow pulls the hue back.
   vec3 display = pow(col / max(lm, 1e-4), vec3(1.6));

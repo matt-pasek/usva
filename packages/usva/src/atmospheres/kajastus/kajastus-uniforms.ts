@@ -65,7 +65,7 @@ export const KAJASTUS_DEFAULTS: KajastusParams = {
   rayFreq: 2.4,
   raySpeed: 0.9,
   far: 0.025,
-  exposure: 6.5,
+  exposure: 11,
   stars: 0.22,
   corridor: 0.34,
   corridorY: -0.25,
