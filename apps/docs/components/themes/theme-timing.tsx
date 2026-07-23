@@ -3,6 +3,7 @@ import { Button } from "@matt-pasek/usva";
 import { RotateCcw } from "lucide-react";
 import { useReducedMotion } from "motion/react";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { ChapterHeading } from "@/components/chapter-heading";
 import { useTheme } from "@/components/theme-provider";
 import type { ThemeDoc } from "@/lib/themes";
 
@@ -80,9 +81,7 @@ export function ThemeTiming({ doc }: { doc: ThemeDoc }) {
   return (
     <section className="flex flex-col gap-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
-        <h2 className="font-mono text-sm uppercase tracking-widest text-muted">
-          the timing
-        </h2>
+        <ChapterHeading>the timing</ChapterHeading>
         <Button variant="ghost" size="sm" onClick={replay} disabled={!!reduced}>
           <RotateCcw aria-hidden="true" />
           replay
@@ -90,23 +89,50 @@ export function ThemeTiming({ doc }: { doc: ThemeDoc }) {
       </div>
       <p className="max-w-2xl text-muted">{doc.motionNote}</p>
 
-      <div ref={trackRef} className="flex flex-col gap-3">
+      <div ref={trackRef} className="flex flex-col">
         {STEPS.map((step) => (
           <div
             key={step.name}
-            className="grid items-center gap-x-4 gap-y-1 sm:grid-cols-[9rem_minmax(0,1fr)_5rem]"
+            className="grid items-center gap-x-4 gap-y-1 border-border border-b py-4 last:border-b-0 sm:grid-cols-[9rem_minmax(0,1fr)_5rem]"
           >
             <span className="flex items-baseline gap-2 sm:flex-col sm:gap-0">
               <code className="font-mono text-xs text-ink">{step.name}</code>
               <span className="text-muted text-xs">{step.role}</span>
             </span>
-            <div className="relative h-11 rounded-lg border border-border bg-sunken [container-type:inline-size]">
+            <div className="relative h-6 [container-type:inline-size]">
               <span
                 aria-hidden="true"
-                className="absolute top-1/2 left-1.5 h-8 w-10 rounded-md bg-accent"
+                className="-translate-y-1/2 absolute inset-x-0 top-1/2 h-px bg-border"
+              />
+              {[0, 25, 50, 75, 100].map((mark) => (
+                <span
+                  key={mark}
+                  aria-hidden="true"
+                  className={`-translate-y-1/2 absolute top-1/2 w-px bg-border ${
+                    mark === 0 || mark === 100 ? "h-3" : "h-1.5"
+                  }`}
+                  style={{ left: `calc(${mark}% - ${mark / 100}px)` }}
+                />
+              ))}
+              <span
+                aria-hidden="true"
+                className="absolute inset-x-0 top-1/2 h-px origin-left bg-accent"
                 style={{
                   transform: run
-                    ? "translate(calc(100cqi - 100% - 0.75rem), -50%)"
+                    ? "translateY(-50%) scaleX(1)"
+                    : "translateY(-50%) scaleX(0)",
+                  transitionProperty:
+                    reduced || phase === "rewind" ? "none" : "transform",
+                  transitionDuration: `var(${step.cssVar})`,
+                  transitionTimingFunction: "var(--usva-ease-spring)",
+                }}
+              />
+              <span
+                aria-hidden="true"
+                className="absolute top-1/2 left-0 h-4 w-0.5 rounded-full bg-accent"
+                style={{
+                  transform: run
+                    ? "translate(calc(100cqi - 100%), -50%)"
                     : "translate(0, -50%)",
                   transitionProperty:
                     reduced || phase === "rewind" ? "none" : "transform",
