@@ -6,7 +6,16 @@ import { Wordmark } from "./wordmark";
 const footerLink =
   "outline-none transition-tint duration-fast ease-soft hover:text-ink focus-visible:ring-focus";
 
-const GROUPS = [
+const REPO = "https://github.com/matt-pasek/usva";
+
+interface FooterLink {
+  href: string;
+  label: string;
+  /** Leaves the site, so it renders as an anchor rather than a Link. */
+  external?: boolean;
+}
+
+const GROUPS: { heading: string; links: FooterLink[] }[] = [
   {
     heading: "start",
     links: [
@@ -32,6 +41,19 @@ const GROUPS = [
       { href: "/design-language/tokens", label: "tokens" },
     ],
   },
+  {
+    heading: "project",
+    links: [
+      { href: REPO, label: "source", external: true },
+      { href: `${REPO}/issues/new`, label: "report a bug", external: true },
+      { href: `${REPO}/issues`, label: "ask for a feature", external: true },
+      {
+        href: "https://ko-fi.com/mattpasek",
+        label: "buy me a coffee",
+        external: true,
+      },
+    ],
+  },
 ];
 
 export function SiteFooter() {
@@ -54,7 +76,7 @@ export function SiteFooter() {
 
           <nav
             aria-label="Footer"
-            className="grid grid-cols-2 gap-8 sm:grid-cols-3"
+            className="grid grid-cols-2 gap-8 sm:grid-cols-4"
           >
             {GROUPS.map((group) => (
               <div key={group.heading} className="flex flex-col gap-3">
@@ -64,12 +86,23 @@ export function SiteFooter() {
                 <ul className="flex flex-col gap-2">
                   {group.links.map((link) => (
                     <li key={link.href}>
-                      <Link
-                        href={link.href}
-                        className="text-sm text-muted outline-none transition-tint duration-fast ease-soft hover:text-ink focus-visible:ring-focus"
-                      >
-                        {link.label}
-                      </Link>
+                      {link.external ? (
+                        <a
+                          href={link.href}
+                          target="_blank"
+                          rel="noreferrer"
+                          className={`text-sm text-muted ${footerLink}`}
+                        >
+                          {link.label} <span aria-hidden="true">↗</span>
+                        </a>
+                      ) : (
+                        <Link
+                          href={link.href}
+                          className={`text-sm text-muted ${footerLink}`}
+                        >
+                          {link.label}
+                        </Link>
+                      )}
                     </li>
                   ))}
                 </ul>
@@ -89,26 +122,17 @@ export function SiteFooter() {
               rel="noreferrer"
               className={footerLink}
             >
-              matt pasek
+              matt pasek <span aria-hidden="true">↗</span>
             </a>
           </span>
           <span aria-hidden="true">·</span>
           <a
-            href="https://github.com/matt-pasek/usva/blob/main/LICENSE.md"
+            href={`${REPO}/blob/main/LICENSE.md`}
             target="_blank"
             rel="noreferrer"
             className={footerLink}
           >
-            license
-          </a>
-          <span aria-hidden="true">·</span>
-          <a
-            href="https://github.com/matt-pasek/usva"
-            target="_blank"
-            rel="noreferrer"
-            className={footerLink}
-          >
-            github
+            license <span aria-hidden="true">↗</span>
           </a>
         </p>
       </div>
