@@ -1,10 +1,14 @@
 import {
+  Avatar,
   Badge,
   Button,
+  Chip,
   MockupShowcase,
+  ProgressRow,
   Pullquote,
   StatCard,
 } from "@matt-pasek/usva";
+import { ChapterHeading } from "@/components/chapter-heading";
 import type { SpecimenScene, ThemeDoc } from "@/lib/themes";
 
 function Showcase({
@@ -75,49 +79,92 @@ const ROW_DOT: Record<string, string> = {
   danger: "bg-danger",
 };
 
+const METER_TONE: Record<string, "neutral" | "success" | "warning"> = {
+  neutral: "neutral",
+  success: "success",
+  warning: "warning",
+};
+
 function Console({
   scene,
 }: {
   scene: Extract<SpecimenScene, { kind: "console" }>;
 }) {
   return (
-    <div className="bg-bg px-5 py-6 sm:px-8 sm:py-8">
-      <div className="flex flex-col gap-5">
-        <div className="flex items-center justify-between gap-4 border-b border-border pb-4">
-          <span className="flex items-center gap-3">
-            <span className="font-mono text-sm text-ink">{scene.title}</span>
-            <Badge live mono>
-              live
-            </Badge>
-          </span>
-          <Button variant="soft" size="sm">
+    <div className="bg-bg">
+      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border px-5 py-4 sm:px-8">
+        <span className="flex items-center gap-3">
+          <span className="font-mono text-sm text-ink">{scene.title}</span>
+          <Badge live mono>
+            live
+          </Badge>
+        </span>
+        <span className="flex items-center gap-2">
+          {scene.environments.map((env) => (
+            <Chip
+              key={env.name}
+              size="sm"
+              tone={env.current ? "accent" : "default"}
+              selected={env.current}
+            >
+              {env.name}
+            </Chip>
+          ))}
+          <Button variant="soft" size="sm" className="ml-1">
             {scene.action}
           </Button>
-        </div>
+        </span>
+      </div>
+
+      <div className="grid divide-border border-b border-border sm:grid-cols-[minmax(0,1fr)_18rem] sm:divide-x">
         <ul className="flex flex-col divide-y divide-border font-mono text-sm">
           {scene.rows.map((row) => (
-            <li key={row.time} className="flex items-center gap-3 py-2.5">
+            <li
+              key={row.time}
+              className="grid grid-cols-[auto_auto_4.5rem_minmax(0,1fr)] items-center gap-3 px-5 py-2.5 sm:px-8"
+            >
               <span
                 aria-hidden="true"
                 className={`size-1.5 shrink-0 rounded-full ${ROW_DOT[row.tone]}`}
               />
               <span className="tabular-nums text-muted">{row.time}</span>
+              <span className="truncate text-muted uppercase tracking-wide text-[0.6875rem]">
+                {row.service}
+              </span>
               <span className="min-w-0 truncate text-ink">{row.text}</span>
             </li>
           ))}
         </ul>
-        <div className="grid grid-cols-3 gap-3">
-          {scene.stats.map((stat) => (
-            <StatCard
-              key={stat.label}
-              size="sm"
-              surface="flat"
-              label={stat.label}
-              value={stat.value}
-              unit={stat.unit}
+        <div className="flex flex-col justify-center divide-y divide-border px-5 py-2 sm:px-6">
+          {scene.meters.map((meter) => (
+            <ProgressRow
+              key={meter.label}
+              label={meter.label}
+              value={meter.value}
+              max={meter.max}
+              unit={meter.unit}
+              status={
+                <Badge mono tone={METER_TONE[meter.tone]}>
+                  {meter.status}
+                </Badge>
+              }
             />
           ))}
         </div>
+      </div>
+
+      <div className="grid grid-cols-3 divide-x divide-border">
+        {scene.stats.map((stat) => (
+          <StatCard
+            key={stat.label}
+            size="sm"
+            surface="flat"
+            label={stat.label}
+            value={stat.value}
+            unit={stat.unit}
+            className="rounded-none border-0"
+          />
+        ))}
       </div>
     </div>
   );
@@ -130,10 +177,30 @@ function Reading({
 }) {
   return (
     <div className="bg-bg px-6 py-10 sm:px-12 sm:py-14">
-      <div className="mx-auto flex max-w-prose flex-col gap-5">
-        <h3 className="font-extrabold text-2xl text-ink tracking-tight sm:text-3xl">
-          {scene.title}
-        </h3>
+      <article className="mx-auto flex max-w-prose flex-col gap-5">
+        <header className="flex flex-col gap-4 border-b border-border pb-6">
+          <Badge tone="accent" mono className="self-start">
+            {scene.eyebrow}
+          </Badge>
+          <h3 className="font-extrabold text-2xl text-ink tracking-tight sm:text-3xl">
+            {scene.title}
+          </h3>
+          <div className="flex items-center gap-3">
+            <Avatar
+              size="sm"
+              tone="neutral"
+              alt=""
+              fallback={scene.byline.initials}
+            />
+            <span className="flex flex-col text-sm leading-tight">
+              <span className="font-medium text-ink">{scene.byline.name}</span>
+              <span className="text-muted text-xs">{scene.byline.meta}</span>
+            </span>
+          </div>
+        </header>
+
+        <p className="text-ink text-lg leading-relaxed">{scene.lead}</p>
+
         {scene.paragraphs.map((paragraph) => (
           <p
             key={paragraph.slice(0, 24)}
@@ -142,10 +209,19 @@ function Reading({
             {paragraph}
           </p>
         ))}
+
         <Pullquote attribution={scene.attribution} className="py-6">
           {scene.quote}
         </Pullquote>
-      </div>
+
+        <footer className="flex flex-wrap gap-2 border-t border-border pt-6">
+          {scene.tags.map((tag) => (
+            <Chip key={tag} size="sm">
+              {tag}
+            </Chip>
+          ))}
+        </footer>
+      </article>
     </div>
   );
 }
@@ -154,9 +230,7 @@ export function ThemeSpecimen({ doc }: { doc: ThemeDoc }) {
   const scene = doc.specimen;
   return (
     <section className="flex flex-col gap-6">
-      <h2 className="font-mono text-sm uppercase tracking-widest text-muted">
-        the surface
-      </h2>
+      <ChapterHeading>the surface</ChapterHeading>
       <p className="max-w-2xl text-muted">{doc.specimenCaption}</p>
       <MockupShowcase frame="browser" aspect="auto" url={scene.url}>
         {scene.kind === "showcase" ? <Showcase scene={scene} /> : null}

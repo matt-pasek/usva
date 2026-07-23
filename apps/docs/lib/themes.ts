@@ -32,20 +32,34 @@ export type SpecimenScene =
       url: string;
       title: string;
       action: string;
+      environments: { name: string; current?: boolean }[];
       rows: {
         time: string;
+        service: string;
         text: string;
         tone: "success" | "neutral" | "warning" | "danger";
+      }[];
+      meters: {
+        label: string;
+        value: number;
+        max: number;
+        unit: string;
+        status: string;
+        tone: "neutral" | "success" | "warning";
       }[];
       stats: SpecimenStat[];
     }
   | {
       kind: "reading";
       url: string;
+      eyebrow: string;
       title: string;
+      byline: { name: string; initials: string; meta: string };
+      lead: string;
       paragraphs: string[];
       quote: string;
       attribution: string;
+      tags: string[];
     };
 
 export interface ThemeDoc {
@@ -155,17 +169,58 @@ export const THEME_DOCS: Record<ThemeId, ThemeDoc> = {
       url: "console.example/deploys",
       title: "deploys",
       action: "redeploy",
+      environments: [
+        { name: "production", current: true },
+        { name: "canary" },
+        { name: "staging" },
+      ],
       rows: [
-        { time: "14:02:11", text: "build #482 green in 41s", tone: "success" },
-        { time: "14:02:36", text: "canary at 5% of traffic", tone: "neutral" },
+        {
+          time: "14:02:11",
+          service: "api",
+          text: "build #482 green in 41s",
+          tone: "success",
+        },
+        {
+          time: "14:02:36",
+          service: "edge",
+          text: "canary at 5% of traffic",
+          tone: "neutral",
+        },
         {
           time: "14:03:04",
+          service: "api",
           text: "p95 latency 118ms, holding",
           tone: "neutral",
         },
         {
           time: "14:03:12",
-          text: "error budget 0.2% consumed",
+          service: "worker",
+          text: "retry queue draining, 1.2k left",
+          tone: "warning",
+        },
+        {
+          time: "14:03:40",
+          service: "web",
+          text: "assets purged from 14 edges",
+          tone: "success",
+        },
+      ],
+      meters: [
+        {
+          label: "canary traffic",
+          value: 5,
+          max: 100,
+          unit: "%",
+          status: "holding",
+          tone: "neutral",
+        },
+        {
+          label: "error budget spent",
+          value: 0.2,
+          max: 1,
+          unit: "%",
+          status: "watch",
           tone: "warning",
         },
       ],
@@ -176,7 +231,7 @@ export const THEME_DOCS: Record<ThemeId, ThemeDoc> = {
       ],
     },
     specimenCaption:
-      "a deploy console assembled from the catalog: Badge, Button, StatCard and the mono scale, structured by its edges.",
+      "a deploy console assembled from the catalog: Badge, Button, Chip, ProgressRow, StatCard and the mono scale, structured by its edges.",
   },
   savi: {
     id: "savi",
@@ -214,15 +269,24 @@ export const THEME_DOCS: Record<ThemeId, ThemeDoc> = {
     specimen: {
       kind: "reading",
       url: "notes.example/on-clay",
+      eyebrow: "field notes",
       title: "on working with clay",
+      byline: {
+        name: "helmi rantanen",
+        initials: "hr",
+        meta: "14 march · six minutes",
+      },
+      lead: "everything worth making out of this material is made twice: once while it is soft enough to argue with, and once in the kiln, where it stops answering.",
       paragraphs: [
         "the material asks for patience before it gives you anything back. you wedge it, you centre it, and only then does it agree to hold a shape. most of the craft is in the waiting.",
         "a fired pot is not the clay improved. it is the clay committed: every decision you pressed into it while it was soft, kept for a thousand years.",
+        "which is why the good potters go slowly at the start and quickly at the end. the shape is decided long before the wheel stops, and after that you are only tidying.",
       ],
       quote: "the surface should disappear, and the writing should not.",
       attribution: "notes on the quiet register",
+      tags: ["material", "process", "slow work"],
     },
     specimenCaption:
-      "a reading page assembled from the catalog: the type scale, Pullquote and a measure that stays under seventy characters.",
+      "a reading page assembled from the catalog: Avatar, Badge, Chip, Pullquote, the type scale and a measure that stays under seventy characters.",
   },
 };
