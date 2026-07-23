@@ -3,8 +3,9 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteNav } from "@/components/site-nav";
-import { ThemeProvider, themeScript } from "@/components/theme-provider";
+import { ThemeProvider } from "@/components/theme-provider";
 import { SITE_ORIGIN } from "@/lib/site";
+import { themeScript } from "@/lib/theme-script";
 
 /**
  * Metadata is Sentence case, everywhere, and that is not a lapse in the voice.

@@ -635,6 +635,16 @@ export const bySlug = (slug: string): CatalogEntry | undefined =>
 
 export const THEMES = ["kajo", "sisu", "savi"] as const;
 
+/**
+ * The theme the site opens in, and the one usva was extracted from.
+ *
+ * It lives here rather than in the theme provider because server components
+ * compare against it. A value imported from a "use client" module arrives on
+ * the server as a client reference rather than the string, so the comparison
+ * silently returns false while the same code is correct once it hydrates.
+ */
+export const DEFAULT_THEME: (typeof THEMES)[number] = "kajo";
+
 export const DARK_ONLY = ["kuulto", "hehku", "loimu", "kajastus"] as const;
 
 export const counts = {
