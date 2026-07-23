@@ -75,6 +75,10 @@ export interface RoutaColors {
   pigment: Rgb;
   /** The cold raking key caught by heaved crests on a dark ground. */
   emission: Rgb;
+  /** The frozen surface itself on a dark ground. */
+  body: Rgb;
+  /** Under the surface: the fissures, and ground the key never reaches. */
+  fissure: Rgb;
 }
 
 function mix(a: Rgb, b: Rgb, t: number): Rgb {
@@ -85,6 +89,16 @@ function mix(a: Rgb, b: Rgb, t: number): Rgb {
   ];
 }
 
+/**
+ * The theme swap changes the material, not the shader, the way kynnös already
+ * does it. On clay the fissures hold pigment and the frost is what is left of
+ * the ground. On a dark ground it is black ice: a surface that is always there,
+ * a grazing key that only the heaved crests catch, and fissures cut below it.
+ *
+ * The body is the whole point. Without one the shader painted crests and left
+ * everything between them transparent, so the relief had nothing to sit on and
+ * read as lumps of glow rather than frozen earth.
+ */
 export function buildColors(
   roles: Record<RoutaRole, Rgb>,
   mode: BlendMode,
@@ -93,7 +107,9 @@ export function buildColors(
   const hue = mode === "absorptive" ? roles.accent : roles["accent-alt"];
   return {
     pigment: pigmentFor(hue, roles.ink),
-    emission: keyColor ?? mix(roles.accent, roles["accent-alt"], 0.38),
+    emission: keyColor ?? mix(roles.accent, roles.ink, 0.55),
+    body: mix(roles.bg, roles.ink, 0.09),
+    fissure: mix(roles.bg, [0, 0, 0], 0.55),
   };
 }
 

@@ -38,6 +38,8 @@ export function routaUniforms(
     uLightDir: { value: [...light] },
     uPigment: { value: [...colors.pigment] },
     uEmission: { value: [...colors.emission] },
+    uBody: { value: [...colors.body] },
+    uFissure: { value: [...colors.fissure] },
     uStainFloor: { value: MAX_STAIN },
   };
 }
@@ -45,6 +47,8 @@ export function routaUniforms(
 export function setRoutaColors(u: Uniforms, colors: RoutaColors): void {
   setUniform(u, "uPigment", [...colors.pigment]);
   setUniform(u, "uEmission", [...colors.emission]);
+  setUniform(u, "uBody", [...colors.body]);
+  setUniform(u, "uFissure", [...colors.fissure]);
 }
 
 export function setRoutaParams(u: Uniforms, params: RoutaParams): void {

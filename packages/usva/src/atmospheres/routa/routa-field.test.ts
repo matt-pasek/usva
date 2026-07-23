@@ -56,4 +56,38 @@ describe("Routa field contract", () => {
     expect(colors.pigment[0]).toBeLessThan(roles.accent[0]);
     expect(colors.pigment[1]).toBeLessThan(roles.accent[1]);
   });
+
+  describe("the dark-ground material", () => {
+    const roles: Record<RoutaRole, [number, number, number]> = {
+      bg: [0.04, 0.02, 0.07],
+      ink: [0.9, 0.89, 0.95],
+      accent: [0.65, 0.55, 0.98],
+      "accent-alt": [0.32, 0.79, 0.54],
+    };
+    const luma = ([r, g, b]: [number, number, number]) =>
+      0.2126 * r + 0.7152 * g + 0.0722 * b;
+
+    it("gives the frost a body to sit on, lifted off the ground it covers", () => {
+      const colors = buildColors(roles, "emissive");
+      expect(luma(colors.body)).toBeGreaterThan(luma(roles.bg));
+    });
+
+    it("cuts the fissures below the body rather than leaving them open", () => {
+      const colors = buildColors(roles, "emissive");
+      expect(luma(colors.fissure)).toBeLessThan(luma(colors.body));
+      expect(luma(colors.fissure)).toBeLessThan(luma(roles.bg));
+    });
+
+    it("keeps the raking key the brightest thing on the surface", () => {
+      const colors = buildColors(roles, "emissive");
+      expect(luma(colors.emission)).toBeGreaterThan(luma(colors.body));
+    });
+
+    it("lets a caller override only the key, never the surface", () => {
+      const key: [number, number, number] = [1, 0, 0];
+      const colors = buildColors(roles, "emissive", key);
+      expect(colors.emission).toEqual(key);
+      expect(colors.body).toEqual(buildColors(roles, "emissive").body);
+    });
+  });
 });

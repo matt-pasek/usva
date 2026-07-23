@@ -30,6 +30,8 @@ uniform float uAbsorb;
 uniform vec3  uLightDir;
 uniform vec3  uPigment;
 uniform vec3  uEmission;
+uniform vec3  uBody;
+uniform vec3  uFissure;
 uniform float uStainFloor;
 
 out vec4 fragColor;
@@ -100,11 +102,17 @@ void main() {
   float diffuse = orenNayar(normal, light, uRough);
   float lit = clamp(uAmbient + uKey * diffuse, 0.0, 1.2);
 
+  // Black ice. The ground is opaque and always painted, and the key only picks
+  // out the crests: that surface is what separates frozen earth from a handful
+  // of lit lumps floating on whatever happens to be behind the canvas.
   if (uAbsorb < 0.5) {
     float crest = smoothstep(0.0, uHeave, max(height, 0.0));
-    float caught = crest * smoothstep(0.36, 1.0, lit) * (1.0 - field.y);
-    float alpha = ditherAlpha(caught * uAlpha * 0.72, gl_FragCoord.xy, uDither);
-    fragColor = composite(uEmission * mix(0.58, 1.0, lit), alpha);
+    float rake = smoothstep(0.36, 1.0, lit);
+    vec3 ground = mix(uFissure, uBody, smoothstep(0.18, 0.72, lit));
+    vec3 col = mix(ground, uEmission, crest * rake * 0.85);
+    col = mix(col, uFissure, field.y * 0.9);
+    col = dither(col, gl_FragCoord.xy, uDither);
+    fragColor = composite(col, uAlpha);
     return;
   }
 
