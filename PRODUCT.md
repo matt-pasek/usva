@@ -16,7 +16,7 @@ Three distinct consumption paths, with different needs from the same source:
 
 **The installer.** Adds `@matt-pasek/usva` and `@matt-pasek/usva-tokens` as dependencies and lets `bun update` carry fixes forward. Wants a stable prop API, honest TypeScript types, and semantic role tokens they can retheme without forking. Never reads the component source. Breaking a prop name costs them real time.
 
-**The copy-forker.** Runs `npx shadcn add https://usva.dev/r/<name>.json` or `usva add` and owns the source from that moment. Reads every line. Wants code that explains itself, no clever indirection, no dependency on private internals. Their first act is often to change one thing; the component must survive that.
+**The copy-forker.** Runs `npx shadcn add https://usva.dev/r/<name>.json` and owns the source from that moment. Reads every line. Wants code that explains itself, no clever indirection, no dependency on private internals. Their first act is often to change one thing; the component must survive that.
 
 **The evaluator.** Lands on the docs site from a link or search, and decides in under a minute whether this system is credible. Reads the rendered example, the source view, and the install block, in that order. Never installs anything.
 

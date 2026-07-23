@@ -2,6 +2,7 @@
   "name": "@matt-pasek/usva-cli",
   "version": "0.0.0",
   "type": "module",
+  "private": true,
   "license": "SEE LICENSE IN LICENSE.md",
   "bin": {
     "usva": "./dist/usva.js"
