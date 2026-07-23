@@ -29,6 +29,8 @@ export interface RoutaParams {
   ambient: number;
   /** Strength of the raking key. */
   key: number;
+  /** How much damp the clay holds in the lee of a heave. Light grounds only. */
+  relief: number;
   /** Dither amplitude for dark-ground emission. */
   dither: number;
 }
@@ -46,6 +48,7 @@ export const ROUTA_DEFAULTS: RoutaParams = {
   rough: 0.92,
   ambient: 0.32,
   key: 0.88,
+  relief: 0.18,
   dither: 0.005,
 };
 
@@ -60,6 +63,9 @@ export function resolveParams(
     crackWidth: Math.min(Math.max(merged.crackWidth, 0.005), 0.2),
     crackDepth: Math.max(merged.crackDepth, 0),
     uneven: Math.min(Math.max(merged.uneven, 0), 0.8),
+    // Past about a third the damp stops reading as a lit surface and starts
+    // competing with the fissures, which are the subject on clay.
+    relief: Math.min(Math.max(merged.relief, 0), 0.35),
     drift: Math.max(merged.drift, 0),
     growthRate: Math.max(merged.growthRate, 0),
     rough: Math.min(Math.max(merged.rough, 0), 1),

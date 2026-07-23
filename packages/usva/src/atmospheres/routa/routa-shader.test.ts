@@ -17,11 +17,24 @@ describe("Routa relief shader", () => {
     expect(shader).not.toContain("dFdy(");
   });
 
-  it("stains only from fissure depth on a light ground", () => {
+  it("stains rather than composites on a light ground", () => {
     const absorptive = shader.slice(shader.indexOf("vec3 absorbed ="));
-    expect(absorptive).toContain("soak(fissure * SOAK, SIGMA)");
     expect(absorptive).toContain("fragColor = vec4(absorbed * alpha, alpha)");
     expect(absorptive).not.toContain("composite(");
+  });
+
+  it("carries the heave on clay as held damp, not as a darker multiply", () => {
+    expect(shader).toContain("soak(fissure * SOAK + relief, SIGMA)");
+    expect(shader).toContain("(1.0 - field.y) * uRelief");
+  });
+
+  it("keeps plate interiors flat, so the medial-axis kink has no slope to bend", () => {
+    expect(shader).toContain("const float PLATE_EDGE");
+    expect(shader).toContain(
+      "smoothstep(uCrackWidth, uCrackWidth + PLATE_EDGE, wall)",
+    );
+    expect(shader).toContain("dome = dome * dome * (3.0 - 2.0 * dome)");
+    expect(shader).not.toContain("smoothstep(uCrackWidth, 0.62, wall)");
   });
 
   it("keeps a separate emissive relief reading for dark themes", () => {

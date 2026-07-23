@@ -18,6 +18,7 @@ type RoutaConfig = {
   rough: number;
   ambient: number;
   key: number;
+  relief: number;
   dither: number;
   // RoutaLight
   dirX: number;
@@ -42,6 +43,7 @@ const base: RoutaConfig = {
   rough: 0.92,
   ambient: 0.32,
   key: 0.88,
+  relief: 0.18,
   dither: 0.005,
   dirX: -0.68,
   dirY: 0.46,
@@ -72,6 +74,7 @@ const params = (c: RoutaConfig): Partial<RoutaParams> => ({
   rough: c.rough,
   ambient: c.ambient,
   key: c.key,
+  relief: c.relief,
   dither: c.dither,
 });
 
@@ -104,6 +107,7 @@ const snippet = (c: RoutaConfig): string => {
   if (c.rough !== base.rough) p.push(`rough: ${c.rough}`);
   if (c.ambient !== base.ambient) p.push(`ambient: ${c.ambient}`);
   if (c.key !== base.key) p.push(`key: ${c.key}`);
+  if (c.relief !== base.relief) p.push(`relief: ${c.relief}`);
   if (c.dither !== base.dither) p.push(`dither: ${c.dither}`);
   if (p.length) lines.push(`  params={{ ${p.join(", ")} }}`);
   const l: string[] = [];
@@ -302,6 +306,16 @@ export const routaStudio = defineStudio<RoutaConfig>({
       min: 0,
       max: 2,
       step: 0.02,
+    },
+    {
+      kind: "slider",
+      key: "relief",
+      advanced: true,
+      label: "relief",
+      sub: "damp held in the lee of a heave, light grounds only",
+      min: 0,
+      max: 0.35,
+      step: 0.01,
     },
     {
       kind: "slider",

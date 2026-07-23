@@ -40,6 +40,12 @@ describe("Routa field contract", () => {
     expect(ROUTA_DEFAULTS.drift).toBeLessThan(0.01);
   });
 
+  it("keeps the clay's damp under the fissures it sits beside", () => {
+    expect(resolveParams({ relief: 9 }).relief).toBe(0.35);
+    expect(resolveParams({ relief: -1 }).relief).toBe(0);
+    expect(ROUTA_DEFAULTS.relief).toBeLessThan(0.35);
+  });
+
   it("grows the frost once over a readable timescale", () => {
     expect(ROUTA_DEFAULTS.growthRate).toBeGreaterThanOrEqual(0.02);
     expect(ROUTA_DEFAULTS.growthRate).toBeLessThanOrEqual(0.035);

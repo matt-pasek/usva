@@ -24,6 +24,7 @@ uniform float uSlope;
 uniform float uRough;
 uniform float uAmbient;
 uniform float uKey;
+uniform float uRelief;
 uniform float uDither;
 uniform float uAlpha;
 uniform float uAbsorb;
@@ -41,6 +42,8 @@ ${glsl("fbm", "worley", "dither", "stain", "composite")}
 const vec3 VIEW = vec3(0.0, 0.0, 1.0);
 const float SIGMA = 1.12;
 const float SOAK = 0.52;
+/** How far in from a fissure the plate has finished rising, in wall units. */
+const float PLATE_EDGE = 0.2;
 
 vec2 frostAt(vec2 p) {
   vec2 travel = vec2(uTime * uDrift, -uTime * uDrift * 0.37);
@@ -53,8 +56,15 @@ vec2 frostAt(vec2 p) {
   ) / 0.75;
   float progress = clamp(0.1 + uTime * uGrowthRate, 0.0, 1.0);
   fissure *= smoothstep(arrival - 0.08, arrival + 0.08, progress);
-  float dome = smoothstep(uCrackWidth, 0.62, wall);
-  dome *= dome;
+  /* A heaved plate is flat, and flatness is also what makes it drawable.
+     craquelure is F2 - F1, whose slope kinks along the medial axis of every
+     cell, where the second-nearest cell changes. The normal is built by
+     differencing the height, so a slope kink becomes a hard seam straight
+     across each plate. Doming the interior put a gradient there for the kink
+     to bend; a flat interior gives it nothing, and the shape lands where it
+     belongs, on the shoulder falling into the seam. */
+  float dome = smoothstep(uCrackWidth, uCrackWidth + PLATE_EDGE, wall);
+  dome = dome * dome * (3.0 - 2.0 * dome);
   float broad = fbm2(q * uUnevenScale + vec2(13.1, -7.4), 3) / 0.875;
   float lift = dome * mix(1.0 - uUneven, 1.0 + uUneven, broad);
   return vec2(uHeave * lift - uCrackDepth * fissure, fissure);
@@ -116,9 +126,15 @@ void main() {
     return;
   }
 
+  /* Clay carries the heave as damp, never as a darker multiply: the multiply
+     composite is inert under isolate, so a light ground can only show relief by
+     holding more pigment. Wet in the lee of a plate, dry where the key lands.
+     Kept out of the fissures so it never doubles with the pigment already
+     there, and an order under them so the seams stay the subject. */
+  float relief = smoothstep(0.62, 0.18, lit) * (1.0 - field.y) * uRelief;
   float fissure = field.y * mix(1.0, 0.68, diffuse);
   vec3 absorbed = hold(uPigment, uStainFloor);
-  float alpha = clamp(soak(fissure * SOAK, SIGMA) * uAlpha, 0.0, 1.0);
+  float alpha = clamp(soak(fissure * SOAK + relief, SIGMA) * uAlpha, 0.0, 1.0);
   fragColor = vec4(absorbed * alpha, alpha);
 }
 `;

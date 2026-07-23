@@ -47,7 +47,7 @@ const props = [
   {
     name: "params",
     type: "Partial<RoutaParams>",
-    desc: "the frost field: cellScale, heave, crackWidth, crackDepth, unevenScale, uneven, drift, growthRate, slope, rough, ambient, key, and dither.",
+    desc: "the frost field: cellScale, heave, crackWidth, crackDepth, unevenScale, uneven, drift, growthRate, slope, rough, ambient, key, relief, and dither. relief is the damp a light ground holds in the lee of a heave, and does nothing on a dark one.",
   },
 ];
 

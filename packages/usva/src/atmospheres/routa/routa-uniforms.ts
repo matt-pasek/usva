@@ -32,6 +32,7 @@ export function routaUniforms(
     uRough: { value: params.rough },
     uAmbient: { value: params.ambient },
     uKey: { value: params.key },
+    uRelief: { value: params.relief },
     uDither: { value: params.dither },
     uAlpha: { value: 1 },
     uAbsorb: { value: 1 },
@@ -64,6 +65,7 @@ export function setRoutaParams(u: Uniforms, params: RoutaParams): void {
   setUniform(u, "uRough", params.rough);
   setUniform(u, "uAmbient", params.ambient);
   setUniform(u, "uKey", params.key);
+  setUniform(u, "uRelief", params.relief);
   setUniform(u, "uDither", params.dither);
 }
 
