@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { ChapterHeading as Heading } from "@/components/chapter-heading";
 import { ChapterShell } from "@/components/design-language/chapter-shell";
 import { TokenDownloads } from "@/components/design-language/token-downloads";
 import { TokenReference } from "@/components/design-language/token-reference";
@@ -9,12 +10,6 @@ export const metadata: Metadata = {
   description:
     "The reference and the exports. Every non-colour token in one place, plus the DTCG and Tokens Studio files.",
 };
-
-function Heading({ children }: { children: React.ReactNode }) {
-  return (
-    <h2 className="font-bold text-ink text-xl tracking-tight">{children}</h2>
-  );
-}
 
 export default function TokensChapter() {
   return (

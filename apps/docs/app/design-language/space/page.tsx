@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { ChapterHeading as Heading } from "@/components/chapter-heading";
 import { ChapterShell } from "@/components/design-language/chapter-shell";
 import { SpaceScale } from "@/components/design-language/space-scale";
 
@@ -7,12 +8,6 @@ export const metadata: Metadata = {
   description:
     "Rhythm is fluid, and it is measured against the container, not the viewport. One spacing scale, single-column layouts, and clamp for the gutters.",
 };
-
-function Heading({ children }: { children: React.ReactNode }) {
-  return (
-    <h2 className="font-bold text-ink text-xl tracking-tight">{children}</h2>
-  );
-}
 
 export default function SpaceChapter() {
   return (

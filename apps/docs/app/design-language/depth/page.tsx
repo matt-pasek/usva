@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { ChapterHeading as Heading } from "@/components/chapter-heading";
 import { ChapterShell } from "@/components/design-language/chapter-shell";
 import { DepthStrata } from "@/components/design-language/depth-strata";
 import { buildTokenReference } from "@/lib/token-reference";
@@ -8,12 +9,6 @@ export const metadata: Metadata = {
   description:
     "Elevation is weather, not z-index. Six surface strata told by a lighter surface, a hairline, and a soft shadow; glow is reserved for the one thing that is alive.",
 };
-
-function Heading({ children }: { children: React.ReactNode }) {
-  return (
-    <h2 className="font-bold text-ink text-xl tracking-tight">{children}</h2>
-  );
-}
 
 export default function DepthChapter() {
   const { radius } = buildTokenReference();

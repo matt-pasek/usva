@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { ChapterHeading as Heading } from "@/components/chapter-heading";
 import { ChapterShell } from "@/components/design-language/chapter-shell";
 import { LexiconList } from "@/components/design-language/lexicon-list";
 import { VoiceRefusalInput } from "@/components/design-language/voice-refusal-input";
@@ -9,12 +10,6 @@ export const metadata: Metadata = {
   description:
     "How usva sounds, and how it names. Lowercase, plain, second person; and a lexicon where every name is a nature word chosen so it already behaves like the thing it labels.",
 };
-
-function Heading({ children }: { children: React.ReactNode }) {
-  return (
-    <h2 className="font-bold text-ink text-xl tracking-tight">{children}</h2>
-  );
-}
 
 const CASING: { what: string; example: React.ReactNode; render: string }[] = [
   {

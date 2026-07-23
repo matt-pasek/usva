@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ChapterHeading } from "@/components/chapter-heading";
 import type { ThemeDoc } from "@/lib/themes";
 
 /* bg-<role> utilities resolve their custom properties at :root, and a
@@ -7,9 +8,7 @@ import type { ThemeDoc } from "@/lib/themes";
 export function ThemeGround({ doc }: { doc: ThemeDoc }) {
   return (
     <section className="flex flex-col gap-6">
-      <h2 className="font-mono text-sm uppercase tracking-widest text-muted">
-        the ground
-      </h2>
+      <ChapterHeading>the ground</ChapterHeading>
       <p className="max-w-2xl text-muted">
         every theme speaks the same{" "}
         <Link

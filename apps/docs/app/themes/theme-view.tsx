@@ -1,3 +1,4 @@
+import { ChapterHeading } from "@/components/chapter-heading";
 import type { ThemeId } from "@/components/theme-provider";
 import { OtherRegisters } from "@/components/themes/other-registers";
 import { ThemeGround } from "@/components/themes/theme-ground";
@@ -24,9 +25,7 @@ export function ThemeView({
 
       <div className="mx-auto flex max-w-5xl flex-col gap-12 px-6 py-12 sm:px-10 sm:py-16">
         <section className="flex flex-col gap-4">
-          <h2 className="font-mono text-sm uppercase tracking-widest text-muted">
-            the word
-          </h2>
+          <ChapterHeading>the word</ChapterHeading>
           <p className="max-w-2xl text-xl text-ink">
             <strong className="font-semibold">{word?.word}</strong>{" "}
             <span className="text-base text-muted">{word?.ipa}</span>{" "}
@@ -51,9 +50,7 @@ export function ThemeView({
         <section className="flex flex-col gap-6">
           <div className="grid gap-10 sm:grid-cols-2">
             <div className="flex flex-col gap-4">
-              <h2 className="font-mono text-sm uppercase tracking-widest text-muted">
-                use it for
-              </h2>
+              <ChapterHeading>use it for</ChapterHeading>
               <ul className="flex flex-col gap-2.5 text-ink">
                 {doc.forThis.map((item) => (
                   <li key={item} className="flex gap-3">
@@ -66,9 +63,7 @@ export function ThemeView({
               </ul>
             </div>
             <div className="flex flex-col gap-4">
-              <h2 className="font-mono text-sm uppercase tracking-widest text-danger">
-                not for
-              </h2>
+              <ChapterHeading className="text-danger">not for</ChapterHeading>
               <ul className="flex flex-col gap-2.5 text-muted">
                 {doc.notThis.map((item) => (
                   <li key={item} className="flex gap-3">

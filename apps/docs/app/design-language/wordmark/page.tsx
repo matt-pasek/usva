@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { ChapterHeading as Heading } from "@/components/chapter-heading";
 import { ChapterShell } from "@/components/design-language/chapter-shell";
 import { WordmarkClearspace } from "@/components/design-language/wordmark-clearspace";
 import { WordmarkRefusals } from "@/components/design-language/wordmark-refusals";
@@ -15,12 +16,6 @@ const PERIOD_NOTE: Record<string, string> = {
   sisu: "it works, quiet and legible, doing its one job.",
   savi: "it is fired into the clay, darker so it holds on light.",
 };
-
-function Heading({ children }: { children: React.ReactNode }) {
-  return (
-    <h2 className="font-bold text-ink text-xl tracking-tight">{children}</h2>
-  );
-}
 
 export default function WordmarkChapter() {
   return (

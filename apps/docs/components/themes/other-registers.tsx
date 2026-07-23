@@ -1,5 +1,6 @@
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
+import { ChapterHeading } from "@/components/chapter-heading";
 import type { ThemeId } from "@/components/theme-provider";
 import { lexeme } from "@/lib/lexicon";
 import { THEME_DOCS, THEME_ORDER } from "@/lib/themes";
@@ -81,9 +82,7 @@ export function OtherRegisters({ current }: { current: ThemeId }) {
   const others = THEME_ORDER.filter((id) => id !== current);
   return (
     <section className="flex flex-col gap-6">
-      <h2 className="font-mono text-sm uppercase tracking-widest text-muted">
-        the other registers
-      </h2>
+      <ChapterHeading>the other registers</ChapterHeading>
       <p className="max-w-2xl text-muted">
         same components, same roles, a different reading of every one of them.
         nothing forks.

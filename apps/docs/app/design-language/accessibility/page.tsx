@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { ChapterHeading as Heading } from "@/components/chapter-heading";
 import { ChapterShell } from "@/components/design-language/chapter-shell";
 import { ContrastMatrix } from "@/components/design-language/contrast-matrix";
 
@@ -7,12 +8,6 @@ export const metadata: Metadata = {
   description:
     "The floor, not the ceiling. Every contrast ratio here is computed live from the shipping tokens, so the page cannot claim a number the components do not actually hit.",
 };
-
-function Heading({ children }: { children: React.ReactNode }) {
-  return (
-    <h2 className="font-bold text-ink text-xl tracking-tight">{children}</h2>
-  );
-}
 
 const COVENANTS = [
   {

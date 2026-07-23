@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { ChapterHeading as Heading } from "@/components/chapter-heading";
 import { ChapterShell } from "@/components/design-language/chapter-shell";
 import {
   ArrowPunctuation,
@@ -10,12 +11,6 @@ export const metadata: Metadata = {
   description:
     "Glyphs inherit and arrows are punctuation. 24×24, stroke 1.8, drawn in currentColor so an icon takes the size and colour of the text it sits in.",
 };
-
-function Heading({ children }: { children: React.ReactNode }) {
-  return (
-    <h2 className="font-bold text-ink text-xl tracking-tight">{children}</h2>
-  );
-}
 
 export default function IconographyChapter() {
   return (
