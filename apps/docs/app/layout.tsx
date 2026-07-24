@@ -1,11 +1,28 @@
 import "./globals.css";
 import type { Metadata } from "next";
+import { Fira_Mono, Fira_Sans } from "next/font/google";
 import type { ReactNode } from "react";
+import { JsonLd } from "@/components/json-ld";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteNav } from "@/components/site-nav";
 import { ThemeProvider } from "@/components/theme-provider";
-import { SITE_ORIGIN } from "@/lib/site";
+import { rootGraph } from "@/lib/schema";
+import { pageMetadata, SITE_ORIGIN } from "@/lib/site";
 import { themeScript } from "@/lib/theme-script";
+
+const firaSans = Fira_Sans({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700", "800"],
+  variable: "--font-fira-sans",
+  display: "swap",
+});
+
+const firaMono = Fira_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500", "700"],
+  variable: "--font-fira-mono",
+  display: "swap",
+});
 
 /**
  * Metadata is Sentence case, everywhere, and that is not a lapse in the voice.
@@ -14,7 +31,7 @@ import { themeScript } from "@/lib/theme-script";
  * nothing around it to show that the lowercase is a system rather than a typo.
  * The brand keeps its own casing wherever it appears: `usva.`, never `Usva.`.
  */
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata("/", {
   metadataBase: new URL(SITE_ORIGIN),
   title: {
     default: "usva. · Beautiful, usable React components",
@@ -22,23 +39,22 @@ export const metadata: Metadata = {
   },
   description:
     "An open-source React design system: dual-distributed as an npm package and a shadcn-compatible registry.",
-  openGraph: { type: "website", url: SITE_ORIGIN, siteName: "usva." },
+  openGraph: { type: "website", siteName: "usva." },
   twitter: { card: "summary_large_image" },
-};
-
-const jsonLd = {
-  "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
-  name: "usva.",
-  applicationCategory: "DeveloperApplication",
-  operatingSystem: "Web",
-};
+});
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     /* The theme lands on <html> from a blocking script, so it is already right
      * on the first paint and the server markup cannot match it. */
-    <html lang="en" suppressHydrationWarning>
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={`${firaSans.variable} ${firaMono.variable}`}
+    >
+      <head>
+        <JsonLd data={rootGraph()} />
+      </head>
       <body>
         <script
           // biome-ignore lint/security/noDangerouslySetInnerHtml: the theme must be set before the first paint, which rules out anything React runs
@@ -51,11 +67,6 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           <SiteFooter />
         </ThemeProvider>
         <div aria-hidden id="grain" />
-        <script
-          type="application/ld+json"
-          // biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD structured data must be injected as a raw script body
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
       </body>
     </html>
   );
