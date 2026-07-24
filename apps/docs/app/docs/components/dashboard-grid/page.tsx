@@ -2,13 +2,17 @@ import type { Metadata } from "next";
 import { AcquireSection } from "@/components/docs/acquire-section";
 import { ComponentDoc } from "@/components/docs/component-doc";
 import { PropsTable } from "@/components/docs/props-table";
+import { pageMetadata } from "@/lib/site";
 import { GridDemo } from "./dashboard-grid-demo";
 
-export const metadata: Metadata = {
-  title: "Dashboard Grid",
-  description:
-    "Drag to move, drag an edge to resize, keyboard included. Widgets the user arranges, and nothing overlaps.",
-};
+export const metadata: Metadata = pageMetadata(
+  "/docs/components/dashboard-grid",
+  {
+    title: "Dashboard Grid",
+    description:
+      "Drag to move, drag an edge to resize, keyboard included. Widgets the user arranges, and nothing overlaps.",
+  },
+);
 
 const gridProps = [
   {

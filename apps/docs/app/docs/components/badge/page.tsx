@@ -2,13 +2,14 @@ import type { Metadata } from "next";
 import { AcquireSection } from "@/components/docs/acquire-section";
 import { ComponentDoc } from "@/components/docs/component-doc";
 import { PropsTable } from "@/components/docs/props-table";
+import { pageMetadata } from "@/lib/site";
 import { BadgeDemo } from "./badge-demo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata("/docs/components/badge", {
   title: "Badge",
   description:
     "The status of the thing it sits on. Six semantic tones, plus a monospace uppercase variant for tags and metadata. It labels, it never clicks.",
-};
+});
 
 const props = [
   {

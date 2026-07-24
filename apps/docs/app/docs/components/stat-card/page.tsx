@@ -4,12 +4,13 @@ import { AcquireSection } from "@/components/docs/acquire-section";
 import { ComponentDoc } from "@/components/docs/component-doc";
 import { DemoPanel } from "@/components/docs/demo-panel";
 import { PropsTable } from "@/components/docs/props-table";
+import { pageMetadata } from "@/lib/site";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata("/docs/components/stat-card", {
   title: "Stat Card",
   description:
     "One metric in a tile: a big value, a coloured trend, an optional sparkline, and a note on why it moved.",
-};
+});
 
 const props = [
   {

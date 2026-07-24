@@ -2,13 +2,14 @@ import type { Metadata } from "next";
 import { AcquireSection } from "@/components/docs/acquire-section";
 import { ComponentDoc } from "@/components/docs/component-doc";
 import { PropsTable } from "@/components/docs/props-table";
+import { pageMetadata } from "@/lib/site";
 import { ToolbarDemo } from "./toolbar-demo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata("/docs/components/toolbar", {
   title: "Toolbar",
   description:
     "The controls above a view: grouped filters, counts and a legend on the left, actions on the right.",
-};
+});
 
 const props = [
   {

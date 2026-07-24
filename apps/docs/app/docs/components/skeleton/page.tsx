@@ -4,12 +4,13 @@ import { AcquireSection } from "@/components/docs/acquire-section";
 import { ComponentDoc } from "@/components/docs/component-doc";
 import { DemoPanel } from "@/components/docs/demo-panel";
 import { PropsTable } from "@/components/docs/props-table";
+import { pageMetadata } from "@/lib/site";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata("/docs/components/skeleton", {
   title: "Skeleton",
   description:
     "The shape of the content before it arrives, as a grey block sized to what is loading.",
-};
+});
 
 const props = [
   {

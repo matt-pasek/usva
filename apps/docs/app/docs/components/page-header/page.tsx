@@ -3,6 +3,7 @@ import { AcquireSection } from "@/components/docs/acquire-section";
 import { ComponentDoc } from "@/components/docs/component-doc";
 import { DemoPanel } from "@/components/docs/demo-panel";
 import { PropsTable } from "@/components/docs/props-table";
+import { pageMetadata } from "@/lib/site";
 import {
   BackgroundDemo,
   CompactDemo,
@@ -10,11 +11,11 @@ import {
   MetricDemo,
 } from "./page-header-demo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata("/docs/components/page-header", {
   title: "Page Header",
   description:
     "The top of a screen: eyebrow, title, the stats worth reading first, an aside, and an editable control tray.",
-};
+});
 
 const props = [
   {

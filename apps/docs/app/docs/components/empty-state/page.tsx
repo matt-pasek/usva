@@ -2,13 +2,14 @@ import type { Metadata } from "next";
 import { AcquireSection } from "@/components/docs/acquire-section";
 import { ComponentDoc } from "@/components/docs/component-doc";
 import { PropsTable } from "@/components/docs/props-table";
+import { pageMetadata } from "@/lib/site";
 import { EmptyStateDemo } from "./empty-state-demo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata("/docs/components/empty-state", {
   title: "Empty State",
   description:
     "Nothing here yet, and the one thing to do about it: an icon, a message, and a single action.",
-};
+});
 
 const props = [
   {

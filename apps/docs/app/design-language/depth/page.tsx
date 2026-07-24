@@ -2,13 +2,14 @@ import type { Metadata } from "next";
 import { ChapterHeading as Heading } from "@/components/chapter-heading";
 import { ChapterShell } from "@/components/design-language/chapter-shell";
 import { DepthStrata } from "@/components/design-language/depth-strata";
+import { pageMetadata } from "@/lib/site";
 import { buildTokenReference } from "@/lib/token-reference";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata("/design-language/depth", {
   title: "Depth · Design language",
   description:
-    "Elevation is weather, not z-index. Six surface strata told by a lighter surface, a hairline, and a soft shadow; glow is reserved for the one thing that is alive.",
-};
+    "Elevation is weather, not z-index. Six surface strata told by a lighter surface, a hairline, and a soft shadow; glow is saved for the one thing alive.",
+});
 
 export default function DepthChapter() {
   const { radius } = buildTokenReference();

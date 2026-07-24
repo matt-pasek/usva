@@ -3,13 +3,14 @@ import { GroundNote } from "@/components/dark-stage";
 import { AcquireSection } from "@/components/docs/acquire-section";
 import { ComponentDoc } from "@/components/docs/component-doc";
 import { PropsTable } from "@/components/docs/props-table";
+import { pageMetadata } from "@/lib/site";
 import { KuultoPlayground } from "./kuulto-demo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata("/docs/components/kuulto", {
   title: "Kuulto",
   description:
     "Creased silk on a scale you stand inside, lit from three sides so its colour is only what the light does to the folds.",
-};
+});
 
 const props = [
   {

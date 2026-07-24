@@ -2,13 +2,17 @@ import type { Metadata } from "next";
 import { AcquireSection } from "@/components/docs/acquire-section";
 import { ComponentDoc } from "@/components/docs/component-doc";
 import { PropsTable } from "@/components/docs/props-table";
+import { pageMetadata } from "@/lib/site";
 import { CodeSnippetDemo } from "./code-snippet-demo";
 
-export const metadata: Metadata = {
-  title: "CodeSnippet",
-  description:
-    "Highlighted code with the copy button already there. The syntax palette is painted with role tokens, so it reskins with the theme.",
-};
+export const metadata: Metadata = pageMetadata(
+  "/docs/components/code-snippet",
+  {
+    title: "CodeSnippet",
+    description:
+      "Highlighted code with the copy button already there. The syntax palette is painted with role tokens, so it reskins with the theme.",
+  },
+);
 
 const props = [
   {

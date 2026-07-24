@@ -2,13 +2,14 @@ import type { Metadata } from "next";
 import { AcquireSection } from "@/components/docs/acquire-section";
 import { ComponentDoc } from "@/components/docs/component-doc";
 import { PropsTable } from "@/components/docs/props-table";
+import { pageMetadata } from "@/lib/site";
 import { FooterDemo } from "./footer-demo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata("/docs/components/footer", {
   title: "Footer",
   description:
     "The bottom of the site: a brand slot, titled link columns when there is a lot, one flat row when there is not.",
-};
+});
 
 const props = [
   {

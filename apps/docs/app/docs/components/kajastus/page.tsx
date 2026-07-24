@@ -3,13 +3,14 @@ import { GroundNote } from "@/components/dark-stage";
 import { AcquireSection } from "@/components/docs/acquire-section";
 import { ComponentDoc } from "@/components/docs/component-doc";
 import { PropsTable } from "@/components/docs/props-table";
+import { pageMetadata } from "@/lib/site";
 import { KajastusPlayground } from "./kajastus-demo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata("/docs/components/kajastus", {
   title: "Kajastus",
   description:
     "The glow spreading along a horizon, arrived overhead as a curved roof of folded light over the viewport.",
-};
+});
 
 const props = [
   {

@@ -3,13 +3,14 @@ import { GroundNote } from "@/components/dark-stage";
 import { AcquireSection } from "@/components/docs/acquire-section";
 import { ComponentDoc } from "@/components/docs/component-doc";
 import { PropsTable } from "@/components/docs/props-table";
+import { pageMetadata } from "@/lib/site";
 import { HehkuPlayground } from "./hehku-demo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata("/docs/components/hehku", {
   title: "Hehku",
   description:
     "One incandescent filament coiling through the dark, cold violet where it runs thin and blooming where it folds over itself.",
-};
+});
 
 const props = [
   {

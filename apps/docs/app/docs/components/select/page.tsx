@@ -2,13 +2,14 @@ import type { Metadata } from "next";
 import { AcquireSection } from "@/components/docs/acquire-section";
 import { ComponentDoc } from "@/components/docs/component-doc";
 import { PropsTable } from "@/components/docs/props-table";
+import { pageMetadata } from "@/lib/site";
 import { SelectDemo } from "./select-demo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata("/docs/components/select", {
   title: "Select",
   description:
-    "One value out of many, when the list is too long to lay out flat.",
-};
+    "One value out of many, when the list is too long to lay out flat. A controlled, keyboard-accessible select with a live demo, props, and copy-in source.",
+});
 
 const props = [
   {

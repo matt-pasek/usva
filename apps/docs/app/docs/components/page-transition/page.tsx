@@ -4,12 +4,16 @@ import { ComponentDoc } from "@/components/docs/component-doc";
 import { DemoPanel } from "@/components/docs/demo-panel";
 import { PropsTable } from "@/components/docs/props-table";
 import { PageTransitionDemo } from "@/components/page-transition-demo";
+import { pageMetadata } from "@/lib/site";
 
-export const metadata: Metadata = {
-  title: "Page Transition",
-  description:
-    "Fades and lifts content in, then softly out, keyed on any routeKey so it works with any router.",
-};
+export const metadata: Metadata = pageMetadata(
+  "/docs/components/page-transition",
+  {
+    title: "Page Transition",
+    description:
+      "Fades and lifts content in, then softly out, keyed on any routeKey so it works with any router.",
+  },
+);
 
 const usage = `"use client";
 import { PageTransition } from "@matt-pasek/usva";

@@ -2,13 +2,14 @@ import type { Metadata } from "next";
 import { AcquireSection } from "@/components/docs/acquire-section";
 import { ComponentDoc } from "@/components/docs/component-doc";
 import { PropsTable } from "@/components/docs/props-table";
+import { pageMetadata } from "@/lib/site";
 import { ColorFieldDemo } from "./color-field-demo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata("/docs/components/color-field", {
   title: "Color Field",
   description:
     "Picks a colour and shows you the value. The swatch is the control, and it is for overriding a role token, never for hardcoding one.",
-};
+});
 
 const props = [
   {

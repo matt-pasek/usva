@@ -2,12 +2,13 @@ import { CodeSnippet } from "@matt-pasek/usva";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { DARK_ONLY, THEMES } from "@/lib/catalog";
+import { pageMetadata } from "@/lib/site";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata("/docs/get-started/theming", {
   title: "Theming",
   description:
     "Retheme usva. by moving role tokens. Forking a component to change a colour is the failure mode this design prevents.",
-};
+});
 
 const brandTheme = `[data-theme="brand"] {
   --usva-bg: #07110f;

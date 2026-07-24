@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import type { ThemeId } from "@/components/theme-provider";
 import { THEMES } from "@/lib/catalog";
 import { lexeme } from "@/lib/lexicon";
+import { pageMetadata } from "@/lib/site";
 import { THEME_DOCS } from "@/lib/themes";
 import { ThemeView } from "../theme-view";
 import { ThemeSync } from "./theme-sync";
@@ -22,10 +23,10 @@ export async function generateMetadata({
   const doc = THEME_DOCS[theme as ThemeId];
   const word = lexeme(theme);
   if (!doc || !word) return {};
-  return {
+  return pageMetadata(`/themes/${theme}`, {
     title: `${word.word}, ${word.sense}`,
     description: doc.lede,
-  };
+  });
 }
 
 export default async function ThemePage({

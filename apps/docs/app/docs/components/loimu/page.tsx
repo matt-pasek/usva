@@ -3,13 +3,14 @@ import { GroundNote } from "@/components/dark-stage";
 import { AcquireSection } from "@/components/docs/acquire-section";
 import { ComponentDoc } from "@/components/docs/component-doc";
 import { PropsTable } from "@/components/docs/props-table";
+import { pageMetadata } from "@/lib/site";
 import { LoimuPlayground } from "./loimu-demo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata("/docs/components/loimu", {
   title: "Loimu",
   description:
     "Light from something enormous and off-frame, drawn into long streamers that fade before the edge.",
-};
+});
 
 const props = [
   {

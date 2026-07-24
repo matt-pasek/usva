@@ -2,13 +2,14 @@ import type { Metadata } from "next";
 import { AcquireSection } from "@/components/docs/acquire-section";
 import { ComponentDoc } from "@/components/docs/component-doc";
 import { PropsTable } from "@/components/docs/props-table";
+import { pageMetadata } from "@/lib/site";
 import { DrawerDemo } from "./drawer-demo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata("/docs/components/drawer", {
   title: "Drawer",
   description:
     "Slides in from an edge and behaves like a dialog: focus trap, scroll lock and Escape, handled for you.",
-};
+});
 
 const props = [
   {

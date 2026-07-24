@@ -2,13 +2,14 @@ import type { Metadata } from "next";
 import { AcquireSection } from "@/components/docs/acquire-section";
 import { ComponentDoc } from "@/components/docs/component-doc";
 import { PropsTable } from "@/components/docs/props-table";
+import { pageMetadata } from "@/lib/site";
 import { SulaFabDemo } from "./sula-fab-demo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata("/docs/components/sula-fab", {
   title: "Sula Fab",
   description:
     "Actions that emerge as liquid beads from a floating button, and pinch back on close.",
-};
+});
 
 const props = [
   {

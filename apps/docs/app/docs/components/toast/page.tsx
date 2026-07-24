@@ -3,13 +3,14 @@ import { AcquireSection } from "@/components/docs/acquire-section";
 import { ComponentDoc } from "@/components/docs/component-doc";
 import { DemoPanel } from "@/components/docs/demo-panel";
 import { PropsTable } from "@/components/docs/props-table";
+import { pageMetadata } from "@/lib/site";
 import { ToastDemo } from "./toast-demo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata("/docs/components/toast", {
   title: "Toast",
   description:
     "The result of something you just did, fired imperatively from anywhere with toast().",
-};
+});
 
 const toastOptions = [
   {

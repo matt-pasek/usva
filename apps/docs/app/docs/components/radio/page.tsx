@@ -2,13 +2,14 @@ import type { Metadata } from "next";
 import { AcquireSection } from "@/components/docs/acquire-section";
 import { ComponentDoc } from "@/components/docs/component-doc";
 import { PropsTable } from "@/components/docs/props-table";
+import { pageMetadata } from "@/lib/site";
 import { RadioDemo } from "./radio-demo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata("/docs/components/radio", {
   title: "Radio",
   description:
     "Exactly one of a few, each option carrying its own label and description. More than five and you want a Select.",
-};
+});
 
 const groupProps = [
   {

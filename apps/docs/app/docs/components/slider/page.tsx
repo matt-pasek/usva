@@ -2,13 +2,14 @@ import type { Metadata } from "next";
 import { AcquireSection } from "@/components/docs/acquire-section";
 import { ComponentDoc } from "@/components/docs/component-doc";
 import { PropsTable } from "@/components/docs/props-table";
+import { pageMetadata } from "@/lib/site";
 import { SliderDemo } from "./slider-demo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata("/docs/components/slider", {
   title: "Slider",
   description:
     "A value on a continuum, picked by feel, where the trend matters more than the exact number.",
-};
+});
 
 const props = [
   { name: "value", type: "number", desc: "controlled value." },

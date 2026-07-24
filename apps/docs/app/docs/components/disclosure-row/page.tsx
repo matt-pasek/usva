@@ -2,13 +2,17 @@ import type { Metadata } from "next";
 import { AcquireSection } from "@/components/docs/acquire-section";
 import { ComponentDoc } from "@/components/docs/component-doc";
 import { PropsTable } from "@/components/docs/props-table";
+import { pageMetadata } from "@/lib/site";
 import { DisclosureRowDemo } from "./disclosure-row-demo";
 
-export const metadata: Metadata = {
-  title: "Disclosure Row",
-  description:
-    "A row that opens. The chevron and the expanded state, with the whole row as the toggle.",
-};
+export const metadata: Metadata = pageMetadata(
+  "/docs/components/disclosure-row",
+  {
+    title: "Disclosure Row",
+    description:
+      "A row that opens. The chevron and the expanded state, with the whole row as the toggle.",
+  },
+);
 
 const props = [
   {

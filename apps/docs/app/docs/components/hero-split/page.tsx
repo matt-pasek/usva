@@ -2,13 +2,14 @@ import type { Metadata } from "next";
 import { AcquireSection } from "@/components/docs/acquire-section";
 import { ComponentDoc } from "@/components/docs/component-doc";
 import { PropsTable } from "@/components/docs/props-table";
+import { pageMetadata } from "@/lib/site";
 import { HeroSplitDemo } from "./hero-split-demo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata("/docs/components/hero-split", {
   title: "Hero Split",
   description:
     "Copy on one side, the proof on the other, over an optional background. Both sized off the container rather than the window.",
-};
+});
 
 const props = [
   { name: "title", type: "ReactNode", desc: "the headline." },

@@ -2,13 +2,14 @@ import type { Metadata } from "next";
 import { AcquireSection } from "@/components/docs/acquire-section";
 import { ComponentDoc } from "@/components/docs/component-doc";
 import { PropsTable } from "@/components/docs/props-table";
+import { pageMetadata } from "@/lib/site";
 import { StatBentoDemo } from "./stat-bento-demo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata("/docs/components/stat-bento", {
   title: "Stat Bento",
   description:
     "The numbers you lead with, at display scale: big values with accent suffixes and a short label under each.",
-};
+});
 
 const props = [
   {

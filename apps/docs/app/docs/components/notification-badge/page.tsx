@@ -2,13 +2,17 @@ import type { Metadata } from "next";
 import { AcquireSection } from "@/components/docs/acquire-section";
 import { ComponentDoc } from "@/components/docs/component-doc";
 import { PropsTable } from "@/components/docs/props-table";
+import { pageMetadata } from "@/lib/site";
 import { NotificationBadgeDemo } from "./notification-badge-demo";
 
-export const metadata: Metadata = {
-  title: "Notification Badge",
-  description:
-    "An unread count pinned to the corner of an icon or button, capped at a max. It wraps, it does not replace.",
-};
+export const metadata: Metadata = pageMetadata(
+  "/docs/components/notification-badge",
+  {
+    title: "Notification Badge",
+    description:
+      "An unread count pinned to the corner of an icon or button, capped at a max. It wraps, it does not replace.",
+  },
+);
 
 const props = [
   {

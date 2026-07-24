@@ -2,13 +2,14 @@ import type { Metadata } from "next";
 import { AcquireSection } from "@/components/docs/acquire-section";
 import { ComponentDoc } from "@/components/docs/component-doc";
 import { PropsTable } from "@/components/docs/props-table";
+import { pageMetadata } from "@/lib/site";
 import { TabsDemo } from "./tabs-demo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata("/docs/components/tabs", {
   title: "Tabs",
   description:
     "Peer views in one region, one panel at a time. Not steps, and never a way to hide required fields.",
-};
+});
 
 const rootProps = [
   {

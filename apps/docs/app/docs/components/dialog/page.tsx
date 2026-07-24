@@ -2,13 +2,14 @@ import type { Metadata } from "next";
 import { AcquireSection } from "@/components/docs/acquire-section";
 import { ComponentDoc } from "@/components/docs/component-doc";
 import { PropsTable } from "@/components/docs/props-table";
+import { pageMetadata } from "@/lib/site";
 import { DialogDemo } from "./dialog-demo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata("/docs/components/dialog", {
   title: "Dialog",
   description:
     "Interrupts, on purpose. Focus trapped, scroll locked, Escape closes, on Base UI Dialog.",
-};
+});
 
 const props = [
   {

@@ -2,13 +2,14 @@ import type { Metadata } from "next";
 import { AcquireSection } from "@/components/docs/acquire-section";
 import { ComponentDoc } from "@/components/docs/component-doc";
 import { PropsTable } from "@/components/docs/props-table";
+import { pageMetadata } from "@/lib/site";
 import { CtaBannerDemo } from "./cta-banner-demo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata("/docs/components/cta-banner", {
   title: "CTA Banner",
   description:
     "The ask at the end of a page: accent wash, copy, an action, and an optional proof row. Everything below the title is optional.",
-};
+});
 
 const props = [
   { name: "title", type: "ReactNode", desc: "the panel headline." },

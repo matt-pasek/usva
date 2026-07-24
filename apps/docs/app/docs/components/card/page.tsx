@@ -5,13 +5,14 @@ import { AcquireSection } from "@/components/docs/acquire-section";
 import { ComponentDoc } from "@/components/docs/component-doc";
 import { DemoPanel } from "@/components/docs/demo-panel";
 import { PropsTable } from "@/components/docs/props-table";
+import { pageMetadata } from "@/lib/site";
 import { CardDemo } from "./card-demo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata("/docs/components/card", {
   title: "Card",
   description:
     "The surface that groups things. Header, body and footer regions, plus eyebrow, title, icon, badge and action parts.",
-};
+});
 
 const props = [
   {

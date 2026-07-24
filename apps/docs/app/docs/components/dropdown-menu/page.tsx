@@ -2,13 +2,17 @@ import type { Metadata } from "next";
 import { AcquireSection } from "@/components/docs/acquire-section";
 import { ComponentDoc } from "@/components/docs/component-doc";
 import { PropsTable } from "@/components/docs/props-table";
+import { pageMetadata } from "@/lib/site";
 import { DropdownMenuDemo } from "./dropdown-menu-demo";
 
-export const metadata: Metadata = {
-  title: "Dropdown Menu",
-  description:
-    "Actions anchored to what triggered them, with roving focus and portal positioning. Actions, not navigation.",
-};
+export const metadata: Metadata = pageMetadata(
+  "/docs/components/dropdown-menu",
+  {
+    title: "Dropdown Menu",
+    description:
+      "Actions anchored to what triggered them, with roving focus and portal positioning. Actions, not navigation.",
+  },
+);
 
 const props = [
   {

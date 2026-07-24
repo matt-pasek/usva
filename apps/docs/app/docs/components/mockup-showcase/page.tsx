@@ -2,13 +2,17 @@ import type { Metadata } from "next";
 import { AcquireSection } from "@/components/docs/acquire-section";
 import { ComponentDoc } from "@/components/docs/component-doc";
 import { PropsTable } from "@/components/docs/props-table";
+import { pageMetadata } from "@/lib/site";
 import { MockupShowcaseDemo } from "./mockup-showcase-demo";
 
-export const metadata: Metadata = {
-  title: "Mockup Showcase",
-  description:
-    "Browser or device chrome around any media you put inside: an image, a video, or a live iframe.",
-};
+export const metadata: Metadata = pageMetadata(
+  "/docs/components/mockup-showcase",
+  {
+    title: "Mockup Showcase",
+    description:
+      "Browser or device chrome around any media you put inside: an image, a video, or a live iframe.",
+  },
+);
 
 const props = [
   {

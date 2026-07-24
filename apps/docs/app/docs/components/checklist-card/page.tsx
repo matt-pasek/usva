@@ -2,13 +2,17 @@ import type { Metadata } from "next";
 import { AcquireSection } from "@/components/docs/acquire-section";
 import { ComponentDoc } from "@/components/docs/component-doc";
 import { PropsTable } from "@/components/docs/props-table";
+import { pageMetadata } from "@/lib/site";
 import { ChecklistCardDemo } from "./checklist-card-demo";
 
-export const metadata: Metadata = {
-  title: "Checklist Card",
-  description:
-    "Short ticked reassurances as a real list, so the reader gets the count and the order.",
-};
+export const metadata: Metadata = pageMetadata(
+  "/docs/components/checklist-card",
+  {
+    title: "Checklist Card",
+    description:
+      "Short ticked reassurances as a real list, so the reader gets the count and the order.",
+  },
+);
 
 const props = [
   {

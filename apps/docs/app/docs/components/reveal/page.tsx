@@ -4,12 +4,13 @@ import { ComponentDoc } from "@/components/docs/component-doc";
 import { DemoPanel } from "@/components/docs/demo-panel";
 import { PropsTable } from "@/components/docs/props-table";
 import { RevealDemo } from "@/components/reveal-demo";
+import { pageMetadata } from "@/lib/site";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata("/docs/components/reveal", {
   title: "Reveal",
   description:
     "Six role-based scroll reveals that resolve out of mist, plus a stagger group and an intensity knob.",
-};
+});
 
 const usage = `import { Reveal, RevealGroup } from "@matt-pasek/usva";
 

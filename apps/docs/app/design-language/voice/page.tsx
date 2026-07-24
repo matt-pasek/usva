@@ -4,12 +4,13 @@ import { ChapterShell } from "@/components/design-language/chapter-shell";
 import { LexiconList } from "@/components/design-language/lexicon-list";
 import { VoiceRefusalInput } from "@/components/design-language/voice-refusal-input";
 import { Wordmark } from "@/components/wordmark";
+import { pageMetadata } from "@/lib/site";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata("/design-language/voice", {
   title: "Voice · Design language",
   description:
-    "How usva sounds, and how it names. Lowercase, plain, second person; and a lexicon where every name is a nature word chosen so it already behaves like the thing it labels.",
-};
+    "How usva sounds, and how it names. Lowercase, plain, second person, and a lexicon where every name behaves like the thing it labels.",
+});
 
 const CASING: { what: string; example: React.ReactNode; render: string }[] = [
   {

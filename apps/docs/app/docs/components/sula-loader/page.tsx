@@ -4,13 +4,14 @@ import { AcquireSection } from "@/components/docs/acquire-section";
 import { ComponentDoc } from "@/components/docs/component-doc";
 import { DemoPanel } from "@/components/docs/demo-panel";
 import { PropsTable } from "@/components/docs/props-table";
+import { pageMetadata } from "@/lib/site";
 import { SulaLoaderDemo } from "./sula-loader-demo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata("/docs/components/sula-loader", {
   title: "Sula Loader",
   description:
     "For a wait you want felt. A liquid-glass metaball spinner that loops only while it is mounted.",
-};
+});
 
 const props = [
   {

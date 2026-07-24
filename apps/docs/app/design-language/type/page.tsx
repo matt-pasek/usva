@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import { ChapterShell } from "@/components/design-language/chapter-shell";
 import { TypeScale } from "@/components/design-language/type-scale";
+import { pageMetadata } from "@/lib/site";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata("/design-language/type", {
   title: "Type · Design language",
   description:
     "One family. Fira Sans carries the display line and the smallest label; the mono is the only permitted second voice, and only for structural annotation.",
-};
+});
 
 export default function TypeChapter() {
   return (

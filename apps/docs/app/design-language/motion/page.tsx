@@ -4,12 +4,13 @@ import { ChapterShell } from "@/components/design-language/chapter-shell";
 import { MotionRegisters } from "@/components/design-language/motion-registers";
 import { MotionTiers } from "@/components/design-language/motion-tiers";
 import { lexeme } from "@/lib/lexicon";
+import { pageMetadata } from "@/lib/site";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata("/design-language/motion", {
   title: "Motion · Design language",
   description:
-    "Two registers. A landing page is scrubbed, so a line climbs out of its own edge as a function of scroll and climbs back in when you scroll up. An app is triggered, because there is work to get back to.",
-};
+    "Two registers. A landing page is scrubbed, so a line climbs out of its own edge on scroll and climbs back in; an app is triggered, because there is work to do.",
+});
 
 export default function MotionChapter() {
   const word = lexeme("tiivistymä");
@@ -103,7 +104,7 @@ export default function MotionChapter() {
           </p>
           <p className="text-muted text-sm">
             a component asks for{" "}
-            <code className="font-mono text-ink">duration-slow</code>{" "}and gets
+            <code className="font-mono text-ink">duration-slow</code> and gets
             kajo&apos;s long spring or sisu&apos;s short damped one, without
             knowing the difference.
           </p>

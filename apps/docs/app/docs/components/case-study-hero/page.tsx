@@ -2,13 +2,17 @@ import type { Metadata } from "next";
 import { AcquireSection } from "@/components/docs/acquire-section";
 import { ComponentDoc } from "@/components/docs/component-doc";
 import { PropsTable } from "@/components/docs/props-table";
+import { pageMetadata } from "@/lib/site";
 import { CaseStudyHeroDemo } from "./case-study-hero-demo";
 
-export const metadata: Metadata = {
-  title: "Case Study Hero",
-  description:
-    "Opens a piece of work with a two-tone display headline keyed to the study's own colour, over eyebrow, tagline, meta and media slots.",
-};
+export const metadata: Metadata = pageMetadata(
+  "/docs/components/case-study-hero",
+  {
+    title: "Case Study Hero",
+    description:
+      "Opens a piece of work with a two-tone display headline keyed to the study's own colour, over eyebrow, tagline, meta and media slots.",
+  },
+);
 
 const props = [
   {

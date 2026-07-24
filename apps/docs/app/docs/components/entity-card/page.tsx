@@ -2,13 +2,14 @@ import type { Metadata } from "next";
 import { AcquireSection } from "@/components/docs/acquire-section";
 import { ComponentDoc } from "@/components/docs/component-doc";
 import { PropsTable } from "@/components/docs/props-table";
+import { pageMetadata } from "@/lib/site";
 import { EntityCardDemo } from "./entity-card-demo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata("/docs/components/entity-card", {
   title: "Entity Card",
   description:
     "Media, meta, title, body, actions. Assemble them into a project tile, a list row, or a showcase card.",
-};
+});
 
 const props = [
   {

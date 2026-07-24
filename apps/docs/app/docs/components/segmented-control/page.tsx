@@ -2,13 +2,17 @@ import type { Metadata } from "next";
 import { AcquireSection } from "@/components/docs/acquire-section";
 import { ComponentDoc } from "@/components/docs/component-doc";
 import { PropsTable } from "@/components/docs/props-table";
+import { pageMetadata } from "@/lib/site";
 import { SegmentedControlDemo } from "./segmented-control-demo";
 
-export const metadata: Metadata = {
-  title: "Segmented Control",
-  description:
-    "A few exclusive options, all visible at once, with the choice carried by a sliding indicator. The plain one, for dense UI.",
-};
+export const metadata: Metadata = pageMetadata(
+  "/docs/components/segmented-control",
+  {
+    title: "Segmented Control",
+    description:
+      "A few exclusive options, all visible at once, with the choice carried by a sliding indicator. The plain one, for dense UI.",
+  },
+);
 
 const props = [
   {

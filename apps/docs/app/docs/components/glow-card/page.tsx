@@ -2,13 +2,14 @@ import type { Metadata } from "next";
 import { AcquireSection } from "@/components/docs/acquire-section";
 import { ComponentDoc } from "@/components/docs/component-doc";
 import { PropsTable } from "@/components/docs/props-table";
+import { pageMetadata } from "@/lib/site";
 import { GlowCardDemo } from "./glow-card-demo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata("/docs/components/glow-card", {
   title: "Glow Card",
   description:
     "A Card whose border lights the edge facing your pointer, so one card earns the directional glow BentoGrid shares across a grid.",
-};
+});
 
 const props = [
   {

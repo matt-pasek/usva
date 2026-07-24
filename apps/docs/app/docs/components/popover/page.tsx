@@ -2,13 +2,14 @@ import type { Metadata } from "next";
 import { AcquireSection } from "@/components/docs/acquire-section";
 import { ComponentDoc } from "@/components/docs/component-doc";
 import { PropsTable } from "@/components/docs/props-table";
+import { pageMetadata } from "@/lib/site";
 import { PopoverDemo } from "./popover-demo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata("/docs/components/popover", {
   title: "Popover",
   description:
     "Rich content anchored to a trigger, clickable, with the page still live behind it.",
-};
+});
 
 const props = [
   {

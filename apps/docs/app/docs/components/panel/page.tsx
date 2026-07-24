@@ -2,13 +2,14 @@ import type { Metadata } from "next";
 import { AcquireSection } from "@/components/docs/acquire-section";
 import { ComponentDoc } from "@/components/docs/component-doc";
 import { PropsTable } from "@/components/docs/props-table";
+import { pageMetadata } from "@/lib/site";
 import { PanelDemo } from "./panel-demo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata("/docs/components/panel", {
   title: "Panel",
   description:
     "The dashboard workhorse: a titled region whose header stays fixed while the body scrolls, sized to fill a grid cell.",
-};
+});
 
 const props = [
   { name: "title", type: "ReactNode", desc: "the panel heading." },

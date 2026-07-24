@@ -3,12 +3,13 @@ import Link from "next/link";
 import { DesignLanguageHero } from "@/components/design-language/dl-hero";
 import { INTENSITY_BY_LAYER, LAYER_LABEL, type Layer } from "@/lib/catalog";
 import { DL_CHAPTERS, dlHref } from "@/lib/design-language";
+import { pageMetadata } from "@/lib/site";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata("/design-language", {
   title: "Design language",
   description:
-    "The rules behind usva.: one grammar spoken in three registers, the role tokens, the type, the motion, and a dial that shows exactly how much attention a screen is allowed to ask for.",
-};
+    "The rules behind usva.: one grammar in three registers, plus the role tokens, the type, the motion, and a dial for how much attention a screen may ask.",
+});
 
 const PRINCIPLES = [
   {

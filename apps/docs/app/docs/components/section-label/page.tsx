@@ -4,12 +4,16 @@ import { AcquireSection } from "@/components/docs/acquire-section";
 import { ComponentDoc } from "@/components/docs/component-doc";
 import { DemoPanel } from "@/components/docs/demo-panel";
 import { PropsTable } from "@/components/docs/props-table";
+import { pageMetadata } from "@/lib/site";
 
-export const metadata: Metadata = {
-  title: "Section Label",
-  description:
-    "The quiet way to start a section: an optional mono index, an uppercase title, an accent hairline, and a trailing aside.",
-};
+export const metadata: Metadata = pageMetadata(
+  "/docs/components/section-label",
+  {
+    title: "Section Label",
+    description:
+      "The quiet way to start a section: an optional mono index, an uppercase title, an accent hairline, and a trailing aside.",
+  },
+);
 
 const props = [
   {

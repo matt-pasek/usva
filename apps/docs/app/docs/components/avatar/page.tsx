@@ -2,13 +2,14 @@ import type { Metadata } from "next";
 import { AcquireSection } from "@/components/docs/acquire-section";
 import { ComponentDoc } from "@/components/docs/component-doc";
 import { PropsTable } from "@/components/docs/props-table";
+import { pageMetadata } from "@/lib/site";
 import { AvatarDemo } from "./avatar-demo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata("/docs/components/avatar", {
   title: "Avatar",
   description:
     "One person, as an image or as their initials, with fallback handling on Base UI Avatar.",
-};
+});
 
 const props = [
   {

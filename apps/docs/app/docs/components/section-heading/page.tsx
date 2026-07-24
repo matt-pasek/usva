@@ -4,12 +4,16 @@ import { AcquireSection } from "@/components/docs/acquire-section";
 import { ComponentDoc } from "@/components/docs/component-doc";
 import { DemoPanel } from "@/components/docs/demo-panel";
 import { PropsTable } from "@/components/docs/props-table";
+import { pageMetadata } from "@/lib/site";
 
-export const metadata: Metadata = {
-  title: "Section Heading",
-  description:
-    "The loud way to start a section: a mono uppercase eyebrow over a large fluid display title.",
-};
+export const metadata: Metadata = pageMetadata(
+  "/docs/components/section-heading",
+  {
+    title: "Section Heading",
+    description:
+      "The loud way to start a section: a mono uppercase eyebrow over a large fluid display title.",
+  },
+);
 
 const props = [
   {

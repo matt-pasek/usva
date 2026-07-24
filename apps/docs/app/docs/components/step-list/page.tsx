@@ -2,13 +2,14 @@ import type { Metadata } from "next";
 import { AcquireSection } from "@/components/docs/acquire-section";
 import { ComponentDoc } from "@/components/docs/component-doc";
 import { PropsTable } from "@/components/docs/props-table";
+import { pageMetadata } from "@/lib/site";
 import { StepListDemo } from "./step-list-demo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata("/docs/components/step-list", {
   title: "Step List",
   description:
     "An ordered procedure down a connector spine, one step per row with room for an icon.",
-};
+});
 
 const props = [
   {

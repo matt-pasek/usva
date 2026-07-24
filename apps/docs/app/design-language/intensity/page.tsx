@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import { ChapterShell } from "@/components/design-language/chapter-shell";
 import { IntensityDial } from "@/components/design-language/intensity-dial";
+import { pageMetadata } from "@/lib/site";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata("/design-language/intensity", {
   title: "Intensity · Design language",
   description:
-    "How loud a screen is allowed to be. One screen, four stops, the same skeleton throughout; all that changes is how much of your attention it asks for. Drag the dial, and it will refuse you.",
-};
+    "How loud a screen is allowed to be. One screen, four stops, the same skeleton throughout; all that changes is how much attention it asks for.",
+});
 
 export default function IntensityChapter() {
   return (

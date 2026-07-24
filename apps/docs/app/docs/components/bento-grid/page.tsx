@@ -2,13 +2,14 @@ import type { Metadata } from "next";
 import { AcquireSection } from "@/components/docs/acquire-section";
 import { ComponentDoc } from "@/components/docs/component-doc";
 import { PropsTable } from "@/components/docs/props-table";
+import { pageMetadata } from "@/lib/site";
 import { BentoGridDemo } from "./bento-grid-demo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata("/docs/components/bento-grid", {
   title: "Bento Grid",
   description:
     "Cells of different weights in one grid, sharing one accent wash and hover shine so a wall of cards reads as a single lit surface.",
-};
+});
 
 const props = [
   {

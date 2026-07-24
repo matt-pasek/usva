@@ -3,13 +3,14 @@ import { AcquireSection } from "@/components/docs/acquire-section";
 import { ComponentDoc } from "@/components/docs/component-doc";
 import { DemoPanel } from "@/components/docs/demo-panel";
 import { PropsTable } from "@/components/docs/props-table";
+import { pageMetadata } from "@/lib/site";
 import { FieldGroupDemo } from "./field-group-demo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata("/docs/components/field-group", {
   title: "Field Group",
   description:
     "Label, control, description and error, wired together as one accessible unit.",
-};
+});
 
 const props = [
   {

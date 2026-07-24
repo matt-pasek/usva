@@ -2,13 +2,14 @@ import type { Metadata } from "next";
 import { AcquireSection } from "@/components/docs/acquire-section";
 import { ComponentDoc } from "@/components/docs/component-doc";
 import { PropsTable } from "@/components/docs/props-table";
+import { pageMetadata } from "@/lib/site";
 import { ToggleChipDemo } from "./toggle-chip-demo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata("/docs/components/toggle-chip", {
   title: "Toggle Chip",
   description:
     "Chips that stay pressed: a filter you turn on rather than a tag you read. Bounded multi-select, or one-of-many.",
-};
+});
 
 const groupProps = [
   {

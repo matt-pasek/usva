@@ -2,13 +2,14 @@ import type { Metadata } from "next";
 import { AcquireSection } from "@/components/docs/acquire-section";
 import { ComponentDoc } from "@/components/docs/component-doc";
 import { PropsTable } from "@/components/docs/props-table";
+import { pageMetadata } from "@/lib/site";
 import { InputDemo } from "./input-demo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata("/docs/components/input", {
   title: "Input",
   description:
     "One line of text over the native input, with its own focus ring, hover border, invalid, and disabled states.",
-};
+});
 
 const props = [
   {

@@ -4,6 +4,7 @@ import { AcquireSection } from "@/components/docs/acquire-section";
 import { ComponentDoc } from "@/components/docs/component-doc";
 import { DemoPanel } from "@/components/docs/demo-panel";
 import { PropsTable } from "@/components/docs/props-table";
+import { pageMetadata } from "@/lib/site";
 
 function MediaCard() {
   return (
@@ -32,11 +33,14 @@ function MediaCard() {
   );
 }
 
-export const metadata: Metadata = {
-  title: "Skeleton Mirror",
-  description:
-    "Wraps any layout and greys every leaf into a shaped block, so the placeholder is the real markup, not an approximation.",
-};
+export const metadata: Metadata = pageMetadata(
+  "/docs/components/skeleton-mirror",
+  {
+    title: "Skeleton Mirror",
+    description:
+      "Wraps any layout and greys every leaf into a shaped block, so the placeholder is the real markup, not an approximation.",
+  },
+);
 
 const props = [
   {

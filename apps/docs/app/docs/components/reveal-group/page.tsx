@@ -3,12 +3,16 @@ import { AcquireSection } from "@/components/docs/acquire-section";
 import { ComponentDoc } from "@/components/docs/component-doc";
 import { PropsTable } from "@/components/docs/props-table";
 import { RevealGroupDemo } from "@/components/reveal-group-demo";
+import { pageMetadata } from "@/lib/site";
 
-export const metadata: Metadata = {
-  title: "Reveal Group",
-  description:
-    "The stagger group for Reveal: one shared trigger cascades its direct children in, one after the next.",
-};
+export const metadata: Metadata = pageMetadata(
+  "/docs/components/reveal-group",
+  {
+    title: "Reveal Group",
+    description:
+      "The stagger group for Reveal: one shared trigger cascades its direct children in, one after the next.",
+  },
+);
 
 const usage = `import { RevealGroup } from "@matt-pasek/usva";
 

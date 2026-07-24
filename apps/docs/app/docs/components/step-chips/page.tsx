@@ -2,13 +2,14 @@ import type { Metadata } from "next";
 import { AcquireSection } from "@/components/docs/acquire-section";
 import { ComponentDoc } from "@/components/docs/component-doc";
 import { PropsTable } from "@/components/docs/props-table";
+import { pageMetadata } from "@/lib/site";
 import { StepChipsDemo } from "./step-chips-demo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata("/docs/components/step-chips", {
   title: "Step Chips",
   description:
     "Three or four steps in one row, joined by arrows that live inside the list where they belong.",
-};
+});
 
 const props = [
   {

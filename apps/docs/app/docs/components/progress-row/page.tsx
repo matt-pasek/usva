@@ -2,13 +2,17 @@ import type { Metadata } from "next";
 import { AcquireSection } from "@/components/docs/acquire-section";
 import { ComponentDoc } from "@/components/docs/component-doc";
 import { PropsTable } from "@/components/docs/props-table";
+import { pageMetadata } from "@/lib/site";
 import { ProgressRowDemo } from "./progress-row-demo";
 
-export const metadata: Metadata = {
-  title: "Progress Row",
-  description:
-    "A label, a count and a bar, as one row in a list of many, with a keyed bar colour and a status slot.",
-};
+export const metadata: Metadata = pageMetadata(
+  "/docs/components/progress-row",
+  {
+    title: "Progress Row",
+    description:
+      "A label, a count and a bar, as one row in a list of many, with a keyed bar colour and a status slot.",
+  },
+);
 
 const props = [
   {

@@ -2,12 +2,16 @@ import type { Metadata } from "next";
 import { ChapterHeading as Heading } from "@/components/chapter-heading";
 import { ChapterShell } from "@/components/design-language/chapter-shell";
 import { ContrastMatrix } from "@/components/design-language/contrast-matrix";
+import { pageMetadata } from "@/lib/site";
 
-export const metadata: Metadata = {
-  title: "Accessibility · Design language",
-  description:
-    "The floor, not the ceiling. Every contrast ratio here is computed live from the shipping tokens, so the page cannot claim a number the components do not actually hit.",
-};
+export const metadata: Metadata = pageMetadata(
+  "/design-language/accessibility",
+  {
+    title: "Accessibility · Design language",
+    description:
+      "The floor, not the ceiling. Every contrast ratio here is computed live from the shipping tokens, so it cannot claim a number the components miss.",
+  },
+);
 
 const COVENANTS = [
   {

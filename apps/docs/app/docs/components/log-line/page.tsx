@@ -4,12 +4,13 @@ import { AcquireSection } from "@/components/docs/acquire-section";
 import { ComponentDoc } from "@/components/docs/component-doc";
 import { DemoPanel } from "@/components/docs/demo-panel";
 import { PropsTable } from "@/components/docs/props-table";
+import { pageMetadata } from "@/lib/site";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata("/docs/components/log-line", {
   title: "Log Line",
   description:
     "One machine event: a severity rail, a level, a source, a repeat count, and the detail if you want it.",
-};
+});
 
 const props = [
   {

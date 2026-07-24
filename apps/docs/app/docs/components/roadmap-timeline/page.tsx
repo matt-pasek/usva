@@ -2,13 +2,17 @@ import type { Metadata } from "next";
 import { AcquireSection } from "@/components/docs/acquire-section";
 import { ComponentDoc } from "@/components/docs/component-doc";
 import { PropsTable } from "@/components/docs/props-table";
+import { pageMetadata } from "@/lib/site";
 import { RoadmapTimelineDemo } from "./roadmap-timeline-demo";
 
-export const metadata: Metadata = {
-  title: "Roadmap Timeline",
-  description:
-    "What shipped, what is in flight, what is planned, joined by a connector track that fills up to wherever you are now.",
-};
+export const metadata: Metadata = pageMetadata(
+  "/docs/components/roadmap-timeline",
+  {
+    title: "Roadmap Timeline",
+    description:
+      "What shipped, what is in flight, what is planned, joined by a connector track that fills up to wherever you are now.",
+  },
+);
 
 const props = [
   {

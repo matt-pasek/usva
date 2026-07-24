@@ -2,13 +2,17 @@ import type { Metadata } from "next";
 import { AcquireSection } from "@/components/docs/acquire-section";
 import { ComponentDoc } from "@/components/docs/component-doc";
 import { PropsTable } from "@/components/docs/props-table";
+import { pageMetadata } from "@/lib/site";
 import { LoadingOverlayDemo } from "./loading-overlay-demo";
 
-export const metadata: Metadata = {
-  title: "Loading Overlay",
-  description:
-    "Covers the region that is busy and only that region: a dimming scrim, a centred spinner, and refcounted scroll lock.",
-};
+export const metadata: Metadata = pageMetadata(
+  "/docs/components/loading-overlay",
+  {
+    title: "Loading Overlay",
+    description:
+      "Covers the region that is busy and only that region: a dimming scrim, a centred spinner, and refcounted scroll lock.",
+  },
+);
 
 const props = [
   {

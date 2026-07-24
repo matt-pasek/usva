@@ -2,13 +2,17 @@ import type { Metadata } from "next";
 import { AcquireSection } from "@/components/docs/acquire-section";
 import { ComponentDoc } from "@/components/docs/component-doc";
 import { PropsTable } from "@/components/docs/props-table";
+import { pageMetadata } from "@/lib/site";
 import { AvatarGroupDemo } from "./avatar-group-demo";
 
-export const metadata: Metadata = {
-  title: "Avatar Group",
-  description:
-    "Overlapping avatars with a +N overflow chip and a caption, for social proof and shared ownership.",
-};
+export const metadata: Metadata = pageMetadata(
+  "/docs/components/avatar-group",
+  {
+    title: "Avatar Group",
+    description:
+      "Overlapping avatars with a +N overflow chip and a caption, for social proof and shared ownership.",
+  },
+);
 
 const props = [
   {

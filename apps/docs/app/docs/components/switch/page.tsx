@@ -2,13 +2,14 @@ import type { Metadata } from "next";
 import { AcquireSection } from "@/components/docs/acquire-section";
 import { ComponentDoc } from "@/components/docs/component-doc";
 import { PropsTable } from "@/components/docs/props-table";
+import { pageMetadata } from "@/lib/site";
 import { SwitchDemo } from "./switch-demo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata("/docs/components/switch", {
   title: "Switch",
   description:
-    "A setting that takes effect immediately. No save button follows it.",
-};
+    "A setting that takes effect immediately, with no save button to follow it. A controlled toggle with a live demo, a full props table, and copy-in source.",
+});
 
 const props = [
   {

@@ -2,12 +2,13 @@ import type { Metadata } from "next";
 import { ChapterHeading as Heading } from "@/components/chapter-heading";
 import { ChapterShell } from "@/components/design-language/chapter-shell";
 import { SpaceScale } from "@/components/design-language/space-scale";
+import { pageMetadata } from "@/lib/site";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata("/design-language/space", {
   title: "Space · Design language",
   description:
     "Rhythm is fluid, and it is measured against the container, not the viewport. One spacing scale, single-column layouts, and clamp for the gutters.",
-};
+});
 
 export default function SpaceChapter() {
   return (

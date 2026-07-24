@@ -2,13 +2,14 @@ import type { Metadata } from "next";
 import { AcquireSection } from "@/components/docs/acquire-section";
 import { ComponentDoc } from "@/components/docs/component-doc";
 import { PropsTable } from "@/components/docs/props-table";
+import { pageMetadata } from "@/lib/site";
 import { SulaFrameDemo } from "./sula-frame-demo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata("/docs/components/sula-frame", {
   title: "Sula Frame",
   description:
     "Hugs a card, or the whole viewport, with a liquid border that leans toward your cursor.",
-};
+});
 
 const props = [
   {

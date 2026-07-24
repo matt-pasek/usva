@@ -2,13 +2,17 @@ import type { Metadata } from "next";
 import { AcquireSection } from "@/components/docs/acquire-section";
 import { ComponentDoc } from "@/components/docs/component-doc";
 import { PropsTable } from "@/components/docs/props-table";
+import { pageMetadata } from "@/lib/site";
 import { AnnouncementDemo } from "./announcement-demo";
 
-export const metadata: Metadata = {
-  title: "Announcement",
-  description:
-    "One line above the fold for a release or a warning you cannot bury. Solid leading badge, short label, optional link with a trailing arrow.",
-};
+export const metadata: Metadata = pageMetadata(
+  "/docs/components/announcement",
+  {
+    title: "Announcement",
+    description:
+      "One line above the fold for a release or a warning you cannot bury. Solid leading badge, short label, optional link with a trailing arrow.",
+  },
+);
 
 const props = [
   {

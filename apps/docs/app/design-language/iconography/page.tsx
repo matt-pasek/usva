@@ -5,12 +5,13 @@ import {
   ArrowPunctuation,
   IconSpecimens,
 } from "@/components/design-language/icon-specimens";
+import { pageMetadata } from "@/lib/site";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata("/design-language/iconography", {
   title: "Iconography · Design language",
   description:
     "Glyphs inherit and arrows are punctuation. 24×24, stroke 1.8, drawn in currentColor so an icon takes the size and colour of the text it sits in.",
-};
+});
 
 export default function IconographyChapter() {
   return (
@@ -62,7 +63,7 @@ export default function IconographyChapter() {
             rel="noreferrer"
             className="text-accent underline decoration-accent/40 underline-offset-2 transition-colors hover:decoration-accent"
           >
-            Lucide
+            Lucide ↗
           </a>
           , taken at the usva grid: 24×24, stroke 1.8,{" "}
           <code className="font-mono text-ink text-xs">currentColor</code>.

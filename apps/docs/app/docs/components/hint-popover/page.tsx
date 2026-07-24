@@ -2,13 +2,17 @@ import type { Metadata } from "next";
 import { AcquireSection } from "@/components/docs/acquire-section";
 import { ComponentDoc } from "@/components/docs/component-doc";
 import { PropsTable } from "@/components/docs/props-table";
+import { pageMetadata } from "@/lib/site";
 import { HintPopoverDemo } from "./hint-popover-demo";
 
-export const metadata: Metadata = {
-  title: "Hint Popover",
-  description:
-    "The explanation a tooltip cannot hold, because this one has a button you can actually click.",
-};
+export const metadata: Metadata = pageMetadata(
+  "/docs/components/hint-popover",
+  {
+    title: "Hint Popover",
+    description:
+      "The explanation a tooltip cannot hold, because this one has a button you can actually click.",
+  },
+);
 
 const props = [
   {

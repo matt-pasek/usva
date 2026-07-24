@@ -2,13 +2,14 @@ import type { Metadata } from "next";
 import { AcquireSection } from "@/components/docs/acquire-section";
 import { ComponentDoc } from "@/components/docs/component-doc";
 import { PropsTable } from "@/components/docs/props-table";
+import { pageMetadata } from "@/lib/site";
 import { SulaFieldPlayground } from "./sula-field-demo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata("/docs/components/sula-field", {
   title: "Sula Field",
   description:
-    "Liquid-glass masses drifting and merging slowly behind your content.",
-};
+    "Liquid-glass masses that drift and merge slowly behind your content. One sula per region; it pauses offscreen and in a background tab. Live demo and props.",
+});
 
 const props = [
   {

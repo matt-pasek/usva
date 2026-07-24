@@ -2,13 +2,14 @@ import type { Metadata } from "next";
 import { AcquireSection } from "@/components/docs/acquire-section";
 import { ComponentDoc } from "@/components/docs/component-doc";
 import { PropsTable } from "@/components/docs/props-table";
+import { pageMetadata } from "@/lib/site";
 import { TooltipDemo } from "./tooltip-demo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata("/docs/components/tooltip", {
   title: "Tooltip",
   description:
     "Names an unlabelled control on hover or focus. It holds no action, and never the only copy of the truth.",
-};
+});
 
 const props = [
   {

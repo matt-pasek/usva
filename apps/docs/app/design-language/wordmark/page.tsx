@@ -4,12 +4,13 @@ import { ChapterShell } from "@/components/design-language/chapter-shell";
 import { WordmarkClearspace } from "@/components/design-language/wordmark-clearspace";
 import { WordmarkRefusals } from "@/components/design-language/wordmark-refusals";
 import { THEMES } from "@/lib/catalog";
+import { pageMetadata } from "@/lib/site";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata("/design-language/wordmark", {
   title: "Wordmark · Design language",
   description:
-    "usva. The period is load-bearing: accent-alt made visible, the paired second voice. One specimen rendered in all three themes, and the four ways to get it wrong.",
-};
+    "usva. The period is load-bearing: accent-alt made visible, the paired second voice. One specimen in all three themes, and the four ways to get it wrong.",
+});
 
 const PERIOD_NOTE: Record<string, string> = {
   kajo: "it glows like the last light left on the water.",

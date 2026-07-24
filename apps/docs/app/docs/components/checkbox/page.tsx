@@ -2,13 +2,14 @@ import type { Metadata } from "next";
 import { AcquireSection } from "@/components/docs/acquire-section";
 import { ComponentDoc } from "@/components/docs/component-doc";
 import { PropsTable } from "@/components/docs/props-table";
+import { pageMetadata } from "@/lib/site";
 import { CheckboxDemo } from "./checkbox-demo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata("/docs/components/checkbox", {
   title: "Checkbox",
   description:
     "An independent yes or no, for options that do not exclude each other. Label and description support, on Base UI Checkbox and Field.",
-};
+});
 
 const props = [
   {

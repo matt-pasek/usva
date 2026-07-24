@@ -4,12 +4,13 @@ import { ChapterHeading as Heading } from "@/components/chapter-heading";
 import { ChapterShell } from "@/components/design-language/chapter-shell";
 import { TokenDownloads } from "@/components/design-language/token-downloads";
 import { TokenReference } from "@/components/design-language/token-reference";
+import { pageMetadata } from "@/lib/site";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata("/design-language/tokens", {
   title: "Tokens · Design language",
   description:
     "The reference and the exports. Every non-colour token in one place, plus the DTCG and Tokens Studio files.",
-};
+});
 
 export default function TokensChapter() {
   return (

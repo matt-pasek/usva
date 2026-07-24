@@ -2,13 +2,17 @@ import type { Metadata } from "next";
 import { AcquireSection } from "@/components/docs/acquire-section";
 import { ComponentDoc } from "@/components/docs/component-doc";
 import { PropsTable } from "@/components/docs/props-table";
+import { pageMetadata } from "@/lib/site";
 import { SulaSegmentedDemo } from "./sula-segmented-demo";
 
-export const metadata: Metadata = {
-  title: "Sula Segmented",
-  description:
-    "Pinches a droplet off the old segment and merges it into the new one, as the active indicator.",
-};
+export const metadata: Metadata = pageMetadata(
+  "/docs/components/sula-segmented",
+  {
+    title: "Sula Segmented",
+    description:
+      "Pinches a droplet off the old segment and merges it into the new one, as the active indicator.",
+  },
+);
 
 const props = [
   {

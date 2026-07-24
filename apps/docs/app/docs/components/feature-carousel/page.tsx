@@ -2,13 +2,17 @@ import type { Metadata } from "next";
 import { AcquireSection } from "@/components/docs/acquire-section";
 import { ComponentDoc } from "@/components/docs/component-doc";
 import { PropsTable } from "@/components/docs/props-table";
+import { pageMetadata } from "@/lib/site";
 import { FeatureCarouselDemo } from "./feature-carousel-demo";
 
-export const metadata: Metadata = {
-  title: "Feature Carousel",
-  description:
-    "Features one at a time, advancing on their own and pausing when you look closer, with a rail to jump between them.",
-};
+export const metadata: Metadata = pageMetadata(
+  "/docs/components/feature-carousel",
+  {
+    title: "Feature Carousel",
+    description:
+      "Features one at a time, advancing on their own and pausing when you look closer, with a rail to jump between them.",
+  },
+);
 
 const props = [
   {

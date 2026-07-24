@@ -2,13 +2,14 @@ import type { Metadata } from "next";
 import { AcquireSection } from "@/components/docs/acquire-section";
 import { ComponentDoc } from "@/components/docs/component-doc";
 import { PropsTable } from "@/components/docs/props-table";
+import { pageMetadata } from "@/lib/site";
 import { ChipDemo } from "./chip-demo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata("/docs/components/chip", {
   title: "Chip",
   description:
     "A tag, a filter, a stack entry. Six tones, an optional value segment, and a remove button when it is a filter.",
-};
+});
 
 const props = [
   {
