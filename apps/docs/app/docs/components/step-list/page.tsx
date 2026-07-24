@@ -22,6 +22,12 @@ const props = [
       </>
     ),
   },
+  {
+    name: "headingLevel",
+    type: '"h2" | "h3" | "h4"',
+    defaultValue: '"h4"',
+    desc: "level of each step title. pick it to fit the page outline.",
+  },
 ];
 
 export default function StepListPage() {

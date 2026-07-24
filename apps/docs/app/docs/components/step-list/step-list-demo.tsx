@@ -4,10 +4,13 @@ import { Box, PenLine, RefreshCw, Send, TrendingUp } from "lucide-react";
 import type * as React from "react";
 import { Playground } from "@/components/docs/playground";
 
+const HEADING_LEVELS = ["h2", "h3", "h4"] as const;
+
 type Config = {
   count: number;
   bodies: boolean;
   icons: boolean;
+  headingLevel: (typeof HEADING_LEVELS)[number];
 };
 
 const ICONS: React.ReactNode[] = [
@@ -36,10 +39,10 @@ const POOL: Required<Pick<Step, "title" | "body">>[] = [
 ];
 
 const templates: Record<string, Config> = {
-  "how it works": { count: 3, bodies: true, icons: false },
-  "titles only": { count: 3, bodies: false, icons: false },
-  "with icons": { count: 4, bodies: true, icons: true },
-  "full sequence": { count: 5, bodies: true, icons: false },
+  "how it works": { count: 3, bodies: true, icons: false, headingLevel: "h3" },
+  "titles only": { count: 3, bodies: false, icons: false, headingLevel: "h3" },
+  "with icons": { count: 4, bodies: true, icons: true, headingLevel: "h3" },
+  "full sequence": { count: 5, bodies: true, icons: false, headingLevel: "h3" },
 };
 
 const build = (c: Config): Step[] =>
@@ -60,9 +63,11 @@ const snippetFor = (c: Config): string => {
       return `    { ${parts.join(", ")} },`;
     })
     .join("\n");
+  const level =
+    c.headingLevel !== "h4" ? `\n  headingLevel="${c.headingLevel}"` : "";
   return `import { StepList } from "@matt-pasek/usva";
 
-<StepList
+<StepList${level}
   steps={[
 ${rows}
   ]}
@@ -95,9 +100,18 @@ export function StepListDemo() {
           label: "icons",
           sub: "replace the step number with an icon",
         },
+        {
+          kind: "select",
+          key: "headingLevel",
+          label: "headingLevel",
+          sub: "level of each step title",
+          options: HEADING_LEVELS,
+        },
       ]}
       snippet={snippetFor}
-      render={(c) => <StepList steps={build(c)} />}
+      render={(c) => (
+        <StepList steps={build(c)} headingLevel={c.headingLevel} />
+      )}
     />
   );
 }
