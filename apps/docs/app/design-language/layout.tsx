@@ -20,7 +20,7 @@ export default function DesignLanguageLayout({
             <DesignLanguageNav orientation="horizontal" />
           </div>
         </div>
-        {children}
+        <main>{children}</main>
       </div>
     </div>
   );
