@@ -1,11 +1,13 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { JsonLd } from "@/components/json-ld";
 import {
   type DLChapter,
   dlChapter,
   dlHref,
   dlNeighbours,
 } from "@/lib/design-language";
+import { breadcrumbList, techArticle } from "@/lib/schema";
 
 function SpineLink({
   chapter,
@@ -47,9 +49,24 @@ export function ChapterShell({
   const chapter = dlChapter(slug);
   if (!chapter) return null;
   const { prev, next } = dlNeighbours(slug);
+  const path = dlHref(slug);
 
   return (
     <article className="@container flex flex-col gap-8">
+      <JsonLd
+        data={breadcrumbList([
+          { name: "usva.", path: "/" },
+          { name: "design language", path: "/design-language" },
+          { name: chapter.title, path },
+        ])}
+      />
+      <JsonLd
+        data={techArticle({
+          path,
+          headline: chapter.title,
+          description: chapter.blurb,
+        })}
+      />
       <header className="flex flex-col gap-3">
         <span className="font-mono text-xs uppercase tracking-widest text-muted">
           design language · {chapter.number}
