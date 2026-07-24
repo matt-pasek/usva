@@ -423,14 +423,21 @@ export function Witnesses() {
               <KajoScreen build={b} compact={compact} />
               <div className="flex flex-col gap-1">
                 <div className="flex items-baseline gap-3">
-                  <h3 className="text-lg font-semibold text-ink">
-                    personal-website
+                  <h3 className="text-lg font-semibold">
+                    <a
+                      href="https://matt-pasek.dev"
+                      target="_blank"
+                      rel="noreferrer"
+                      className="rounded text-ink underline-offset-4 hover:text-accent hover:underline focus-visible:outline-none focus-visible:ring-focus"
+                    >
+                      personal-website ↗
+                    </a>
                   </h3>
                   <Link
                     href="/themes/kajo"
                     className="rounded font-mono text-xs text-accent underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-focus"
                   >
-                    kajo ↗
+                    kajo
                   </Link>
                 </div>
                 <p className="text-sm text-muted">
@@ -444,12 +451,21 @@ export function Witnesses() {
               <SisuScreen build={b} compact={compact} />
               <div className="flex flex-col gap-1">
                 <div className="flex items-baseline gap-3">
-                  <h3 className="text-lg font-semibold text-ink">sisu-plus</h3>
+                  <h3 className="text-lg font-semibold">
+                    <a
+                      href="https://sisu-plus.matt-pasek.dev"
+                      target="_blank"
+                      rel="noreferrer"
+                      className="rounded text-ink underline-offset-4 hover:text-accent hover:underline focus-visible:outline-none focus-visible:ring-focus"
+                    >
+                      sisu-plus ↗
+                    </a>
+                  </h3>
                   <Link
                     href="/themes/sisu"
                     className="rounded font-mono text-xs text-accent underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-focus"
                   >
-                    sisu ↗
+                    sisu
                   </Link>
                 </div>
                 <p className="text-sm text-muted">

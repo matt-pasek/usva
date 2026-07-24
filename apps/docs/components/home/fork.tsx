@@ -149,7 +149,7 @@ export function Fork() {
             href="/docs/get-started/installation"
             className="rounded font-mono text-accent underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-focus"
           >
-            /docs/get-started/installation ↗
+            /docs/get-started/installation
           </Link>
         </p>
       </div>

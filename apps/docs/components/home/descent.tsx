@@ -314,7 +314,7 @@ function More({ href, children }: { href: string; children: ReactNode }) {
       href={href}
       className="inline-block rounded font-mono text-sm text-accent underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-focus"
     >
-      {children} ↗
+      {children} →
     </Link>
   );
 }

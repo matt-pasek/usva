@@ -68,7 +68,10 @@ export function Hero() {
               <Wordmark className="text-center text-xl sm:text-3xl @5xl:text-left" />
             </Rise>
 
-            <h1 className="mt-3 text-[clamp(3rem,15.5cqi,11.5rem)] leading-[0.9] tracking-[-0.04em] text-ink sm:mt-4">
+            <h1
+              className="mt-3 text-[clamp(3rem,15.5cqi,11.5rem)] leading-[0.9] tracking-[-0.04em] text-ink sm:mt-4"
+              aria-label="beauty that stays usable."
+            >
               <Rise as="span" delay={0.82} from={150}>
                 <span className="flex flex-wrap items-baseline justify-center gap-x-[0.06em] font-extrabold @5xl:justify-start">
                   beauty

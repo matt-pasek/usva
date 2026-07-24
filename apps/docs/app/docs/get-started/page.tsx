@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { counts } from "@/lib/catalog";
+import { pageMetadata } from "@/lib/site";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata("/docs/get-started", {
   title: "Get started",
-  description: "What usva. is, how it is distributed, and where to go next.",
-};
+  description:
+    "usva. is a React design language with a component library attached. What it is, how it ships as an npm package and a shadcn registry, and where to start.",
+});
 
 const next = [
   {
@@ -16,7 +18,7 @@ const next = [
   {
     href: "/docs/get-started/for-agents",
     title: "for agents",
-    body: "what a coding agent gets: a skill file and llms.txt.",
+    body: "what a coding agent gets: llms.txt, the whole library as plain text.",
   },
 ];
 

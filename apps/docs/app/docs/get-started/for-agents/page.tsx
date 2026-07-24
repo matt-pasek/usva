@@ -2,13 +2,13 @@ import { CodeSnippet } from "@matt-pasek/usva";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { counts } from "@/lib/catalog";
-import { SITE_ORIGIN } from "@/lib/site";
+import { pageMetadata, SITE_ORIGIN } from "@/lib/site";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata("/docs/get-started/for-agents", {
   title: "For agents",
   description:
     "How a coding agent is meant to consume usva.: llms.txt today, a skill file next.",
-};
+});
 
 export default function ForAgentsPage() {
   return (
@@ -30,11 +30,9 @@ export default function ForAgentsPage() {
       </header>
 
       <section className="flex flex-col gap-4">
-        <h2 className="font-bold text-ink text-xl tracking-tight">
-          llms.txt <span className="font-mono text-sm text-accent">live</span>
-        </h2>
+        <h2 className="font-bold text-ink text-xl tracking-tight">llms.txt</h2>
         <p className="text-muted">
-          a plain text summary of the whole library at{" "}
+          a plain text index of the whole library at{" "}
           <Link
             className="text-accent underline"
             href="/llms.txt"
@@ -42,23 +40,12 @@ export default function ForAgentsPage() {
           >
             {SITE_ORIGIN}/llms.txt
           </Link>
-          . it lists all {counts.total} components with their layer, their
-          intensity and a one line summary, plus the composition prohibitions
-          and the registry URL for each.
-        </p>
-      </section>
-
-      <section className="flex flex-col gap-4">
-        <h2 className="font-bold text-ink text-xl tracking-tight">
-          a skill file{" "}
-          <span className="font-mono text-sm text-muted">not yet</span>
-        </h2>
-        <p className="text-muted">
-          the plan is a skill file that lives in the repo: the intensity rules,
-          the one-sula-per-region prohibition, the token tiers, and the registry
-          commands, in the format a coding agent already knows how to load. it
-          is not written. when it is, it will live in the repository, so you can
-          vendor it and diff it like any other file.
+          . every one of the {counts.total} components is a markdown link,
+          carrying its layer, its intensity, a one line summary, the composition
+          prohibitions and the registry command. the pages and the
+          design-language chapters are linked the same way, and a for-agents
+          section repeats the prompt below. a parser lifts the links, a model
+          reads the prose.
         </p>
       </section>
 

@@ -69,8 +69,7 @@ export function SiteFooter() {
               <Wordmark />
             </Link>
             <p className="max-w-xs text-sm text-muted">
-              a highly opinionated design system and component library, free to
-              build with
+              a highly opinionated design system and component library
             </p>
           </div>
 

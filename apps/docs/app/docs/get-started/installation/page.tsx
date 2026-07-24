@@ -4,13 +4,16 @@ import Link from "next/link";
 import { DemoPanel } from "@/components/docs/demo-panel";
 import { InstallBlock } from "@/components/install-block";
 import { counts } from "@/lib/catalog";
-import { PACKAGE_NAME } from "@/lib/site";
+import { PACKAGE_NAME, pageMetadata } from "@/lib/site";
 
-export const metadata: Metadata = {
-  title: "Installation",
-  description:
-    "usva. ships two ways: as an npm package you update, and as registry source you own. Pick per component.",
-};
+export const metadata: Metadata = pageMetadata(
+  "/docs/get-started/installation",
+  {
+    title: "Installation",
+    description:
+      "usva. ships two ways: as an npm package you update, and as registry source you own. Pick per component.",
+  },
+);
 
 const packageWins = [
   "you want fixes and new variants to arrive with a bun update, not a diff review",
@@ -126,6 +129,18 @@ export default function InstallationPage() {
               </li>
             ))}
           </ul>
+        </div>
+        <div className="flex flex-col gap-3 rounded-lg border border-border bg-surface p-5 col-span-2">
+          <h2 className="font-semibold text-ink">
+            the licence, before you copy
+          </h2>
+          <p className="text-sm text-muted">
+            the source you copy in is still licensed. usva. is mit with the
+            commons clause: build on it, fork it, change it, ship it in whatever
+            you make. the one line you cannot cross is repackaging the
+            components themselves to sell or republish them as a competing
+            library.
+          </p>
         </div>
       </section>
 

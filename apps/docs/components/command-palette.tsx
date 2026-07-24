@@ -66,7 +66,8 @@ const GET_STARTED: { label: string; href: string; detail: string }[] = [
   {
     label: "for agents",
     href: "/docs/get-started/for-agents",
-    detail: "llms.txt and the skill. no MCP server, and I will not pretend.",
+    detail:
+      "llms.txt, no MCP server, no skill file yet, and I will not pretend.",
   },
 ];
 
