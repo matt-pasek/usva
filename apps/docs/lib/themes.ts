@@ -69,6 +69,8 @@ export interface ThemeDoc {
   capsule: string;
   /** the hero line on /themes */
   lede: string;
+  /** Sentence-case meta description; the lede is lowercase and breaks the register. */
+  metaDescription: string;
   body: string[];
   atmosphere: ThemeAtmosphere;
   motionNote: string;
@@ -88,6 +90,8 @@ export const THEME_DOCS: Record<ThemeId, ThemeDoc> = {
     capsule:
       "violet dark, generous radius, real glow. the expressive pole, built for a page you look at rather than work in.",
     lede: "the dark one. built for a page that is trying to make an impression.",
+    metaDescription:
+      "The dark theme usva was extracted from: a near-black violet ground with an aurora behind it, built for pages you look at rather than work in.",
     body: [
       "kajo is the theme the design system was extracted from: a portfolio that had to look like something, on a near-black violet ground with an aurora sitting behind it. the accents are cool and saturated and they carry a lot of weight, because there is a lot of dark for them to carry it against.",
     ],
@@ -137,6 +141,8 @@ export const THEME_DOCS: Record<ThemeId, ThemeDoc> = {
     capsule:
       "near-black, tight radius, edges doing the structuring. the usability pole, and it has nothing to prove.",
     lede: "the working one. built for a dashboard somebody has open for eight hours.",
+    metaDescription:
+      "The working theme: near-black, tight radius, structured by its edges rather than its colour. Built for a dashboard somebody keeps open all day.",
     body: [
       "sisu came out of a browser extension and its landing page: real product surface, lists and toolbars and panels and counts. the palette pulls the accents back and pushes the borders forward, because a working screen is structured by its edges, not by its colour.",
     ],
@@ -239,6 +245,8 @@ export const THEME_DOCS: Record<ThemeId, ThemeDoc> = {
     capsule:
       "warm light, paper rather than screen. proof that the system is not a mood that only works in the dark.",
     lede: "the light one. built for reading, and for the times you cannot ship a dark UI.",
+    metaDescription:
+      "The light theme: warm, low-contrast, paper rather than screen. Proof the system is not a mood that only works in the dark.",
     body: [
       "savi is the light register, and it is not a colour inversion of kajo. it is warm and low in contrast at the surface level, with the accents doing more work because there is far less dark to lean on. a first-time visitor whose system asks for light gets this one.",
     ],

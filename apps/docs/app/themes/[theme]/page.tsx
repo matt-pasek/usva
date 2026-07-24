@@ -25,7 +25,7 @@ export async function generateMetadata({
   if (!doc || !word) return {};
   return pageMetadata(`/themes/${theme}`, {
     title: `${word.word}, ${word.sense}`,
-    description: doc.lede,
+    description: doc.metaDescription,
   });
 }
 
