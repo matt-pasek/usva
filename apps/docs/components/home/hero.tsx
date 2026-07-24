@@ -29,33 +29,20 @@ export function Hero() {
   const dim = useTransform(scrollYProgress, [0.18, 0.55], [1, 0.4]);
   const cue = useTransform(scrollYProgress, [0.02, 0.1], [1, 0]);
 
-  const flood = reduced
-    ? {}
-    : {
-        initial: { clipPath: "inset(100% 0% 0% 0%)" },
-        animate: { clipPath: "inset(0% 0% 0% 0%)" },
-        transition: { duration: FLOOD_S, ease: HEAVE },
-      };
-  const settle = reduced
-    ? {}
-    : {
-        initial: { y: "7%", scale: 1.04 },
-        animate: { y: "0%", scale: 1 },
-        transition: { duration: FLOOD_S + 0.4, ease: HEAVE },
-      };
-
   return (
     <div ref={ref} className="-mt-20 relative h-[240svh] sm:-mt-24">
       <div className="sticky top-0 flex h-svh items-center overflow-hidden">
-        <motion.div
-          aria-hidden="true"
-          {...flood}
-          className="absolute inset-0 -z-10"
-        >
-          <motion.div {...settle} className="h-full w-full origin-bottom">
-            <Vare interactive className="h-full w-full" />
-          </motion.div>
-        </motion.div>
+        <div aria-hidden="true" className="absolute inset-0 -z-10">
+          <Vare interactive className="h-full w-full" />
+          {!reduced && (
+            <motion.div
+              initial={{ clipPath: "inset(0% 0% 0% 0%)" }}
+              animate={{ clipPath: "inset(0% 0% 100% 0%)" }}
+              transition={{ duration: FLOOD_S, ease: HEAVE }}
+              className="absolute inset-0 bg-bg"
+            />
+          )}
+        </div>
 
         <motion.div
           style={
