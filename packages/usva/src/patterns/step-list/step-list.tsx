@@ -13,10 +13,12 @@ export interface Step {
 export interface StepListProps
   extends Omit<React.HTMLAttributes<HTMLOListElement>, "children"> {
   steps: Step[];
+  /** Level of each step title. Pick it to fit the page outline. */
+  headingLevel?: "h2" | "h3" | "h4";
 }
 
 export const StepList = React.forwardRef<HTMLOListElement, StepListProps>(
-  ({ className, steps, ...props }, ref) => {
+  ({ className, steps, headingLevel: Heading = "h4", ...props }, ref) => {
     const last = steps.length - 1;
     return (
       <ol ref={ref} className={cn("flex flex-col", className)} {...props}>
@@ -48,14 +50,14 @@ export const StepList = React.forwardRef<HTMLOListElement, StepListProps>(
                     {ordinal}
                   </p>
                 )}
-                <h4
+                <Heading
                   className={cn(
                     "text-base font-semibold tracking-[-0.01em] text-ink",
                     step.body != null && "mb-1",
                   )}
                 >
                   {step.title}
-                </h4>
+                </Heading>
                 {step.body != null && (
                   <p className="text-sm leading-relaxed text-muted">
                     {step.body}

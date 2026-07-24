@@ -130,19 +130,24 @@ export const CardEyebrow = React.forwardRef<
 ));
 CardEyebrow.displayName = "CardEyebrow";
 
-export const CardTitle = React.forwardRef<
-  HTMLHeadingElement,
-  React.HTMLAttributes<HTMLHeadingElement>
->(({ className, ...p }, ref) => (
-  <h3
-    ref={ref}
-    className={cn(
-      "text-balance text-sm font-semibold tracking-[-0.01em] text-ink",
-      className,
-    )}
-    {...p}
-  />
-));
+export interface CardTitleProps
+  extends React.HTMLAttributes<HTMLHeadingElement> {
+  /** Heading level. Pick it to fit the page outline. */
+  as?: "h2" | "h3" | "h4" | "h5" | "h6";
+}
+
+export const CardTitle = React.forwardRef<HTMLHeadingElement, CardTitleProps>(
+  ({ className, as: Heading = "h3", ...p }, ref) => (
+    <Heading
+      ref={ref}
+      className={cn(
+        "text-balance text-sm font-semibold tracking-[-0.01em] text-ink",
+        className,
+      )}
+      {...p}
+    />
+  ),
+);
 CardTitle.displayName = "CardTitle";
 
 export const CardIcon = make(
