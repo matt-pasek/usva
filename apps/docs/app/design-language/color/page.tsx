@@ -2,13 +2,14 @@ import type { Metadata } from "next";
 import { ChapterShell } from "@/components/design-language/chapter-shell";
 import { ColorRoles } from "@/components/design-language/color-roles";
 import { THEMES } from "@/lib/catalog";
+import { pageMetadata } from "@/lib/site";
 import { buildTokenReference } from "@/lib/token-reference";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata("/design-language/color", {
   title: "Color · Design language",
   description:
     "The semantic role tokens of usva. You never write a hex; you write a role, and the theme decides what it means, live in kajo, sisu and savi at once.",
-};
+});
 
 const ROLE_NOTES: Record<string, string> = {
   bg: "the page ground. one per document.",
@@ -91,7 +92,7 @@ export default function ColorChapter() {
               </tr>
             </thead>
             <tbody>
-              {color.map(({ name }) => (
+              {color.map(({ name, values }) => (
                 <tr
                   key={name}
                   id={name}
@@ -114,7 +115,7 @@ export default function ColorChapter() {
                   {THEMES.map((theme) => (
                     <td
                       key={theme}
-                      className="p-3 align-middle"
+                      className="p-3 align-top"
                       data-theme={theme}
                     >
                       {/* the tailwind utility would resolve --usva-* at :root, so a
@@ -124,6 +125,9 @@ export default function ColorChapter() {
                         className="block h-8 w-16 rounded-md border border-border-strong"
                         style={{ background: `var(--usva-${name})` }}
                       />
+                      <code className="mt-1.5 block font-mono text-[11px] text-muted">
+                        {values[theme]}
+                      </code>
                     </td>
                   ))}
                   <td className="p-3 align-middle text-muted">
