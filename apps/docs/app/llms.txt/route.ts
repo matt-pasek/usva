@@ -1,6 +1,7 @@
 import { ROLE_NAMES } from "@matt-pasek/usva-tokens";
 import {
   byLayer,
+  type CatalogEntry,
   counts,
   INTENSITY_BY_LAYER,
   LAYER_LABEL,
@@ -20,22 +21,30 @@ const LAYERS: Layer[] = [
   "atmosphere",
 ];
 
+const docsUrl = (slug: string): string =>
+  `${SITE_ORIGIN}/docs/components/${slug}`;
+
+const componentBullet = (entry: CatalogEntry): string => {
+  const registry = `registry: \`npx shadcn add ${registryUrl(entry.slug)}\`.`;
+  const origin = entry.provenance.length
+    ? `from ${entry.provenance.join(", ")}.`
+    : "authored in usva.";
+  const meta = `${registry} layer: ${LAYER_LABEL[entry.layer]}. intensity: ${entry.intensity}. ${origin}`;
+  const bullet = `- [${entry.slug} (${entry.name})](${docsUrl(entry.slug)}): ${entry.summary} ${meta}`;
+  const rules = entry.rules?.length
+    ? entry.rules.map((rule) => `\n    ! ${rule}`).join("")
+    : "";
+  return `${bullet}${rules}`;
+};
+
 const layerSection = (layer: Layer): string => {
   const entries = byLayer(layer);
-  const rows = entries.map((entry) => {
-    const provenance = entry.provenance.length
-      ? ` [extracted from ${entry.provenance.join(", ")}]`
-      : "";
-    const rules = entry.rules?.length
-      ? entry.rules.map((rule) => `\n    ! ${rule}`).join("")
-      : "";
-    const subs = subExportsOf(entry.slug)
-      .map(
-        (sub) =>
-          `\n    + ${sub.name}, included with this one: ${SITE_ORIGIN}/docs/components/${sub.slug}`,
-      )
-      .join("");
-    return `- ${entry.slug} (${entry.name}): ${entry.summary}${provenance}\n    docs: ${SITE_ORIGIN}/docs/components/${entry.slug}\n    registry: ${registryUrl(entry.slug)}${subs}${rules}`;
+  const rows = entries.flatMap((entry) => {
+    const subs = subExportsOf(entry.slug).map(
+      (sub) =>
+        `- [${sub.slug} (${sub.name})](${docsUrl(sub.slug)}): ships with ${entry.name}. layer: ${LAYER_LABEL[layer]}. intensity: ${INTENSITY_BY_LAYER[layer]}.`,
+    );
+    return [componentBullet(entry), ...subs];
   });
   return [
     `## ${LAYER_LABEL[layer]} (${entries.length}) · intensity: ${INTENSITY_BY_LAYER[layer]}`,
@@ -79,25 +88,41 @@ const body = (): string =>
     "",
     "## Pages",
     "",
-    `- ${SITE_ORIGIN}/docs`,
-    `- ${SITE_ORIGIN}/docs/get-started`,
-    `- ${SITE_ORIGIN}/docs/get-started/installation`,
-    `- ${SITE_ORIGIN}/docs/get-started/theming`,
-    `- ${SITE_ORIGIN}/docs/get-started/for-agents`,
-    `- ${SITE_ORIGIN}/design-language`,
-    `- ${SITE_ORIGIN}/design-language/color`,
-    `- ${SITE_ORIGIN}/design-language/type`,
-    `- ${SITE_ORIGIN}/design-language/space`,
-    `- ${SITE_ORIGIN}/design-language/depth`,
-    `- ${SITE_ORIGIN}/design-language/motion`,
-    `- ${SITE_ORIGIN}/design-language/iconography`,
-    `- ${SITE_ORIGIN}/design-language/intensity`,
-    `- ${SITE_ORIGIN}/design-language/voice`,
-    `- ${SITE_ORIGIN}/design-language/wordmark`,
-    `- ${SITE_ORIGIN}/design-language/accessibility`,
-    `- ${SITE_ORIGIN}/design-language/tokens`,
-    `- ${SITE_ORIGIN}/themes`,
-    `- ${SITE_ORIGIN}/studio`,
+    `- [docs](${SITE_ORIGIN}/docs): every component, one page each.`,
+    `- [get started](${SITE_ORIGIN}/docs/get-started): install, theme, and the agent brief.`,
+    `- [installation](${SITE_ORIGIN}/docs/get-started/installation): add the package or copy from the registry.`,
+    `- [theming](${SITE_ORIGIN}/docs/get-started/theming): pick a theme and override the tokens.`,
+    `- [for agents](${SITE_ORIGIN}/docs/get-started/for-agents): how a coding agent is meant to consume usva.`,
+    `- [design language](${SITE_ORIGIN}/design-language): the foundations, before the components.`,
+    `- [colour](${SITE_ORIGIN}/design-language/color): the semantic role tokens and their contrast.`,
+    `- [type](${SITE_ORIGIN}/design-language/type): the type scale and the font stacks.`,
+    `- [space](${SITE_ORIGIN}/design-language/space): the spacing and sizing steps.`,
+    `- [depth](${SITE_ORIGIN}/design-language/depth): elevation, shadow and the layering order.`,
+    `- [motion](${SITE_ORIGIN}/design-language/motion): the timing, easing and reveal rules.`,
+    `- [iconography](${SITE_ORIGIN}/design-language/iconography): the icon set and how to size it.`,
+    `- [intensity](${SITE_ORIGIN}/design-language/intensity): the one rule, laid out in full.`,
+    `- [voice](${SITE_ORIGIN}/design-language/voice): how the product writes.`,
+    `- [wordmark](${SITE_ORIGIN}/design-language/wordmark): the usva. mark and its spacing.`,
+    `- [accessibility](${SITE_ORIGIN}/design-language/accessibility): the contrast and motion guarantees.`,
+    `- [tokens](${SITE_ORIGIN}/design-language/tokens): the full token table.`,
+    `- [tokens json](${SITE_ORIGIN}/design-language/tokens.json): the resolved token values, fetchable as DTCG json.`,
+    `- [themes](${SITE_ORIGIN}/themes): kajo, sisu and savi, side by side.`,
+    `- [studio](${SITE_ORIGIN}/studio): tune an atmosphere and copy its params.`,
+    "",
+    "## For agents",
+    "",
+    "read this file before you build any UI. use usva components and obey the",
+    "intensity rules: core recedes, patterns structure, motion guides, sula asserts,",
+    "atmospheres are the room. at most one sula element per region.",
+    "",
+    "the shortest useful prompt, copy it as is:",
+    "",
+    "```",
+    `read ${SITE_ORIGIN}/llms.txt before you build any UI.`,
+    "use usva components. obey the intensity rules:",
+    "core recedes, patterns structure, sula asserts,",
+    "one sula element per region, at most.",
+    "```",
     "",
   ].join("\n");
 
