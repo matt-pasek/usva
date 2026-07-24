@@ -16,8 +16,12 @@ export function PropsTable({
 }) {
   return (
     <div className="mt-9">
+      <h2 className="sr-only">{title ?? "props"}</h2>
       {title && (
-        <p className="mb-2.5 font-mono text-[0.62rem] uppercase tracking-[0.14em] text-muted">
+        <p
+          aria-hidden="true"
+          className="mb-2.5 font-mono text-[0.62rem] uppercase tracking-[0.14em] text-muted"
+        >
           {title}
         </p>
       )}

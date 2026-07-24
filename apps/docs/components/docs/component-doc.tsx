@@ -1,5 +1,6 @@
 import { cn } from "@matt-pasek/usva/cn";
 import type { ReactNode } from "react";
+import { JsonLd } from "@/components/json-ld";
 import {
   bySlug,
   INTENSITY_BY_LAYER,
@@ -7,6 +8,8 @@ import {
   type Layer,
   type Provenance,
 } from "@/lib/catalog";
+import { linkComponentNames } from "@/lib/link-components";
+import { breadcrumbList, techArticle } from "@/lib/schema";
 
 export interface Composition {
   ok: string[];
@@ -65,19 +68,22 @@ const INTENSITY_FILL: Record<Intensity, number> = {
   room: 5,
 };
 
-function Label({ children }: { children: ReactNode }) {
-  return (
-    <dt className="font-mono text-[0.63rem] uppercase tracking-[0.16em] text-muted">
-      {children}
-    </dt>
-  );
-}
-
+/**
+ * Each spec row carries a visually-hidden h2 so the page has a real heading
+ * outline for crawlers and screen readers, while the visible mono eyebrow stays
+ * decorative. The register holds: mono uppercase is never a visible heading.
+ */
 function Row({ label, children }: { label: string; children: ReactNode }) {
   return (
     <div className="grid items-baseline gap-1 border-b border-border px-4 py-3 last:border-b-0 sm:grid-cols-[130px_minmax(0,1fr)] sm:gap-4">
-      <Label>{label}</Label>
-      <dd className="text-sm leading-relaxed text-ink">{children}</dd>
+      <h2 className="sr-only">{label}</h2>
+      <span
+        aria-hidden="true"
+        className="font-mono text-[0.63rem] uppercase tracking-[0.16em] text-muted"
+      >
+        {label}
+      </span>
+      <span className="text-sm leading-relaxed text-ink">{children}</span>
     </div>
   );
 }
@@ -105,7 +111,13 @@ function IntensityMeter({ intensity }: { intensity: Intensity }) {
   );
 }
 
-function CompositionRules({ composition }: { composition: Composition }) {
+function CompositionRules({
+  composition,
+  selfSlug,
+}: {
+  composition: Composition;
+  selfSlug?: string;
+}) {
   return (
     <span className="flex flex-col gap-1.5">
       {composition.ok.map((rule) => (
@@ -113,7 +125,7 @@ function CompositionRules({ composition }: { composition: Composition }) {
           <span aria-hidden="true" className="font-mono text-accent-alt">
             ✓
           </span>
-          {rule}
+          {linkComponentNames(rule, selfSlug)}
         </span>
       ))}
       {composition.no.map((rule) => (
@@ -121,7 +133,7 @@ function CompositionRules({ composition }: { composition: Composition }) {
           <span aria-hidden="true" className="font-mono text-danger">
             ✕
           </span>
-          {rule}
+          {linkComponentNames(rule, selfSlug)}
         </span>
       ))}
     </span>
@@ -171,7 +183,7 @@ export function ComponentDoc({
   intensity,
   provenance,
   client = false,
-  since = "0.1.0",
+  since,
   callSites,
   dependencies,
   composition,
@@ -184,9 +196,27 @@ export function ComponentDoc({
     intensity ?? entry?.intensity ?? INTENSITY_BY_LAYER[resolvedLayer];
   const resolvedName = name ?? entry?.name ?? slug ?? "";
   const shipping = provenance ?? entry?.provenance ?? [];
+  const componentPath = slug ? `/docs/components/${slug}` : undefined;
 
   return (
     <main className="flex flex-col py-10">
+      {componentPath && (
+        <>
+          <JsonLd
+            data={breadcrumbList([
+              { name: "usva.", path: "/" },
+              { name: resolvedName, path: componentPath },
+            ])}
+          />
+          <JsonLd
+            data={techArticle({
+              path: componentPath,
+              headline: resolvedName,
+              description: entry?.summary,
+            })}
+          />
+        </>
+      )}
       <p className="mb-4 font-mono text-[0.68rem] tracking-[0.06em] text-muted">
         <span className="text-muted">docs</span>
         {" / "}
@@ -205,10 +235,10 @@ export function ComponentDoc({
       <div className="mt-4 flex flex-wrap gap-1.5">
         <Pill accent>intensity · {resolvedIntensity}</Pill>
         <Pill>rsc · {client ? "client" : "server"}</Pill>
-        <Pill>since {since}</Pill>
+        {since && <Pill>since {since}</Pill>}
       </div>
 
-      <dl className="mt-6 overflow-hidden rounded-xl border border-border bg-sunken/70">
+      <div className="mt-6 overflow-hidden rounded-xl border border-border bg-sunken/70">
         <Row label="provenance">
           {shipping.length > 0 ? (
             <>
@@ -230,7 +260,7 @@ export function ComponentDoc({
         </Row>
         {composition && (
           <Row label="composition">
-            <CompositionRules composition={composition} />
+            <CompositionRules composition={composition} selfSlug={slug} />
           </Row>
         )}
         {a11y && (
@@ -242,7 +272,7 @@ export function ComponentDoc({
           </Row>
         )}
         {dependencies && <Row label="dependencies">{dependencies}</Row>}
-      </dl>
+      </div>
 
       {children}
     </main>
