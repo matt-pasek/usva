@@ -1,41 +1,76 @@
+import { execSync } from "node:child_process";
+import { readdirSync, statSync } from "node:fs";
+import { join, relative, resolve } from "node:path";
 import type { MetadataRoute } from "next";
-import { CATALOG, SUB_EXPORTS, THEMES } from "@/lib/catalog";
+import { THEMES } from "@/lib/catalog";
 import { SITE_ORIGIN } from "@/lib/site";
 
-const pages = [
-  "",
-  "/design-language",
-  "/design-language/color",
-  "/design-language/type",
-  "/design-language/space",
-  "/design-language/depth",
-  "/design-language/motion",
-  "/design-language/iconography",
-  "/design-language/intensity",
-  "/design-language/voice",
-  "/design-language/wordmark",
-  "/design-language/accessibility",
-  "/design-language/tokens",
-  "/docs/get-started",
-  "/docs/get-started/installation",
-  "/docs/get-started/theming",
-  "/docs/get-started/for-agents",
-  "/docs",
-  "/themes",
-  "/studio",
-];
+const APP = resolve(process.cwd(), "app");
 
-const routes = [
-  ...pages,
-  ...THEMES.map((theme) => `/themes/${theme}`),
-  ...CATALOG.map((entry) => `/docs/components/${entry.slug}`),
-  ...SUB_EXPORTS.map((entry) => `/docs/components/${entry.slug}`),
-];
+interface Entry {
+  route: string;
+  file: string;
+}
+
+/**
+ * Every static `page.tsx` is a route, so the sitemap can never fall behind the
+ * app. Dynamic segments (`[theme]`) are skipped here and expanded below; route
+ * groups are transparent to the url.
+ */
+function walk(dir: string): Entry[] {
+  return readdirSync(dir, { withFileTypes: true }).flatMap((item) => {
+    const full = join(dir, item.name);
+    if (item.isDirectory()) {
+      if (item.name === ".next" || item.name.startsWith("[")) return [];
+      return walk(full);
+    }
+    if (item.name !== "page.tsx") return [];
+    const segments = relative(APP, dir)
+      .split("/")
+      .filter((s) => s && !s.startsWith("("));
+    return [
+      { route: `/${segments.join("/")}`.replace(/\/$/, "") || "/", file: full },
+    ];
+  });
+}
+
+/** The last commit that touched the backing file, the one field google reads. */
+function lastModified(file: string): Date {
+  try {
+    const iso = execSync(`git log -1 --format=%cI -- "${file}"`, {
+      cwd: APP,
+      stdio: ["ignore", "pipe", "ignore"],
+    })
+      .toString()
+      .trim();
+    if (iso) return new Date(iso);
+  } catch {
+    // git is not always present at build; fall through to the filesystem.
+  }
+  try {
+    return statSync(file).mtime;
+  } catch {
+    return new Date();
+  }
+}
+
+export function sitemapEntries(): Entry[] {
+  const staticPages = walk(APP).filter((entry) => entry.route !== "/docs");
+  const themePage = resolve(APP, "themes/[theme]/page.tsx");
+  const themes = THEMES.map((theme) => ({
+    route: `/themes/${theme}`,
+    file: themePage,
+  }));
+  const llms: Entry = {
+    route: "/llms.txt",
+    file: resolve(APP, "llms.txt/route.ts"),
+  };
+  return [...staticPages, ...themes, llms];
+}
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  return routes.map((route) => ({
-    url: `${SITE_ORIGIN}${route}`,
-    changeFrequency: "weekly",
-    priority: route === "" ? 1 : 0.7,
+  return sitemapEntries().map(({ route, file }) => ({
+    url: route === "/" ? SITE_ORIGIN : `${SITE_ORIGIN}${route}`,
+    lastModified: lastModified(file),
   }));
 }
