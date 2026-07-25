@@ -1,6 +1,7 @@
 import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { axe } from "jest-axe";
+import * as React from "react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { Button } from "./button.js";
 
@@ -55,6 +56,74 @@ describe("Button", () => {
       "hover:-translate-y-px",
     );
   });
+
+  it("forwards native props through asChild", () => {
+    render(
+      <Button asChild name="send" data-testid="slotted">
+        <button type="button">Send</button>
+      </Button>,
+    );
+    expect(screen.getByTestId("slotted")).toHaveAttribute("name", "send");
+  });
+
+  it("lets the child win where both set the same prop", () => {
+    render(
+      <Button asChild aria-label="from Button">
+        <button type="button" aria-label="from child">
+          Send
+        </button>
+      </Button>,
+    );
+    expect(screen.getByRole("button")).toHaveAccessibleName("from child");
+  });
+
+  it("fires an onClick passed to Button through asChild", async () => {
+    const onClick = vi.fn();
+    render(
+      <Button asChild onClick={onClick}>
+        <button type="button">Send</button>
+      </Button>,
+    );
+    await userEvent.click(screen.getByRole("button"));
+    expect(onClick).toHaveBeenCalledTimes(1);
+  });
+
+  it("runs the child's own handler as well as Button's", async () => {
+    const order: string[] = [];
+    render(
+      <Button asChild onClick={() => order.push("button")}>
+        <button type="button" onClick={() => order.push("child")}>
+          Send
+        </button>
+      </Button>,
+    );
+    await userEvent.click(screen.getByRole("button"));
+    expect(order).toEqual(["child", "button"]);
+  });
+
+  it("forwards a ref through asChild", () => {
+    const ref = React.createRef<HTMLAnchorElement>();
+    render(
+      <Button asChild ref={ref as React.Ref<HTMLButtonElement>}>
+        <a href="/docs">Read the docs</a>
+      </Button>,
+    );
+    expect(ref.current).toBe(screen.getByRole("link"));
+  });
+
+  it("keeps the child's own ref working alongside Button's", () => {
+    const ours = React.createRef<HTMLAnchorElement>();
+    const theirs = React.createRef<HTMLAnchorElement>();
+    render(
+      <Button asChild ref={ours as React.Ref<HTMLButtonElement>}>
+        <a href="/docs" ref={theirs}>
+          Read the docs
+        </a>
+      </Button>,
+    );
+    expect(ours.current).toBe(screen.getByRole("link"));
+    expect(theirs.current).toBe(screen.getByRole("link"));
+  });
 });
 
 describe("Button status", () => {
@@ -74,6 +143,25 @@ describe("Button status", () => {
   it("defaults the loading text to Loading", () => {
     render(<Button status="loading">Save</Button>);
     expect(screen.getByRole("button")).toHaveTextContent("Loading");
+  });
+
+  it("uses the success text as the accessible name", () => {
+    render(
+      <Button status="success" successText="Saved">
+        Save
+      </Button>,
+    );
+    expect(screen.getByRole("button")).toHaveAccessibleName("Saved");
+  });
+
+  it("keeps the idle name when success has no text", () => {
+    render(<Button status="success">Save</Button>);
+    expect(screen.getByRole("button")).toHaveAccessibleName("Save");
+  });
+
+  it("keeps the idle name when error has no text", () => {
+    render(<Button status="error">Save</Button>);
+    expect(screen.getByRole("button")).toHaveAccessibleName("Save");
   });
 
   it("marks itself busy while loading", () => {

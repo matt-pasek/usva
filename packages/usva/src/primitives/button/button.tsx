@@ -96,6 +96,18 @@ const SIZER_STYLE: React.CSSProperties = {
   ...CELL_STYLE,
   visibility: "hidden",
 };
+// Inline, not `sr-only`: a consumer's Tailwind build never scans this file.
+const SR_ONLY_STYLE: React.CSSProperties = {
+  position: "absolute",
+  width: 1,
+  height: 1,
+  margin: -1,
+  padding: 0,
+  overflow: "hidden",
+  clipPath: "inset(50%)",
+  whiteSpace: "nowrap",
+  border: 0,
+};
 
 type MotionConflicts =
   | "onAnimationStart"
@@ -161,6 +173,9 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     if (asChild)
       return (
         <Slot
+          {...props}
+          ref={ref}
+          onClick={onClick}
           className={cn(
             buttonVariants({ variant, size, iconOnly, active, shape }),
             className,
@@ -186,13 +201,13 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       success: (
         <>
           <CheckIcon />
-          {successText}
+          {successText ?? <span style={SR_ONLY_STYLE}>{children}</span>}
         </>
       ),
       error: (
         <>
           <AlertIcon />
-          {errorText}
+          {errorText ?? <span style={SR_ONLY_STYLE}>{children}</span>}
         </>
       ),
     };
@@ -339,17 +354,64 @@ function AlertIcon() {
   );
 }
 
+type Handler = (...args: unknown[]) => void;
+
+function childRef(element: React.ReactElement): React.Ref<unknown> | undefined {
+  return Number.parseInt(React.version, 10) >= 19
+    ? (element.props as { ref?: React.Ref<unknown> }).ref
+    : (element as unknown as { ref?: React.Ref<unknown> }).ref;
+}
+
 function Slot({
   children,
   className,
+  style,
+  ref,
   ...props
-}: React.HTMLAttributes<HTMLElement> & { children?: React.ReactNode }) {
-  if (!React.isValidElement<React.HTMLAttributes<HTMLElement>>(children))
-    return null;
-  const childProps = children.props;
-  return React.cloneElement(children, {
-    ...props,
-    ...childProps,
-    className: cn(className, childProps.className),
-  });
+}: React.ButtonHTMLAttributes<HTMLElement> & {
+  children?: React.ReactNode;
+  ref?: React.Ref<unknown>;
+}) {
+  const element = React.isValidElement<React.HTMLAttributes<HTMLElement>>(
+    children,
+  )
+    ? children
+    : null;
+  const theirRef = element ? childRef(element) : undefined;
+
+  const composedRef = React.useCallback(
+    (node: unknown) => {
+      for (const target of [ref, theirRef]) {
+        if (typeof target === "function") target(node);
+        else if (target)
+          (target as React.MutableRefObject<unknown>).current = node;
+      }
+    },
+    [ref, theirRef],
+  );
+
+  if (!element) return null;
+  const childProps = element.props as Record<string, unknown>;
+  const merged: Record<string, unknown> = { ...props, ...childProps };
+
+  for (const [key, ours] of Object.entries(props)) {
+    if (!key.startsWith("on") || typeof ours !== "function") continue;
+    const theirs = childProps[key];
+    merged[key] =
+      typeof theirs === "function"
+        ? (...args: unknown[]) => {
+            (theirs as Handler)(...args);
+            (ours as Handler)(...args);
+          }
+        : ours;
+  }
+
+  merged.className = cn(className, childProps.className as string);
+  merged.style = { ...style, ...(childProps.style as React.CSSProperties) };
+  merged.ref = composedRef;
+
+  return React.cloneElement(
+    element,
+    merged as React.HTMLAttributes<HTMLElement>,
+  );
 }
