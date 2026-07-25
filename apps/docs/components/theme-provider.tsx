@@ -9,6 +9,7 @@ import {
 } from "react";
 import { DEFAULT_THEME, THEMES } from "@/lib/catalog";
 import { THEME_STORAGE_KEY } from "@/lib/theme-script";
+import { RailoFavicon } from "./railo-favicon";
 
 export type ThemeId = (typeof THEMES)[number];
 const STORAGE_KEY = THEME_STORAGE_KEY;
@@ -45,6 +46,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 
   return (
     <ThemeContext.Provider value={{ theme, setTheme }}>
+      <RailoFavicon theme={theme} />
       {children}
     </ThemeContext.Provider>
   );

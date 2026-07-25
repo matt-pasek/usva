@@ -192,6 +192,17 @@ export const LEXICON: Lexeme[] = [
       "a boil never repeats and never arrives, so there is nothing to wait for and nothing to miss. you watch it because it asks nothing of you.",
   },
   {
+    word: "railo",
+    ipa: "/ˈrɑilo/",
+    labels: "the mark",
+    group: "system",
+    sense: "a lead; the open crack that runs between two fields of ice",
+    reading:
+      "two fields drift in and stop just short of joining. the gap left between them is not what is missing, it is the only part you actually read.",
+    psychology:
+      "the mark is the one thing nobody drew. what two masses withhold from each other can be sharper than anything either of them shows.",
+  },
+  {
     word: "lumo",
     ipa: "/ˈlumo/",
     labels: "the atmosphere studio",

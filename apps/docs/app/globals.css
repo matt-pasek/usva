@@ -57,6 +57,69 @@ html[data-theme="savi"] #grain {
   }
 }
 
+/* railo. The fields arrive from opposite sides and the mark is what is left
+   between them. Lengths are user units inside a 100 viewBox, not screen px,
+   because the animated groups carry transform-box: view-box. */
+@keyframes railo-in-l {
+  0% {
+    transform: translateX(-56px) scale(0.88);
+    opacity: 0;
+  }
+  45% {
+    opacity: 1;
+  }
+  72% {
+    transform: translateX(5px) scale(1.02);
+  }
+  100% {
+    transform: translateX(0) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes railo-in-r {
+  0% {
+    transform: translateX(56px) scale(0.88);
+    opacity: 0;
+  }
+  45% {
+    opacity: 1;
+  }
+  72% {
+    transform: translateX(-5px) scale(1.02);
+  }
+  100% {
+    transform: translateX(0) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes railo-drift-l {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(-7px);
+  }
+}
+
+@keyframes railo-drift-r {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(7px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [style*="railo-"] {
+    animation: none !important;
+  }
+}
+
 * {
   scrollbar-width: thin;
   scrollbar-color: var(--usva-border) transparent;

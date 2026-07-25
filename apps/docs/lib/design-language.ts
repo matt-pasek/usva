@@ -64,11 +64,11 @@ export const DL_CHAPTERS: DLChapter[] = [
     blurb: "how it sounds, and how it names.",
   },
   {
-    slug: "wordmark",
+    slug: "identity",
     number: "08",
-    title: "wordmark",
+    title: "identity",
     group: "the language",
-    blurb: "the mark, and the load-bearing period.",
+    blurb: "two marks, and which one gets to appear.",
   },
   {
     slug: "intensity",

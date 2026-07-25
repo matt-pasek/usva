@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { CommandPalette } from "./command-palette";
+import { RailoBrand } from "./railo-motion";
 import { ThemeSwitcher } from "./ThemeSwitcher";
 import { Wordmark } from "./wordmark";
 
@@ -86,7 +87,14 @@ export function SiteNav({ onOpenSearch }: { onOpenSearch?: () => void }) {
         labelsFrom="xl"
         collapseBelow="md"
         menuLabel="Menu"
-        brand={<Wordmark />}
+        brand={
+          /* The wordmark is the mark. railo stands in for it only where it will
+             not fit, which below md is exactly here. */
+          <span className="flex items-center">
+            <RailoBrand cut="micro" className="size-6 md:hidden" />
+            <Wordmark className="hidden md:inline" />
+          </span>
+        }
         brandHref="/"
         brandLabel="usva, home"
         satellites={[

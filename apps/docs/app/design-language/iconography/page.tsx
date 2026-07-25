@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { ChapterHeading as Heading } from "@/components/chapter-heading";
 import { ChapterShell } from "@/components/design-language/chapter-shell";
 import {
@@ -68,9 +69,21 @@ export default function IconographyChapter() {
           , taken at the usva grid: 24×24, stroke 1.8,{" "}
           <code className="font-mono text-ink text-xs">currentColor</code>.
           every glyph on this page is a live component off that set, so it
-          inherits the theme and there is no icon to redraw per brand. the
-          wordmark is the one exception, and it is not an icon at all: it is set
-          in type, four letters and an accent-alt period, never a path.
+          inherits the theme and there is no icon to redraw per brand.
+        </p>
+        <p className="max-w-2xl text-muted text-sm">
+          the two brand marks sit outside all of this. the wordmark is set in
+          type, four letters and an accent-alt period, never a path; railo is
+          the one shape in the system that is drawn, and it is still not an
+          icon. neither takes an icon slot, sits in a glyph row, or inherits the
+          24×24 stroke-1.8 grid. they answer to{" "}
+          <Link
+            href="/design-language/identity"
+            className="text-ink underline decoration-accent/40 underline-offset-2 transition-colors hover:decoration-accent"
+          >
+            identity
+          </Link>
+          , not to this page.
         </p>
       </section>
     </ChapterShell>

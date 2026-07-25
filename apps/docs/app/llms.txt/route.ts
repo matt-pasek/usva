@@ -102,7 +102,7 @@ const body = (): string =>
     `- [iconography](${SITE_ORIGIN}/design-language/iconography): the icon set and how to size it.`,
     `- [intensity](${SITE_ORIGIN}/design-language/intensity): the one rule, laid out in full.`,
     `- [voice](${SITE_ORIGIN}/design-language/voice): how the product writes.`,
-    `- [wordmark](${SITE_ORIGIN}/design-language/wordmark): the usva. mark and its spacing.`,
+    `- [identity](${SITE_ORIGIN}/design-language/identity): the usva. wordmark, the railo mark, and which one appears where.`,
     `- [accessibility](${SITE_ORIGIN}/design-language/accessibility): the contrast and motion guarantees.`,
     `- [tokens](${SITE_ORIGIN}/design-language/tokens): the full token table.`,
     `- [tokens json](${SITE_ORIGIN}/design-language/tokens.json): the resolved token values, fetchable as DTCG json.`,
