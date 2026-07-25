@@ -1,5 +1,5 @@
 "use client";
-import { ColorField } from "@matt-pasek/usva";
+import { ColorField, Slider } from "@matt-pasek/usva";
 import { cn } from "@matt-pasek/usva/cn";
 import type { ReactNode } from "react";
 import { Lab } from "./lab";
@@ -177,15 +177,15 @@ export function CtrlSlider({
   return (
     <CtrlRow label={label} sub={sub}>
       <span className="flex items-center gap-2.5">
-        <input
-          type="range"
+        <Slider
+          size="sm"
           aria-label={label}
           value={value}
           min={min}
           max={max}
           step={step}
-          onChange={(event) => onChange(Number(event.target.value))}
-          className="h-1 w-[6.5rem] cursor-pointer appearance-none rounded-full bg-border-strong outline-none accent-accent focus-visible:ring-focus"
+          onValueChange={(next) => onChange(next as number)}
+          className="w-[6.5rem]"
         />
         <output className="w-12 shrink-0 text-right font-mono text-[0.7rem] tabular-nums text-muted">
           {String(Number.parseFloat(value.toFixed(3)))}
