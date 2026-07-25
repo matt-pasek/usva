@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { CodeSnippet } from "./code-snippet.js";
+import { CodeSnippet, registerCodeLanguage } from "./code-snippet.js";
 
 const CODE = `import { Button } from "@matt-pasek/usva";`;
 
@@ -19,6 +19,38 @@ describe("CodeSnippet", () => {
     const { container } = render(<CodeSnippet code={CODE} language="tsx" />);
     expect(container.querySelector(".hljs-keyword")).not.toBeNull();
     expect(container.querySelector(".hljs-string")).not.toBeNull();
+  });
+
+  it.each([
+    ["tsx", CODE],
+    ["ts", CODE],
+    ["typescript", CODE],
+    ["jsx", CODE],
+    ["js", CODE],
+    ["json", `{ "name": "usva" }`],
+    ["bash", '# install\necho "usva"'],
+    ["css", ".usva { color: red; }"],
+    ["html", "<p>usva</p>"],
+    ["xml", "<p>usva</p>"],
+    ["md", "# usva"],
+  ])("bundles the %s grammar", (language, code) => {
+    const { container } = render(
+      <CodeSnippet code={code} language={language} />,
+    );
+    expect(container.querySelector('[class*="hljs-"]')).not.toBeNull();
+  });
+
+  it("highlights a grammar the consumer registers", async () => {
+    const cpp = (await import("highlight.js/lib/languages/cpp")).default;
+    registerCodeLanguage("cpp", cpp);
+
+    const { container } = render(
+      <CodeSnippet
+        code={"#include <vector>\nint main() { return 0; }"}
+        language="cpp"
+      />,
+    );
+    expect(container.querySelector('[class*="hljs-"]')).not.toBeNull();
   });
 
   it("renders plain text without token spans", () => {

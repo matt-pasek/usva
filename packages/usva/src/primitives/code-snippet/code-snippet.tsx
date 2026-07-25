@@ -1,14 +1,47 @@
 "use client";
-import hljs from "highlight.js/lib/common";
+import hljs from "highlight.js/lib/core";
+import bash from "highlight.js/lib/languages/bash";
+import css from "highlight.js/lib/languages/css";
+import javascript from "highlight.js/lib/languages/javascript";
+import json from "highlight.js/lib/languages/json";
+import markdown from "highlight.js/lib/languages/markdown";
 import typescript from "highlight.js/lib/languages/typescript";
+import xml from "highlight.js/lib/languages/xml";
 import * as React from "react";
 import { cn } from "../../cn.js";
 import { Button } from "../button/button.js";
 
-hljs.registerLanguage("tsx", typescript);
+hljs.registerLanguage("typescript", typescript);
+hljs.registerLanguage("javascript", javascript);
+hljs.registerLanguage("json", json);
+hljs.registerLanguage("bash", bash);
+hljs.registerLanguage("css", css);
+hljs.registerLanguage("xml", xml);
+hljs.registerLanguage("markdown", markdown);
 
-/** Any grammar in highlight.js's common set, or "plain" to skip highlighting. */
+/**
+ * Any grammar usva bundles (`tsx`, `ts`, `jsx`, `js`, `json`, `bash`, `css`,
+ * `html`, `md` and their highlight.js aliases), anything added through
+ * {@link registerCodeLanguage}, or "plain" to skip highlighting. An unknown
+ * grammar renders as unhighlighted code rather than failing.
+ */
 export type CodeSnippetLanguage = "plain" | (string & {});
+
+/**
+ * Teach CodeSnippet a grammar usva does not bundle. Call it once, above the
+ * render.
+ *
+ * ```ts
+ * import cpp from "highlight.js/lib/languages/cpp";
+ * registerCodeLanguage("cpp", cpp);
+ * ```
+ */
+export function registerCodeLanguage(
+  name: string,
+  grammar: Parameters<typeof hljs.registerLanguage>[1],
+) {
+  hljs.registerLanguage(name, grammar);
+}
 
 export interface CodeSnippetProps
   extends Omit<React.HTMLAttributes<HTMLDivElement>, "children"> {
