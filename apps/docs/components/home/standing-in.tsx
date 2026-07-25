@@ -122,35 +122,39 @@ export function StandingIn() {
                     </ul>
                   </div>
 
-                  <dl className="flex max-w-xl flex-col gap-7 lg:pt-16">
-                    <div className="flex flex-col gap-1.5">
-                      <dt className="font-mono text-xs uppercase tracking-[0.25em] text-muted">
-                        atmosphere
-                      </dt>
-                      <dd className="text-ink">
-                        <span className="font-mono">{doc.atmosphere.word}</span>{" "}
-                        · {atmoLex?.sense}; {atmoLex?.reading}
-                      </dd>
-                    </div>
-                    <div className="flex flex-col gap-1.5">
-                      <dt className="font-mono text-xs uppercase tracking-[0.25em] text-muted">
-                        use it for
-                      </dt>
-                      <dd className="text-ink">{doc.forThis.join(", ")}.</dd>
-                    </div>
-                    <div className="flex flex-col gap-1.5">
-                      <dt className="font-mono text-xs uppercase tracking-[0.25em] text-danger">
-                        do not use it for
-                      </dt>
-                      <dd className="text-ink">{doc.notThis.join(", ")}.</dd>
-                    </div>
+                  <div className="flex max-w-xl flex-col gap-7 lg:pt-16">
+                    <dl className="flex flex-col gap-7">
+                      <div className="flex flex-col gap-1.5">
+                        <dt className="font-mono text-xs uppercase tracking-[0.25em] text-muted">
+                          atmosphere
+                        </dt>
+                        <dd className="text-ink">
+                          <span className="font-mono">
+                            {doc.atmosphere.word}
+                          </span>{" "}
+                          · {atmoLex?.sense}; {atmoLex?.reading}
+                        </dd>
+                      </div>
+                      <div className="flex flex-col gap-1.5">
+                        <dt className="font-mono text-xs uppercase tracking-[0.25em] text-muted">
+                          use it for
+                        </dt>
+                        <dd className="text-ink">{doc.forThis.join(", ")}.</dd>
+                      </div>
+                      <div className="flex flex-col gap-1.5">
+                        <dt className="font-mono text-xs uppercase tracking-[0.25em] text-danger">
+                          do not use it for
+                        </dt>
+                        <dd className="text-ink">{doc.notThis.join(", ")}.</dd>
+                      </div>
+                    </dl>
                     <Link
                       href={`/themes/${theme}`}
                       className="mt-1 inline-flex w-fit rounded font-mono text-xs text-accent underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-focus"
                     >
                       ↳ full showcase at /themes/{theme}
                     </Link>
-                  </dl>
+                  </div>
                 </div>
               </motion.article>
             </AnimatePresence>

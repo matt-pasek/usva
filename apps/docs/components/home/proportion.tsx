@@ -203,11 +203,11 @@ export function Proportion() {
               <dl className="mt-8 grid grid-cols-2 gap-x-6 gap-y-4 sm:grid-cols-3 lg:grid-cols-2">
                 {ORDER.map((layer) => (
                   <div key={layer} className="flex items-center gap-2.5">
-                    <span
-                      aria-hidden="true"
-                      className={`h-2.5 w-2.5 rounded-[2px] ${CELL[layer]}`}
-                    />
-                    <dt className="font-mono text-xs text-muted">
+                    <dt className="flex items-center gap-2.5 font-mono text-xs text-muted">
+                      <span
+                        aria-hidden="true"
+                        className={`h-2.5 w-2.5 rounded-[2px] ${CELL[layer]}`}
+                      />
                       {LAYER_LABEL[layer]}
                     </dt>
                     <dd className="font-mono text-sm text-ink tabular-nums">

@@ -80,7 +80,7 @@ export function PrimitiveShowcase() {
           <span className="text-sm font-medium text-ink">this degree</span>
           <Badge mono>bsc</Badge>
         </div>
-        <Progress value={142} max={180} />
+        <Progress value={142} max={180} aria-label="credits earned" />
         <div className="flex flex-wrap gap-2">
           <StatChip label="credits" value="142" unit="op" />
           <StatChip label="left" value="38" unit="op" tone="accent" />
