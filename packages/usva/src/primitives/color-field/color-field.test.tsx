@@ -10,6 +10,18 @@ describe("ColorField", () => {
     expect(screen.getByLabelText("Accent")).toHaveValue("#a78bfa");
   });
 
+  it("names the hex input even with no visible label", async () => {
+    const { container } = render(<ColorField defaultValue="#a78bfa" />);
+    expect(screen.getByLabelText("Hex colour value")).toHaveValue("#a78bfa");
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it("lets a visible label name the hex input on its own", () => {
+    render(<ColorField label="Accent" defaultValue="#a78bfa" />);
+    expect(screen.getByLabelText("Accent")).toHaveAttribute("type", "text");
+    expect(screen.queryByLabelText("Hex colour value")).toBeNull();
+  });
+
   it("reports a valid hex as the user types it", async () => {
     const onValueChange = vi.fn();
     const user = userEvent.setup();

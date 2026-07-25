@@ -10,6 +10,8 @@ export interface ColorFieldProps {
   onValueChange?: (hex: string) => void;
   label?: React.ReactNode;
   swatchLabel?: string;
+  /** Accessible name for the hex input, used when `label` is absent. */
+  textLabel?: string;
   disabled?: boolean;
   className?: string;
   id?: string;
@@ -23,6 +25,7 @@ export const ColorField = React.forwardRef<HTMLInputElement, ColorFieldProps>(
       onValueChange,
       label,
       swatchLabel = "Pick a color",
+      textLabel = "Hex colour value",
       disabled,
       className,
       id,
@@ -83,6 +86,7 @@ export const ColorField = React.forwardRef<HTMLInputElement, ColorFieldProps>(
           autoComplete="off"
           value={text}
           disabled={disabled}
+          aria-label={label ? undefined : textLabel}
           aria-invalid={invalid || undefined}
           onChange={(e) => commit(e.target.value)}
           className={cn(

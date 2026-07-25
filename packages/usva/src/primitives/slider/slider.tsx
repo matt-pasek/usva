@@ -18,12 +18,15 @@ const trackVariants = cva(
 );
 
 const thumbVariants = cva(
-  "rounded-full border border-accent bg-gradient-accent shadow-raised outline-none transition-control duration-base ease-soft hover:glow-ring has-[:focus-visible]:ring-focus data-[dragging]:glow-ring",
+  cn(
+    "rounded-full border border-accent bg-gradient-accent shadow-raised outline-none transition-control duration-base ease-soft hover:glow-ring has-[:focus-visible]:ring-focus data-[dragging]:glow-ring",
+    "after:absolute after:content-['']",
+  ),
   {
     variants: {
       size: {
-        sm: "size-3.5",
-        md: "size-4",
+        sm: "size-3.5 after:-inset-[5px]",
+        md: "size-4 after:-inset-1",
       },
     },
     defaultVariants: { size: "md" },
