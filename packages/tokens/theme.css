@@ -453,7 +453,7 @@
 
 .hljs-comment,
 .hljs-quote {
-  color: var(--usva-faint);
+  color: var(--usva-muted);
   font-style: italic;
 }
 
