@@ -159,8 +159,13 @@ export const CodeSnippet = React.forwardRef<HTMLDivElement, CodeSnippetProps>(
 
     const body = (
       <pre
+        // A scrolling region has to be reachable by keyboard (WCAG 2.1.1), which
+        // is the documented exception to this rule.
+        // biome-ignore lint/a11y/noNoninteractiveTabindex: see above
+        tabIndex={0}
         className={cn(
           "hljs overflow-x-auto p-4 font-mono text-[0.76rem] leading-[1.7] text-on-sunken",
+          "outline-none focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-accent",
           preClassName,
         )}
       >

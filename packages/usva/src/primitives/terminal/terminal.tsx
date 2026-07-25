@@ -32,7 +32,13 @@ export const Terminal = React.forwardRef<HTMLDivElement, TerminalProps>(
         )}
         {...rest}
       >
-        <code className="overflow-x-auto whitespace-nowrap font-mono text-[0.74rem] text-on-sunken [scrollbar-width:thin] [&::-webkit-scrollbar]:h-1 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-border-strong/60 [&::-webkit-scrollbar-track]:bg-transparent">
+        <code
+          // A scrolling region has to be reachable by keyboard (WCAG 2.1.1), which
+          // is the documented exception to this rule.
+          // biome-ignore lint/a11y/noNoninteractiveTabindex: see above
+          tabIndex={0}
+          className="overflow-x-auto whitespace-nowrap font-mono text-[0.74rem] text-on-sunken outline-none focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-accent [scrollbar-width:thin] [&::-webkit-scrollbar]:h-1 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-border-strong/60 [&::-webkit-scrollbar-track]:bg-transparent"
+        >
           <span aria-hidden="true" className="text-faint">
             {prompt}{" "}
           </span>

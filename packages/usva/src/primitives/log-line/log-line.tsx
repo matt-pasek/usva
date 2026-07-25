@@ -129,7 +129,13 @@ export const LogLine = React.forwardRef<HTMLElement, LogLineProps>(
         >
           {row}
         </summary>
-        <div className="ml-4 overflow-x-auto whitespace-pre border-l-2 border-border-strong py-2 pl-3 font-mono text-[0.6875rem] text-muted">
+        <div
+          // A scrolling region has to be reachable by keyboard (WCAG 2.1.1), which
+          // is the documented exception to this rule.
+          // biome-ignore lint/a11y/noNoninteractiveTabindex: see above
+          tabIndex={0}
+          className="ml-4 overflow-x-auto whitespace-pre border-l-2 border-border-strong py-2 pl-3 font-mono text-[0.6875rem] text-muted outline-none focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-accent"
+        >
           {details}
         </div>
       </details>
