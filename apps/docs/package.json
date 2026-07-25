@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "biome check .",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run"
+    "test": "vitest run",
+    "og:plate": "bun scripts/generate-og-plate.ts",
+    "og:fonts": "bun scripts/sync-og-fonts.ts"
   },
   "dependencies": {
     "@matt-pasek/usva": "workspace:*",
@@ -21,6 +23,8 @@
     "react-dom": "19.2.0"
   },
   "devDependencies": {
+    "@fontsource/fira-mono": "^5.2.5",
+    "@fontsource/fira-sans": "^5.2.5",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
