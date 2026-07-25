@@ -6,6 +6,22 @@
   "sideEffects": [
     "*.css"
   ],
+  "files": [
+    "dist",
+    "theme.css",
+    "themes",
+    "README.md",
+    "LICENSE.md"
+  ],
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "typesVersions": {
+    "*": {
+      "preset": [
+        "./dist/preset.d.ts"
+      ]
+    }
+  },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -21,7 +37,8 @@
     "./themes/savi.css": "./themes/savi.css",
     "./tokens.dtcg.json": "./dist/tokens.dtcg.json",
     "./tokens.studio.json": "./dist/tokens.studio.json",
-    "./roles-safelist.css": "./dist/roles-safelist.css"
+    "./roles-safelist.css": "./dist/roles-safelist.css",
+    "./package.json": "./package.json"
   },
   "scripts": {
     "build": "tsup && bun run src/emit-dtcg.ts && bun run src/emit-safelist.ts",

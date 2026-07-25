@@ -4,9 +4,21 @@
   "type": "module",
   "license": "SEE LICENSE IN LICENSE.md",
   "sideEffects": false,
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE.md"
+  ],
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "typesVersions": {
+    "*": {
+      "cn": [
+        "./dist/cn.d.ts"
+      ]
+    }
+  },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -15,7 +27,8 @@
     "./cn": {
       "types": "./dist/cn.d.ts",
       "import": "./dist/cn.js"
-    }
+    },
+    "./package.json": "./package.json"
   },
   "scripts": {
     "build": "bunchee",
