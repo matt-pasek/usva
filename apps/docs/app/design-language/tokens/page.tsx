@@ -30,7 +30,7 @@ export default function TokensChapter() {
           <p className="text-muted text-sm">
             the tokens leave the codebase in three shapes: the W3C standard, the
             Figma plugin format, and the package itself, which carries the CSS
-            and the Tailwind preset.
+            you import.
           </p>
         </div>
         <TokenDownloads />

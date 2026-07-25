@@ -2,6 +2,7 @@ import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { toStudio } from "./studio.js";
 import {
+  parseRadii,
   parseThemeVars,
   THEME_NAMES,
   type ThemeName,
@@ -17,7 +18,11 @@ const themes = Object.fromEntries(
   ]),
 ) as Record<ThemeName, ThemeVars>;
 
-const file = toStudio(themes);
+const radii = parseRadii(
+  readFileSync(new URL("../theme.css", import.meta.url), "utf8"),
+);
+
+const file = toStudio(themes, radii);
 
 interface Token {
   type: string;
@@ -73,5 +78,26 @@ describe("toStudio", () => {
       token("kajo", "color", "ink").value,
     );
     expect(token("savi", "color", "on-sunken").value).toBe("#2a1f14");
+  });
+
+  it("carries the fonts each theme actually sets, not one stack for all three", () => {
+    expect(token("kajo", "font", "mono").value).toContain("Fira Mono");
+    expect(token("sisu", "font", "mono").value).toContain("Fira Code");
+  });
+
+  it("carries easing, elevation, focus and z-index for every theme", () => {
+    for (const theme of THEME_NAMES) {
+      expect(token(theme, "easing", "soft").value).toBeTruthy();
+      expect(token(theme, "elevation", "floating").value).toBeTruthy();
+      expect(token(theme, "zIndex", "toast").value).toBe(60);
+      const set = file[theme] as Record<string, Token>;
+      expect(set.focus?.value, `${theme}.focus`).toBeTruthy();
+    }
+  });
+
+  it("takes the radius scale from theme.css rather than a second copy", () => {
+    const radius = file.core.radius as Record<string, Token>;
+    expect(Object.keys(radius).sort()).toEqual(Object.keys(radii).sort());
+    expect(radius.full, "the CSS declares no full radius").toBeUndefined();
   });
 });

@@ -5,6 +5,11 @@ import {
   type ThemeVars,
   themeColors,
   themeDurations,
+  themeEasings,
+  themeElevations,
+  themeFocus,
+  themeFonts,
+  themeZLayers,
 } from "./theme-vars.js";
 import { tokens } from "./tokens.js";
 
@@ -14,10 +19,21 @@ import { tokens } from "./tokens.js";
  * designer's file is the Tokens Studio plugin: a core set everything shares,
  * one set per theme, and a $themes block that becomes the mode switcher.
  */
-type StudioToken = { type: string; value: string };
+type StudioToken = { type: string; value: string | number };
 type StudioSet = Record<string, unknown>;
 
-const token = (type: string, value: string): StudioToken => ({ type, value });
+const token = (type: string, value: string | number): StudioToken => ({
+  type,
+  value,
+});
+
+/**
+ * The plugin's `boxShadow` type wants a structured layer, which cannot hold a
+ * multi-layer shadow built on `color-mix()` over `var()`. `other` is what Tokens
+ * Studio uses for a value it carries verbatim, so elevation, focus, easing and
+ * z-index ride as `other` rather than as a shape the plugin would reject.
+ */
+const VERBATIM = "other";
 
 export interface StudioFile {
   core: StudioSet;
@@ -26,13 +42,10 @@ export interface StudioFile {
   [theme: string]: unknown;
 }
 
-function coreSet(): StudioSet {
+function coreSet(radii: Record<string, string>): StudioSet {
   return {
     radius: Object.fromEntries(
-      Object.entries(tokens.radius).map(([k, v]) => [
-        k,
-        token("borderRadius", v),
-      ]),
+      Object.entries(radii).map(([k, v]) => [k, token("borderRadius", v)]),
     ),
     space: Object.fromEntries(
       Object.entries(tokens.space).map(([k, v]) => [k, token("spacing", v)]),
@@ -45,7 +58,6 @@ function coreSet(): StudioSet {
 
 function themeSet(vars: ThemeVars): StudioSet {
   const colors = themeColors(vars);
-  const durations = themeDurations(vars);
   return {
     color: Object.fromEntries(
       (Object.keys(colors) as RoleName[]).map((role) => [
@@ -54,15 +66,36 @@ function themeSet(vars: ThemeVars): StudioSet {
       ]),
     ),
     duration: Object.fromEntries(
-      Object.entries(durations).map(([tier, value]) => [
+      Object.entries(themeDurations(vars)).map(([tier, value]) => [
         tier,
-        token("other", value),
+        token(VERBATIM, value),
       ]),
     ),
-    font: {
-      sans: token("fontFamilies", vars["font-sans"] ?? ""),
-      mono: token("fontFamilies", vars["font-mono"] ?? ""),
-    },
+    font: Object.fromEntries(
+      Object.entries(themeFonts(vars)).map(([name, value]) => [
+        name,
+        token("fontFamilies", value),
+      ]),
+    ),
+    easing: Object.fromEntries(
+      Object.entries(themeEasings(vars)).map(([name, value]) => [
+        name,
+        token(VERBATIM, value),
+      ]),
+    ),
+    elevation: Object.fromEntries(
+      Object.entries(themeElevations(vars)).map(([name, value]) => [
+        name,
+        token(VERBATIM, value),
+      ]),
+    ),
+    focus: token(VERBATIM, themeFocus(vars)),
+    zIndex: Object.fromEntries(
+      Object.entries(themeZLayers(vars)).map(([name, value]) => [
+        name,
+        token(VERBATIM, value),
+      ]),
+    ),
   };
 }
 
@@ -76,9 +109,12 @@ function themeDefinition(name: ThemeName) {
   };
 }
 
-export function toStudio(themes: Record<ThemeName, ThemeVars>): StudioFile {
+export function toStudio(
+  themes: Record<ThemeName, ThemeVars>,
+  radii: Record<string, string>,
+): StudioFile {
   const file = {
-    core: coreSet(),
+    core: coreSet(radii),
     $themes: THEME_NAMES.map(themeDefinition),
     $metadata: { tokenSetOrder: ["core", ...THEME_NAMES] },
   } as StudioFile;

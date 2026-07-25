@@ -1,20 +1,21 @@
 import type { RoleName } from "./roles.js";
 
+/**
+ * Only what the CSS contract cannot carry. Colours, radii, fonts, easings,
+ * elevations, focus and z-layers all live in theme.css and themes/*.css, and
+ * every export reads them back from there. A second copy here had drifted three
+ * ways before it was cut down: it invented a `full` radius the CSS never had,
+ * published Fira Mono for sisu (which sets Fira Code), and claimed a
+ * cubic-bezier for kajo's spring (which is a `linear()` curve).
+ *
+ * The spacing and type scales stay because they are Tailwind v4's own defaults
+ * adopted as-is rather than values usva declares, so there is no `--spacing-*`
+ * or `--text-*` in theme.css to read them back from.
+ */
 export const tokens = {
-  radius: {
-    sm: "0.25rem",
-    md: "0.5rem",
-    lg: "0.75rem",
-    xl: "1rem",
-    full: "9999px",
-  },
   space: Object.fromEntries(
     Array.from({ length: 25 }, (_, i) => [i, `${i * 0.25}rem`]),
   ) as Record<number, string>,
-  font: {
-    sans: "'Fira Sans', system-ui, sans-serif",
-    mono: "'Fira Mono', ui-monospace, SFMono-Regular, Menlo, monospace",
-  },
   text: {
     xs: "0.75rem",
     sm: "0.875rem",
@@ -27,23 +28,9 @@ export const tokens = {
   },
   motion: {
     /**
-     * The savi (neutral) baseline. kajo stretches these and sisu compresses
-     * them via --usva-duration-*; see each theme file. Assign by what moves:
-     * fast = colour/border/opacity, base = transform/scale/shadow,
-     * slow = enter-exit and travelling indicators, ambient = media zoom and
-     * progress travel.
+     * Spring physics, not a CSS timing function. motion consumes these objects
+     * directly, so they have no theme.css equivalent to be read from.
      */
-    duration: {
-      fast: "150ms",
-      base: "200ms",
-      slow: "300ms",
-      ambient: "500ms",
-    },
-    easing: {
-      soft: "cubic-bezier(0.22, 1, 0.36, 1)",
-      emphasis: "cubic-bezier(0.25, 0, 0, 1)",
-      spring: "cubic-bezier(0.34, 1.56, 0.64, 1)",
-    },
     spring: {
       soft: { type: "spring", stiffness: 210, damping: 30 },
       snappy: { type: "spring", stiffness: 400, damping: 32 },

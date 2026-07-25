@@ -60,7 +60,7 @@ export function TokenDownloads() {
         <div className="flex flex-col gap-1">
           <h3 className="font-semibold text-ink text-sm">the package</h3>
           <p className="text-muted text-xs">
-            theme.css and the Tailwind preset ship here.
+            theme.css and both theme files ship here.
           </p>
         </div>
         <Terminal

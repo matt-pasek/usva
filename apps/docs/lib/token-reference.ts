@@ -28,6 +28,24 @@ function colorRows(): ColorRow[] {
   }));
 }
 
+/**
+ * Durations are per theme, so one column would print the wrong number for two
+ * themes out of three.
+ */
+function durationRows(): ValueRow[] {
+  const themes = dtcg.theme as unknown as Record<
+    ThemeName,
+    { duration: Record<string, { $value: string }> }
+  >;
+  const tiers = Object.keys(themes.savi.duration);
+  return tiers.map((name) => ({
+    name,
+    value: THEME_NAMES.map(
+      (theme) => `${theme} ${themes[theme].duration[name]?.$value ?? ""}`,
+    ).join(" · "),
+  }));
+}
+
 function rowsFromDimensionGroup(
   group: Record<string, { $value: string }>,
 ): ValueRow[] {
@@ -43,9 +61,6 @@ export function buildTokenReference(): TokenReference {
     spacing: rowsFromDimensionGroup(dtcg.space),
     radius: rowsFromDimensionGroup(dtcg.radius),
     type: rowsFromDimensionGroup(dtcg.text),
-    motion: Object.entries(dtcg.motion.duration).map(([name, token]) => ({
-      name,
-      value: token.$value,
-    })),
+    motion: durationRows(),
   };
 }

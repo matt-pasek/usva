@@ -1,4 +1,9 @@
-import { ROLE_NAMES, type RoleName } from "./roles.js";
+import {
+  ROLE_NAMES,
+  type RoleName,
+  Z_LAYERS,
+  type ZLayerName,
+} from "./roles.js";
 
 export const THEME_NAMES = ["kajo", "sisu", "savi"] as const;
 export type ThemeName = (typeof THEME_NAMES)[number];
@@ -45,6 +50,83 @@ export function themeColors(vars: ThemeVars): Record<RoleName, string> {
     colors[role] = value;
   }
   return colors;
+}
+
+export const FONT_NAMES = ["sans", "mono"] as const;
+export type FontName = (typeof FONT_NAMES)[number];
+
+export const EASING_NAMES = ["soft", "emphasis", "spring"] as const;
+export type EasingName = (typeof EASING_NAMES)[number];
+
+export const ELEVATION_NAMES = ["raised", "floating", "overlay"] as const;
+export type ElevationName = (typeof ELEVATION_NAMES)[number];
+
+/** Reads one `--usva-*` var, or says which theme is missing what. */
+function required(vars: ThemeVars, name: string): string {
+  const value = vars[name];
+  if (!value) throw new Error(`Theme is missing --usva-${name}.`);
+  return value;
+}
+
+/**
+ * Per theme, because they genuinely differ: sisu sets Fira Code for mono while
+ * kajo and savi set Fira Mono.
+ */
+export function themeFonts(vars: ThemeVars): Record<FontName, string> {
+  const out = {} as Record<FontName, string>;
+  for (const name of FONT_NAMES) out[name] = required(vars, `font-${name}`);
+  return out;
+}
+
+/**
+ * Not all of these are cubic-beziers: kajo's spring is a `linear()` curve with
+ * a dozen stops, which is why callers must not assume four control points.
+ */
+export function themeEasings(vars: ThemeVars): Record<EasingName, string> {
+  const out = {} as Record<EasingName, string>;
+  for (const name of EASING_NAMES) out[name] = required(vars, `ease-${name}`);
+  return out;
+}
+
+/** Multi-layer box-shadows, so the value is a raw CSS declaration. */
+export function themeElevations(
+  vars: ThemeVars,
+): Record<ElevationName, string> {
+  const out = {} as Record<ElevationName, string>;
+  for (const name of ELEVATION_NAMES)
+    out[name] = required(vars, `shadow-${name}`);
+  return out;
+}
+
+export function themeFocus(vars: ThemeVars): string {
+  return required(vars, "focus");
+}
+
+export function themeZLayers(vars: ThemeVars): Record<ZLayerName, number> {
+  const out = {} as Record<ZLayerName, number>;
+  for (const name of Object.keys(Z_LAYERS) as ZLayerName[]) {
+    const raw = required(vars, `z-${name}`);
+    const value = Number(raw);
+    if (!Number.isInteger(value))
+      throw new Error(`--usva-z-${name} is not an integer: ${raw}`);
+    out[name] = value;
+  }
+  return out;
+}
+
+/**
+ * The radius scale is global rather than per theme, and it lives in theme.css
+ * under Tailwind's own `--radius-*` namespace, so it needs its own reader.
+ */
+export function parseRadii(css: string): Record<string, string> {
+  const out: Record<string, string> = {};
+  for (const match of css.matchAll(/--radius-([a-z0-9]+)\s*:\s*([^;]+);/g)) {
+    const [, name, value] = match;
+    if (name && value) out[name] = value.trim();
+  }
+  if (Object.keys(out).length === 0)
+    throw new Error("theme.css declares no --radius-* scale.");
+  return out;
 }
 
 export const DURATION_TIERS = ["fast", "base", "slow", "ambient"] as const;

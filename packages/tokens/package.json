@@ -27,10 +27,6 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
-    "./preset": {
-      "types": "./dist/preset.d.ts",
-      "import": "./dist/preset.js"
-    },
     "./theme.css": "./theme.css",
     "./themes/kajo.css": "./themes/kajo.css",
     "./themes/sisu.css": "./themes/sisu.css",

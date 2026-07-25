@@ -2,6 +2,7 @@ import { readFileSync, writeFileSync } from "node:fs";
 import { toDTCG } from "./dtcg.js";
 import { toStudio } from "./studio.js";
 import {
+  parseRadii,
   parseThemeVars,
   THEME_NAMES,
   type ThemeName,
@@ -23,5 +24,9 @@ const write = (file: string, data: unknown) =>
     `${JSON.stringify(data, null, 2)}\n`,
   );
 
-write("tokens.dtcg.json", toDTCG(themes));
-write("tokens.studio.json", toStudio(themes));
+const radii = parseRadii(
+  readFileSync(new URL("../theme.css", import.meta.url), "utf8"),
+);
+
+write("tokens.dtcg.json", toDTCG(themes, radii));
+write("tokens.studio.json", toStudio(themes, radii));

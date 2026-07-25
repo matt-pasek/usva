@@ -8,24 +8,42 @@
  * whitelists landed: the tarball carried 465 source files and zero `dist`.
  */
 import { execFileSync } from "node:child_process";
-import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import {
+  mkdirSync,
+  mkdtempSync,
+  readFileSync,
+  rmSync,
+  writeFileSync,
+} from "node:fs";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const ROOT = resolve(fileURLToPath(import.meta.url), "../..");
-// `entrypoints` lists only the JS/TS ones. The css and json exports are assets,
-// and attw reads a non-resolving type declaration as a failure for every one.
+
+/**
+ * Only the JS/TS entrypoints. The css and json exports are assets, and attw
+ * reads a non-resolving type declaration as a failure for every one. Read from
+ * the manifest so the ~76 component subpaths are all covered without a second
+ * list here to fall out of date.
+ */
+const jsEntrypoints = (dir) =>
+  Object.keys(
+    JSON.parse(readFileSync(join(ROOT, dir, "package.json"), "utf8")).exports,
+  )
+    .filter((key) => !/\.(css|json)$/.test(key))
+    .map((key) => (key === "." ? "." : key.replace(/^\.\//, "")));
+
 const PACKAGES = [
   {
     dir: "packages/usva",
     tarball: "matt-pasek-usva-0.0.0.tgz",
-    entrypoints: [".", "cn"],
+    entrypoints: jsEntrypoints("packages/usva"),
   },
   {
     dir: "packages/tokens",
     tarball: "matt-pasek-usva-tokens-0.0.0.tgz",
-    entrypoints: [".", "preset"],
+    entrypoints: jsEntrypoints("packages/tokens"),
   },
 ];
 
@@ -55,7 +73,11 @@ const { cn } = await import("@matt-pasek/usva/cn");
 if (cn("a", "b") !== "a b") fail("cn subpath broken");
 
 if (!Object.keys(await import("@matt-pasek/usva-tokens")).length) fail("tokens root empty");
-if (!Object.keys(await import("@matt-pasek/usva-tokens/preset")).length) fail("tokens/preset empty");
+
+// A component subpath is the lean way in, so prove one resolves and carries the
+// component rather than trusting the exports map to be more than a promise.
+const { Badge } = await import("@matt-pasek/usva/primitives/badge");
+if (typeof Badge === "undefined") fail("primitives/badge subpath broken");
 
 for (const sub of [
   "@matt-pasek/usva-tokens/theme.css",
