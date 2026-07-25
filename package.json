@@ -22,5 +22,8 @@
     "@types/node": "^20",
     "turbo": "^2.5.0",
     "typescript": "^5.7.2"
+  },
+  "patchedDependencies": {
+    "bunchee@6.12.0": "patches/bunchee@6.12.0.patch"
   }
 }

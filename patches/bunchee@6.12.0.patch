@@ -1,0 +1,45 @@
+diff --git a/dist/index.js b/dist/index.js
+index 3012b8d35ef8633f2b2814db791da11308435a35..25e4fbac43047095ce8f97e74a16da69eae7a9f2 100644
+--- a/dist/index.js
++++ b/dist/index.js
+@@ -2339,6 +2339,23 @@ async function buildConfig(bundleConfig, exportCondition, pluginContext, bundleE
+     return Promise.all(outputConfigs);
+ }
+ 
++async function runWithConcurrency(tasks, limit) {
++    if (!(limit > 0) || !Number.isFinite(limit)) {
++        return Promise.all(tasks.map((task)=>task()));
++    }
++    const results = new Array(tasks.length);
++    let cursor = 0;
++    async function runNext() {
++        while(cursor < tasks.length){
++            const index = cursor++;
++            results[index] = await tasks[index]();
++        }
++    }
++    await Promise.all(Array.from({
++        length: Math.min(limit, tasks.length)
++    }, ()=>runNext()));
++    return results;
++}
+ function normalizeError(error) {
+     // Remove the noise from rollup plugin error
+     if (error.code === 'PLUGIN_ERROR') {
+@@ -2368,9 +2385,14 @@ async function createAssetRollupJobs(options, buildContext, bundleJobOptions) {
+             }
+         }
+     }
+-    const rollupJobs = allConfigs.map((rollupConfig)=>bundleOrWatch(options, rollupConfig));
++    const rollupJobs = allConfigs.map((rollupConfig)=>()=>bundleOrWatch(options, rollupConfig));
+     try {
+-        return await Promise.all(rollupJobs);
++        // Watch mode never settles, so every watcher has to start; only the
++        // one-shot build is pooled.
++        if (options.watch) {
++            return await Promise.all(rollupJobs.map((job)=>job()));
++        }
++        return await runWithConcurrency(rollupJobs, Number(process.env.BUNCHEE_CONCURRENCY) || 4);
+     } catch (err) {
+         const error = normalizeError(err);
+         throw error;
