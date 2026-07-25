@@ -29,7 +29,6 @@ const KAJO = {
 const inside = (x, y, cx) =>
   (x - cx) ** 2 + (y - BOX / 2) ** 2 <= MICRO.radius ** 2;
 
-/** Coverage of each field at one pixel, supersampled for a clean edge. */
 function coverage(px, py, size) {
   let left = 0;
   let right = 0;
@@ -117,6 +116,28 @@ function png(size, rgba) {
   ]);
 }
 
+function ico(sizes) {
+  const images = sizes.map((size) => png(size, render(size, null)));
+  const header = Buffer.alloc(6);
+  header.writeUInt16LE(1, 2); // type: icon
+  header.writeUInt16LE(sizes.length, 4);
+
+  let offset = 6 + sizes.length * 16;
+  const entries = sizes.map((size, index) => {
+    const entry = Buffer.alloc(16);
+    entry[0] = size >= 256 ? 0 : size;
+    entry[1] = size >= 256 ? 0 : size;
+    entry.writeUInt16LE(1, 4);
+    entry.writeUInt16LE(32, 6);
+    entry.writeUInt32LE(images[index].length, 8);
+    entry.writeUInt32LE(offset, 12);
+    offset += images[index].length;
+    return entry;
+  });
+
+  return Buffer.concat([header, ...entries, ...images]);
+}
+
 const targets = [
   // Raster fallback for anything that will not take the SVG.
   { file: join(DOCS, "app", "icon.png"), size: 32, ground: null },
@@ -128,3 +149,8 @@ for (const { file, size, ground } of targets) {
   writeFileSync(file, png(size, render(size, ground)));
   console.log(`wrote ${file} (${size}x${size})`);
 }
+
+const ICO_SIZES = [16, 32, 48];
+const icoFile = join(DOCS, "app", "favicon.ico");
+writeFileSync(icoFile, ico(ICO_SIZES));
+console.log(`wrote ${icoFile} (${ICO_SIZES.join(", ")})`);
