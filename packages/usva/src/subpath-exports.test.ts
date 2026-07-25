@@ -24,9 +24,7 @@ const componentSubpaths = LAYERS.flatMap((layer) =>
       (entry) =>
         entry.isDirectory() &&
         !INTERNAL.has(entry.name) &&
-        fs.existsSync(
-          path.join(pkgRoot, "src", layer, entry.name, "index.ts"),
-        ),
+        fs.existsSync(path.join(pkgRoot, "src", layer, entry.name, "index.ts")),
     )
     .map((entry) => `${layer}/${entry.name}`),
 ).sort();
@@ -51,10 +49,10 @@ describe("subpath exports", () => {
   });
 
   it("mirrors each subpath in typesVersions for non-exports resolvers", () => {
+    const wildcard = pkg.typesVersions["*"];
+    expect(wildcard).toBeDefined();
     for (const subpath of componentSubpaths) {
-      expect(pkg.typesVersions["*"][subpath], subpath).toEqual([
-        `./dist/${subpath}.d.ts`,
-      ]);
+      expect(wildcard?.[subpath], subpath).toEqual([`./dist/${subpath}.d.ts`]);
     }
   });
 });

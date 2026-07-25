@@ -563,7 +563,7 @@
     "./package.json": "./package.json"
   },
   "scripts": {
-    "build": "bunchee",
+    "build": "node scripts/assert-bunchee-patch.mjs && bunchee",
     "typecheck": "tsc --noEmit",
     "lint": "biome check .",
     "test": "vitest run",
