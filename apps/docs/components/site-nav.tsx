@@ -74,7 +74,7 @@ export function SiteNav({ onOpenSearch }: { onOpenSearch?: () => void }) {
   }, [openSearch]);
 
   return (
-    <header className="fixed inset-x-0 top-0 z-30 overflow-x-clip px-3 pt-6 sm:px-5 sm:pt-7">
+    <header className="fixed inset-x-0 top-0 z-40 overflow-x-clip px-3 pt-6 sm:px-5 sm:pt-7">
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-24 bg-linear-to-b from-bg/85 to-bg/0 backdrop-blur-sm [mask-image:linear-gradient(to_bottom,#000_55%,transparent)] sm:h-28"
