@@ -39,9 +39,6 @@ function rowsFromDimensionGroup(
 
 export function buildTokenReference(): TokenReference {
   return {
-    // colors aren't in the DTCG export (they're theme CSS vars), so the
-    // resolved per-theme values are read from the Tokens Studio export,
-    // the one machine-readable source that carries role -> value per theme.
     color: colorRows(),
     spacing: rowsFromDimensionGroup(dtcg.space),
     radius: rowsFromDimensionGroup(dtcg.radius),
