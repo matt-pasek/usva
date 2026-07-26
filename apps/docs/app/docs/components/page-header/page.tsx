@@ -188,12 +188,7 @@ export default function PageHeaderPage() {
 
       <AcquireSection
         registryName="page-header"
-        usage={`import {
-  PageHeader,
-  PageHeaderMetric,
-  PageHeaderStat,
-  PageHeaderStats,
-} from "@matt-pasek/usva";
+        usage={`import { PageHeader, PageHeaderMetric, PageHeaderStat, PageHeaderStats } from "@matt-pasek/usva/patterns/page-header";
 
 <PageHeader
   eyebrow="Lut University · Summer 2026"

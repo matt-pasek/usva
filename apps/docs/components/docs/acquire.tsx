@@ -1,5 +1,7 @@
 "use client";
-import { CodeSnippet, SegmentedControl, Terminal } from "@matt-pasek/usva";
+import { SegmentedControl } from "@matt-pasek/usva/patterns/segmented-control";
+import { CodeSnippet } from "@matt-pasek/usva/primitives/code-snippet";
+import { Terminal } from "@matt-pasek/usva/primitives/terminal";
 import { PACKAGE_NAME, registryUrl } from "@/lib/site";
 import { useInstallMode } from "./install-mode";
 import { Lab } from "./lab";

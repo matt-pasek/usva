@@ -1,4 +1,5 @@
-import { Kajastus, type KajastusParams } from "@matt-pasek/usva";
+import type { KajastusParams } from "@matt-pasek/usva/atmospheres/kajastus";
+import { Kajastus } from "@matt-pasek/usva/atmospheres/kajastus";
 import { DarkStage } from "@/components/dark-stage";
 import { defineStudio } from "./types";
 
@@ -116,7 +117,7 @@ const snippet = (c: KajastusConfig): string => {
   if (c.corridorY !== vault.corridorY) p.push(`corridorY: ${c.corridorY}`);
   if (c.corridorH !== vault.corridorH) p.push(`corridorH: ${c.corridorH}`);
   if (p.length) lines.push(`  params={{ ${p.join(", ")} }}`);
-  return `import { Kajastus } from "@matt-pasek/usva";
+  return `import { Kajastus } from "@matt-pasek/usva/atmospheres/kajastus";
 
 <Kajastus
 ${lines.join("\n")}

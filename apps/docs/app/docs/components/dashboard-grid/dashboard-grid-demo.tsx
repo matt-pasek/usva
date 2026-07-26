@@ -1,14 +1,14 @@
 "use client";
 import {
   addItem,
-  Button,
   clampItem,
   DashboardGrid,
   DashboardGridItem,
   findOpenSlot,
   type GridItem,
-  Panel,
-} from "@matt-pasek/usva";
+} from "@matt-pasek/usva/patterns/dashboard-grid";
+import { Panel } from "@matt-pasek/usva/patterns/panel";
+import { Button } from "@matt-pasek/usva/primitives/button";
 import { useState } from "react";
 import { Playground } from "@/components/docs/playground";
 
@@ -141,7 +141,7 @@ const snippetFor = (c: Config): string => {
   ]
     .filter(Boolean)
     .join("");
-  return `import { DashboardGrid, DashboardGridItem, type GridItem } from "@matt-pasek/usva";
+  return `import { DashboardGrid, DashboardGridItem, type GridItem } from "@matt-pasek/usva/patterns/dashboard-grid";
 
 const [layout, setLayout] = useState<GridItem[]>(seed);
 

@@ -1,5 +1,5 @@
 "use client";
-import { SegmentedControl } from "@matt-pasek/usva";
+import { SegmentedControl } from "@matt-pasek/usva/patterns/segmented-control";
 import { Playground } from "@/components/docs/playground";
 
 const SIZES = ["sm", "md"] as const;
@@ -31,7 +31,7 @@ const snippetFor = (c: Config): string => {
   ]
     .filter(Boolean)
     .join(" ");
-  return `import { SegmentedControl } from "@matt-pasek/usva";
+  return `import { SegmentedControl } from "@matt-pasek/usva/patterns/segmented-control";
 
 <SegmentedControl
   items={[

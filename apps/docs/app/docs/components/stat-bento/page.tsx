@@ -80,7 +80,7 @@ export default function StatBentoPage() {
 
       <AcquireSection
         registryName="stat-bento"
-        usage={`import { StatBento } from "@matt-pasek/usva";
+        usage={`import { StatBento } from "@matt-pasek/usva/patterns/stat-bento";
 
 <StatBento
   stats={[

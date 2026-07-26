@@ -1,4 +1,4 @@
-import { CodeSnippet } from "@matt-pasek/usva";
+import { CodeSnippet } from "@matt-pasek/usva/primitives/code-snippet";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { DARK_ONLY, THEMES } from "@/lib/catalog";

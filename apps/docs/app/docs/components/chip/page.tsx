@@ -88,7 +88,7 @@ export default function ChipPage() {
 
       <AcquireSection
         registryName="chip"
-        usage={`import { Chip } from "@matt-pasek/usva";
+        usage={`import { Chip } from "@matt-pasek/usva/primitives/chip";
 
 <Chip tone="accent">Design</Chip>
 <Chip tone="success" value="v2.1">Release</Chip>

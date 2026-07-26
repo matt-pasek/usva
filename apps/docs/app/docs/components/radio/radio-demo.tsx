@@ -1,5 +1,5 @@
 "use client";
-import { Radio, RadioGroup } from "@matt-pasek/usva";
+import { Radio, RadioGroup } from "@matt-pasek/usva/primitives/radio";
 import { useState } from "react";
 import { Playground } from "@/components/docs/playground";
 
@@ -64,7 +64,7 @@ const snippetFor = (c: Config): string => {
     return `  <Radio ${attrs} />`;
   });
 
-  return `import { Radio, RadioGroup } from "@matt-pasek/usva";
+  return `import { Radio, RadioGroup } from "@matt-pasek/usva/primitives/radio";
 
 <RadioGroup ${groupAttrs}>
 ${lines.join("\n")}

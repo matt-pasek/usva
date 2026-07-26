@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@matt-pasek/usva";
+import { Button } from "@matt-pasek/usva/primitives/button";
 import * as React from "react";
 import { useReducedMotion } from "./use-reduced-motion";
 

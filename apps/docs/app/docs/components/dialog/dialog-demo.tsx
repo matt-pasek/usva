@@ -1,5 +1,5 @@
 "use client";
-import { Dialog } from "@matt-pasek/usva";
+import { Dialog } from "@matt-pasek/usva/primitives/dialog";
 import { Playground } from "@/components/docs/playground";
 
 const SURFACES = ["elevated", "flat", "glass"] as const;
@@ -61,7 +61,7 @@ const snippetFor = (c: Config): string => {
   const surfaceAttr = c.surface !== "elevated" ? ` surface="${c.surface}"` : "";
   const highlightAttr =
     c.highlight !== "none" ? ` highlight="${c.highlight}"` : "";
-  return `import { Dialog } from "@matt-pasek/usva";
+  return `import { Dialog } from "@matt-pasek/usva/primitives/dialog";
 
 <Dialog${rootAttrs}>
   <Dialog.Trigger>Open dialog</Dialog.Trigger>

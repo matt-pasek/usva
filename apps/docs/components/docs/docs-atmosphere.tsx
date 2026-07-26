@@ -1,5 +1,6 @@
 "use client";
-import { Loimu, Routa } from "@matt-pasek/usva";
+import { Loimu } from "@matt-pasek/usva/atmospheres/loimu";
+import { Routa } from "@matt-pasek/usva/atmospheres/routa";
 import { usePathname } from "next/navigation";
 import { useTheme } from "@/components/theme-provider";
 

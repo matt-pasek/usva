@@ -1,5 +1,5 @@
 "use client";
-import { Progress } from "@matt-pasek/usva";
+import { Progress } from "@matt-pasek/usva/primitives/progress";
 import { Playground } from "@/components/docs/playground";
 
 const SIZES = ["sm", "md", "lg"] as const;
@@ -34,7 +34,7 @@ const snippetFor = (c: Config): string => {
   ]
     .filter(Boolean)
     .join(" ");
-  return `import { Progress } from "@matt-pasek/usva";
+  return `import { Progress } from "@matt-pasek/usva/primitives/progress";
 
 <Progress ${attrs} />`;
 };

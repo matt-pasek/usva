@@ -1,5 +1,5 @@
 "use client";
-import { SegmentedControl } from "@matt-pasek/usva";
+import { SegmentedControl } from "@matt-pasek/usva/patterns/segmented-control";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import Link from "next/link";
 import { type ThemeId, useTheme } from "@/components/theme-provider";

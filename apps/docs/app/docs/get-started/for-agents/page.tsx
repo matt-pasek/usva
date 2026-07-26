@@ -1,4 +1,4 @@
-import { CodeSnippet } from "@matt-pasek/usva";
+import { CodeSnippet } from "@matt-pasek/usva/primitives/code-snippet";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { counts } from "@/lib/catalog";
@@ -65,12 +65,12 @@ curl -o .claude/skills/usva/SKILL.md ${SITE_ORIGIN}/skill.md`}
         <p className="max-w-2xl text-muted text-sm">
           most of the skill is what you would expect. the section that earns it
           is the gotchas table: eight ways this library fails <em>quietly</em>.
-          a barrel import that costs 170 KiB of animation runtime for a button.
-          a canvas chrome blanks because an ancestor animates. a reveal that
-          never fires because it is parked outside its own mask. every one of
-          them passes a build, passes the types, and often looks fine in a
-          screenshot. none is guessable from a list of components, which is the
-          whole reason the file exists.
+          a barrel import whose export graph is the entire library, shader
+          runtimes included. a canvas chrome blanks because an ancestor
+          animates. a reveal that never fires because it is parked outside its
+          own mask. every one of them passes a build, passes the types, and
+          often looks fine in a screenshot. none is guessable from a list of
+          components, which is the whole reason the file exists.
         </p>
       </section>
 

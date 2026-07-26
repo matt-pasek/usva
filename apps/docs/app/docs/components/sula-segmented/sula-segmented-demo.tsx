@@ -1,5 +1,8 @@
 "use client";
-import { SulaSegmented, type SulaSegmentedItem } from "@matt-pasek/usva";
+import {
+  SulaSegmented,
+  type SulaSegmentedItem,
+} from "@matt-pasek/usva/sula/sula-segmented";
 import * as React from "react";
 import { Playground } from "@/components/docs/playground";
 
@@ -42,7 +45,7 @@ const snippetFor = (c: Config): string => {
   ]
     .filter(Boolean)
     .join("\n  ");
-  return `import { SulaSegmented } from "@matt-pasek/usva";
+  return `import { SulaSegmented } from "@matt-pasek/usva/sula/sula-segmented";
 
 <SulaSegmented
   ${attrs ? `${attrs}\n  ` : ""}items={items}

@@ -1,4 +1,4 @@
-import { StatCard } from "@matt-pasek/usva";
+import { StatCard } from "@matt-pasek/usva/patterns/stat-card";
 import type { Metadata } from "next";
 import { AcquireSection } from "@/components/docs/acquire-section";
 import { ComponentDoc } from "@/components/docs/component-doc";
@@ -181,7 +181,7 @@ export default function StatCardPage() {
 
       <AcquireSection
         registryName="stat-card"
-        usage={`import { StatCard } from "@matt-pasek/usva";
+        usage={`import { StatCard } from "@matt-pasek/usva/patterns/stat-card";
 
 <StatCard
   label="Response time"

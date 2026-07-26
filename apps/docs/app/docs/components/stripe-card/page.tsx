@@ -107,7 +107,8 @@ export default function StripeCardPage() {
 
       <AcquireSection
         registryName="stripe-card"
-        usage={`import { StripeCard, Badge } from "@matt-pasek/usva";
+        usage={`import { StripeCard } from "@matt-pasek/usva/patterns/stripe-card";
+import { Badge } from "@matt-pasek/usva/primitives/badge";
 
 <StripeCard
   heading="Algorithms & Data Structures"

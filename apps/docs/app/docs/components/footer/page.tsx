@@ -92,7 +92,7 @@ export default function FooterPage() {
 
       <AcquireSection
         registryName="footer"
-        usage={`import { Footer } from "@matt-pasek/usva";
+        usage={`import { Footer } from "@matt-pasek/usva/patterns/footer";
 
 <Footer
   brand={<Wordmark />}

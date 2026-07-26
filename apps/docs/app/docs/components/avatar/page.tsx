@@ -86,7 +86,7 @@ export default function AvatarPage() {
 
       <AcquireSection
         registryName="avatar"
-        usage={`import { Avatar } from "@matt-pasek/usva";
+        usage={`import { Avatar } from "@matt-pasek/usva/primitives/avatar";
 
 <Avatar src="/jane.png" alt="Jane Doe" fallback="JD" />
 <Avatar alt="Ada Lovelace" fallback="AL" status="online" />`}

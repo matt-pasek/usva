@@ -113,7 +113,7 @@ export default function ToggleChipPage() {
 
       <AcquireSection
         registryName="toggle-chip"
-        usage={`import { ToggleChip, ToggleChipGroup } from "@matt-pasek/usva";
+        usage={`import { ToggleChip, ToggleChipGroup } from "@matt-pasek/usva/primitives/toggle-chip";
 
 <ToggleChipGroup value={stats} onValueChange={setStats} min={2} max={4} ariaLabel="Visible stats">
   <ToggleChip value="grade-avg">Grade avg.</ToggleChip>

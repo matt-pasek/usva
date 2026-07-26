@@ -1,5 +1,5 @@
 "use client";
-import { MockupShowcase } from "@matt-pasek/usva";
+import { MockupShowcase } from "@matt-pasek/usva/patterns/mockup-showcase";
 import {
   type MotionValue,
   motion,

@@ -1,5 +1,5 @@
 "use client";
-import { type Step, StepList } from "@matt-pasek/usva";
+import { type Step, StepList } from "@matt-pasek/usva/patterns/step-list";
 import { Box, PenLine, RefreshCw, Send, TrendingUp } from "lucide-react";
 import type * as React from "react";
 import { Playground } from "@/components/docs/playground";
@@ -65,7 +65,7 @@ const snippetFor = (c: Config): string => {
     .join("\n");
   const level =
     c.headingLevel !== "h4" ? `\n  headingLevel="${c.headingLevel}"` : "";
-  return `import { StepList } from "@matt-pasek/usva";
+  return `import { StepList } from "@matt-pasek/usva/patterns/step-list";
 
 <StepList${level}
   steps={[

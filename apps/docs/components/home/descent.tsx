@@ -1,17 +1,17 @@
 "use client";
+import { Kajastus } from "@matt-pasek/usva/atmospheres/kajastus";
+import { Kynnos } from "@matt-pasek/usva/atmospheres/kynnos";
+import { Loimu } from "@matt-pasek/usva/atmospheres/loimu";
 import {
-  Badge,
   BentoCard,
   BentoGrid,
   BentoMetric,
   BentoText,
-  Button,
-  Kajastus,
-  Kynnos,
-  Loimu,
-  Panel,
-  ProgressRow,
-} from "@matt-pasek/usva";
+} from "@matt-pasek/usva/patterns/bento-grid";
+import { Panel } from "@matt-pasek/usva/patterns/panel";
+import { ProgressRow } from "@matt-pasek/usva/patterns/progress-row";
+import { Badge } from "@matt-pasek/usva/primitives/badge";
+import { Button } from "@matt-pasek/usva/primitives/button";
 import {
   type MotionStyle,
   type MotionValue,

@@ -71,7 +71,7 @@ export default function FeatureCarouselPage() {
 
       <AcquireSection
         registryName="feature-carousel"
-        usage={`import { FeatureCarousel } from "@matt-pasek/usva";
+        usage={`import { FeatureCarousel } from "@matt-pasek/usva/patterns/feature-carousel";
 
 <FeatureCarousel
   cards={[

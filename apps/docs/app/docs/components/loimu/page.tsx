@@ -98,7 +98,7 @@ export default function LoimuPage() {
 
       <AcquireSection
         registryName="loimu"
-        usage={`import { Loimu } from "@matt-pasek/usva";
+        usage={`import { Loimu } from "@matt-pasek/usva/atmospheres/loimu";
 
 <Loimu className="relative min-h-svh">
   <div aria-hidden className="pointer-events-none absolute inset-0" style={{ backgroundImage: SCRIM }} />

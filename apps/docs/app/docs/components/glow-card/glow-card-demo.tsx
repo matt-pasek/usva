@@ -5,7 +5,7 @@ import {
   CardHeader,
   CardTitle,
   GlowCard,
-} from "@matt-pasek/usva";
+} from "@matt-pasek/usva/primitives/card";
 import { Playground } from "@/components/docs/playground";
 
 const SURFACES = ["elevated", "flat", "glass", "outline"] as const;
@@ -30,7 +30,7 @@ const templates: Record<string, Config> = {
 
 const snippetFor = (c: Config): string => {
   const attrs = c.surface !== "elevated" ? ` surface="${c.surface}"` : "";
-  return `import { GlowCard, CardHeader, CardEyebrow, CardTitle, CardBody } from "@matt-pasek/usva";
+  return `import { CardBody, CardEyebrow, CardHeader, CardTitle, GlowCard } from "@matt-pasek/usva/primitives/card";
 
 <GlowCard${attrs}>
   <CardHeader>

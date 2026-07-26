@@ -94,7 +94,7 @@ export default function ColorFieldPage() {
 
       <AcquireSection
         registryName="color-field"
-        usage={`import { ColorField } from "@matt-pasek/usva";
+        usage={`import { ColorField } from "@matt-pasek/usva/primitives/color-field";
 
 <ColorField
   label="Accent"

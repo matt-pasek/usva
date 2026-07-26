@@ -96,7 +96,7 @@ export default function RoutaPage() {
 
       <AcquireSection
         registryName="routa"
-        usage={`import { Routa } from "@matt-pasek/usva";
+        usage={`import { Routa } from "@matt-pasek/usva/atmospheres/routa";
 
 <Routa className="min-h-svh">
   <Article />

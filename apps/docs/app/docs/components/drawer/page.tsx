@@ -85,7 +85,8 @@ export default function DrawerPage() {
 
       <AcquireSection
         registryName="drawer"
-        usage={`import { Drawer, Button } from "@matt-pasek/usva";
+        usage={`import { Button } from "@matt-pasek/usva/primitives/button";
+import { Drawer } from "@matt-pasek/usva/primitives/drawer";
 
 <Drawer>
   <Drawer.Trigger render={<Button>Edit layout</Button>} />

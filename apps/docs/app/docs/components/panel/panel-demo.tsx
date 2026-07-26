@@ -1,6 +1,7 @@
 "use client";
-import { Badge, Panel } from "@matt-pasek/usva";
 import { cn } from "@matt-pasek/usva/cn";
+import { Panel } from "@matt-pasek/usva/patterns/panel";
+import { Badge } from "@matt-pasek/usva/primitives/badge";
 import { Playground } from "@/components/docs/playground";
 
 type RunStatus = "live" | "building" | "failed" | "queued";
@@ -128,7 +129,8 @@ const snippetFor = (c: Config): string => {
   ]
     .filter(Boolean)
     .join("\n  ");
-  return `import { Badge, Panel } from "@matt-pasek/usva";
+  return `import { Panel } from "@matt-pasek/usva/patterns/panel";
+import { Badge } from "@matt-pasek/usva/primitives/badge";
 
 <Panel
   ${attrs}

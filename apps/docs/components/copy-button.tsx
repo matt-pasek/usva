@@ -1,5 +1,5 @@
 "use client";
-import { Button } from "@matt-pasek/usva";
+import { Button } from "@matt-pasek/usva/primitives/button";
 import { Check, Copy } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 

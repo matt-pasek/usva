@@ -1,12 +1,9 @@
 "use client";
-import {
-  LogLine,
-  LogList,
-  PageTransition,
-  SegmentedControl,
-  StatChip,
-  Switch,
-} from "@matt-pasek/usva";
+import { PageTransition } from "@matt-pasek/usva/motion/page-transition";
+import { SegmentedControl } from "@matt-pasek/usva/patterns/segmented-control";
+import { LogLine, LogList } from "@matt-pasek/usva/primitives/log-line";
+import { StatChip } from "@matt-pasek/usva/primitives/stat-chip";
+import { Switch } from "@matt-pasek/usva/primitives/switch";
 import * as React from "react";
 
 const ROUTES = [

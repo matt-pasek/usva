@@ -1,5 +1,5 @@
 "use client";
-import { Terminal } from "@matt-pasek/usva";
+import { Terminal } from "@matt-pasek/usva/primitives/terminal";
 import { Playground } from "@/components/docs/playground";
 
 type Config = {
@@ -32,7 +32,7 @@ const snippetFor = (c: Config): string => {
   ]
     .filter(Boolean)
     .join(" ");
-  return `import { Terminal } from "@matt-pasek/usva";
+  return `import { Terminal } from "@matt-pasek/usva/primitives/terminal";
 
 <Terminal ${attrs} />`;
 };

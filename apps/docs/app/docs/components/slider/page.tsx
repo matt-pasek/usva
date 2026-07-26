@@ -101,7 +101,7 @@ export default function SliderPage() {
 
       <AcquireSection
         registryName="slider"
-        usage={`import { Slider } from "@matt-pasek/usva";
+        usage={`import { Slider } from "@matt-pasek/usva/primitives/slider";
 
 <Slider label="Speed" defaultValue={40} step={5} showValue />`}
       />

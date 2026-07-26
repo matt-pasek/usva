@@ -74,7 +74,7 @@ export default function ListPage() {
 
       <AcquireSection
         registryName="list"
-        usage={`import { List, ListItem } from "@matt-pasek/usva";
+        usage={`import { List, ListItem } from "@matt-pasek/usva/primitives/list";
 
 <List marker={<CheckIcon />} divided>
   <ListItem>Runs entirely on your machine</ListItem>

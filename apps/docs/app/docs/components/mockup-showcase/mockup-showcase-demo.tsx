@@ -1,5 +1,5 @@
 "use client";
-import { MockupShowcase } from "@matt-pasek/usva";
+import { MockupShowcase } from "@matt-pasek/usva/patterns/mockup-showcase";
 import { Playground } from "@/components/docs/playground";
 
 const FRAMES = ["browser", "device", "none"] as const;
@@ -40,7 +40,7 @@ const snippetFor = (c: Config): string => {
   ]
     .filter(Boolean)
     .join(" ");
-  return `import { MockupShowcase } from "@matt-pasek/usva";
+  return `import { MockupShowcase } from "@matt-pasek/usva/patterns/mockup-showcase";
 
 <MockupShowcase${attrs ? ` ${attrs}` : ""}>
   <Image src={shot} alt="The usva docs homepage" />

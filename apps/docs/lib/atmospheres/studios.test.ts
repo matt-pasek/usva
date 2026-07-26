@@ -37,7 +37,10 @@ describe("atmosphere studio registry", () => {
         if (!preset) throw new Error("missing default preset");
         const snippet = studio.snippet(preset);
         expect(snippet).toBe(studio.snippet(preset));
-        expect(snippet).toContain('from "@matt-pasek/usva"');
+        expect(snippet).toContain(
+          `from "@matt-pasek/usva/atmospheres/${studio.name}"`,
+        );
+        expect(snippet).not.toContain('from "@matt-pasek/usva"');
       });
 
       it("only references its own field keys in the config", () => {

@@ -1,5 +1,8 @@
 "use client";
-import { ToggleChip, ToggleChipGroup } from "@matt-pasek/usva";
+import {
+  ToggleChip,
+  ToggleChipGroup,
+} from "@matt-pasek/usva/primitives/toggle-chip";
 import { useState } from "react";
 import { Playground } from "@/components/docs/playground";
 
@@ -93,7 +96,7 @@ const snippetFor = (c: Config): string => {
   ]
     .filter(Boolean)
     .join(" ");
-  return `import { ToggleChip, ToggleChipGroup } from "@matt-pasek/usva";
+  return `import { ToggleChip, ToggleChipGroup } from "@matt-pasek/usva/primitives/toggle-chip";
 
 <ToggleChipGroup ${attrs}>
   <ToggleChip value="grade-avg">Grade avg.</ToggleChip>

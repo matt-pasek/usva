@@ -5,8 +5,8 @@ import {
   BentoInfo,
   BentoMetric,
   BentoText,
-  Chip,
-} from "@matt-pasek/usva";
+} from "@matt-pasek/usva/patterns/bento-grid";
+import { Chip } from "@matt-pasek/usva/primitives/chip";
 import { Playground } from "@/components/docs/playground";
 
 const HIGHLIGHTS = ["none", "wash", "edge", "ring"] as const;
@@ -70,14 +70,8 @@ const snippetFor = (c: Config): string => {
   const metricAttrs = (value: string, suffix: string, label: string) =>
     `<BentoMetric ${c.animate ? "animate " : ""}value="${value}" suffix="${suffix}" label="${label}" />`;
   const [m1, m2, info] = contentSpans(c);
-  return `import {
-  BentoGrid,
-  BentoCard,
-  BentoText,
-  BentoMetric,
-  BentoInfo,
-  Chip,
-} from "@matt-pasek/usva";
+  return `import { BentoCard, BentoGrid, BentoInfo, BentoMetric, BentoText } from "@matt-pasek/usva/patterns/bento-grid";
+import { Chip } from "@matt-pasek/usva/primitives/chip";
 
 <BentoGrid columns={${c.columns}}>
   <BentoCard ${focalAttrs}>

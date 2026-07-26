@@ -1,6 +1,7 @@
 "use client";
-import { ColorField, Slider } from "@matt-pasek/usva";
 import { cn } from "@matt-pasek/usva/cn";
+import { ColorField } from "@matt-pasek/usva/primitives/color-field";
+import { Slider } from "@matt-pasek/usva/primitives/slider";
 import type { ReactNode } from "react";
 import { Lab } from "./lab";
 

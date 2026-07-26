@@ -101,7 +101,7 @@ export default function CheckboxPage() {
 
       <AcquireSection
         registryName="checkbox"
-        usage={`import { Checkbox } from "@matt-pasek/usva";
+        usage={`import { Checkbox } from "@matt-pasek/usva/primitives/checkbox";
 
 <Checkbox
   label="Accept terms"

@@ -1,5 +1,5 @@
 "use client";
-import { Avatar } from "@matt-pasek/usva";
+import { Avatar } from "@matt-pasek/usva/primitives/avatar";
 import { Playground } from "@/components/docs/playground";
 
 const SIZES = ["sm", "md", "lg"] as const;
@@ -54,7 +54,7 @@ const snippetFor = (c: Config): string => {
   ]
     .filter(Boolean)
     .join(" ");
-  return `import { Avatar } from "@matt-pasek/usva";
+  return `import { Avatar } from "@matt-pasek/usva/primitives/avatar";
 
 <Avatar ${attrs} />`;
 };

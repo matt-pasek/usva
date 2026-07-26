@@ -106,7 +106,7 @@ export default function KuultoPage() {
 
       <AcquireSection
         registryName="kuulto"
-        usage={`import { Kuulto } from "@matt-pasek/usva";
+        usage={`import { Kuulto } from "@matt-pasek/usva/atmospheres/kuulto";
 
 <Kuulto className="min-h-svh">
   <Hero />

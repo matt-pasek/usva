@@ -101,7 +101,8 @@ export default function DisclosureRowPage() {
 
       <AcquireSection
         registryName="disclosure-row"
-        usage={`import { DisclosureRow, ProgressRow } from "@matt-pasek/usva";
+        usage={`import { DisclosureRow } from "@matt-pasek/usva/patterns/disclosure-row";
+import { ProgressRow } from "@matt-pasek/usva/patterns/progress-row";
 
 <DisclosureRow
   railColor="#52c989"

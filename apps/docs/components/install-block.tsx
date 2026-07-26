@@ -1,4 +1,4 @@
-import { Terminal } from "@matt-pasek/usva";
+import { Terminal } from "@matt-pasek/usva/primitives/terminal";
 import { PACKAGE_NAME, registryUrl } from "@/lib/site";
 
 export interface InstallBlockProps {

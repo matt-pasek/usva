@@ -73,7 +73,7 @@ export default function ChecklistCardPage() {
 
       <AcquireSection
         registryName="checklist-card"
-        usage={`import { ChecklistCard } from "@matt-pasek/usva";
+        usage={`import { ChecklistCard } from "@matt-pasek/usva/patterns/checklist-card";
 
 <ChecklistCard
   title="Privacy"

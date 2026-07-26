@@ -1,5 +1,5 @@
 "use client";
-import { Input } from "@matt-pasek/usva";
+import { Input } from "@matt-pasek/usva/primitives/input";
 import { Playground } from "@/components/docs/playground";
 
 const TYPES = ["text", "email", "password", "number"] as const;
@@ -37,7 +37,7 @@ const snippetFor = (c: Config): string => {
   ]
     .filter(Boolean)
     .join(" ");
-  return `import { Input } from "@matt-pasek/usva";
+  return `import { Input } from "@matt-pasek/usva/primitives/input";
 
 <Input${attrs ? ` ${attrs}` : ""} />`;
 };

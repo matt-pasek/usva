@@ -1,5 +1,6 @@
 "use client";
-import { CaseStudyHero, Chip } from "@matt-pasek/usva";
+import { CaseStudyHero } from "@matt-pasek/usva/patterns/case-study-hero";
+import { Chip } from "@matt-pasek/usva/primitives/chip";
 import { Playground } from "@/components/docs/playground";
 
 const LEVELS = ["h1", "h2", "h3"] as const;
@@ -85,14 +86,17 @@ const snippetFor = (c: Config): string => {
   if (c.showMeta)
     lines.push(`  meta={[{ label: "Role", value: "Design engineer" }]}`);
 
-  const imports = c.showTags ? "CaseStudyHero, Chip" : "CaseStudyHero";
+  const imports = [
+    `import { CaseStudyHero } from "@matt-pasek/usva/patterns/case-study-hero";`,
+    c.showTags && `import { Chip } from "@matt-pasek/usva/primitives/chip";`,
+  ].filter(Boolean);
 
   const open = c.showTags ? ">" : "\n/>";
   const body = c.showTags
     ? `\n>\n  <>\n    <Chip>React</Chip>\n    <Chip>Tailwind</Chip>\n  </>\n</CaseStudyHero>`
     : "";
 
-  return `import { ${imports} } from "@matt-pasek/usva";
+  return `${imports.join("\n")}
 
 <CaseStudyHero
 ${lines.join("\n")}${c.showTags ? open + body : open}`;

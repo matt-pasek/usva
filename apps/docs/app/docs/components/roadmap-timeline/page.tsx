@@ -89,7 +89,7 @@ export default function RoadmapTimelinePage() {
 
       <AcquireSection
         registryName="roadmap-timeline"
-        usage={`import { RoadmapTimeline } from "@matt-pasek/usva";
+        usage={`import { RoadmapTimeline } from "@matt-pasek/usva/patterns/roadmap-timeline";
 
 <RoadmapTimeline
   milestones={[

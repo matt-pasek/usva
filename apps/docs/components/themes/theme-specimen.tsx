@@ -1,13 +1,11 @@
-import {
-  Avatar,
-  Badge,
-  Button,
-  Chip,
-  MockupShowcase,
-  ProgressRow,
-  Pullquote,
-  StatCard,
-} from "@matt-pasek/usva";
+import { MockupShowcase } from "@matt-pasek/usva/patterns/mockup-showcase";
+import { ProgressRow } from "@matt-pasek/usva/patterns/progress-row";
+import { Pullquote } from "@matt-pasek/usva/patterns/pullquote";
+import { StatCard } from "@matt-pasek/usva/patterns/stat-card";
+import { Avatar } from "@matt-pasek/usva/primitives/avatar";
+import { Badge } from "@matt-pasek/usva/primitives/badge";
+import { Button } from "@matt-pasek/usva/primitives/button";
+import { Chip } from "@matt-pasek/usva/primitives/chip";
 import { ChapterHeading } from "@/components/chapter-heading";
 import type { SpecimenScene, ThemeDoc } from "@/lib/themes";
 

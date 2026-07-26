@@ -1,5 +1,7 @@
 "use client";
-import { Avatar, AvatarGroup, Button, HeroSplit } from "@matt-pasek/usva";
+import { HeroSplit } from "@matt-pasek/usva/patterns/hero-split";
+import { Avatar, AvatarGroup } from "@matt-pasek/usva/primitives/avatar";
+import { Button } from "@matt-pasek/usva/primitives/button";
 import { Playground } from "@/components/docs/playground";
 
 type Config = {
@@ -118,7 +120,11 @@ const snippetFor = (c: Config): string => {
       `  visual={<MockupShowcase>{/* screenshot */}</MockupShowcase>}`,
     );
 
-  return `import { AvatarGroup, Avatar, Badge, Button, HeroSplit, MockupShowcase } from "@matt-pasek/usva";
+  return `import { HeroSplit } from "@matt-pasek/usva/patterns/hero-split";
+import { MockupShowcase } from "@matt-pasek/usva/patterns/mockup-showcase";
+import { Avatar, AvatarGroup } from "@matt-pasek/usva/primitives/avatar";
+import { Badge } from "@matt-pasek/usva/primitives/badge";
+import { Button } from "@matt-pasek/usva/primitives/button";
 
 <HeroSplit
 ${lines.join("\n")}

@@ -1,5 +1,5 @@
 "use client";
-import { SulaFrame } from "@matt-pasek/usva";
+import { SulaFrame } from "@matt-pasek/usva/sula/sula-frame";
 import { useState } from "react";
 
 export function SulaFrameFixedToggle() {

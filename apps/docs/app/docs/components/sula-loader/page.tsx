@@ -1,4 +1,4 @@
-import { SulaLoader } from "@matt-pasek/usva";
+import { SulaLoader } from "@matt-pasek/usva/sula/sula-loader";
 import type { Metadata } from "next";
 import { AcquireSection } from "@/components/docs/acquire-section";
 import { ComponentDoc } from "@/components/docs/component-doc";
@@ -120,7 +120,7 @@ export default function SulaLoaderPage() {
 
       <AcquireSection
         registryName="sula-loader"
-        usage={`import { SulaLoader } from "@matt-pasek/usva";
+        usage={`import { SulaLoader } from "@matt-pasek/usva/sula/sula-loader";
 
 {isPending ? <SulaLoader label="Loading dashboard" /> : <Dashboard />}`}
       />

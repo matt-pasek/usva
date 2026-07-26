@@ -1,6 +1,6 @@
 "use client";
-import type { FeatureCard } from "@matt-pasek/usva";
-import { FeatureCarousel } from "@matt-pasek/usva";
+import type { FeatureCard } from "@matt-pasek/usva/patterns/feature-carousel";
+import { FeatureCarousel } from "@matt-pasek/usva/patterns/feature-carousel";
 import { Playground } from "@/components/docs/playground";
 
 const SETS = ["product", "three", "single"] as const;
@@ -66,7 +66,7 @@ const snippetFor = (c: Config): string => {
   const cards = CARD_SETS[c.set];
   const attr =
     c.autoAdvanceMs !== 4600 ? `\n  autoAdvanceMs={${c.autoAdvanceMs}}` : "";
-  return `import { FeatureCarousel } from "@matt-pasek/usva";
+  return `import { FeatureCarousel } from "@matt-pasek/usva/patterns/feature-carousel";
 
 <FeatureCarousel${attr}
   cards={[

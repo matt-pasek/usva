@@ -1,4 +1,8 @@
-import { Routa, type RoutaLight, type RoutaParams } from "@matt-pasek/usva";
+import {
+  Routa,
+  type RoutaLight,
+  type RoutaParams,
+} from "@matt-pasek/usva/atmospheres/routa";
 import { defineStudio } from "./types";
 
 type RoutaConfig = {
@@ -116,7 +120,7 @@ const snippet = (c: RoutaConfig): string => {
   if (c.lightColor) l.push(`color: "${c.lightColor}"`);
   if (l.length) lines.push(`  light={{ ${l.join(", ")} }}`);
   const attrs = lines.length ? `\n${lines.join("\n")}\n` : "";
-  return `import { Routa } from "@matt-pasek/usva";
+  return `import { Routa } from "@matt-pasek/usva/atmospheres/routa";
 
 <Routa${attrs}>
   <Article />

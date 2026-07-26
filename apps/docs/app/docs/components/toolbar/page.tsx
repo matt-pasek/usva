@@ -77,7 +77,8 @@ export default function ToolbarPage() {
 
       <AcquireSection
         registryName="toolbar"
-        usage={`import { Toolbar, ToolbarActions, ToolbarGroup, Button } from "@matt-pasek/usva";
+        usage={`import { Toolbar, ToolbarActions, ToolbarGroup } from "@matt-pasek/usva/patterns/toolbar";
+import { Button } from "@matt-pasek/usva/primitives/button";
 
 <Toolbar aria-label="projects toolbar">
   <ToolbarGroup>

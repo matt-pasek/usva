@@ -102,7 +102,7 @@ export default function BentoGridPage() {
 
       <AcquireSection
         registryName="bento-grid"
-        usage={`import { BentoGrid, BentoCard, BentoMetric } from "@matt-pasek/usva";
+        usage={`import { BentoCard, BentoGrid, BentoMetric } from "@matt-pasek/usva/patterns/bento-grid";
 
 <BentoGrid columns={3}>
   <BentoCard span={2} rowSpan={2}>...</BentoCard>

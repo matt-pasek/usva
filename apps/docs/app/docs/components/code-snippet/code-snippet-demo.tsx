@@ -1,5 +1,5 @@
 "use client";
-import { CodeSnippet } from "@matt-pasek/usva";
+import { CodeSnippet } from "@matt-pasek/usva/primitives/code-snippet";
 import { Playground } from "@/components/docs/playground";
 
 const LANGUAGES = [
@@ -21,7 +21,7 @@ type Config = {
 };
 
 const base: Config = {
-  code: `import { CodeSnippet } from "@matt-pasek/usva";
+  code: `import { CodeSnippet } from "@matt-pasek/usva/primitives/code-snippet";
 
 <CodeSnippet
   label="lib/utils.ts"
@@ -61,7 +61,7 @@ const snippetFor = (c: Config): string => {
   if (!c.copyable) lines.push("  copyable={false}");
   lines.push("  code={source}");
   lines.push("/>");
-  return `import { CodeSnippet } from "@matt-pasek/usva";
+  return `import { CodeSnippet } from "@matt-pasek/usva/primitives/code-snippet";
 
 ${lines.join("\n")}`;
 };

@@ -1,5 +1,5 @@
 "use client";
-import { SulaSegmented } from "@matt-pasek/usva";
+import { SulaSegmented } from "@matt-pasek/usva/sula/sula-segmented";
 import { usePathname, useRouter } from "next/navigation";
 import { THEMES } from "@/lib/catalog";
 import { type ThemeId, useTheme } from "./theme-provider";

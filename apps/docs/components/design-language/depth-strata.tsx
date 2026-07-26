@@ -1,6 +1,7 @@
 "use client";
 
-import { Button, SegmentedControl } from "@matt-pasek/usva";
+import { SegmentedControl } from "@matt-pasek/usva/patterns/segmented-control";
+import { Button } from "@matt-pasek/usva/primitives/button";
 import * as React from "react";
 import { THEMES } from "@/lib/catalog";
 

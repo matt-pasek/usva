@@ -81,7 +81,7 @@ export default function SpinnerPage() {
 
       <AcquireSection
         registryName="spinner"
-        usage={`import { Spinner, PageLoader } from "@matt-pasek/usva";
+        usage={`import { PageLoader, Spinner } from "@matt-pasek/usva/primitives/spinner";
 
 <Spinner variant="dots" size="sm" />
 <PageLoader variant="orbit" label="Loading your workspace" />`}

@@ -1,4 +1,5 @@
-import { Button, CodeSnippet } from "@matt-pasek/usva";
+import { Button } from "@matt-pasek/usva/primitives/button";
+import { CodeSnippet } from "@matt-pasek/usva/primitives/code-snippet";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { DemoPanel } from "@/components/docs/demo-panel";

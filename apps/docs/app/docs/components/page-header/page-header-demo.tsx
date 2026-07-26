@@ -1,14 +1,16 @@
 "use client";
 import {
-  Button,
   PageHeader,
   PageHeaderMetric,
   PageHeaderStat,
   PageHeaderStats,
-  Progress,
+} from "@matt-pasek/usva/patterns/page-header";
+import { Button } from "@matt-pasek/usva/primitives/button";
+import { Progress } from "@matt-pasek/usva/primitives/progress";
+import {
   ToggleChip,
   ToggleChipGroup,
-} from "@matt-pasek/usva";
+} from "@matt-pasek/usva/primitives/toggle-chip";
 import { Check, Pencil } from "lucide-react";
 import { useState } from "react";
 

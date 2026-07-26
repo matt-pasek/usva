@@ -1,14 +1,12 @@
-import {
-  Badge,
-  Button,
-  Checkbox,
-  Chip,
-  Input,
-  Label,
-  Progress,
-  StatChip,
-  Switch,
-} from "@matt-pasek/usva";
+import { Badge } from "@matt-pasek/usva/primitives/badge";
+import { Button } from "@matt-pasek/usva/primitives/button";
+import { Checkbox } from "@matt-pasek/usva/primitives/checkbox";
+import { Chip } from "@matt-pasek/usva/primitives/chip";
+import { Input } from "@matt-pasek/usva/primitives/input";
+import { Label } from "@matt-pasek/usva/primitives/label";
+import { Progress } from "@matt-pasek/usva/primitives/progress";
+import { StatChip } from "@matt-pasek/usva/primitives/stat-chip";
+import { Switch } from "@matt-pasek/usva/primitives/switch";
 
 /* The furniture is only convincing in a room. This is a screen out of the app
  * the system was extracted from, not a swatch page: a student enrolling on a

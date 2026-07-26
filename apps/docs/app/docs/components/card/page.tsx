@@ -96,10 +96,7 @@ export default function CardPage() {
 
       <AcquireSection
         registryName="card"
-        usage={`import {
-  Card, CardHeader, CardIcon, CardEyebrow, CardTitle,
-  CardActions, CardBadge, CardBody, CardFooter,
-} from "@matt-pasek/usva";
+        usage={`import { Card, CardActions, CardBadge, CardBody, CardEyebrow, CardFooter, CardHeader, CardIcon, CardTitle } from "@matt-pasek/usva/primitives/card";
 
 <Card interactive>
   <CardHeader row>

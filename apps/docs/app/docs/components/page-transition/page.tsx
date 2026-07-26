@@ -16,7 +16,7 @@ export const metadata: Metadata = pageMetadata(
 );
 
 const usage = `"use client";
-import { PageTransition } from "@matt-pasek/usva";
+import { PageTransition } from "@matt-pasek/usva/motion/page-transition";
 import { usePathname } from "next/navigation";
 
 export function Shell({ children }) {

@@ -132,7 +132,7 @@ export default function SulaFabPage() {
 
       <AcquireSection
         registryName="sula-fab"
-        usage={`import { SulaFab } from "@matt-pasek/usva";
+        usage={`import { SulaFab } from "@matt-pasek/usva/sula/sula-fab";
 
 <SulaFab
   label="Create"

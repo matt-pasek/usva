@@ -110,7 +110,7 @@ export default function KnobPage() {
 
       <AcquireSection
         registryName="knob"
-        usage={`import { Knob } from "@matt-pasek/usva";
+        usage={`import { Knob } from "@matt-pasek/usva/primitives/knob";
 
 <Knob label="Volume" defaultValue={59} showValue formatValue={(v) => \`\${v} %\`} />`}
       />

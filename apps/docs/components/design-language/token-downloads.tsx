@@ -1,6 +1,7 @@
 "use client";
 
-import { Button, Terminal } from "@matt-pasek/usva";
+import { Button } from "@matt-pasek/usva/primitives/button";
+import { Terminal } from "@matt-pasek/usva/primitives/terminal";
 import dtcg from "@matt-pasek/usva-tokens/tokens.dtcg.json";
 import studio from "@matt-pasek/usva-tokens/tokens.studio.json";
 import { Download } from "lucide-react";

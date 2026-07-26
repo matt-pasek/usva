@@ -1,4 +1,8 @@
-import { InlineError, LogLine, LogList } from "@matt-pasek/usva";
+import {
+  InlineError,
+  LogLine,
+  LogList,
+} from "@matt-pasek/usva/primitives/log-line";
 import type { Metadata } from "next";
 import { AcquireSection } from "@/components/docs/acquire-section";
 import { ComponentDoc } from "@/components/docs/component-doc";
@@ -130,7 +134,7 @@ export default function LogLinePage() {
 
       <AcquireSection
         registryName="log-line"
-        usage={`import { LogLine, LogList, InlineError } from "@matt-pasek/usva";
+        usage={`import { InlineError, LogLine, LogList } from "@matt-pasek/usva/primitives/log-line";
 
 <LogList>
   <LogLine level="error" source="/api/courses" count={3}>

@@ -68,7 +68,7 @@ export default function InputPage() {
 
       <AcquireSection
         registryName="input"
-        usage={`import { Input } from "@matt-pasek/usva";
+        usage={`import { Input } from "@matt-pasek/usva/primitives/input";
 
 <Input placeholder="you@example.com" type="email" />
 <Input aria-invalid defaultValue="not-an-email" />

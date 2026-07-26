@@ -1,5 +1,5 @@
 "use client";
-import { SulaField } from "@matt-pasek/usva";
+import { SulaField } from "@matt-pasek/usva/sula/sula-field";
 import { Playground } from "@/components/docs/playground";
 
 export function SulaFieldDemo({
@@ -62,7 +62,7 @@ const playSnippet = (c: PlayConfig): string => {
   if (c.interactive) lines.push("  interactive");
   if (c.seed !== 0) lines.push(`  seed={${c.seed}}`);
   if (!c.fluid) lines.push("  fluid={false}");
-  return `import { SulaField } from "@matt-pasek/usva";
+  return `import { SulaField } from "@matt-pasek/usva/sula/sula-field";
 
 ${lines.join("\n")}
 >

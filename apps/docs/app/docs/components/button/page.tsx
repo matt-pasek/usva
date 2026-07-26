@@ -159,7 +159,7 @@ export default function ButtonPage() {
 
       <AcquireSection
         registryName="button"
-        usage={`import { Button } from "@matt-pasek/usva";
+        usage={`import { Button } from "@matt-pasek/usva/primitives/button";
 
 <Button variant="solid">Save changes</Button>
 <Button variant="outline" size="sm">Cancel</Button>

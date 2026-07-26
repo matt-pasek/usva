@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@matt-pasek/usva";
+import { Button } from "@matt-pasek/usva/primitives/button";
 import { RotateCcw } from "lucide-react";
 import {
   type MotionValue,

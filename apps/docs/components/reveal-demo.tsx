@@ -1,11 +1,7 @@
 "use client";
-import {
-  Button,
-  Card,
-  CardBody,
-  Reveal,
-  type RevealVariant,
-} from "@matt-pasek/usva";
+import { Reveal, type RevealVariant } from "@matt-pasek/usva/motion/reveal";
+import { Button } from "@matt-pasek/usva/primitives/button";
+import { Card, CardBody } from "@matt-pasek/usva/primitives/card";
 import * as React from "react";
 
 const items: { v: RevealVariant; fits: string }[] = [

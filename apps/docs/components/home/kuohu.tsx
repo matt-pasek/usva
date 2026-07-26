@@ -1,5 +1,5 @@
 "use client";
-import { SulaField } from "@matt-pasek/usva";
+import { SulaField } from "@matt-pasek/usva/sula/sula-field";
 import { convection } from "./convection";
 
 const HALO =

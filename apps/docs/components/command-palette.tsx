@@ -1,5 +1,6 @@
 "use client";
-import { Dialog, Input } from "@matt-pasek/usva";
+import { Dialog } from "@matt-pasek/usva/primitives/dialog";
+import { Input } from "@matt-pasek/usva/primitives/input";
 import { ROLE_NAMES } from "@matt-pasek/usva-tokens";
 import { useRouter } from "next/navigation";
 import {

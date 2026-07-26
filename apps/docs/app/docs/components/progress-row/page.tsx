@@ -88,7 +88,8 @@ export default function ProgressRowPage() {
 
       <AcquireSection
         registryName="progress-row"
-        usage={`import { ProgressRow, Badge } from "@matt-pasek/usva";
+        usage={`import { ProgressRow } from "@matt-pasek/usva/patterns/progress-row";
+import { Badge } from "@matt-pasek/usva/primitives/badge";
 
 <ProgressRow
   label="Computer Science"

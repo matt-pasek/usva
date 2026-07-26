@@ -1,5 +1,5 @@
 "use client";
-import { SulaFrame } from "@matt-pasek/usva";
+import { SulaFrame } from "@matt-pasek/usva/sula/sula-frame";
 import { Playground } from "@/components/docs/playground";
 
 type Config = {
@@ -35,7 +35,7 @@ const snippetFor = (c: Config): string => {
   if (!c.fluid) lines.push("  fluid={false}");
   if (!c.intro) lines.push("  intro={false}");
   lines.push(`  className="bg-surface px-10 py-9"`);
-  return `import { SulaFrame } from "@matt-pasek/usva";
+  return `import { SulaFrame } from "@matt-pasek/usva/sula/sula-frame";
 
 <SulaFrame
 ${lines.join("\n")}

@@ -1,5 +1,7 @@
 "use client";
-import { Button, captureAtmosphere } from "@matt-pasek/usva";
+// biome-ignore lint/style/noRestrictedImports: atmospheres-core ships no subpath.
+import { captureAtmosphere } from "@matt-pasek/usva";
+import { Button } from "@matt-pasek/usva/primitives/button";
 import { Download, PanelLeftOpen } from "lucide-react";
 import * as React from "react";
 import type { Config } from "@/components/docs/playground";

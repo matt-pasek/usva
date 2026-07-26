@@ -1,5 +1,6 @@
 "use client";
-import { Button, HintPopover } from "@matt-pasek/usva";
+import { Button } from "@matt-pasek/usva/primitives/button";
+import { HintPopover } from "@matt-pasek/usva/primitives/hint-popover";
 import { Playground } from "@/components/docs/playground";
 
 const TONES = [
@@ -75,7 +76,8 @@ const snippetFor = (c: Config): string => {
   ]
     .filter(Boolean)
     .join("");
-  return `import { Button, HintPopover } from "@matt-pasek/usva";
+  return `import { Button } from "@matt-pasek/usva/primitives/button";
+import { HintPopover } from "@matt-pasek/usva/primitives/hint-popover";
 
 <HintPopover${attrs}
 >

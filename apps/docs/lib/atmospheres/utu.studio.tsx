@@ -1,4 +1,5 @@
-import { Utu, type UtuParams } from "@matt-pasek/usva";
+import type { UtuParams } from "@matt-pasek/usva/atmospheres/utu";
+import { Utu } from "@matt-pasek/usva/atmospheres/utu";
 import { defineStudio } from "./types";
 
 const MODES = ["auto", "emissive", "absorptive"] as const;
@@ -112,7 +113,7 @@ const snippet = (c: UtuConfig): string => {
   if (c.breathRate !== dawn.breathRate) p.push(`breathRate: ${c.breathRate}`);
   const paramsStr = p.length ? `\n  params={{ ${p.join(", ")} }}` : "";
   const attrs = lines.length ? `\n${lines.join("\n")}` : "";
-  return `import { Utu } from "@matt-pasek/usva";
+  return `import { Utu } from "@matt-pasek/usva/atmospheres/utu";
 
 <Utu${attrs}${paramsStr}${attrs || paramsStr ? "\n" : ""}>
   <Hero />

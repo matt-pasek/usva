@@ -1,6 +1,6 @@
 "use client";
 
-import { Input } from "@matt-pasek/usva";
+import { Input } from "@matt-pasek/usva/primitives/input";
 import * as React from "react";
 import {
   motion,

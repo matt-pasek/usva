@@ -1,5 +1,5 @@
 "use client";
-import { CodeSnippet } from "@matt-pasek/usva";
+import { CodeSnippet } from "@matt-pasek/usva/primitives/code-snippet";
 import { ChevronRight } from "lucide-react";
 import * as React from "react";
 import {

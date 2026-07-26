@@ -123,7 +123,7 @@ export default function SulaFramePage() {
 
       <AcquireSection
         registryName="sula-frame"
-        usage={`import { SulaFrame } from "@matt-pasek/usva";
+        usage={`import { SulaFrame } from "@matt-pasek/usva/sula/sula-frame";
 
 <SulaFrame radius={20} className="rounded-[20px] bg-surface p-8">
   <Pricing />

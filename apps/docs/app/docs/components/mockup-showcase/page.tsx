@@ -73,7 +73,7 @@ export default function MockupShowcasePage() {
 
       <AcquireSection
         registryName="mockup-showcase"
-        usage={`import { MockupShowcase } from "@matt-pasek/usva";
+        usage={`import { MockupShowcase } from "@matt-pasek/usva/patterns/mockup-showcase";
 
 <MockupShowcase frame="browser" url="usva.dev">
   <Image src={shot} alt="The usva docs homepage" />

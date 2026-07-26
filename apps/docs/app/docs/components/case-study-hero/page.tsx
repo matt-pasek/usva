@@ -115,7 +115,9 @@ export default function CaseStudyHeroPage() {
 
       <AcquireSection
         registryName="case-study-hero"
-        usage={`import { CaseStudyHero, Chip, MockupShowcase } from "@matt-pasek/usva";
+        usage={`import { CaseStudyHero } from "@matt-pasek/usva/patterns/case-study-hero";
+import { MockupShowcase } from "@matt-pasek/usva/patterns/mockup-showcase";
+import { Chip } from "@matt-pasek/usva/primitives/chip";
 
 <CaseStudyHero
   eyebrow="Case study"

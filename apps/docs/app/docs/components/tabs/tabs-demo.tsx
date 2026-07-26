@@ -1,5 +1,5 @@
 "use client";
-import { Tabs } from "@matt-pasek/usva";
+import { Tabs } from "@matt-pasek/usva/primitives/tabs";
 import { useState } from "react";
 import { Playground } from "@/components/docs/playground";
 
@@ -40,7 +40,7 @@ const snippetFor = (c: Config): string => {
   ]
     .filter(Boolean)
     .join(" ");
-  return `import { Tabs } from "@matt-pasek/usva";
+  return `import { Tabs } from "@matt-pasek/usva/primitives/tabs";
 
 <Tabs ${rootAttrs}>
   <Tabs.List${listAttrs ? ` ${listAttrs}` : ""}>

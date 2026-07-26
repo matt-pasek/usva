@@ -1,12 +1,12 @@
 "use client";
 import {
-  Button,
   Toolbar,
   ToolbarActions,
   ToolbarCount,
   ToolbarLegend,
   ToolbarLegendItem,
-} from "@matt-pasek/usva";
+} from "@matt-pasek/usva/patterns/toolbar";
+import { Button } from "@matt-pasek/usva/primitives/button";
 import { Playground } from "@/components/docs/playground";
 
 const TONES = ["accent", "accent-alt", "success", "warning", "danger"] as const;
@@ -51,14 +51,8 @@ const snippetFor = (c: Config): string => {
     c.count > 0
       ? `\n    <ToolbarCount${toneAttr} count={${c.count}}>${c.countLabel}</ToolbarCount>`
       : "";
-  return `import {
-  Toolbar,
-  ToolbarActions,
-  ToolbarCount,
-  ToolbarLegend,
-  ToolbarLegendItem,
-  Button,
-} from "@matt-pasek/usva";
+  return `import { Toolbar, ToolbarActions, ToolbarCount, ToolbarLegend, ToolbarLegendItem } from "@matt-pasek/usva/patterns/toolbar";
+import { Button } from "@matt-pasek/usva/primitives/button";
 
 <Toolbar aria-label="timeline toolbar">
   <ToolbarLegend${legendAttr}>

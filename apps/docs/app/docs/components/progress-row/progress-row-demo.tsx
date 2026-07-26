@@ -1,5 +1,6 @@
 "use client";
-import { Badge, ProgressRow } from "@matt-pasek/usva";
+import { ProgressRow } from "@matt-pasek/usva/patterns/progress-row";
+import { Badge } from "@matt-pasek/usva/primitives/badge";
 import { Playground } from "@/components/docs/playground";
 
 const STATUSES = ["none", "complete", "in progress", "blocked"] as const;
@@ -69,8 +70,12 @@ const snippetFor = (c: Config): string => {
     c.barColor && `  barColor="${c.barColor}"`,
     status && `  status={${status}}`,
   ].filter(Boolean);
-  const hasBadge = status != null;
-  return `import { ProgressRow${hasBadge ? ", Badge" : ""} } from "@matt-pasek/usva";
+  const imports = [
+    `import { ProgressRow } from "@matt-pasek/usva/patterns/progress-row";`,
+    status != null &&
+      `import { Badge } from "@matt-pasek/usva/primitives/badge";`,
+  ].filter(Boolean);
+  return `${imports.join("\n")}
 
 <ProgressRow
 ${lines.join("\n")}

@@ -1,4 +1,5 @@
 "use client";
+// biome-ignore lint/style/noRestrictedImports: atmospheres-core ships no subpath
 import { type AtmosphereName, hiddenOnGround } from "@matt-pasek/usva";
 import * as React from "react";
 import type { Config } from "@/components/docs/playground";

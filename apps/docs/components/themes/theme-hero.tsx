@@ -1,4 +1,6 @@
-import { Kajastus, Kynnos, Loimu } from "@matt-pasek/usva";
+import { Kajastus } from "@matt-pasek/usva/atmospheres/kajastus";
+import { Kynnos } from "@matt-pasek/usva/atmospheres/kynnos";
+import { Loimu } from "@matt-pasek/usva/atmospheres/loimu";
 import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import type { ThemeId } from "@/components/theme-provider";

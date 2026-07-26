@@ -76,16 +76,9 @@ export default function EntityCardPage() {
 
       <AcquireSection
         registryName="entity-card"
-        usage={`import {
-  EntityCard,
-  EntityMedia,
-  EntityMeta,
-  EntityTitle,
-  EntityBody,
-  EntityActions,
-  Badge,
-  Button,
-} from "@matt-pasek/usva";
+        usage={`import { EntityActions, EntityBody, EntityCard, EntityMedia, EntityMeta, EntityTitle } from "@matt-pasek/usva/patterns/entity-card";
+import { Badge } from "@matt-pasek/usva/primitives/badge";
+import { Button } from "@matt-pasek/usva/primitives/button";
 
 <EntityCard>
   <EntityMedia>

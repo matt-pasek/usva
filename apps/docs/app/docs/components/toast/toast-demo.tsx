@@ -1,5 +1,5 @@
 "use client";
-import { notify, Toaster, toast } from "@matt-pasek/usva";
+import { notify, Toaster, toast } from "@matt-pasek/usva/primitives/toast";
 
 function TriggerButton({
   children,

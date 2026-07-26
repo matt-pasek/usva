@@ -1,5 +1,5 @@
 "use client";
-import { Footer } from "@matt-pasek/usva";
+import { Footer } from "@matt-pasek/usva/patterns/footer";
 import { Playground } from "@/components/docs/playground";
 
 const VARIANTS = ["full", "compact"] as const;
@@ -89,7 +89,7 @@ const snippetFor = (c: Config): string => {
     c.glow && "glow",
   ].filter(Boolean) as string[];
 
-  return `import { Footer } from "@matt-pasek/usva";
+  return `import { Footer } from "@matt-pasek/usva/patterns/footer";
 
 <Footer
 ${indent(attrs.join("\n"))}

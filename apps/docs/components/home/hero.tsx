@@ -1,5 +1,6 @@
 "use client";
-import { Button, Vare } from "@matt-pasek/usva";
+import { Vare } from "@matt-pasek/usva/atmospheres/vare";
+import { Button } from "@matt-pasek/usva/primitives/button";
 import {
   motion,
   useReducedMotion,

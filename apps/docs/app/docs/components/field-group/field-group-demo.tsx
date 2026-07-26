@@ -1,13 +1,13 @@
 "use client";
 import {
-  Button,
   FieldControl,
   FieldDescription,
   FieldError,
   FieldGroup,
   FieldLabel,
-  Input,
-} from "@matt-pasek/usva";
+} from "@matt-pasek/usva/patterns/field-group";
+import { Button } from "@matt-pasek/usva/primitives/button";
+import { Input } from "@matt-pasek/usva/primitives/input";
 import { useState } from "react";
 
 export function FieldGroupDemo() {

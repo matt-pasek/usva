@@ -1,4 +1,4 @@
-import { SkeletonMirror } from "@matt-pasek/usva";
+import { SkeletonMirror } from "@matt-pasek/usva/primitives/skeleton";
 import type { Metadata } from "next";
 import { AcquireSection } from "@/components/docs/acquire-section";
 import { ComponentDoc } from "@/components/docs/component-doc";
@@ -110,7 +110,7 @@ export default function SkeletonMirrorPage() {
 
       <AcquireSection
         registryName="skeleton"
-        usage={`import { SkeletonMirror } from "@matt-pasek/usva";
+        usage={`import { SkeletonMirror } from "@matt-pasek/usva/primitives/skeleton";
 
 <SkeletonMirror loading={isLoading}>
   <ProfileCard user={user} />

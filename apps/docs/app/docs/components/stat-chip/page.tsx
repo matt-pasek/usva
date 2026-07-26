@@ -1,4 +1,4 @@
-import { StatChip } from "@matt-pasek/usva";
+import { StatChip } from "@matt-pasek/usva/primitives/stat-chip";
 import type { Metadata } from "next";
 import { AcquireSection } from "@/components/docs/acquire-section";
 import { ComponentDoc } from "@/components/docs/component-doc";
@@ -96,7 +96,7 @@ export default function StatChipPage() {
 
       <AcquireSection
         registryName="stat-chip"
-        usage={`import { StatChip } from "@matt-pasek/usva";
+        usage={`import { StatChip } from "@matt-pasek/usva/primitives/stat-chip";
 
 <StatChip label="credits" value="142" unit="cr" />
 <StatChip tone="accent-alt" label="done" value="99" unit="%" />`}

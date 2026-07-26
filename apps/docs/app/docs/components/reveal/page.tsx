@@ -12,7 +12,7 @@ export const metadata: Metadata = pageMetadata("/docs/components/reveal", {
     "Six role-based scroll reveals that resolve out of mist, plus a stagger group and an intensity knob.",
 });
 
-const usage = `import { Reveal, RevealGroup } from "@matt-pasek/usva";
+const usage = `import { Reveal, RevealGroup } from "@matt-pasek/usva/motion/reveal";
 
 <Reveal variant="cast" as="h2">Section title</Reveal>
 <Reveal variant="veil">Body copy resolves out of the mist.</Reveal>

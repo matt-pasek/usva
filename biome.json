@@ -16,5 +16,24 @@
     ]
   },
   "formatter": { "enabled": true, "indentStyle": "space", "indentWidth": 2 },
-  "linter": { "enabled": true, "rules": { "preset": "recommended" } }
+  "linter": { "enabled": true, "rules": { "preset": "recommended" } },
+  "overrides": [
+    {
+      "includes": ["apps/docs/**/*.ts", "apps/docs/**/*.tsx"],
+      "linter": {
+        "rules": {
+          "style": {
+            "noRestrictedImports": {
+              "level": "error",
+              "options": {
+                "paths": {
+                  "@matt-pasek/usva": "Import from the subpath instead, e.g. @matt-pasek/usva/primitives/button. The barrel re-exports every atmosphere, all of sula and all of motion into whichever route touches it. The internal cores (atmospheres-core, sula-core, sula-motion) are the documented exception and have no subpath."
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
 }

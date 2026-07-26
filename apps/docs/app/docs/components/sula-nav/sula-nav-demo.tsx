@@ -1,5 +1,9 @@
 "use client";
-import { SulaNav, type SulaNavProps, type SulaNavView } from "@matt-pasek/usva";
+import {
+  SulaNav,
+  type SulaNavProps,
+  type SulaNavView,
+} from "@matt-pasek/usva/sula/sula-nav";
 import { Briefcase, Home, PenLine, Search, Sparkles, User } from "lucide-react";
 import type { ComponentProps } from "react";
 import { useState } from "react";
@@ -162,7 +166,7 @@ const snippetFor = (c: Config): string => {
       { id: "theme", align: "right", label: "Theme", children: <ThemeToggle /> },
     ]}\n`
     : "";
-  return `import { SulaNav } from "@matt-pasek/usva";
+  return `import { SulaNav } from "@matt-pasek/usva/sula/sula-nav";
 import Link from "next/link";
 
 <header className="fixed inset-x-0 top-0 z-50 flex justify-center p-4">

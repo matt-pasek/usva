@@ -87,7 +87,7 @@ export default function DropdownMenuPage() {
 
       <AcquireSection
         registryName="dropdown-menu"
-        usage={`import { DropdownMenu } from "@matt-pasek/usva";
+        usage={`import { DropdownMenu } from "@matt-pasek/usva/primitives/dropdown-menu";
 
 <DropdownMenu>
   <DropdownMenu.Trigger>Open menu</DropdownMenu.Trigger>

@@ -1,4 +1,5 @@
-import { Input, Label } from "@matt-pasek/usva";
+import { Input } from "@matt-pasek/usva/primitives/input";
+import { Label } from "@matt-pasek/usva/primitives/label";
 import type { Metadata } from "next";
 import { AcquireSection } from "@/components/docs/acquire-section";
 import { ComponentDoc } from "@/components/docs/component-doc";
@@ -91,7 +92,8 @@ export default function LabelPage() {
 
       <AcquireSection
         registryName="label"
-        usage={`import { Input, Label } from "@matt-pasek/usva";
+        usage={`import { Input } from "@matt-pasek/usva/primitives/input";
+import { Label } from "@matt-pasek/usva/primitives/label";
 
 <Label htmlFor="email">Email</Label>
 <Input id="email" type="email" placeholder="you@usva.dev" />`}

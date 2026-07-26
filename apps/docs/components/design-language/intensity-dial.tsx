@@ -1,6 +1,7 @@
 "use client";
 
-import { MockupShowcase, SulaSegmented } from "@matt-pasek/usva";
+import { MockupShowcase } from "@matt-pasek/usva/patterns/mockup-showcase";
+import { SulaSegmented } from "@matt-pasek/usva/sula/sula-segmented";
 import { AnimatePresence, motion } from "motion/react";
 import * as React from "react";
 import { STOP_COPY, STOPS, SULA_STOP } from "./dial-model";
