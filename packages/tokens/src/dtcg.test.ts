@@ -47,12 +47,24 @@ describe("toDTCG", () => {
     expect(theme("savi").duration.base?.$value).toBe("200ms");
   });
 
-  it("splits font stacks into family lists, per theme", () => {
+  it("splits font stacks into family lists", () => {
     expect(theme("kajo").font.mono).toEqual({
       $type: "fontFamily",
-      $value: ["Fira Mono", "ui-monospace", "monospace"],
+      $value: [
+        "Fira Code",
+        "ui-monospace",
+        "SFMono-Regular",
+        "Menlo",
+        "monospace",
+      ],
     });
-    expect(theme("sisu").font.mono.$value).toContain("Fira Code");
+  });
+
+  it("names the same two families in every theme", () => {
+    for (const name of THEME_NAMES) {
+      expect(theme(name).font.mono.$value).toContain("Fira Code");
+      expect(theme(name).font.sans.$value).toContain("Fira Sans");
+    }
   });
 
   it("types a cubic-bezier easing as one and keeps other curves verbatim", () => {

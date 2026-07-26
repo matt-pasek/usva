@@ -57,7 +57,7 @@ typography:
     lineHeight: 1.75
     letterSpacing: "normal"
   label:
-    fontFamily: "Fira Mono, ui-monospace, monospace"
+    fontFamily: "Fira Code, ui-monospace, monospace"
     fontSize: "0.6875rem"
     fontWeight: 500
     lineHeight: 1.2
@@ -181,7 +181,7 @@ A deep violet-black vapor lit by two accents, one of which is always a statement
 
 **Display Font:** Fira Sans (with `system-ui`, `sans-serif`)
 **Body Font:** Fira Sans (the same family, carrying every role through weight contrast)
-**Label/Mono Font:** Fira Mono in kajo and savi; Fira Code in sisu, where ligatures serve code-adjacent dashboard data.
+**Label/Mono Font:** Fira Code, in all three themes. It is Fira Mono with programming ligatures added, on identical metrics, so the family stays one family and code-adjacent annotation reads as code.
 
 **Character:** One humanist family doing all the work, which is the product register's virtue: no display pairing, no competing voices. Personality comes from extremes of weight (400 body against 800 display) and from very tight display tracking. The mono is not a third voice, it is the system's structural annotation: indices, labels, metadata, the things that describe rather than speak.
 

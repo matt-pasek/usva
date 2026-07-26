@@ -17,7 +17,7 @@
    Elevation reads honestly: sunken < bg < surface < surface-2. */
 [data-theme="savi"] {
   --usva-font-sans: "Fira Sans", system-ui, sans-serif;
-  --usva-font-mono: "Fira Mono", ui-monospace, monospace;
+  --usva-font-mono: "Fira Code", ui-monospace, SFMono-Regular, Menlo, monospace;
   --usva-bg: #e7dcc8;
   --usva-sunken: #d6cdb6;
   --usva-surface: #f1ead9;

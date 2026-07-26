@@ -1,6 +1,6 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import { Fira_Mono, Fira_Sans } from "next/font/google";
+import { Fira_Code, Fira_Sans } from "next/font/google";
 import type { ReactNode } from "react";
 import { JsonLd } from "@/components/json-ld";
 import { RailoSplash } from "@/components/railo-splash";
@@ -19,10 +19,10 @@ const firaSans = Fira_Sans({
   display: "swap",
 });
 
-const firaMono = Fira_Mono({
+/** Variable, so the whole 300-700 range costs one file and no weight list. */
+const firaCode = Fira_Code({
   subsets: ["latin"],
-  weight: ["400", "500", "700"],
-  variable: "--font-fira-mono",
+  variable: "--font-fira-code",
   display: "swap",
 });
 
@@ -51,7 +51,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${firaSans.variable} ${firaMono.variable}`}
+      className={`${firaSans.variable} ${firaCode.variable}`}
     >
       <head>
         <JsonLd data={rootGraph()} />

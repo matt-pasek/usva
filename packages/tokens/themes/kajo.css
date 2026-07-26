@@ -1,7 +1,7 @@
 [data-theme="kajo"],
 :root {
   --usva-font-sans: "Fira Sans", system-ui, sans-serif;
-  --usva-font-mono: "Fira Mono", ui-monospace, monospace;
+  --usva-font-mono: "Fira Code", ui-monospace, SFMono-Regular, Menlo, monospace;
   --usva-bg: #0a0613;
   --usva-sunken: #0c0719;
   --usva-surface: #100b1f;

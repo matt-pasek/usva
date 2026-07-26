@@ -68,10 +68,6 @@ function required(vars: ThemeVars, name: string): string {
   return value;
 }
 
-/**
- * Per theme, because they genuinely differ: sisu sets Fira Code for mono while
- * kajo and savi set Fira Mono.
- */
 export function themeFonts(vars: ThemeVars): Record<FontName, string> {
   const out = {} as Record<FontName, string>;
   for (const name of FONT_NAMES) out[name] = required(vars, `font-${name}`);

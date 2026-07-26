@@ -32,7 +32,7 @@ const KAJO = {
 const slug = (text: string) => (
   <span
     style={{
-      fontFamily: "Fira Mono",
+      fontFamily: "Fira Code",
       fontWeight: 500,
       fontSize: 16,
       letterSpacing: "0.11em",
@@ -78,7 +78,7 @@ export function ogCard(card: OgCard): ImageResponse {
         <div style={{ display: "flex", flexDirection: "column" }}>
           <span
             style={{
-              fontFamily: "Fira Mono",
+              fontFamily: "Fira Code",
               fontWeight: 500,
               fontSize: 19,
               letterSpacing: "0.14em",

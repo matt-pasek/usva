@@ -80,9 +80,11 @@ describe("toStudio", () => {
     expect(token("savi", "color", "on-sunken").value).toBe("#2a1f14");
   });
 
-  it("carries the fonts each theme actually sets, not one stack for all three", () => {
-    expect(token("kajo", "font", "mono").value).toContain("Fira Mono");
-    expect(token("sisu", "font", "mono").value).toContain("Fira Code");
+  it("carries the same two families in every theme", () => {
+    for (const theme of THEME_NAMES) {
+      expect(token(theme, "font", "sans").value).toContain("Fira Sans");
+      expect(token(theme, "font", "mono").value).toContain("Fira Code");
+    }
   });
 
   it("carries easing, elevation, focus and z-index for every theme", () => {

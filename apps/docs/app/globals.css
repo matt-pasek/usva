@@ -10,7 +10,7 @@
    font roles at those variables so nothing reaches fonts.googleapis.com. */
 :root {
   --font-sans: var(--font-fira-sans), system-ui, sans-serif;
-  --font-mono: var(--font-fira-mono), ui-monospace, SFMono-Regular, Menlo,
+  --font-mono: var(--font-fira-code), ui-monospace, SFMono-Regular, Menlo,
     monospace;
 }
 
