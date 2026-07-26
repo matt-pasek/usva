@@ -89,10 +89,17 @@ export function RailoSplash() {
     const held = root.style.overflow;
     root.style.overflow = "hidden";
 
-    const done = setTimeout(() => setGone(true), SPLASH_MS);
+    const release = () => {
+      root.style.overflow = held;
+    };
+    const done = setTimeout(() => {
+      release();
+      setGone(true);
+    }, SPLASH_MS);
+
     return () => {
       clearTimeout(done);
-      root.style.overflow = held;
+      release();
     };
   }, []);
 
@@ -158,7 +165,11 @@ export function RailoSplash() {
 
         <g transform={centred} style={MOVING}>
           <rect {...ROOM} fill="var(--usva-accent)" mask={`url(#${id}-l)`} />
-          <rect {...ROOM} fill="var(--usva-accent-alt)" mask={`url(#${id}-r)`} />
+          <rect
+            {...ROOM}
+            fill="var(--usva-accent-alt)"
+            mask={`url(#${id}-r)`}
+          />
         </g>
       </svg>
     </div>
