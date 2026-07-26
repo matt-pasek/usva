@@ -7,7 +7,7 @@ import { pageMetadata, SITE_ORIGIN } from "@/lib/site";
 export const metadata: Metadata = pageMetadata("/docs/get-started/for-agents", {
   title: "For agents",
   description:
-    "How a coding agent is meant to consume usva.: llms.txt today, a skill file next.",
+    "How a coding agent is meant to consume usva.: an installable skill file, and llms.txt as the raw index.",
 });
 
 export default function ForAgentsPage() {
@@ -30,9 +30,54 @@ export default function ForAgentsPage() {
       </header>
 
       <section className="flex flex-col gap-4">
+        <h2 className="font-bold text-ink text-xl tracking-tight">the skill</h2>
+        <p className="max-w-2xl text-muted">
+          one file, at{" "}
+          <Link
+            className="text-accent underline"
+            href="/skill.md"
+            prefetch={false}
+          >
+            {SITE_ORIGIN}/skill.md
+          </Link>
+          . it carries the seven rules that survive a truncated read, the layer
+          and intensity table, the workflow, the role tokens, what each import
+          actually costs, and all {counts.total} components with their import
+          paths. it regenerates from the same catalog the library builds from,
+          so it cannot fall behind.
+        </p>
+        <CodeSnippet
+          language="bash"
+          code={`mkdir -p .claude/skills/usva
+curl -o .claude/skills/usva/SKILL.md ${SITE_ORIGIN}/skill.md`}
+        />
+        <p className="max-w-2xl text-muted text-sm">
+          no agent skills in your harness? the file is plain markdown with
+          frontmatter. save it as <code className="font-mono">AGENTS.md</code>,
+          or paste it as a system prompt.
+        </p>
+      </section>
+
+      <section className="flex flex-col gap-3 rounded-lg border border-border-strong bg-surface p-5">
+        <h2 className="font-semibold text-ink">
+          the part worth installing it for
+        </h2>
+        <p className="max-w-2xl text-muted text-sm">
+          most of the skill is what you would expect. the section that earns it
+          is the gotchas table: eight ways this library fails <em>quietly</em>.
+          a barrel import that costs 170 KiB of animation runtime for a button.
+          a canvas chrome blanks because an ancestor animates. a reveal that
+          never fires because it is parked outside its own mask. every one of
+          them passes a build, passes the types, and often looks fine in a
+          screenshot. none is guessable from a list of components, which is the
+          whole reason the file exists.
+        </p>
+      </section>
+
+      <section className="flex flex-col gap-4">
         <h2 className="font-bold text-ink text-xl tracking-tight">llms.txt</h2>
-        <p className="text-muted">
-          a plain text index of the whole library at{" "}
+        <p className="max-w-2xl text-muted">
+          the raw index, at{" "}
           <Link
             className="text-accent underline"
             href="/llms.txt"
@@ -43,14 +88,17 @@ export default function ForAgentsPage() {
           . every one of the {counts.total} components is a markdown link,
           carrying its layer, its intensity, a one line summary, the composition
           prohibitions and the registry command. the pages and the
-          design-language chapters are linked the same way, and a for-agents
-          section repeats the prompt below. a parser lifts the links, a model
-          reads the prose.
+          design-language chapters are linked the same way. a parser lifts the
+          links, a model reads the prose. reach for this one when you want the
+          catalogue rather than the rules.
         </p>
       </section>
 
       <section className="flex flex-col gap-3 rounded-lg border border-border bg-surface p-5">
         <h2 className="font-semibold text-ink">the shortest useful prompt</h2>
+        <p className="text-muted text-sm">
+          if you cannot install anything at all.
+        </p>
         <CodeSnippet
           language="plain"
           code={`read ${SITE_ORIGIN}/llms.txt before you build any UI.

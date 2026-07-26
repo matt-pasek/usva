@@ -65,7 +65,11 @@ export function sitemapEntries(): Entry[] {
     route: "/llms.txt",
     file: resolve(APP, "llms.txt/route.ts"),
   };
-  return [...staticPages, ...themes, llms];
+  const skill: Entry = {
+    route: "/skill.md",
+    file: resolve(APP, "skill.md/route.ts"),
+  };
+  return [...staticPages, ...themes, llms, skill];
 }
 
 export default function sitemap(): MetadataRoute.Sitemap {

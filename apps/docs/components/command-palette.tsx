@@ -66,8 +66,12 @@ const GET_STARTED: { label: string; href: string; detail: string }[] = [
   {
     label: "for agents",
     href: "/docs/get-started/for-agents",
-    detail:
-      "llms.txt, no MCP server, no skill file yet, and I will not pretend.",
+    detail: "a skill file to install, and llms.txt as the raw index.",
+  },
+  {
+    label: "skill.md",
+    href: "/skill.md",
+    detail: "the whole library as an agent skill, failure modes included.",
   },
 ];
 

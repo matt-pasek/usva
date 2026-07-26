@@ -31,13 +31,15 @@ describe("sitemap", () => {
       ...staticRoutes(APP).filter((route) => route !== "/docs"),
       ...THEMES.map((theme) => `/themes/${theme}`),
       "/llms.txt",
+      "/skill.md",
     ]);
     expect(routes).toEqual(expected);
   });
 
-  test("drops /docs and includes /llms.txt and home", () => {
+  test("drops /docs and includes the agent endpoints and home", () => {
     expect(routes.has("/docs")).toBe(false);
     expect(routes.has("/llms.txt")).toBe(true);
+    expect(routes.has("/skill.md")).toBe(true);
     expect(routes.has("/")).toBe(true);
   });
 
