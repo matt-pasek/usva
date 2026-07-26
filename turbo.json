@@ -4,7 +4,13 @@
     "build": { "dependsOn": ["^build"], "outputs": ["dist/**"] },
     "docs#build": {
       "dependsOn": ["^build", "@matt-pasek/usva-cli#registry"],
-      "outputs": [".next/**", "!.next/cache/**"]
+      "outputs": [
+        ".next/**",
+        "!.next/cache/**",
+        "!.next/dev/**",
+        "!.next/turbopack/**",
+        "!.next/diagnostics/**"
+      ]
     },
     "registry": { "dependsOn": ["^build"], "outputs": ["../../registry/r/**"] },
     "build-storybook": {
