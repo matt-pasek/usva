@@ -114,6 +114,35 @@ html[data-theme="savi"] #grain {
   }
 }
 
+@keyframes railo-aperture {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(var(--railo-open, 40));
+  }
+}
+
+@keyframes railo-clear {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes railo-settle {
+  from {
+    opacity: 0;
+  }
+}
+
+#railo-splash {
+  display: none;
+}
+
+[data-splash="1"] #railo-splash {
+  display: block;
+}
+
 @media (prefers-reduced-motion: reduce) {
   [style*="railo-"] {
     animation: none !important;

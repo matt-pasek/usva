@@ -6,6 +6,7 @@ import {
   crescentWidth,
   lensWidth,
   RAILO_CUTS,
+  railoLens,
   railoPaths,
 } from "./railo-geometry";
 
@@ -43,6 +44,27 @@ describe("railo geometry", () => {
       for (const d of Object.values(railoPaths(cut))) {
         expect(areaOf(d)).toBeCloseTo(expected, 1);
       }
+    }
+  });
+
+  it("draws the lens with the true lens area", () => {
+    for (const cut of Object.values(RAILO_CUTS)) {
+      const expected = lensArea(cut.radius, crescentWidth(cut));
+      expect(areaOf(railoLens(cut))).toBeCloseTo(expected, 1);
+    }
+  });
+
+  it("meets the crescents at both crossings", () => {
+    for (const cut of Object.values(RAILO_CUTS)) {
+      const lens = railoLens(cut);
+      const { left, right } = railoPaths(cut);
+      const start = lens.slice(0, lens.indexOf("A"));
+
+      expect(left.startsWith(start)).toBe(true);
+      expect(right.startsWith(start)).toBe(true);
+
+      const crossing = /A[\d.]+ [\d.]+ 0 \d \d ([\d.]+) ([\d.]+)/.exec(lens);
+      expect(left).toContain(`${crossing?.[1]} ${crossing?.[2]}`);
     }
   });
 

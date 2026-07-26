@@ -3,11 +3,13 @@ import type { Metadata } from "next";
 import { Fira_Mono, Fira_Sans } from "next/font/google";
 import type { ReactNode } from "react";
 import { JsonLd } from "@/components/json-ld";
+import { RailoSplash } from "@/components/railo-splash";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteNav } from "@/components/site-nav";
 import { ThemeProvider } from "@/components/theme-provider";
 import { rootGraph } from "@/lib/schema";
-import { pageMetadata, SITE_ORIGIN } from "@/lib/site";
+import { pageMetadata, SITE_DESCRIPTION, SITE_ORIGIN } from "@/lib/site";
+import { splashScript } from "@/lib/splash-script";
 import { themeScript } from "@/lib/theme-script";
 
 const firaSans = Fira_Sans({
@@ -37,8 +39,7 @@ export const metadata: Metadata = pageMetadata("/", {
     default: "usva. · Beautiful, usable React components",
     template: "%s · usva.",
   },
-  description:
-    "An open-source React design system: dual-distributed as an npm package and a shadcn-compatible registry.",
+  description: SITE_DESCRIPTION,
   openGraph: { type: "website", siteName: "usva." },
   twitter: { card: "summary_large_image" },
 });
@@ -60,6 +61,11 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           // biome-ignore lint/security/noDangerouslySetInnerHtml: the theme must be set before the first paint, which rules out anything React runs
           dangerouslySetInnerHTML={{ __html: themeScript }}
         />
+        <script
+          // biome-ignore lint/security/noDangerouslySetInnerHtml: the cover has to know whether to show itself before it is painted, for the same reason
+          dangerouslySetInnerHTML={{ __html: splashScript }}
+        />
+        <RailoSplash />
         <ThemeProvider>
           <SiteNav />
           {/* The nav floats over the page, so the content starts below it. */}

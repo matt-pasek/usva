@@ -2,56 +2,6 @@
 
 import { useState } from "react";
 import { RailoMasked } from "@/components/railo-motion";
-import {
-  RAILO_BOX,
-  RAILO_CUTS,
-  RAILO_VIEW_BOX,
-  railoPaths,
-} from "@/lib/railo-geometry";
-
-const CUT = RAILO_CUTS.display;
-const HALF = RAILO_BOX / 2;
-
-function Circles({ show }: { show: "fields" | "subtract" | "mark" }) {
-  const paths = railoPaths(CUT);
-  return (
-    <svg aria-hidden="true" viewBox={RAILO_VIEW_BOX} className="size-full">
-      {show === "fields" ? (
-        <>
-          <circle
-            cx={CUT.left}
-            cy={HALF}
-            r={CUT.radius}
-            fill="var(--usva-accent)"
-            opacity={0.55}
-          />
-          <circle
-            cx={CUT.right}
-            cy={HALF}
-            r={CUT.radius}
-            fill="var(--usva-accent-alt)"
-            opacity={0.55}
-          />
-        </>
-      ) : (
-        <>
-          <path d={paths.left} fill="var(--usva-accent)" />
-          <path d={paths.right} fill="var(--usva-accent-alt)" />
-        </>
-      )}
-      {show === "subtract" ? (
-        <path
-          d={paths.left}
-          fill="none"
-          stroke="var(--usva-danger)"
-          strokeWidth={1.5}
-          strokeDasharray="4 3"
-          transform={`translate(${CUT.right - CUT.left} 0)`}
-        />
-      ) : null}
-    </svg>
-  );
-}
 
 export function RailoAnatomy() {
   const [run, setRun] = useState(0);

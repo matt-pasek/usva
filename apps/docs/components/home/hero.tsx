@@ -10,6 +10,7 @@ import Link from "next/link";
 import { useRef } from "react";
 import { Wordmark } from "@/components/wordmark";
 import { counts } from "@/lib/catalog";
+import { useSplashLead } from "@/lib/splash";
 import { HEAVE } from "./home-motion";
 import { Rise } from "./tiivistyma";
 
@@ -18,6 +19,7 @@ const FLOOD_S = 1.9;
 export function Hero() {
   const ref = useRef<HTMLDivElement>(null);
   const reduced = useReducedMotion();
+  const lead = useSplashLead();
 
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -38,7 +40,7 @@ export function Hero() {
             <motion.div
               initial={{ clipPath: "inset(0% 0% 0% 0%)" }}
               animate={{ clipPath: "inset(0% 0% 100% 0%)" }}
-              transition={{ duration: FLOOD_S, ease: HEAVE }}
+              transition={{ duration: FLOOD_S, ease: HEAVE, delay: lead }}
               className="absolute inset-0 bg-bg"
             />
           )}
@@ -51,7 +53,7 @@ export function Hero() {
           className="mx-auto w-full max-w-306 px-5 sm:px-10"
         >
           <div className="@container relative mx-auto w-full max-w-6xl">
-            <Rise delay={0.7}>
+            <Rise delay={lead + 0.7}>
               <Wordmark className="text-center text-xl sm:text-3xl @5xl:text-left" />
             </Rise>
 
@@ -59,7 +61,7 @@ export function Hero() {
               className="mt-3 text-[clamp(3rem,15.5cqi,11.5rem)] leading-[0.9] tracking-[-0.04em] text-ink sm:mt-4"
               aria-label="beauty that stays usable."
             >
-              <Rise as="span" delay={0.82} from={150}>
+              <Rise as="span" delay={lead + 0.82} from={150}>
                 <span className="flex flex-wrap items-baseline justify-center gap-x-[0.06em] font-extrabold @5xl:justify-start">
                   beauty
                   <span className="font-bold text-[0.53em] tracking-tighter">
@@ -70,7 +72,7 @@ export function Hero() {
 
               <Rise
                 as="span"
-                delay={0.94}
+                delay={lead + 0.94}
                 from={150}
                 bleed="pr-[0.02em]"
                 className="mt-1 text-center @5xl:mt-[-0.32em] @5xl:translate-x-[3%] @5xl:text-right"
@@ -79,7 +81,7 @@ export function Hero() {
               </Rise>
             </h1>
 
-            <Rise delay={1.34}>
+            <Rise delay={lead + 1.34}>
               <p className="mt-2 text-center font-mono font-bold text-xs tracking-wide text-muted tabular-nums @5xl:text-right">
                 {counts.total} components · {counts.themes} themes ·{" "}
                 {counts.atmospheres} atmospheres
@@ -87,7 +89,7 @@ export function Hero() {
             </Rise>
 
             <Rise
-              delay={1.12}
+              delay={lead + 1.12}
               className="mt-5 @5xl:absolute @5xl:right-[44.5%] @5xl:bottom-8 @5xl:mt-0 @5xl:w-[50%]"
             >
               <p className="mx-auto max-w-[52ch] text-center text-base leading-relaxed text-muted sm:text-lg @5xl:mx-0 @5xl:max-w-none @5xl:text-right">
@@ -101,7 +103,7 @@ export function Hero() {
           </div>
 
           <div className="flex flex-col">
-            <Rise delay={1.24} bleed="pt-2">
+            <Rise delay={lead + 1.24} bleed="pt-2">
               <div className="mt-5 flex flex-wrap items-center justify-center gap-4">
                 <Button asChild variant="onSurface" size="lg">
                   <Link href="/docs/get-started">read the docs →</Link>

@@ -4,6 +4,7 @@ import { BookOpen, Contrast, Shapes, Sparkles, Type } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
+import { useSplashLead } from "@/lib/splash";
 import { CommandPalette } from "./command-palette";
 import { RailoBrand } from "./railo-motion";
 import { ThemeSwitcher } from "./ThemeSwitcher";
@@ -53,6 +54,7 @@ const activeRoute = (pathname: string): string | undefined =>
 export function SiteNav({ onOpenSearch }: { onOpenSearch?: () => void }) {
   const pathname = usePathname() ?? "/";
   const [searchOpen, setSearchOpen] = useState(false);
+  const lead = useSplashLead();
 
   const openSearch = useCallback(() => {
     if (onOpenSearch) {
@@ -81,6 +83,7 @@ export function SiteNav({ onOpenSearch }: { onOpenSearch?: () => void }) {
       />
       <SulaNav
         ariaLabel="Primary"
+        revealAfter={lead * 1000}
         views={VIEWS}
         activeItem={activeRoute(pathname)}
         linkComponent={Link}

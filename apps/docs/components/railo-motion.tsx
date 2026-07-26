@@ -1,17 +1,21 @@
 "use client";
 
 import { cn } from "@matt-pasek/usva/cn";
-import { useEffect, useId, useState } from "react";
+import { useId } from "react";
 import { Railo, type RailoProps } from "@/components/railo";
 import { RAILO_BOX, RAILO_CUTS, RAILO_VIEW_BOX } from "@/lib/railo-geometry";
 
-const SEEN_KEY = "usva:railo-revealed";
+/* A mask region defaults to a shade larger than the shape referencing it, which
+ * slices the outer edge off a field while it is still swinging in. */
+const ROOM = {
+  x: -RAILO_BOX,
+  y: -RAILO_BOX,
+  width: RAILO_BOX * 3,
+  height: RAILO_BOX * 3,
+};
 
-/**
- * The fields have to be masked rather than drawn while they move: a crescent is
- * only a crescent where the two circles overlap, so the subtraction has to be
- * redone every frame. The settled mark uses plain paths instead (see railo.tsx).
- */
+const REGION = { maskUnits: "userSpaceOnUse" as const, ...ROOM };
+
 function MaskedFields({
   cut,
   tone,
@@ -50,25 +54,23 @@ function MaskedFields({
       viewBox={RAILO_VIEW_BOX}
       className={cn("size-7 shrink-0", className)}
     >
-      <mask id={`${id}-a`}>
-        <rect width={RAILO_BOX} height={RAILO_BOX} fill="black" />
+      <mask id={`${id}-a`} {...REGION}>
+        <rect {...ROOM} fill="black" />
         {field("l", "white")}
         {field("r", "black")}
       </mask>
-      <mask id={`${id}-b`}>
-        <rect width={RAILO_BOX} height={RAILO_BOX} fill="black" />
+      <mask id={`${id}-b`} {...REGION}>
+        <rect {...ROOM} fill="black" />
         {field("r", "white")}
         {field("l", "black")}
       </mask>
       <rect
-        width={RAILO_BOX}
-        height={RAILO_BOX}
+        {...ROOM}
         fill={twoVoice ? "var(--usva-accent)" : "currentColor"}
         mask={`url(#${id}-a)`}
       />
       <rect
-        width={RAILO_BOX}
-        height={RAILO_BOX}
+        {...ROOM}
         fill={twoVoice ? "var(--usva-accent-alt)" : "currentColor"}
         opacity={twoVoice ? undefined : 0.55}
         mask={`url(#${id}-b)`}
@@ -82,21 +84,7 @@ export function RailoDrift(props: RailoProps) {
 }
 
 export function RailoBrand(props: RailoProps) {
-  const [play, setPlay] = useState(false);
-
-  useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    try {
-      if (sessionStorage.getItem(SEEN_KEY)) return;
-      sessionStorage.setItem(SEEN_KEY, "1");
-    } catch {
-      return;
-    }
-    setPlay(true);
-  }, []);
-
-  if (!play) return <Railo {...props} />;
-  return <MaskedFields {...props} animation="reveal" />;
+  return <Railo {...props} />;
 }
 
 export { MaskedFields as RailoMasked };
