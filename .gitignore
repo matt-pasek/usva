@@ -25,3 +25,8 @@ CLAUDE.md
 
 # impeccable tool state (live-mode config + generated design sidecar)
 .impeccable/
+
+# design-sync
+.design-sync
+.ds-sync/
+ds-bundle/
