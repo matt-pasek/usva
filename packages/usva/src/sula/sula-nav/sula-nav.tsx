@@ -175,6 +175,12 @@ export interface SulaNavProps
   mergeRadius?: number;
   revealDelay?: number;
   /**
+   * Holds the reveal back this many ms before it begins, for a page that opens
+   * behind a cover. The bar stays in the markup throughout, so nothing about the
+   * document changes: only the moment the liquid starts moving.
+   */
+  revealAfter?: number;
+  /**
    * Whether the brand and the collapsed view pills are out. Defaults to true and
    * reveals on mount. Drive it from scroll or focus to melt everything but the
    * active bar back in; a hidden part is not tabbable.
@@ -305,6 +311,7 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
       shine,
       mergeRadius = 14,
       revealDelay = 120,
+      revealAfter = 0,
       sidesOpen = true,
       className,
       style,
@@ -845,6 +852,7 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
       measure();
       for (const node of collectParts()) node.style.opacity = "0";
       let fontTimer = 0;
+      let startTimer = 0;
       let revealed = false;
       const beginReveal = () => {
         if (disposed || revealed) return;
@@ -873,12 +881,19 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
       /* A late webfont swap re-measures wider text and twitches a bar that
        * already looks settled, so the drop waits for the fonts, capped so a
        * slow font file cannot hold the nav hostage. */
-      const fonts = document.fonts;
-      if (fonts && fonts.status !== "loaded") {
-        void fonts.ready.then(beginReveal).catch(beginReveal);
-        fontTimer = window.setTimeout(beginReveal, 400);
+      const waitForFonts = () => {
+        const fonts = document.fonts;
+        if (fonts && fonts.status !== "loaded") {
+          void fonts.ready.then(beginReveal).catch(beginReveal);
+          fontTimer = window.setTimeout(beginReveal, 400);
+        } else {
+          beginReveal();
+        }
+      };
+      if (revealAfter > 0) {
+        startTimer = window.setTimeout(waitForFonts, revealAfter);
       } else {
-        beginReveal();
+        waitForFonts();
       }
 
       /* Hovering a part wakes a broad wave at the pointer. The target updates on
@@ -943,6 +958,7 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
         disposed = true;
         window.clearTimeout(revealTimer);
         window.clearTimeout(fontTimer);
+        window.clearTimeout(startTimer);
         for (const control of controls) control.stop();
         switchRef.current = () => {};
         setSidesRef.current = () => {};
@@ -975,6 +991,7 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
       shine,
       mergeRadius,
       revealDelay,
+      revealAfter,
       collectParts,
     ]);
 
