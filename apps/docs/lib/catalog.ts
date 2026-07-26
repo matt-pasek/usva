@@ -148,6 +148,13 @@ const primitives = seed("primitive", [
     provenance: [],
   },
   {
+    slug: "knob",
+    name: "Knob",
+    summary:
+      "a value you turn to rather than slide to. the thumb lies flat in the ring until you take hold of it.",
+    provenance: [],
+  },
+  {
     slug: "label",
     name: "Label",
     summary:

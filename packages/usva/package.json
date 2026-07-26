@@ -170,6 +170,9 @@
       "primitives/input": [
         "./dist/primitives/input.d.ts"
       ],
+      "primitives/knob": [
+        "./dist/primitives/knob.d.ts"
+      ],
       "primitives/label": [
         "./dist/primitives/label.d.ts"
       ],
@@ -459,6 +462,10 @@
     "./primitives/input": {
       "types": "./dist/primitives/input.d.ts",
       "import": "./dist/primitives/input.js"
+    },
+    "./primitives/knob": {
+      "types": "./dist/primitives/knob.d.ts",
+      "import": "./dist/primitives/knob.js"
     },
     "./primitives/label": {
       "types": "./dist/primitives/label.d.ts",

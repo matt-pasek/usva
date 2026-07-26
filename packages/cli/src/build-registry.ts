@@ -39,6 +39,7 @@ export const NAMES = [
   "dropdown-menu",
   "hint-popover",
   "input",
+  "knob",
   "label",
   "list",
   "loading-overlay",

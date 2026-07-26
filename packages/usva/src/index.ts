@@ -78,6 +78,7 @@ export * from "./primitives/drawer/index.js";
 export * from "./primitives/dropdown-menu/index.js";
 export * from "./primitives/hint-popover/index.js";
 export * from "./primitives/input/index.js";
+export * from "./primitives/knob/index.js";
 export * from "./primitives/label/index.js";
 export * from "./primitives/list/index.js";
 export * from "./primitives/loading-overlay/index.js";
