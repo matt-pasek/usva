@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { themeAndWidthModes } from "../../../.storybook/modes.js";
 import { Footer } from "./footer.js";
 
 const columns = [
@@ -21,6 +22,9 @@ const columns = [
 ];
 
 const meta: Meta<typeof Footer> = {
+  parameters: {
+    chromatic: { modes: themeAndWidthModes },
+  },
   title: "Patterns/Footer",
   component: Footer,
   tags: ["autodocs"],

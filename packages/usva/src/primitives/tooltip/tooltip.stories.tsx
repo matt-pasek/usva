@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { themeModes } from "../../../.storybook/modes.js";
 import {
   Tooltip,
   TooltipContent,
@@ -7,6 +8,9 @@ import {
 } from "./tooltip.js";
 
 const meta: Meta<typeof Tooltip> = {
+  parameters: {
+    chromatic: { modes: themeModes },
+  },
   title: "Primitives/Tooltip",
   component: Tooltip,
   tags: ["autodocs"],

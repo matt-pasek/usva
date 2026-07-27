@@ -1,7 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { themeModes } from "../../../.storybook/modes.js";
 import { Radio, RadioGroup } from "./radio.js";
 
 const meta: Meta<typeof RadioGroup> = {
+  parameters: {
+    chromatic: { modes: themeModes },
+  },
   title: "Primitives/Radio",
   component: RadioGroup,
   tags: ["autodocs"],

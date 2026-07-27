@@ -1,7 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { themeModes } from "../../../.storybook/modes.js";
 import { Switch } from "./switch.js";
 
 const meta: Meta<typeof Switch> = {
+  parameters: {
+    chromatic: { modes: themeModes },
+  },
   title: "Primitives/Switch",
   component: Switch,
   tags: ["autodocs"],
@@ -47,4 +51,12 @@ export const Sizes: Story = {
       ))}
     </div>
   ),
+};
+
+export const Hover: Story = {
+  parameters: { pseudo: { hover: true } },
+};
+
+export const FocusVisible: Story = {
+  parameters: { pseudo: { focusVisible: true } },
 };

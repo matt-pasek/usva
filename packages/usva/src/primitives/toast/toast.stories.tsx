@@ -1,8 +1,12 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useEffect } from "react";
+import { themeModes } from "../../../.storybook/modes.js";
 import { Toaster, type ToastType, toast, toastManager } from "./toast.js";
 
 const meta: Meta<typeof Toaster> = {
+  parameters: {
+    chromatic: { modes: themeModes },
+  },
   title: "Primitives/Toast",
   component: Toaster,
   tags: ["autodocs"],

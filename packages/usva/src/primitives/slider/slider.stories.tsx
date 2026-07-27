@@ -1,7 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { themeModes } from "../../../.storybook/modes.js";
 import { Slider } from "./slider.js";
 
 const meta: Meta<typeof Slider> = {
+  parameters: {
+    chromatic: { modes: themeModes },
+  },
   title: "Primitives/Slider",
   component: Slider,
   tags: ["autodocs"],

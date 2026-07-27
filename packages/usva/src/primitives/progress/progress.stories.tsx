@@ -1,7 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { themeModes } from "../../../.storybook/modes.js";
 import { Progress } from "./progress.js";
 
 const meta: Meta<typeof Progress> = {
+  parameters: {
+    chromatic: { modes: themeModes },
+  },
   title: "Primitives/Progress",
   component: Progress,
   tags: ["autodocs"],

@@ -1,7 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { themeModes } from "../../../.storybook/modes.js";
 import { Callout } from "./callout.js";
 
 const meta: Meta<typeof Callout> = {
+  parameters: {
+    chromatic: { modes: themeModes },
+  },
   title: "Primitives/Callout",
   component: Callout,
   tags: ["autodocs"],

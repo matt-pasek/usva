@@ -1,11 +1,15 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { themeAndWidthModes } from "../../../.storybook/modes.js";
 import { StatCard } from "./stat-card.js";
 
 const meta: Meta<typeof StatCard> = {
   title: "Patterns/StatCard",
   component: StatCard,
   tags: ["autodocs"],
-  parameters: { layout: "centered" },
+  parameters: {
+    chromatic: { modes: themeAndWidthModes },
+    layout: "centered",
+  },
   argTypes: {
     size: {
       control: { type: "select" },

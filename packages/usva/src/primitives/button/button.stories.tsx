@@ -1,7 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { themeModes } from "../../../.storybook/modes.js";
 import { Button } from "./button.js";
 
 const meta: Meta<typeof Button> = {
+  parameters: {
+    chromatic: { modes: themeModes },
+  },
   title: "Primitives/Button",
   component: Button,
   tags: ["autodocs"],
@@ -174,4 +178,12 @@ export const AsChild: Story = {
     asChild: true,
     children: <a href="#usva">Link styled as button</a>,
   },
+};
+
+export const Hover: Story = {
+  parameters: { pseudo: { hover: true } },
+};
+
+export const FocusVisible: Story = {
+  parameters: { pseudo: { focusVisible: true } },
 };

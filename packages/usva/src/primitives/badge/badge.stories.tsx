@@ -1,7 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { themeModes } from "../../../.storybook/modes.js";
 import { Badge } from "./badge.js";
 
 const meta: Meta<typeof Badge> = {
+  parameters: {
+    chromatic: { modes: themeModes },
+  },
   title: "Primitives/Badge",
   component: Badge,
   tags: ["autodocs"],

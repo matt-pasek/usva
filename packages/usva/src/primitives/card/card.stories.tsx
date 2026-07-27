@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { themeModes } from "../../../.storybook/modes.js";
 import { Button } from "../button/button.js";
 import {
   Card,
@@ -13,6 +14,9 @@ import {
 } from "./card.js";
 
 const meta: Meta<typeof Card> = {
+  parameters: {
+    chromatic: { modes: themeModes },
+  },
   title: "Primitives/Card",
   component: Card,
   tags: ["autodocs"],

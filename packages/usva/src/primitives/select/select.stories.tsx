@@ -1,7 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { themeModes } from "../../../.storybook/modes.js";
 import { Select } from "./select.js";
 
 const meta: Meta<typeof Select> = {
+  parameters: {
+    chromatic: { modes: themeModes },
+  },
   title: "Primitives/Select",
   component: Select,
   tags: ["autodocs"],
@@ -109,4 +113,12 @@ export const LongList: Story = {
       </Select.Content>
     </Select>
   ),
+};
+
+export const Hover: Story = {
+  parameters: { pseudo: { hover: true } },
+};
+
+export const FocusVisible: Story = {
+  parameters: { pseudo: { focusVisible: true } },
 };

@@ -1,11 +1,15 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
+import { themeAndWidthModes } from "../../../.storybook/modes.js";
 import { Button } from "../../primitives/button/index.js";
 import { Panel } from "../panel/index.js";
 import { DashboardGrid, DashboardGridItem } from "./dashboard-grid.js";
 import { addItem, findOpenSlot, type GridItem } from "./grid-layout.js";
 
 const meta: Meta<typeof DashboardGrid> = {
+  parameters: {
+    chromatic: { modes: themeAndWidthModes },
+  },
   title: "Patterns/DashboardGrid",
   component: DashboardGrid,
   tags: ["autodocs"],

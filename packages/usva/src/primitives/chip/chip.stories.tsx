@@ -1,7 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { themeModes } from "../../../.storybook/modes.js";
 import { Chip } from "./chip.js";
 
 const meta: Meta<typeof Chip> = {
+  parameters: {
+    chromatic: { modes: themeModes },
+  },
   title: "Primitives/Chip",
   component: Chip,
   tags: ["autodocs"],

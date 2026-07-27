@@ -619,9 +619,9 @@
     "tailwind-merge": "^3.6.0"
   },
   "devDependencies": {
-    "@storybook/addon-a11y": "^9",
-    "@storybook/addon-docs": "^9",
-    "@storybook/react-vite": "^9",
+    "@storybook/addon-a11y": "^10.5.5",
+    "@storybook/addon-docs": "^10.5.5",
+    "@storybook/react-vite": "^10.5.5",
     "@tailwindcss/vite": "^4.3.2",
     "@testing-library/jest-dom": "^6.6.0",
     "@testing-library/react": "^16.1.0",
@@ -638,7 +638,8 @@
     "pngjs": "^7.0.0",
     "react": "^19",
     "react-dom": "^19",
-    "storybook": "^9",
+    "storybook": "^10.5.5",
+    "storybook-addon-pseudo-states": "^10.5.5",
     "vitest": "^2.1.0"
   }
 }

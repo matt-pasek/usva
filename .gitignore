@@ -7,8 +7,12 @@ storybook-static/
 captures/
 *.log
 
+# WebStorm's TypeScript "recompile on changes" writes a .js beside any .ts it
+# touches, ignoring every tsconfig. Turning that setting off is the real fix;
+# this only stops a stray twin reaching a commit.
 packages/*/scripts/**/*.js
 packages/*/.storybook/*.js
+packages/*/src/**/*.js
 .DS_Store
 *.tsbuildinfo
 
@@ -30,3 +34,5 @@ CLAUDE.md
 .design-sync
 .ds-sync/
 ds-bundle/
+
+brag-output

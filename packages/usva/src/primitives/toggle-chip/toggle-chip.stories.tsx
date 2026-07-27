@@ -1,8 +1,12 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
+import { themeModes } from "../../../.storybook/modes.js";
 import { ToggleChip, ToggleChipGroup } from "./toggle-chip.js";
 
 const meta: Meta<typeof ToggleChipGroup> = {
+  parameters: {
+    chromatic: { modes: themeModes },
+  },
   title: "Primitives/ToggleChip",
   component: ToggleChipGroup,
   tags: ["autodocs"],
@@ -131,4 +135,12 @@ export const Disabled: Story = {
       ))}
     </ToggleChipGroup>
   ),
+};
+
+export const Hover: Story = {
+  parameters: { pseudo: { hover: true } },
+};
+
+export const FocusVisible: Story = {
+  parameters: { pseudo: { focusVisible: true } },
 };

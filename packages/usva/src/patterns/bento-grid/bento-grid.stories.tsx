@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { themeAndWidthModes } from "../../../.storybook/modes.js";
 import {
   CardBody,
   CardEyebrow,
@@ -8,6 +9,9 @@ import {
 import { BentoCard, BentoGrid, BentoMetric } from "./bento-grid.js";
 
 const meta: Meta<typeof BentoGrid> = {
+  parameters: {
+    chromatic: { modes: themeAndWidthModes },
+  },
   title: "Patterns/BentoGrid",
   component: BentoGrid,
   tags: ["autodocs"],

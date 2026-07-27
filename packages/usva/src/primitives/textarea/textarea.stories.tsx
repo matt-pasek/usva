@@ -1,7 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { themeModes } from "../../../.storybook/modes.js";
 import { Textarea } from "./textarea.js";
 
 const meta: Meta<typeof Textarea> = {
+  parameters: {
+    chromatic: { modes: themeModes },
+  },
   title: "Primitives/Textarea",
   component: Textarea,
   tags: ["autodocs"],

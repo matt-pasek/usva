@@ -79,4 +79,3 @@ jobs:
           workingDir: packages/usva
           buildScriptName: build-storybook
           onlyChanged: true
-          exitZeroOnChanges: true

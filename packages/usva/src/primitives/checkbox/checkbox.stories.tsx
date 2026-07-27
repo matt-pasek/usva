@@ -1,7 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { themeModes } from "../../../.storybook/modes.js";
 import { Checkbox } from "./checkbox.js";
 
 const meta: Meta<typeof Checkbox> = {
+  parameters: {
+    chromatic: { modes: themeModes },
+  },
   title: "Primitives/Checkbox",
   component: Checkbox,
   tags: ["autodocs"],
@@ -45,4 +49,12 @@ export const Sizes: Story = {
       ))}
     </div>
   ),
+};
+
+export const Hover: Story = {
+  parameters: { pseudo: { hover: true } },
+};
+
+export const FocusVisible: Story = {
+  parameters: { pseudo: { focusVisible: true } },
 };

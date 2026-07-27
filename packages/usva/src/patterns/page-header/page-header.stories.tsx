@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
+import { themeAndWidthModes } from "../../../.storybook/modes.js";
 import { Button } from "../../primitives/button/index.js";
 import { Progress } from "../../primitives/progress/index.js";
 import {
@@ -14,6 +15,9 @@ import {
 } from "./page-header.js";
 
 const meta: Meta<typeof PageHeader> = {
+  parameters: {
+    chromatic: { modes: themeAndWidthModes },
+  },
   title: "Patterns/PageHeader",
   component: PageHeader,
   tags: ["autodocs"],
