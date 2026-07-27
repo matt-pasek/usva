@@ -8,67 +8,24 @@ import { Button } from "@matt-pasek/usva/primitives/button";
 import { Card } from "@matt-pasek/usva/primitives/card";
 import { Knob } from "@matt-pasek/usva/primitives/knob";
 import * as React from "react";
+import { Cursor, useKnobCentre } from "@/components/hero/hero-pointer";
 import {
   HERO_CARD,
-  HERO_CLUSTER,
+  HERO_FOOT_WIDTH,
   HERO_PAD,
+  HERO_PANEL,
+  HERO_PANEL_PAD,
+  HERO_ROW_COLUMN,
   HERO_ROWS,
   HERO_SIZE,
+  HERO_SNIPPET,
+  HERO_SNIPPET_LINES,
+  HERO_SNIPPET_SIZE,
+  HERO_STAT_COLUMN,
   HERO_STATS,
   HERO_TYPE,
   HERO_VARE_PARAMS,
 } from "@/lib/hero";
-
-declare global {
-  interface Window {
-    __heroPointer?: { x: number; y: number };
-  }
-}
-
-function useKnobCentre(
-  rootRef: React.RefObject<HTMLDivElement | null>,
-  knobRef: React.RefObject<HTMLDivElement | null>,
-) {
-  const [centre, setCentre] = React.useState<{ x: number; y: number } | null>(
-    null,
-  );
-
-  React.useLayoutEffect(() => {
-    const root = rootRef.current;
-    const control = knobRef.current?.querySelector('[role="slider"]');
-    if (!root || !control) return;
-    const box = control.getBoundingClientRect();
-    const frame = root.getBoundingClientRect();
-    const next = {
-      x: box.left - frame.left + box.width / 2,
-      y: box.top - frame.top + box.height / 2,
-    };
-    setCentre(next);
-    window.__heroPointer = next;
-  }, [rootRef, knobRef]);
-
-  return centre;
-}
-
-const Cursor = ({ x, y }: { x: number; y: number }) => (
-  <svg
-    aria-hidden="true"
-    width="30"
-    height="30"
-    viewBox="0 0 28 28"
-    className="pointer-events-none absolute z-30"
-    style={{ left: x, top: y }}
-  >
-    <title>pointer</title>
-    <path
-      d="M2 1.5 L2 20.5 L7.1 15.6 L10.6 23.5 L13.9 22 L10.5 14.3 L17.4 14.3 Z"
-      fill="var(--usva-ink)"
-      stroke="var(--usva-bg)"
-      strokeWidth="1.5"
-      strokeLinejoin="round"
-    />
-  </svg>
-);
 
 function TypeColumn() {
   return (
@@ -113,11 +70,11 @@ function TypeColumn() {
       </div>
 
       <div
-        className="absolute flex items-center gap-4 font-mono text-faint"
+        className="absolute flex items-center gap-4 whitespace-nowrap font-mono text-muted"
         style={{
           left: HERO_PAD.left,
           bottom: HERO_PAD.bottom,
-          width: HERO_CARD.x - HERO_PAD.left - 16,
+          width: HERO_FOOT_WIDTH,
           fontSize: HERO_TYPE.foot.size - 2,
           letterSpacing: HERO_TYPE.foot.tracking,
         }}
@@ -130,25 +87,20 @@ function TypeColumn() {
   );
 }
 
-/**
- * The cluster runs off the right edge on purpose: a frame whose edges are dead
- * reads as a square someone stretched. Flat on, never tilted, because a
- * perspective-tilted glass card is the design-system tell this image refutes.
- */
-function Cluster() {
+function Panel() {
   return (
     <Card
-      className="absolute flex flex-col gap-3 p-5"
+      className="absolute flex flex-col rounded-3xl shadow-raised"
       style={{
-        left: HERO_CLUSTER.x,
-        top: HERO_CLUSTER.y,
-        width: HERO_CLUSTER.width,
+        left: HERO_PANEL.x,
+        top: HERO_PANEL.y,
+        width: HERO_PANEL.width,
+        height: HERO_PANEL.height,
+        padding: HERO_PANEL_PAD,
       }}
     >
-      {/* Left-grouped, not justify-between: the panel's right edge is off
-          canvas, and a badge pinned to it would never be seen. */}
-      <div className="flex items-center gap-3">
-        <span className="font-mono text-[0.6875rem] font-semibold uppercase tracking-wide text-faint">
+      <div className="flex items-center gap-3 px-1">
+        <span className="font-mono text-[0.6875rem] font-semibold uppercase tracking-wide text-muted">
           catalog
         </span>
         <Badge mono live>
@@ -156,28 +108,57 @@ function Cluster() {
         </Badge>
       </div>
 
-      <div className="flex gap-3">
-        {HERO_STATS.map((stat) => (
-          <StatCard
-            key={stat.label}
-            className="flex-1"
-            surface="flat"
-            label={stat.label}
-            value={stat.value}
-          />
-        ))}
-      </div>
+      <div className="mt-4 flex gap-5">
+        <div
+          className="flex flex-col gap-1"
+          style={{ width: HERO_STAT_COLUMN }}
+        >
+          {HERO_STATS.map((stat) => (
+            <StatCard
+              key={stat.label}
+              size="sm"
+              surface="flat"
+              className="rounded-lg border-transparent bg-surface-2 [&>div]:p-2.5"
+              label={stat.label}
+              value={stat.value}
+            />
+          ))}
+        </div>
 
-      {HERO_ROWS.map((row) => (
-        <StripeCard
-          key={row.heading}
-          surface="flat"
-          heading={row.heading}
-          metaLeft={row.metaLeft}
-          metaRight={row.metaRight}
-          stripeColor={row.stripe}
-          className="px-6 py-3"
-        />
+        <div className="flex flex-col gap-4" style={{ width: HERO_ROW_COLUMN }}>
+          {HERO_ROWS.map((row) => (
+            <StripeCard
+              key={row.heading}
+              surface="flat"
+              className="rounded-lg border-transparent bg-surface-2"
+              heading={row.heading}
+              metaLeft={row.metaLeft}
+              badge={<Badge mono>{row.badge}</Badge>}
+              stripeColor={row.stripe}
+            />
+          ))}
+        </div>
+      </div>
+    </Card>
+  );
+}
+
+function Snippet() {
+  return (
+    <Card
+      className="absolute z-30 flex flex-col gap-2 px-6 py-6 font-mono shadow-floating"
+      style={{
+        left: HERO_SNIPPET.x,
+        top: HERO_SNIPPET.y,
+        width: HERO_SNIPPET.width,
+        fontSize: HERO_SNIPPET_SIZE,
+      }}
+    >
+      {HERO_SNIPPET_LINES.map((line) => (
+        <div key={line} className="flex gap-3 whitespace-nowrap">
+          <span className="text-accent-alt">$</span>
+          <span className="text-muted">{line}</span>
+        </div>
       ))}
     </Card>
   );
@@ -197,10 +178,11 @@ export function HeroStill() {
     >
       <Vare className="absolute inset-0" params={HERO_VARE_PARAMS}>
         <TypeColumn />
-        <Cluster />
+        <Panel />
+        <Snippet />
 
         <Card
-          className="absolute z-20 flex flex-col items-center gap-4 px-5 py-6 shadow-overlay"
+          className="absolute z-20 flex flex-col items-center gap-3 px-5 py-5 shadow-overlay"
           style={{
             left: HERO_CARD.x,
             top: HERO_CARD.y,

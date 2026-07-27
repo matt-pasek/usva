@@ -5,45 +5,60 @@ import { describe, expect, test } from "vitest";
 import {
   HERO_CARD,
   HERO_FILES,
+  HERO_FOOT_WIDTH,
   HERO_INTERNAL,
   HERO_LAYERS,
   HERO_PAD,
+  HERO_PANEL,
+  HERO_PANEL_PAD,
+  HERO_ROW_COLUMN,
   HERO_ROWS,
-  HERO_SAFE,
   HERO_SIZE,
-  HERO_SQUARE,
-  HERO_SQUARE_X,
+  HERO_SNIPPET,
+  HERO_STAT_COLUMN,
   HERO_STATS,
-  HERO_THEMES,
   HERO_TYPE,
-  heroFiles,
 } from "./hero.js";
 
 const DOCS = resolve(process.cwd());
 const at = (relative: string) => join(DOCS, relative);
 
 describe("hero geometry", () => {
-  test("keeps the whole type column inside the square's window", () => {
-    expect(HERO_PAD.left).toBeGreaterThanOrEqual(HERO_SAFE.left);
+  test("keeps the wide type column clear of the knob card", () => {
     expect(HERO_PAD.left + HERO_TYPE.tagline.maxWidth).toBeLessThanOrEqual(
-      HERO_SAFE.right,
-    );
-  });
-
-  test("keeps the floated card's leading edge inside the window", () => {
-    expect(HERO_CARD.x).toBeGreaterThan(HERO_PAD.left);
-    expect(HERO_CARD.x).toBeLessThan(HERO_SAFE.right);
-  });
-
-  test("keeps the footer clear of the floated card", () => {
-    expect(HERO_PAD.left + (HERO_CARD.x - HERO_PAD.left - 16)).toBeLessThan(
       HERO_CARD.x,
     );
   });
 
-  test("takes the square window from inside the wide frame", () => {
-    expect(HERO_SQUARE_X).toBeGreaterThanOrEqual(0);
-    expect(HERO_SQUARE_X + HERO_SQUARE).toBeLessThanOrEqual(HERO_SIZE.width);
+  test("keeps the footer clear of the floated card", () => {
+    expect(HERO_PAD.left + HERO_FOOT_WIDTH).toBeLessThan(HERO_CARD.x);
+  });
+
+  test("plants both foreground cards inside the panel", () => {
+    const panelRight = HERO_PANEL.x + HERO_PANEL.width;
+    const panelBottom = HERO_PANEL.y + HERO_PANEL.height;
+
+    for (const card of [HERO_CARD, HERO_SNIPPET]) {
+      expect(card.x).toBeLessThan(panelRight);
+      expect(card.x + card.width).toBeGreaterThan(HERO_PANEL.x);
+      expect(card.y).toBeGreaterThan(HERO_PANEL.y);
+      expect(card.y).toBeLessThan(panelBottom);
+    }
+
+    expect(HERO_CARD.x + HERO_CARD.width).toBeGreaterThan(HERO_PANEL.x + 64);
+    expect(HERO_SNIPPET.x).toBeLessThan(panelRight - 64);
+  });
+
+  test("crops the panel and the snippet on one line", () => {
+    expect(HERO_SNIPPET.x + HERO_SNIPPET.width).toBe(
+      HERO_PANEL.x + HERO_PANEL.width,
+    );
+    expect(HERO_PANEL.x + HERO_PANEL.width).toBeGreaterThan(HERO_SIZE.width);
+  });
+
+  test("keeps the panel's row column on canvas", () => {
+    const rowsLeft = HERO_PANEL.x + HERO_PANEL_PAD + HERO_STAT_COLUMN + 20;
+    expect(rowsLeft + HERO_ROW_COLUMN).toBeLessThanOrEqual(HERO_SIZE.width);
   });
 });
 
@@ -106,39 +121,6 @@ describe("hero stills", () => {
         width,
         height,
       });
-    });
-  }
-
-  for (const theme of HERO_THEMES) {
-    test(`${theme}'s square is a window onto the wide`, async () => {
-      const files = heroFiles(theme);
-      const wide = await sharp(at(files.wide))
-        .raw()
-        .toBuffer({ resolveWithObject: true });
-      const square = await sharp(at(files.square))
-        .raw()
-        .toBuffer({ resolveWithObject: true });
-
-      const channels = square.info.channels;
-      const margin = 8;
-      const worst = { diff: 0, x: 0, y: 0 };
-
-      for (let y = margin; y < HERO_SQUARE - margin; y += 30) {
-        for (let x = margin; x < HERO_SQUARE - margin; x += 30) {
-          const a =
-            (y * wide.info.width + x + HERO_SQUARE_X) * wide.info.channels;
-          const b = (y * square.info.width + x) * channels;
-          for (let c = 0; c < 3; c += 1) {
-            const diff = Math.abs(
-              (wide.data[a + c] ?? 0) - (square.data[b + c] ?? 0),
-            );
-            if (diff > worst.diff) Object.assign(worst, { diff, x, y });
-          }
-        }
-      }
-
-      expect(worst).toMatchObject({ diff: expect.any(Number) });
-      expect(worst.diff).toBeLessThanOrEqual(6);
     });
   }
 });

@@ -12,10 +12,8 @@ import {
   HERO_SCALE,
   HERO_SEEK_MS,
   HERO_SIZE,
-  HERO_SQUARE,
-  HERO_SQUARE_X,
   HERO_THEMES,
-  heroFiles,
+  heroFile,
 } from "../lib/hero.js";
 
 const DOCS = join(dirname(new URL(import.meta.url).pathname), "..");
@@ -85,24 +83,10 @@ const bake = async () => {
       await page.mouse.up();
       await page.close();
 
-      const files = heroFiles(theme);
       write(
-        files.wide,
+        heroFile(theme),
         await sharp(shot)
           .resize(HERO_SIZE.width, HERO_SIZE.height)
-          .png()
-          .toBuffer(),
-      );
-      write(
-        files.square,
-        await sharp(shot)
-          .extract({
-            left: HERO_SQUARE_X * HERO_SCALE,
-            top: 0,
-            width: HERO_SQUARE * HERO_SCALE,
-            height: HERO_SQUARE * HERO_SCALE,
-          })
-          .resize(HERO_SQUARE, HERO_SQUARE)
           .png()
           .toBuffer(),
       );
