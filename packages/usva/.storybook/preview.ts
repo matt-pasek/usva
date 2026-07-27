@@ -3,17 +3,24 @@ import * as React from "react";
 import "./preview.css";
 
 /**
- * The background has to be painted here rather than on `body`. kajo lives at
- * `:root` and the other two are `[data-theme]` scoped, so anything outside this
- * element resolves kajo's values whatever the toolbar says. Without it, every
- * savi snapshot is a light component photographed on a near-black ground.
+ * The theme goes on <html>, not on the wrapper, because Base UI portals every
+ * overlay to document.body. A wrapper leaves those outside the themed subtree,
+ * so a Select popup renders kajo's dark surface over a light savi page. This
+ * also matches how a consuming app themes: on the root.
+ *
+ * The wrapper still paints the ground, since body would otherwise stay
+ * unpainted and savi components would sit on nothing.
  */
 const withTheme: Decorator = (Story, context) => {
   const theme = context.globals.theme ?? "kajo";
+
+  React.useLayoutEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+  }, [theme]);
+
   return React.createElement(
     "div",
     {
-      "data-theme": theme,
       style: {
         padding: "2rem",
         minHeight: "100vh",
