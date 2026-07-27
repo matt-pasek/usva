@@ -48,10 +48,14 @@ against package-local devDependencies, and you get phantom TS2307 errors on file
 without complaint.
 
 **The registry and the package must stay byte-identical.** CI asserts that the source the registry
-emits for a component matches the package source exactly. If you edit a component, run
-`bun run registry` and commit the result. A component's registry entry is discovered from disk rather
-than listed by hand, so a new component needs its files in the right place, not a name added to an
-array.
+emits for a component matches the package source exactly. The generated JSON under `registry/r/` is
+gitignored, so there is nothing to commit: run `bun run registry` to regenerate it locally after
+editing a component. A component's registry entry is discovered from disk rather than listed by hand,
+so a new component needs its files in the right place, not a name added to an array.
+
+`bun install` also installs a pre-commit hook via [lefthook](https://lefthook.dev). It runs Biome
+over the staged files and restages what it fixes, which takes a fraction of a second. Nothing else
+runs on commit, because a hook slow enough to be worth skipping gets skipped.
 
 Green tests are not sufficient for anything visual. A missing Tailwind class never fails a build, and
 neither does a component that renders in the wrong place. Open it in a browser.
@@ -63,6 +67,16 @@ diff to one thing. Say what you changed and how you checked it.
 
 CI runs the suite against React 18 and 19, builds from a clean checkout, verifies package contents
 with publint, and runs Chromatic. All of it has to pass.
+
+If your change affects either published package, add a changeset:
+
+```sh
+bun run changeset
+```
+
+That writes a markdown file describing the change and how it bumps the version. Merging it to main
+opens a "chore: version packages" pull request; merging *that* is what publishes to npm. Docs-only
+and internal changes do not need one.
 
 ## What is not in this repo
 

@@ -3,6 +3,16 @@
   "version": "0.0.0",
   "type": "module",
   "license": "SEE LICENSE IN LICENSE.md",
+  "homepage": "https://usva.build",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/matt-pasek/usva.git",
+    "directory": "packages/usva"
+  },
+  "bugs": "https://github.com/matt-pasek/usva/issues",
+  "publishConfig": {
+    "access": "public"
+  },
   "sideEffects": false,
   "files": [
     "dist",
