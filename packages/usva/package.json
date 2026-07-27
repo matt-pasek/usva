@@ -570,7 +570,7 @@
     "./package.json": "./package.json"
   },
   "scripts": {
-    "build": "node scripts/assert-bunchee-patch.mjs && bunchee --no-dts && node scripts/emit-types.mjs",
+    "build": "bunchee --no-dts && node scripts/emit-types.mjs",
     "typecheck": "tsc --noEmit",
     "lint": "biome check .",
     "test": "vitest run",
@@ -605,7 +605,7 @@
     "@types/jest-axe": "^3.5.9",
     "@types/pngjs": "^6.0.5",
     "@types/react": "^19",
-    "bunchee": "6.12.0",
+    "bunchee": "^6.12.1",
     "chromatic": "^18.0.1",
     "gifenc": "^1.0.3",
     "jest-axe": "^9.0.0",
