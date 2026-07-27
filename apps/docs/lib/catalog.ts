@@ -266,6 +266,13 @@ const primitives = seed("primitive", [
     provenance: [],
   },
   {
+    slug: "textarea",
+    name: "Textarea",
+    summary:
+      "text that runs past one line. it can grow with what you type, up to a ceiling you set.",
+    provenance: [],
+  },
+  {
     slug: "toast",
     name: "Toast",
     summary:

@@ -1,7 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Input } from "../../primitives/input/input.js";
+import { Textarea } from "../../primitives/textarea/textarea.js";
 import {
   FieldControl,
+  FieldCount,
   FieldDescription,
   FieldError,
   FieldGroup,
@@ -37,6 +39,19 @@ export const WithError: Story = {
         <Input defaultValue="not-an-email" />
       </FieldControl>
       <FieldError>Enter a valid email address.</FieldError>
+    </FieldGroup>
+  ),
+};
+
+export const WithCount: Story = {
+  render: () => (
+    <FieldGroup>
+      <FieldLabel>Bio</FieldLabel>
+      <FieldControl>
+        <Textarea autoGrow minRows={3} maxRows={10} maxLength={280} />
+      </FieldControl>
+      <FieldDescription>Shown on your public profile.</FieldDescription>
+      <FieldCount />
     </FieldGroup>
   ),
 };

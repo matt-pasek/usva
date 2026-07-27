@@ -95,6 +95,7 @@ export * from "./primitives/stat-chip/index.js";
 export * from "./primitives/switch/index.js";
 export * from "./primitives/tabs/index.js";
 export * from "./primitives/terminal/index.js";
+export * from "./primitives/textarea/index.js";
 export * from "./primitives/toast/index.js";
 export * from "./primitives/toggle-chip/index.js";
 export * from "./primitives/tooltip/index.js";

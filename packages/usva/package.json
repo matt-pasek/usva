@@ -221,6 +221,9 @@
       "primitives/terminal": [
         "./dist/primitives/terminal.d.ts"
       ],
+      "primitives/textarea": [
+        "./dist/primitives/textarea.d.ts"
+      ],
       "primitives/toast": [
         "./dist/primitives/toast.d.ts"
       ],
@@ -530,6 +533,10 @@
     "./primitives/terminal": {
       "types": "./dist/primitives/terminal.d.ts",
       "import": "./dist/primitives/terminal.js"
+    },
+    "./primitives/textarea": {
+      "types": "./dist/primitives/textarea.d.ts",
+      "import": "./dist/primitives/textarea.js"
     },
     "./primitives/toast": {
       "types": "./dist/primitives/toast.d.ts",

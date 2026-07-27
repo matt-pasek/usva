@@ -3,14 +3,23 @@ import * as React from "react";
 import { cn } from "../../cn.js";
 import { Label, type LabelProps } from "../../primitives/label/label.js";
 
+interface FieldCountValue {
+  length: number;
+  max?: number;
+}
+
 interface FieldContextValue {
   controlId: string;
   descriptionId: string;
   errorId: string;
   invalid: boolean;
   hasDescription: boolean;
+  hasCount: boolean;
+  count: FieldCountValue | null;
   setHasError: (present: boolean) => void;
   setHasDescription: (present: boolean) => void;
+  setHasCount: (present: boolean) => void;
+  setCount: (count: FieldCountValue | null) => void;
 }
 
 const FieldContext = React.createContext<FieldContextValue | null>(null);
@@ -33,6 +42,8 @@ export const FieldGroup = React.forwardRef<HTMLDivElement, FieldGroupProps>(
     const base = id ?? generatedId;
     const [hasError, setHasError] = React.useState(false);
     const [hasDescription, setHasDescription] = React.useState(false);
+    const [hasCount, setHasCount] = React.useState(false);
+    const [count, setCount] = React.useState<FieldCountValue | null>(null);
 
     const value = React.useMemo<FieldContextValue>(
       () => ({
@@ -41,10 +52,14 @@ export const FieldGroup = React.forwardRef<HTMLDivElement, FieldGroupProps>(
         errorId: `${base}-error`,
         invalid: hasError,
         hasDescription,
+        hasCount,
+        count,
         setHasError,
         setHasDescription,
+        setHasCount,
+        setCount,
       }),
-      [base, hasError, hasDescription],
+      [base, hasError, hasDescription, hasCount, count],
     );
 
     return (
@@ -80,13 +95,24 @@ export interface FieldControlProps
 
 export const FieldControl = React.forwardRef<HTMLDivElement, FieldControlProps>(
   ({ className, children, ...props }, ref) => {
-    const { controlId, descriptionId, errorId, invalid, hasDescription } =
-      useFieldContext("FieldControl");
+    const {
+      controlId,
+      descriptionId,
+      errorId,
+      invalid,
+      hasDescription,
+      hasCount,
+      setCount,
+    } = useFieldContext("FieldControl");
 
     type ControlProps = {
       id?: string;
       "aria-describedby"?: string;
       "aria-invalid"?: React.AriaAttributes["aria-invalid"];
+      value?: string | number | readonly string[];
+      defaultValue?: string | number | readonly string[];
+      maxLength?: number;
+      onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
     };
     const child = React.Children.only(
       children,
@@ -101,12 +127,36 @@ export const FieldControl = React.forwardRef<HTMLDivElement, FieldControlProps>(
       .filter(Boolean)
       .join(" ");
 
+    const controlled = childProps.value !== undefined;
+    const [typedLength, setTypedLength] = React.useState<number | null>(null);
+    const length = controlled
+      ? String(childProps.value).length
+      : (typedLength ?? String(childProps.defaultValue ?? "").length);
+    const max = childProps.maxLength;
+
+    React.useEffect(() => {
+      if (!hasCount) return;
+      setCount({ length, max });
+      return () => setCount(null);
+    }, [hasCount, length, max, setCount]);
+
+    const countProps =
+      hasCount && !controlled
+        ? {
+            onChange: (event: React.ChangeEvent<HTMLInputElement>) => {
+              childProps.onChange?.(event);
+              setTypedLength(event.target.value.length);
+            },
+          }
+        : {};
+
     return (
       <div ref={ref} className={cn(className)} {...props}>
         {React.cloneElement(child, {
           id: childProps.id ?? controlId,
           "aria-describedby": describedBy || undefined,
           "aria-invalid": childProps["aria-invalid"] ?? (invalid || undefined),
+          ...countProps,
         })}
       </div>
     );
@@ -145,6 +195,39 @@ export const FieldDescription = React.forwardRef<
 });
 FieldDescription.displayName = "FieldDescription";
 
+export type FieldCountProps = React.HTMLAttributes<HTMLParagraphElement>;
+
+export const FieldCount = React.forwardRef<
+  HTMLParagraphElement,
+  FieldCountProps
+>(({ className, children, ...props }, ref) => {
+  const { count, setHasCount } = useFieldContext("FieldCount");
+
+  React.useEffect(() => {
+    setHasCount(true);
+    return () => setHasCount(false);
+  }, [setHasCount]);
+
+  const length = count?.length ?? 0;
+  const max = count?.max;
+  const over = max !== undefined && length > max;
+
+  return (
+    <p
+      ref={ref}
+      className={cn(
+        "self-end font-mono text-[11px] leading-relaxed tabular-nums",
+        over ? "text-danger" : "text-muted",
+        className,
+      )}
+      {...props}
+    >
+      {children ?? (max === undefined ? `${length}` : `${length} / ${max}`)}
+    </p>
+  );
+});
+FieldCount.displayName = "FieldCount";
+
 export type FieldErrorProps = React.HTMLAttributes<HTMLParagraphElement>;
 
 export const FieldError = React.forwardRef<
@@ -173,4 +256,5 @@ export const FieldError = React.forwardRef<
     </p>
   );
 });
+
 FieldError.displayName = "FieldError";

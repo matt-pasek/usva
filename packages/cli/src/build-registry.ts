@@ -56,6 +56,7 @@ export const NAMES = [
   "switch",
   "tabs",
   "terminal",
+  "textarea",
   "toast",
   "toggle-chip",
   "tooltip",
