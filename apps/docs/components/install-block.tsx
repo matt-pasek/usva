@@ -1,5 +1,5 @@
-import { Terminal } from "@matt-pasek/usva/primitives/terminal";
 import { PACKAGE_NAME, registryUrl } from "@/lib/site";
+import { TrackedTerminal } from "./tracked-terminal";
 
 export interface InstallBlockProps {
   /** Registry slug used to build the shadcn add URL, e.g. "checkbox". */
@@ -17,11 +17,19 @@ export function InstallBlock({
         <p className="text-sm text-muted">
           as a package dependency, and the one to reach for first:
         </p>
-        <Terminal command={`bun add ${packageName}`} />
+        <TrackedTerminal
+          command={`bun add ${packageName}`}
+          kind="install"
+          name={registryName}
+        />
       </div>
       <div className="flex flex-col gap-1.5">
         <p className="text-sm text-muted">or copy the source in, via shadcn:</p>
-        <Terminal command={`npx shadcn add ${registryUrl(registryName)}`} />
+        <TrackedTerminal
+          command={`npx shadcn add ${registryUrl(registryName)}`}
+          kind="registry"
+          name={registryName}
+        />
       </div>
     </div>
   );

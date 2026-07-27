@@ -49,6 +49,11 @@ const props = [
     desc: "off for output, logs, anything not meant to be pasted.",
   },
   {
+    name: "onCopied",
+    type: "(value: string) => void",
+    desc: "fires after a successful copy, never on a denied one.",
+  },
+  {
     name: "preClassName",
     type: "string",
     desc: (

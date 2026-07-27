@@ -1,4 +1,6 @@
 import "./globals.css";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata } from "next";
 import { Fira_Code, Fira_Sans } from "next/font/google";
 import type { ReactNode } from "react";
@@ -73,6 +75,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           <SiteFooter />
         </ThemeProvider>
         <div aria-hidden id="grain" />
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );

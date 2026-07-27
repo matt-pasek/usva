@@ -29,6 +29,11 @@ const props = [
     defaultValue: "true",
     desc: "off for examples nobody should run.",
   },
+  {
+    name: "onCopied",
+    type: "(value: string) => void",
+    desc: "fires after a successful copy, never on a denied one.",
+  },
 ];
 
 export default function TerminalPage() {

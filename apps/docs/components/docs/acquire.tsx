@@ -2,6 +2,7 @@
 import { SegmentedControl } from "@matt-pasek/usva/patterns/segmented-control";
 import { CodeSnippet } from "@matt-pasek/usva/primitives/code-snippet";
 import { Terminal } from "@matt-pasek/usva/primitives/terminal";
+import { trackCopy } from "@/lib/analytics/track-copy";
 import { PACKAGE_NAME, registryUrl } from "@/lib/site";
 import { useInstallMode } from "./install-mode";
 import { Lab } from "./lab";
@@ -47,14 +48,24 @@ export function Acquire({ registryName, usage, files }: AcquireProps) {
 
       {mode === "install" ? (
         <>
-          <Terminal className="mt-4" command={`bun add ${PACKAGE_NAME}`} />
-          <CodeSnippet className="mt-3" label="usage" code={usage} />
+          <Terminal
+            className="mt-4"
+            command={`bun add ${PACKAGE_NAME}`}
+            onCopied={() => trackCopy("install", registryName)}
+          />
+          <CodeSnippet
+            className="mt-3"
+            label="usage"
+            code={usage}
+            onCopied={() => trackCopy("snippet", registryName)}
+          />
         </>
       ) : (
         <>
           <Terminal
             className="mt-4"
             command={`npx shadcn add ${registryUrl(registryName)}`}
+            onCopied={() => trackCopy("registry", registryName)}
           />
           {files.map((file) => (
             <CodeSnippet
@@ -64,6 +75,7 @@ export function Acquire({ registryName, usage, files }: AcquireProps) {
               note="exactly what this command copies"
               code={file.content}
               preClassName="max-h-[32rem] overflow-auto"
+              onCopied={() => trackCopy("snippet", registryName)}
             />
           ))}
         </>

@@ -53,13 +53,20 @@ export interface CodeSnippetProps
   /** Right side of the header bar. */
   note?: React.ReactNode;
   copyable?: boolean;
+  /** Runs after the clipboard write succeeds, never on a denied one. */
+  onCopied?: (value: string) => void;
   /** Extra classes for the scrolling pre, e.g. a max-height cap. */
   preClassName?: string;
 }
 
-export function useCopyToClipboard(value: string) {
+export function useCopyToClipboard(
+  value: string,
+  onCopied?: (value: string) => void,
+) {
   const [copied, setCopied] = React.useState(false);
   const timer = React.useRef(0);
+  const onCopiedRef = React.useRef(onCopied);
+  onCopiedRef.current = onCopied;
 
   React.useEffect(() => () => window.clearTimeout(timer.current), []);
 
@@ -69,6 +76,7 @@ export function useCopyToClipboard(value: string) {
       setCopied(true);
       window.clearTimeout(timer.current);
       timer.current = window.setTimeout(() => setCopied(false), 1600);
+      onCopiedRef.current?.(value);
     } catch {
       /* A denied clipboard is not worth a dialog: the text is right there to
        * select by hand, and the button simply does not confirm. */
@@ -112,11 +120,13 @@ const CheckIcon = () => (
 export function CopySnippetButton({
   value,
   label = "copy the snippet",
+  onCopied,
 }: {
   value: string;
   label?: string;
+  onCopied?: (value: string) => void;
 }) {
-  const { copied, copy } = useCopyToClipboard(value);
+  const { copied, copy } = useCopyToClipboard(value, onCopied);
 
   return (
     <Button
@@ -143,6 +153,7 @@ export const CodeSnippet = React.forwardRef<HTMLDivElement, CodeSnippetProps>(
       label,
       note,
       copyable = true,
+      onCopied,
       preClassName,
       className,
       ...rest
@@ -201,13 +212,15 @@ export const CodeSnippet = React.forwardRef<HTMLDivElement, CodeSnippetProps>(
                   {note}
                 </span>
               )}
-              {copyable && <CopySnippetButton value={code} />}
+              {copyable && (
+                <CopySnippetButton value={code} onCopied={onCopied} />
+              )}
             </span>
           </div>
         ) : (
           copyable && (
             <span className="absolute right-2 top-2 z-10">
-              <CopySnippetButton value={code} />
+              <CopySnippetButton value={code} onCopied={onCopied} />
             </span>
           )
         )}

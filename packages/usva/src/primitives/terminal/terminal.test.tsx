@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { axe } from "jest-axe";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { Terminal } from "./terminal.js";
@@ -32,6 +32,16 @@ describe("Terminal", () => {
     render(<Terminal command={COMMAND} />);
     fireEvent.click(screen.getByRole("button", { name: "copy the command" }));
     expect(writeText).toHaveBeenCalledWith(COMMAND);
+  });
+
+  it("calls onCopied with the command", async () => {
+    const writeText = vi.fn().mockResolvedValue(undefined);
+    vi.stubGlobal("navigator", { ...navigator, clipboard: { writeText } });
+    const onCopied = vi.fn();
+
+    render(<Terminal command={COMMAND} onCopied={onCopied} />);
+    fireEvent.click(screen.getByRole("button", { name: "copy the command" }));
+    await waitFor(() => expect(onCopied).toHaveBeenCalledWith(COMMAND));
   });
 
   it("supports a custom prompt and no copy button", () => {

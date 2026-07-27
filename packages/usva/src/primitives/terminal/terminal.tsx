@@ -9,13 +9,18 @@ export interface TerminalProps
   command: string;
   prompt?: string;
   copyable?: boolean;
+  /** Runs after the clipboard write succeeds, never on a denied one. */
+  onCopied?: (value: string) => void;
 }
 
 /* Scoped packages and URLs are what the eye scans a command for. */
 const isHot = (word: string) => word.startsWith("@") || /^https?:/.test(word);
 
 export const Terminal = React.forwardRef<HTMLDivElement, TerminalProps>(
-  ({ command, prompt = "$", copyable = true, className, ...rest }, ref) => {
+  (
+    { command, prompt = "$", copyable = true, onCopied, className, ...rest },
+    ref,
+  ) => {
     const words: { text: string; hot: boolean; at: number }[] = [];
     let at = 0;
     for (const text of command.split(" ")) {
@@ -54,7 +59,11 @@ export const Terminal = React.forwardRef<HTMLDivElement, TerminalProps>(
           ))}
         </code>
         {copyable && (
-          <CopySnippetButton value={command} label="copy the command" />
+          <CopySnippetButton
+            value={command}
+            label="copy the command"
+            onCopied={onCopied}
+          />
         )}
       </div>
     );

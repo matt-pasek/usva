@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { axe } from "jest-axe";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { CodeSnippet, registerCodeLanguage } from "./code-snippet.js";
@@ -71,6 +71,27 @@ describe("CodeSnippet", () => {
     render(<CodeSnippet code={CODE} label="usage" />);
     fireEvent.click(screen.getByRole("button", { name: "copy the snippet" }));
     expect(writeText).toHaveBeenCalledWith(CODE);
+  });
+
+  it("calls onCopied with the copied value", async () => {
+    const writeText = vi.fn().mockResolvedValue(undefined);
+    vi.stubGlobal("navigator", { ...navigator, clipboard: { writeText } });
+    const onCopied = vi.fn();
+
+    render(<CodeSnippet code={CODE} label="usage" onCopied={onCopied} />);
+    fireEvent.click(screen.getByRole("button", { name: "copy the snippet" }));
+    await waitFor(() => expect(onCopied).toHaveBeenCalledWith(CODE));
+  });
+
+  it("does not call onCopied when the clipboard is denied", async () => {
+    const writeText = vi.fn().mockRejectedValue(new Error("denied"));
+    vi.stubGlobal("navigator", { ...navigator, clipboard: { writeText } });
+    const onCopied = vi.fn();
+
+    render(<CodeSnippet code={CODE} label="usage" onCopied={onCopied} />);
+    fireEvent.click(screen.getByRole("button", { name: "copy the snippet" }));
+    await waitFor(() => expect(writeText).toHaveBeenCalled());
+    expect(onCopied).not.toHaveBeenCalled();
   });
 
   it("omits the copy button when not copyable", () => {
