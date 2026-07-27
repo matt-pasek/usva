@@ -1,7 +1,27 @@
 # @matt-pasek/usva-tokens
 
-The token layer: semantic roles, the three themes, the Tailwind v4 preset, and the exports that
-carry the same values into Figma.
+The token layer: semantic roles, the three themes, and the exports that carry the same values into
+Figma. Installed on its own if you want usva's vocabulary without its components, and required
+alongside [`@matt-pasek/usva`](https://www.npmjs.com/package/@matt-pasek/usva) if you want both.
+
+```sh
+bun add @matt-pasek/usva-tokens
+```
+
+Tailwind v4, which needs no plugin or preset. Import the CSS and the roles become utilities:
+
+```css
+@import "tailwindcss";
+@import "@matt-pasek/usva-tokens/theme.css";
+@import "@matt-pasek/usva-tokens/themes/kajo.css";
+@import "@matt-pasek/usva-tokens/roles-safelist.css";
+```
+
+`theme.css` maps the roles onto Tailwind's `@theme` layer. Each theme file supplies the values, and
+you import only the ones you ship. From there it is `bg-surface`, `text-muted`, `border-border`, and
+`data-theme="sisu"` on any element to reroute the lot inside that subtree.
+
+Docs: **[usva.build/design-language/tokens](https://usva.build/design-language/tokens)**.
 
 ## Where a value lives
 

@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Documentation
+    url: https://usva.build
+    about: Component demos, the design language, and setup guides.
+  - name: Question or idea
+    url: https://github.com/matt-pasek/usva/discussions
+    about: For anything that is not a bug or a concrete request. Ask here rather than opening an issue.
+  - name: Security vulnerability
+    url: https://github.com/matt-pasek/usva/security/advisories/new
+    about: Report privately. Do not open a public issue for this.

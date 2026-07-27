@@ -1,0 +1,56 @@
+name: Component or API request
+description: Something is missing, or a component cannot do what you need.
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Read this first, because it changes what to write.
+
+        usva's rule is that a component earns its place by already working in a live app. So the
+        useful thing here is not a proposed API. It is a description of the interface you are
+        actually building and where the system left you stuck. That is evidence. A spec is a guess.
+
+        Design direction is not an open process. This might be declined, and if it is, you can copy
+        the nearest component's source in through the registry and own it. That is what the license
+        is for.
+
+  - type: textarea
+    id: building
+    attributes:
+      label: What are you building
+      description: The real screen or feature. Screenshots and sketches help more than prose.
+    validations:
+      required: true
+
+  - type: textarea
+    id: stuck
+    attributes:
+      label: Where usva. left you stuck
+      description: >
+        What you tried with what already exists, and why it did not work. If you worked around it,
+        show the workaround: that is often the clearest statement of the gap.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: shape
+    attributes:
+      label: What shape is the gap
+      options:
+        - a component that does not exist
+        - an existing component missing a variant or prop
+        - a token or role that has no value for this case
+        - a pattern that exists but composes badly
+    validations:
+      required: true
+
+  - type: textarea
+    id: prior_art
+    attributes:
+      label: Prior art
+      description: >
+        Where you have seen this solved well. Naming what a reference gets right, and what it gets
+        wrong, is more useful than a link on its own.
+    validations:
+      required: false

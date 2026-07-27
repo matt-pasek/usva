@@ -1,0 +1,35 @@
+name: Docs problem
+description: Something on usva.build or in a README is wrong, missing, or misleading.
+labels: ["docs"]
+body:
+  - type: input
+    id: where
+    attributes:
+      label: Where
+      description: The URL, or the path to the file.
+      placeholder: https://usva.build/docs/components/select
+    validations:
+      required: true
+
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What kind of problem
+      options:
+        - it is wrong (the code or claim does not match reality)
+        - it is missing (something is undocumented)
+        - it is unclear (accurate, but I could not follow it)
+        - a broken link, example, or demo
+    validations:
+      required: true
+
+  - type: textarea
+    id: detail
+    attributes:
+      label: Detail
+      description: >
+        For a wrong page, say what it claims and what actually happens. For an unclear one, say what
+        you expected to find and where you gave up looking. That second one is genuinely useful and
+        hard to see from the inside.
+    validations:
+      required: true

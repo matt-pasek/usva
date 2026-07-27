@@ -1,0 +1,73 @@
+name: Bug report
+description: Something behaves incorrectly, breaks, or renders wrong.
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Before filing: if the problem is that overlays render unpositioned or unstyled, check that
+        your Tailwind config has an `@source` glob pointing at the installed package. That one
+        catches almost everyone and is not a bug.
+
+  - type: dropdown
+    id: package
+    attributes:
+      label: Which package
+      options:
+        - "@matt-pasek/usva"
+        - "@matt-pasek/usva-tokens"
+        - registry (copied source via shadcn add)
+        - the docs site
+        - not sure
+    validations:
+      required: true
+
+  - type: input
+    id: component
+    attributes:
+      label: Component
+      description: The component involved, if it is one. Its subpath is ideal.
+      placeholder: primitives/select
+    validations:
+      required: false
+
+  - type: textarea
+    id: what_happened
+    attributes:
+      label: What happened
+      description: What you saw, and what you expected instead.
+    validations:
+      required: true
+
+  - type: textarea
+    id: repro
+    attributes:
+      label: Reproduction
+      description: >
+        A link to a minimal repo or sandbox, or the smallest snippet that shows it. Without this a
+        bug usually cannot be acted on, so it is worth the ten minutes.
+      render: tsx
+    validations:
+      required: true
+
+  - type: input
+    id: versions
+    attributes:
+      label: Versions
+      description: usva, React, Tailwind, and your framework.
+      placeholder: usva 1.0.0, React 19.0.0, Tailwind 4.0.6, Next 16
+    validations:
+      required: true
+
+  - type: dropdown
+    id: theme
+    attributes:
+      label: Theme
+      options:
+        - kajo
+        - sisu
+        - savi
+        - a custom theme
+        - happens in all of them
+    validations:
+      required: false
