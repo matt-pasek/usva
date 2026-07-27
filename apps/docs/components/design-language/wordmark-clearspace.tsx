@@ -2,6 +2,7 @@
 
 import { motion, useReducedMotion } from "motion/react";
 import { useEffect, useState } from "react";
+import { useInViewOnce } from "@/lib/use-in-view-once";
 
 const INK = "leading-none [text-box:trim-both_ex_alphabetic]";
 const SLOT =
@@ -26,16 +27,24 @@ function GhostU({ id, rotate }: { id: string; rotate: number }) {
 
 export function WordmarkClearspace() {
   const reduced = Boolean(useReducedMotion());
-  const [inSlots, setInSlots] = useState(reduced);
+  const [frame, seen] = useInViewOnce<HTMLDivElement>();
+  const [inSlots, setInSlots] = useState(false);
 
   useEffect(() => {
-    if (reduced) return;
+    if (!seen) return;
+    if (reduced) {
+      setInSlots(true);
+      return;
+    }
     const id = setTimeout(() => setInSlots(true), 200);
     return () => clearTimeout(id);
-  }, [reduced]);
+  }, [reduced, seen]);
 
   return (
-    <div className="flex items-center justify-center overflow-hidden rounded-lg border border-border bg-surface p-10 text-4xl sm:text-5xl">
+    <div
+      ref={frame}
+      className="flex items-center justify-center overflow-hidden rounded-lg border border-border bg-surface p-10 text-4xl sm:text-5xl"
+    >
       <span className="relative rounded-md border border-accent/30 border-dashed p-[1ex] font-extrabold tracking-tight">
         <span className={`${SLOT} left-0`} aria-hidden>
           {inSlots && <GhostU id="clearspace-l" rotate={-90} />}

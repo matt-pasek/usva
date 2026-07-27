@@ -43,6 +43,15 @@ const PLACES = [
       "anything square, or under 24px",
     ],
   },
+  {
+    mark: "usva. + railo",
+    rule: "only off our own surfaces",
+    places: [
+      "marketing, launch art, slides",
+      "merch, stickers, booths",
+      "anywhere the name is still new",
+    ],
+  },
 ];
 
 export default function IdentityChapter() {
@@ -65,21 +74,26 @@ export default function IdentityChapter() {
           <Heading>which mark, when</Heading>
           <p className="text-muted text-sm">
             railo is a stand-in, not a companion. the two are not set side by
-            side in usva's own chrome; that lockup is for surfaces we do not
-            control, where the mark has to arrive already explained.
+            side in usva's own chrome, where the name is already on the page. in
+            marketing they go together: on a surface that has never met us, the
+            name is the thing nobody remembers and the mark is what carries it
+            back.
           </p>
         </div>
-        <div className="grid gap-3 sm:grid-cols-2">
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {PLACES.map(({ mark, rule, places }) => (
             <div
               key={mark}
               className="flex flex-col gap-5 rounded-lg border border-border bg-surface p-6"
             >
               <div className="grid h-20 place-items-center rounded-md bg-sunken">
-                {mark === "usva." ? (
-                  <Wordmark className="text-4xl text-ink" />
-                ) : (
-                  <Railo className="size-12" />
+                {mark === "usva." && <Wordmark className="text-4xl text-ink" />}
+                {mark === "railo" && <Railo className="size-12" />}
+                {mark === "usva. + railo" && (
+                  <span className="flex items-center gap-3">
+                    <Railo className="size-9" />
+                    <Wordmark className="text-3xl text-ink" />
+                  </span>
                 )}
               </div>
               <div className="flex flex-col gap-1">

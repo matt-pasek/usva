@@ -5,8 +5,11 @@ import {
   clearspace,
   crescentWidth,
   lensWidth,
+  RAILO_BOX,
   RAILO_CUTS,
+  railoInkBox,
   railoLens,
+  railoLensBox,
   railoPaths,
 } from "./railo-geometry";
 
@@ -68,6 +71,46 @@ describe("railo geometry", () => {
     }
   });
 
+  it("boxes the lens exactly, one lens width wide", () => {
+    for (const cut of Object.values(RAILO_CUTS)) {
+      const box = railoLensBox(cut);
+      expect(box.width).toBe(lensWidth(cut));
+
+      const points = pointsOf(railoLens(cut));
+      const xs = points.map(([x]) => x);
+      const ys = points.map(([, y]) => y);
+
+      expect(Math.min(...xs)).toBeCloseTo(box.x, 3);
+      expect(Math.max(...xs)).toBeCloseTo(box.x + box.width, 3);
+      expect(Math.min(...ys)).toBeCloseTo(box.y, 3);
+      expect(Math.max(...ys)).toBeCloseTo(box.y + box.height, 3);
+    }
+  });
+
+  it("boxes the ink to the painted fields", () => {
+    for (const cut of Object.values(RAILO_CUTS)) {
+      const box = railoInkBox(cut);
+      const painted = Object.values(railoPaths(cut)).flatMap(pointsOf);
+
+      expect(Math.min(...painted.map(([x]) => x))).toBeCloseTo(box.x, 3);
+      expect(Math.max(...painted.map(([x]) => x))).toBeCloseTo(
+        box.x + box.width,
+        3,
+      );
+      expect(Math.min(...painted.map(([, y]) => y))).toBeCloseTo(box.y, 3);
+      expect(Math.max(...painted.map(([, y]) => y))).toBeCloseTo(
+        box.y + box.height,
+        3,
+      );
+    }
+  });
+
+  it("bleeds the micro cut past the viewBox on both sides", () => {
+    const box = railoInkBox(RAILO_CUTS.micro);
+    expect(box.x).toBe(-1);
+    expect(box.x + box.width).toBe(RAILO_BOX + 1);
+  });
+
   it("keeps the shipped icon.svg on the micro cut", () => {
     const svg = readFileSync(join(__dirname, "..", "app", "icon.svg"), "utf8");
     const paths = railoPaths(RAILO_CUTS.micro);
@@ -76,7 +119,7 @@ describe("railo geometry", () => {
   });
 });
 
-function areaOf(d: string): number {
+function pointsOf(d: string): [number, number][] {
   const n = d.match(/-?[\d.]+/g)?.map(Number) ?? [];
   const at = (i: number): number => n[i] ?? Number.NaN;
   let [cx, cy] = [at(0), at(1)];
@@ -89,6 +132,11 @@ function areaOf(d: string): number {
     );
     [cx, cy] = [x, y];
   }
+  return points;
+}
+
+function areaOf(d: string): number {
+  const points = pointsOf(d);
 
   let sum = 0;
   for (let i = 0; i < points.length; i++) {

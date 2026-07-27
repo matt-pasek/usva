@@ -2,12 +2,17 @@
 
 import { useState } from "react";
 import { RailoMasked } from "@/components/railo-motion";
+import { useInViewOnce } from "@/lib/use-in-view-once";
 
 export function RailoAnatomy() {
   const [run, setRun] = useState(0);
+  const [frame, seen] = useInViewOnce<HTMLDivElement>(0.6);
 
   return (
-    <div className="flex flex-col gap-4 rounded-lg border border-border bg-surface p-6">
+    <div
+      ref={frame}
+      className="flex flex-col gap-4 rounded-lg border border-border bg-surface p-6"
+    >
       <div className="flex items-baseline gap-3">
         <span className="font-semibold text-ink">the mark builds itself</span>
         <span className="text-muted text-sm">900ms, once</span>
@@ -20,7 +25,9 @@ export function RailoAnatomy() {
         </button>
       </div>
       <div className="grid min-h-52 place-items-center rounded-md bg-sunken p-8">
-        <RailoMasked key={run} animation="reveal" className="size-32" />
+        {seen && (
+          <RailoMasked key={run} animation="reveal" className="size-32" />
+        )}
       </div>
     </div>
   );

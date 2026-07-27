@@ -48,11 +48,17 @@ function MaskedFields({
     </g>
   );
 
+  /* The fields start a full 56 units outside the viewBox, and an svg viewport
+   * clips its own overflow, so the reveal arrives sliced down one side. */
   return (
     <svg
       aria-hidden="true"
       viewBox={RAILO_VIEW_BOX}
-      className={cn("size-7 shrink-0", className)}
+      className={cn(
+        "size-7 shrink-0",
+        animation === "reveal" && "overflow-visible",
+        className,
+      )}
     >
       <mask id={`${id}-a`} {...REGION}>
         <rect {...ROOM} fill="black" />

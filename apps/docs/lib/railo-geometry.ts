@@ -51,6 +51,36 @@ export function railoPaths(cut: RailoCut): { left: string; right: string } {
 
 export const RAILO_VIEW_BOX = `0 0 ${RAILO_BOX} ${RAILO_BOX}`;
 
+export function railoInkBox(cut: RailoCut): {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+} {
+  const x = round(cut.left - cut.radius);
+  return {
+    x,
+    y: round(CENTRE_Y - cut.radius),
+    width: round(cut.right + cut.radius - x),
+    height: round(2 * cut.radius),
+  };
+}
+
+export function railoLensBox(cut: RailoCut): {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+} {
+  const { top, bottom } = crossings(cut);
+  return {
+    x: round(cut.right - cut.radius),
+    y: top,
+    width: lensWidth(cut),
+    height: round(bottom - top),
+  };
+}
+
 export function railoLens(cut: RailoCut): string {
   const { x, top, bottom } = crossings(cut);
   const r = cut.radius;
