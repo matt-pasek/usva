@@ -68,6 +68,7 @@ export * from "./primitives/announcement/index.js";
 export * from "./primitives/avatar/index.js";
 export * from "./primitives/badge/index.js";
 export * from "./primitives/button/index.js";
+export * from "./primitives/callout/index.js";
 export * from "./primitives/card/index.js";
 export * from "./primitives/checkbox/index.js";
 export * from "./primitives/chip/index.js";

@@ -79,6 +79,13 @@ const primitives = seed("primitive", [
     provenance: ["personal-website", "sisu-plus"],
   },
   {
+    slug: "callout",
+    name: "Callout",
+    summary:
+      "a note that stays put. a toast leaves on its own, this one waits to be read.",
+    provenance: [],
+  },
+  {
     slug: "card",
     name: "Card",
     summary:
