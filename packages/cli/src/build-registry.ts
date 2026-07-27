@@ -1,5 +1,11 @@
-import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
-import { dirname, resolve } from "node:path";
+import {
+  existsSync,
+  mkdirSync,
+  readdirSync,
+  readFileSync,
+  writeFileSync,
+} from "node:fs";
+import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { rewriteImports } from "./rewrite-imports.js";
 
@@ -24,99 +30,25 @@ export const MOTION = resolve(here, "../../usva/src/motion");
 export const ATMOSPHERES = resolve(here, "../../usva/src/atmospheres");
 const OUT = resolve(here, "../../../registry/r");
 
-export const NAMES = [
-  "announcement",
-  "avatar",
-  "button",
-  "badge",
-  "callout",
-  "card",
-  "checkbox",
-  "chip",
-  "code-snippet",
-  "color-field",
-  "dialog",
-  "drawer",
-  "dropdown-menu",
-  "hint-popover",
-  "input",
-  "knob",
-  "label",
-  "list",
-  "loading-overlay",
-  "log-line",
-  "notification-badge",
-  "popover",
-  "progress",
-  "radio",
-  "select",
-  "skeleton",
-  "slider",
-  "spinner",
-  "stat-chip",
-  "switch",
-  "tabs",
-  "terminal",
-  "textarea",
-  "toast",
-  "toggle-chip",
-  "tooltip",
-] as const;
+/**
+ * A component ships through the registry by having a `registry.ts` next to its
+ * source. Nothing lists the names, so adding a component cannot forget to.
+ */
+export const discover = (root: string): string[] =>
+  readdirSync(root, { withFileTypes: true })
+    .filter(
+      (entry) =>
+        entry.isDirectory() &&
+        existsSync(join(root, entry.name, "registry.ts")),
+    )
+    .map((entry) => entry.name)
+    .sort();
 
-export const PATTERN_NAMES = [
-  "bento-grid",
-  "case-study-hero",
-  "checklist-card",
-  "cta-banner",
-  "dashboard-grid",
-  "disclosure-row",
-  "empty-state",
-  "entity-card",
-  "feature-carousel",
-  "field-group",
-  "footer",
-  "hero-split",
-  "mockup-showcase",
-  "page-header",
-  "panel",
-  "progress-row",
-  "pullquote",
-  "roadmap-timeline",
-  "section-heading",
-  "section-label",
-  "segmented-control",
-  "stat-bento",
-  "stat-card",
-  "step-chips",
-  "step-list",
-  "stripe-card",
-  "toolbar",
-] as const;
-
-export const SULA_NAMES = [
-  "sula-core",
-  "sula-fab",
-  "sula-field",
-  "sula-frame",
-  "sula-loader",
-  "sula-motion",
-  "sula-nav",
-  "sula-segmented",
-] as const;
-
-export const MOTION_NAMES = ["page-transition", "reveal"] as const;
-
-export const ATMOSPHERE_NAMES = [
-  "atmospheres-core",
-  "hehku",
-  "kajastus",
-  "kuulto",
-  "kynnos",
-  "loimu",
-  "routa",
-  "utu",
-  "vare",
-] as const;
+export const NAMES = discover(PRIMITIVES);
+export const PATTERN_NAMES = discover(PATTERNS);
+export const SULA_NAMES = discover(SULA);
+export const MOTION_NAMES = discover(MOTION);
+export const ATMOSPHERE_NAMES = discover(ATMOSPHERES);
 
 async function emit(dir: string, name: string): Promise<void> {
   const mod = (await import(`${dir}/${name}/registry.ts`)) as Record<
