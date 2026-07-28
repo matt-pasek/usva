@@ -10,6 +10,7 @@ import xml from "highlight.js/lib/languages/xml";
 import * as React from "react";
 import { cn } from "../../cn.js";
 import { Button } from "../button/button.js";
+import { tsx } from "./tsx-grammar.js";
 
 hljs.registerLanguage("typescript", typescript);
 hljs.registerLanguage("javascript", javascript);
@@ -18,6 +19,7 @@ hljs.registerLanguage("bash", bash);
 hljs.registerLanguage("css", css);
 hljs.registerLanguage("xml", xml);
 hljs.registerLanguage("markdown", markdown);
+hljs.registerLanguage("tsx", tsx);
 
 /**
  * Any grammar usva bundles (`tsx`, `ts`, `jsx`, `js`, `json`, `bash`, `css`,

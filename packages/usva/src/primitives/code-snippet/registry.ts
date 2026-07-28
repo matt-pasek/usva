@@ -9,6 +9,7 @@ export const codeSnippetRegistry = {
   ],
   registryDependencies: ["button"],
   files: [
+    { path: "tsx-grammar.ts", target: "components/ui/tsx-grammar.ts" },
     { path: "code-snippet.tsx", target: "components/ui/code-snippet.tsx" },
   ],
 } as const;
