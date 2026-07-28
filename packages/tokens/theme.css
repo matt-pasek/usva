@@ -77,10 +77,10 @@
    Each carries the duration tier it usually wants, so a bare `transition-tint`
    is never a 0s no-op; a later duration or ease class still overrides, since
    those utilities are emitted after these. Assign by what is moving:
-     tint     colour only            — hover/focus recolour
-     control  colour + depth + scale — interactive feedback
-     layout   size and position      — travelling indicators
-     enter    popup enter/exit       — opacity + lift + blur
+     tint     colour only            : hover/focus recolour
+     control  colour + depth + scale : interactive feedback
+     layout   size and position      : travelling indicators
+     enter    popup enter/exit       : opacity + lift + blur
    Each self-guards reduced motion, so no call site has to remember
    `motion-reduce:transition-none`. */
 @utility transition-tint {
@@ -123,16 +123,16 @@
 @utility shadow-floating { box-shadow: var(--usva-inset-hairline), var(--usva-shadow-floating); }
 @utility shadow-overlay  { box-shadow: var(--usva-inset-hairline), var(--usva-shadow-overlay); }
 
-/* Colored accent bloom — the signature "faint glow" on interactive/live parts */
+/* Colored accent bloom: the signature "faint glow" on interactive/live parts */
 @utility glow-accent        { box-shadow: var(--usva-glow-accent); }
 @utility glow-accent-strong { box-shadow: var(--usva-glow-accent-strong); }
 
-/* Glow ring — the shared selection/energy idiom: crisp accent ring hugging the
+/* Glow ring, the shared selection/energy idiom: crisp accent ring hugging the
    edge, plus (in bold skins) an outer bloom. One shadow, swaps cleanly with the
    elevation levels above. */
 @utility glow-ring { box-shadow: var(--usva-glow-ring); }
 
-/* Rim light — a 1px gradient catching the top edge of a raised surface, as if
+/* Rim light: a 1px gradient catching the top edge of a raised surface, as if
    lit from above. Skins tint it: bold themes tint toward the accent, quiet
    themes keep it near-white and faint. */
 @utility rim-light {
@@ -154,21 +154,21 @@
   }
 }
 
-/* Radial accent wash — atmosphere instead of flat fills. Themes define the
+/* Radial accent wash: atmosphere instead of flat fills. Themes define the
    full gradient stack (bold skins run a dual accent/accent-alt wash). */
 @utility wash-accent {
   background-image: var(--usva-wash-accent);
   background-repeat: no-repeat;
 }
 
-/* Inner-lit accent fill — solid surfaces (primary buttons) read as a material
+/* Inner-lit accent fill: solid surfaces (primary buttons) read as a material
    catching light, not a flat swatch. */
 @utility bg-gradient-accent { background-image: var(--usva-gradient-accent); }
 
-/* Focus recipe — one utility, applied via focus-visible: */
+/* Focus recipe: one utility, applied via focus-visible */
 @utility ring-focus { box-shadow: var(--usva-focus); }
 
-/* Gradient hairline — the SectionLabel motif; put on a 1px-tall element.
+/* Gradient hairline, the SectionLabel motif; put on a 1px-tall element.
    Strength is a theme dial: bold skins glow, quiet skins whisper. */
 @utility hairline-accent {
   background-image: linear-gradient(
@@ -178,7 +178,7 @@
   );
 }
 
-/* Shared edge glow — one light source lighting the borders it passes near.
+/* Shared edge glow: one light source lighting the borders it passes near.
    The host writes the pointer position in each element's own pixels
    (--edge-x/--edge-y) plus an on/off intensity (--edge-o, inherited so a grid
    can fade the whole set at once). A fixed-radius radial centered on the
@@ -234,7 +234,7 @@
   .bento-spotlight { display: none; }
 }
 
-/* Signature enter animation — fade up with a short blur-in */
+/* Signature enter animation: fade up with a short blur-in */
 @keyframes usva-reveal-up {
   from { opacity: 0; transform: translateY(12px); filter: blur(4px); }
   to   { opacity: 1; transform: none; filter: blur(0); }
@@ -246,7 +246,7 @@
   .animate-reveal { animation: none; }
 }
 
-/* Live pulse — the green heartbeat. Reserved for things that are actually
+/* Live pulse, the green heartbeat. Reserved for things that are actually
    alive right now (live status, current step); never decorative.
    The halo is a scaled-and-faded pseudo behind the dot rather than an animated
    box-shadow spread: same ring, but transform/opacity only, so a list of live
@@ -273,7 +273,7 @@
   .animate-live-pulse::after { animation: none; display: none; }
 }
 
-/* Toast countdown — a bar that drains over the toast's lifetime. scaleX on the
+/* Toast countdown: a bar that drains over the toast's lifetime. scaleX on the
    GPU; pauses when the toast is hovered (sync with Base UI's timer pause). */
 @keyframes usva-toast-countdown {
   from { transform: scaleX(1); }
@@ -287,7 +287,7 @@
   .animate-toast-countdown { animation: none; }
 }
 
-/* Carousel progress — a hairline that fills left→right over the step's
+/* Carousel progress: a hairline that fills left→right over the step's
    lifetime. Pure CSS so `animation-play-state: paused` freezes it exactly
    where it is (no snap-to-end), and `animationend` advances the carousel. */
 @keyframes usva-progress-fill {
@@ -303,7 +303,7 @@
   .animate-progress-fill { animation: none; }
 }
 
-/* Loader idioms — the non-ring spinners. Staggered delays on the children
+/* Loader idioms, the non-ring spinners. Staggered delays on the children
    give the traveling wave; both honor reduced motion. */
 @keyframes usva-loader-pulse {
   0%, 100% { opacity: 0.3; transform: scale(0.7); }
@@ -342,7 +342,7 @@
   .animate-shimmer { animation: none; }
 }
 
-/* Skeleton mask — greys every leaf element (no element children: text runs,
+/* Skeleton mask: greys every leaf element (no element children: text runs,
    buttons, images, icons) into a shaped block while containers keep their
    layout, so a SkeletonMirror placeholder mirrors the real markup. One class
    (not a stack of Tailwind arbitrary variants) so `cn`/tailwind-merge can't
@@ -367,7 +367,7 @@
   }
 }
 
-/* Skeleton sheen — standalone blocks spin one local arc. SkeletonGroup moves
+/* Skeleton sheen: standalone blocks spin one local arc. SkeletonGroup moves
    one shared band across every block, still clipped to each 1px outer edge. */
 @property --usva-sheen-angle {
   syntax: "<angle>";
@@ -453,7 +453,7 @@
 
 .hljs-comment,
 .hljs-quote {
-  color: var(--usva-muted);
+  color: var(--usva-code-comment, var(--usva-muted));
   font-style: italic;
 }
 

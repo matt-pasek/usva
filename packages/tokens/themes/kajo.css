@@ -24,8 +24,9 @@
   --usva-border: #221c30;
   --usva-border-strong: #3a3350;
   --usva-ring: #a78bfa;
+  --usva-code-comment: #7c8a87;
 
-  /* Elevation — 3-layer recipe (contact + hairline rim ring + large diffuse
+  /* Elevation: 3-layer recipe (contact + hairline rim ring + large diffuse
      ambient), kept soft and cinematic. Bold skin. */
   --usva-inset-hairline: inset 0 1px 0 rgba(255, 255, 255, 0.06);
   --usva-shadow-raised: 0 1px 2px rgba(0, 0, 0, 0.4),
@@ -35,19 +36,19 @@
   --usva-shadow-overlay: 0 8px 24px rgba(0, 0, 0, 0.38),
     0 0 0 1px rgba(255, 255, 255, 0.06), 0 30px 90px rgba(0, 0, 0, 0.46);
 
-  /* Colored accent glow — the signature bloom on interactive / live elements */
+  /* Colored accent glow: the signature bloom on interactive / live elements */
   --usva-glow-accent: 0 0 24px -6px color-mix(in srgb, var(--usva-accent) 55%, transparent);
   --usva-glow-accent-strong: 0 0 18px -2px color-mix(in srgb, var(--usva-accent) 70%, transparent);
 
-  /* Glow ring — crisp accent ring hugging the edge + outer bloom (showy) */
+  /* Glow ring: crisp accent ring hugging the edge + outer bloom (showy) */
   --usva-glow-ring: inset 0 1px 0 rgba(255, 255, 255, 0.25),
     0 0 0 1px color-mix(in srgb, var(--usva-accent) 55%, transparent),
     0 0 26px -4px color-mix(in srgb, var(--usva-accent) 55%, transparent);
 
-  /* Rim light — violet-tinted top edge, clearly present */
+  /* Rim light: violet-tinted top edge, clearly present */
   --usva-rim-light: color-mix(in srgb, var(--usva-accent) 45%, rgba(255, 255, 255, 0.2));
 
-  /* Radial wash — the dual-accent atmosphere: violet top-right, green
+  /* Radial wash, the dual-accent atmosphere: violet top-right, green
      bottom-left (the footer motif, generalized) */
   --usva-wash-accent: radial-gradient(
       120% 90% at 84% -6%,
@@ -72,12 +73,12 @@
   --usva-hairline-strength: 45%;
   --usva-live: var(--usva-accent-alt);
 
-  /* Focus — ring + soft halo + accent bloom (distinctive) */
+  /* Focus: ring + soft halo + accent bloom (distinctive) */
   --usva-focus: 0 0 0 1px color-mix(in srgb, var(--usva-ring) 60%, transparent),
     0 0 0 4px color-mix(in srgb, var(--usva-ring) 22%, transparent),
     0 0 20px -2px color-mix(in srgb, var(--usva-ring) 45%, transparent);
 
-  /* Motion — soft spring is the signature; ease-spring settles with a faint
+  /* Motion: soft spring is the signature; ease-spring settles with a faint
      overshoot (soft spring 90/22/0.8, approximated as linear()) */
   --usva-ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
   --usva-ease-emphasis: cubic-bezier(0.25, 0, 0, 1);
@@ -86,7 +87,7 @@
     1.0038 32.5%, 1.0361 41.3%, 1.0384 52%, 1.0176 68.9%, 1.0032 84.2%, 1
   );
 
-  /* Motion — languid; the showy pole. Stretched past the baseline so the
+  /* Motion: languid; the showy pole. Stretched past the baseline so the
      spring overshoot has room to read. */
   --usva-duration-fast: 160ms;
   --usva-duration-base: 220ms;
