@@ -97,7 +97,7 @@ export default function VarePage() {
 
       <AcquireSection
         registryName="vare"
-        usage={`import { Vare } from "@matt-pasek/usva/atmospheres/vare";
+        usage={`import { Vare } from "usva/atmospheres/vare";
 
 <Vare className="min-h-svh">
   <Hero />

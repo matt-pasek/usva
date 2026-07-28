@@ -1,10 +1,10 @@
 "use client";
-import { PageTransition } from "@matt-pasek/usva/motion/page-transition";
-import { SegmentedControl } from "@matt-pasek/usva/patterns/segmented-control";
-import { LogLine, LogList } from "@matt-pasek/usva/primitives/log-line";
-import { StatChip } from "@matt-pasek/usva/primitives/stat-chip";
-import { Switch } from "@matt-pasek/usva/primitives/switch";
 import * as React from "react";
+import { PageTransition } from "usva/motion/page-transition";
+import { SegmentedControl } from "usva/patterns/segmented-control";
+import { LogLine, LogList } from "usva/primitives/log-line";
+import { StatChip } from "usva/primitives/stat-chip";
+import { Switch } from "usva/primitives/switch";
 
 const ROUTES = [
   { value: "overview", label: "Overview" },

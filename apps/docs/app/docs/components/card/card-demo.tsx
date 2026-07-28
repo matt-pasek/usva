@@ -1,5 +1,6 @@
 "use client";
-import { Button } from "@matt-pasek/usva/primitives/button";
+import { Zap } from "lucide-react";
+import { Button } from "usva/primitives/button";
 import {
   Card,
   CardActions,
@@ -10,8 +11,7 @@ import {
   CardHeader,
   CardIcon,
   CardTitle,
-} from "@matt-pasek/usva/primitives/card";
-import { Zap } from "lucide-react";
+} from "usva/primitives/card";
 import { Playground } from "@/components/docs/playground";
 
 const SURFACES = ["elevated", "flat", "glass", "outline"] as const;
@@ -66,7 +66,7 @@ const snippetFor = (c: Config): string => {
     <CardTitle>Production build</CardTitle>
   </CardHeader>`;
 
-  return `import { Card, CardActions, CardBadge, CardBody, CardEyebrow, CardFooter, CardHeader, CardIcon, CardTitle } from "@matt-pasek/usva/primitives/card";
+  return `import { Card, CardActions, CardBadge, CardBody, CardEyebrow, CardFooter, CardHeader, CardIcon, CardTitle } from "usva/primitives/card";
 
 <Card${attrLine(c)}>
 ${header}

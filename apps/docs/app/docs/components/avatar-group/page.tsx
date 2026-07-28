@@ -76,7 +76,7 @@ export default function AvatarGroupPage() {
 
       <AcquireSection
         registryName="avatar"
-        usage={`import { Avatar, AvatarGroup } from "@matt-pasek/usva/primitives/avatar";
+        usage={`import { Avatar, AvatarGroup } from "usva/primitives/avatar";
 
 <AvatarGroup max={4} label="+128 students">
   <Avatar alt="Ada" fallback="AL" />

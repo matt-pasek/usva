@@ -77,8 +77,8 @@ export default function FieldGroupPage() {
 
       <AcquireSection
         registryName="field-group"
-        usage={`import { FieldControl, FieldDescription, FieldError, FieldGroup, FieldLabel } from "@matt-pasek/usva/patterns/field-group";
-import { Input } from "@matt-pasek/usva/primitives/input";
+        usage={`import { FieldControl, FieldDescription, FieldError, FieldGroup, FieldLabel } from "usva/patterns/field-group";
+import { Input } from "usva/primitives/input";
 
 <FieldGroup>
   <FieldLabel>Email address</FieldLabel>

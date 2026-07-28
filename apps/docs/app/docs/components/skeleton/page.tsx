@@ -1,5 +1,5 @@
-import { Skeleton, SkeletonGroup } from "@matt-pasek/usva/primitives/skeleton";
 import type { Metadata } from "next";
+import { Skeleton, SkeletonGroup } from "usva/primitives/skeleton";
 import { AcquireSection } from "@/components/docs/acquire-section";
 import { ComponentDoc } from "@/components/docs/component-doc";
 import { DemoPanel } from "@/components/docs/demo-panel";
@@ -84,7 +84,7 @@ export default function SkeletonPage() {
 
       <AcquireSection
         registryName="skeleton"
-        usage={`import { Skeleton, SkeletonGroup } from "@matt-pasek/usva/primitives/skeleton";
+        usage={`import { Skeleton, SkeletonGroup } from "usva/primitives/skeleton";
 
 <SkeletonGroup className="flex flex-col gap-3">
   <Skeleton variant="circle" width={40} height={40} />

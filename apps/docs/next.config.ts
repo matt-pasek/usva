@@ -14,7 +14,7 @@ const securityHeaders = [
 ];
 
 const config: NextConfig = {
-  transpilePackages: ["@matt-pasek/usva", "@matt-pasek/usva-tokens"],
+  transpilePackages: ["usva", "usva-tokens"],
   async redirects() {
     return [
       {

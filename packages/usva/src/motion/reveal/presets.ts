@@ -1,4 +1,4 @@
-import { tokens } from "@matt-pasek/usva-tokens";
+import { tokens } from "usva-tokens";
 
 export const springs = tokens.motion.spring;
 

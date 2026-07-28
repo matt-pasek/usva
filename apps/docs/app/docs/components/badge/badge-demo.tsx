@@ -1,5 +1,5 @@
 "use client";
-import { Badge } from "@matt-pasek/usva/primitives/badge";
+import { Badge } from "usva/primitives/badge";
 import { Playground } from "@/components/docs/playground";
 
 const TONES = [
@@ -39,7 +39,7 @@ const snippetFor = (c: Config): string => {
   ]
     .filter(Boolean)
     .join(" ");
-  return `import { Badge } from "@matt-pasek/usva/primitives/badge";
+  return `import { Badge } from "usva/primitives/badge";
 
 <Badge${attrs ? ` ${attrs}` : ""}>${c.label}</Badge>`;
 };

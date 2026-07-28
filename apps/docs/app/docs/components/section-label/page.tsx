@@ -1,5 +1,5 @@
-import { SectionLabel } from "@matt-pasek/usva/patterns/section-label";
 import type { Metadata } from "next";
+import { SectionLabel } from "usva/patterns/section-label";
 import { AcquireSection } from "@/components/docs/acquire-section";
 import { ComponentDoc } from "@/components/docs/component-doc";
 import { DemoPanel } from "@/components/docs/demo-panel";
@@ -99,7 +99,7 @@ export default function SectionLabelPage() {
 
       <AcquireSection
         registryName="section-label"
-        usage={`import { SectionLabel } from "@matt-pasek/usva/patterns/section-label";
+        usage={`import { SectionLabel } from "usva/patterns/section-label";
 
 <SectionLabel index="01" title="Projects" aside="6 total" />`}
       />

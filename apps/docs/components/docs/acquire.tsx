@@ -1,7 +1,7 @@
 "use client";
-import { SegmentedControl } from "@matt-pasek/usva/patterns/segmented-control";
-import { CodeSnippet } from "@matt-pasek/usva/primitives/code-snippet";
-import { Terminal } from "@matt-pasek/usva/primitives/terminal";
+import { SegmentedControl } from "usva/patterns/segmented-control";
+import { CodeSnippet } from "usva/primitives/code-snippet";
+import { Terminal } from "usva/primitives/terminal";
 import { trackCopy } from "@/lib/analytics/track-copy";
 import { PACKAGE_NAME, registryUrl } from "@/lib/site";
 import { useInstallMode } from "./install-mode";

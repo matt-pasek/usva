@@ -13,7 +13,10 @@ export interface TerminalProps
   onCopied?: (value: string) => void;
 }
 
-/* Scoped packages and URLs are what the eye scans a command for. */
+/* Scoped packages and URLs are what the eye scans a command for. Unscoped
+   package names have no such marker, so an install verb makes the words after
+   it hot too, which is the only way `bun add usva` reads like `bun add @scope/x`. */
+const INSTALL_VERBS = new Set(["add", "install", "i"]);
 const isHot = (word: string) => word.startsWith("@") || /^https?:/.test(word);
 
 export const Terminal = React.forwardRef<HTMLDivElement, TerminalProps>(
@@ -23,8 +26,14 @@ export const Terminal = React.forwardRef<HTMLDivElement, TerminalProps>(
   ) => {
     const words: { text: string; hot: boolean; at: number }[] = [];
     let at = 0;
+    let installing = false;
     for (const text of command.split(" ")) {
-      words.push({ text, hot: isHot(text), at });
+      words.push({
+        text,
+        hot: isHot(text) || (installing && !text.startsWith("-")),
+        at,
+      });
+      if (INSTALL_VERBS.has(text)) installing = true;
       at += text.length + 1;
     }
 

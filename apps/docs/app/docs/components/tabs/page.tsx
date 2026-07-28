@@ -88,7 +88,7 @@ export default function TabsPage() {
 
       <AcquireSection
         registryName="tabs"
-        usage={`import { Tabs } from "@matt-pasek/usva/primitives/tabs";
+        usage={`import { Tabs } from "usva/primitives/tabs";
 
 <Tabs defaultValue="account">
   <Tabs.List>

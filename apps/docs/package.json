@@ -14,8 +14,8 @@
     "hero": "bun scripts/generate-hero.ts"
   },
   "dependencies": {
-    "@matt-pasek/usva": "workspace:*",
-    "@matt-pasek/usva-tokens": "workspace:*",
+    "usva": "workspace:*",
+    "usva-tokens": "workspace:*",
     "@upstash/redis": "^1.38.0",
     "@vercel/analytics": "^2.0.1",
     "@vercel/speed-insights": "^2.0.0",

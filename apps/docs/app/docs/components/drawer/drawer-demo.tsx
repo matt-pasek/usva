@@ -1,10 +1,10 @@
 "use client";
-import { Button } from "@matt-pasek/usva/primitives/button";
+import { Button } from "usva/primitives/button";
 import {
   Drawer,
   type DrawerSide,
   type DrawerSize,
-} from "@matt-pasek/usva/primitives/drawer";
+} from "usva/primitives/drawer";
 import { Playground } from "@/components/docs/playground";
 
 const SIDES = ["top", "right", "bottom", "left"] as const;
@@ -53,8 +53,8 @@ const snippetFor = (c: Config): string => {
   ]
     .filter(Boolean)
     .join(" ");
-  return `import { Button } from "@matt-pasek/usva/primitives/button";
-import { Drawer } from "@matt-pasek/usva/primitives/drawer";
+  return `import { Button } from "usva/primitives/button";
+import { Drawer } from "usva/primitives/drawer";
 
 <Drawer>
   <Drawer.Trigger render={<Button>Open</Button>} />

@@ -1,8 +1,8 @@
 "use client";
-import { cn } from "@matt-pasek/usva/cn";
-import { ColorField } from "@matt-pasek/usva/primitives/color-field";
-import { Slider } from "@matt-pasek/usva/primitives/slider";
 import type { ReactNode } from "react";
+import { cn } from "usva/cn";
+import { ColorField } from "usva/primitives/color-field";
+import { Slider } from "usva/primitives/slider";
 import { Lab } from "./lab";
 
 export function ControlsHead({ note }: { note?: ReactNode }) {

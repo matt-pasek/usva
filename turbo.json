@@ -3,7 +3,7 @@
   "tasks": {
     "build": { "dependsOn": ["^build"], "outputs": ["dist/**"] },
     "docs#build": {
-      "dependsOn": ["^build", "@matt-pasek/usva-cli#registry"],
+      "dependsOn": ["^build", "usva-cli#registry"],
       "outputs": [
         ".next/**",
         "!.next/cache/**",

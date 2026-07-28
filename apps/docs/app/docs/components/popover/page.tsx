@@ -83,7 +83,7 @@ export default function PopoverPage() {
 
       <AcquireSection
         registryName="popover"
-        usage={`import { Popover } from "@matt-pasek/usva/primitives/popover";
+        usage={`import { Popover } from "usva/primitives/popover";
 
 <Popover>
   <Popover.Trigger>Open</Popover.Trigger>

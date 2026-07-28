@@ -1,4 +1,4 @@
-import { cn } from "@matt-pasek/usva/cn";
+import { cn } from "usva/cn";
 
 /**
  * The usva wordmark, one source. The letters plus the load-bearing period, which

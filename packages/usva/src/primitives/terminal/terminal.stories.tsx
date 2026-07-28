@@ -11,7 +11,7 @@ const meta: Meta<typeof Terminal> = {
     copyable: { control: { type: "boolean" } },
   },
   args: {
-    command: "bun add @matt-pasek/usva",
+    command: "bun add usva",
     prompt: "$",
     copyable: true,
   },

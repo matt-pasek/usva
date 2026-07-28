@@ -1,10 +1,10 @@
 "use client";
 
-import { Button } from "@matt-pasek/usva/primitives/button";
-import { Terminal } from "@matt-pasek/usva/primitives/terminal";
-import dtcg from "@matt-pasek/usva-tokens/tokens.dtcg.json";
-import studio from "@matt-pasek/usva-tokens/tokens.studio.json";
 import { Download } from "lucide-react";
+import { Button } from "usva/primitives/button";
+import { Terminal } from "usva/primitives/terminal";
+import dtcg from "usva-tokens/tokens.dtcg.json";
+import studio from "usva-tokens/tokens.studio.json";
 
 function downloadJson(name: string, data: unknown) {
   const blob = new Blob([JSON.stringify(data, null, 2)], {
@@ -64,10 +64,7 @@ export function TokenDownloads() {
             theme.css and both theme files ship here.
           </p>
         </div>
-        <Terminal
-          command="bun add @matt-pasek/usva-tokens"
-          className="w-full sm:w-auto"
-        />
+        <Terminal command="bun add usva-tokens" className="w-full sm:w-auto" />
       </div>
     </div>
   );

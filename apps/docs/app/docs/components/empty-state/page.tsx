@@ -73,8 +73,8 @@ export default function EmptyStatePage() {
 
       <AcquireSection
         registryName="empty-state"
-        usage={`import { EmptyState } from "@matt-pasek/usva/patterns/empty-state";
-import { Button } from "@matt-pasek/usva/primitives/button";
+        usage={`import { EmptyState } from "usva/patterns/empty-state";
+import { Button } from "usva/primitives/button";
 
 <EmptyState
   title="No projects yet"

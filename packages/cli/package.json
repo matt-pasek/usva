@@ -1,5 +1,5 @@
 {
-  "name": "@matt-pasek/usva-cli",
+  "name": "usva-cli",
   "version": "0.0.0",
   "type": "module",
   "private": true,

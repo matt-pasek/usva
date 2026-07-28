@@ -14,7 +14,7 @@ export const metadata: Metadata = pageMetadata(
   },
 );
 
-const usage = `import { RevealGroup } from "@matt-pasek/usva/motion/reveal";
+const usage = `import { RevealGroup } from "usva/motion/reveal";
 
 <RevealGroup variant="tick" className="grid grid-cols-3 gap-3">
   <StatCard />

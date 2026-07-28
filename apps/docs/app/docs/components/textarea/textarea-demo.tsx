@@ -1,5 +1,5 @@
 "use client";
-import { Textarea } from "@matt-pasek/usva/primitives/textarea";
+import { Textarea } from "usva/primitives/textarea";
 import { Playground } from "@/components/docs/playground";
 
 type Config = {
@@ -47,7 +47,7 @@ const snippetFor = (c: Config): string => {
   ]
     .filter(Boolean)
     .join(" ");
-  return `import { Textarea } from "@matt-pasek/usva/primitives/textarea";
+  return `import { Textarea } from "usva/primitives/textarea";
 
 <Textarea${attrs ? ` ${attrs}` : ""} />`;
 };

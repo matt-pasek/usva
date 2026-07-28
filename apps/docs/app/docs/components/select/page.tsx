@@ -85,7 +85,7 @@ export default function SelectPage() {
 
       <AcquireSection
         registryName="select"
-        usage={`import { Select } from "@matt-pasek/usva/primitives/select";
+        usage={`import { Select } from "usva/primitives/select";
 
 <Select onValueChange={(value) => setFruit(value)}>
   <Select.Trigger aria-label="Fruit">

@@ -1,5 +1,5 @@
-import { SectionHeading } from "@matt-pasek/usva/patterns/section-heading";
 import type { Metadata } from "next";
+import { SectionHeading } from "usva/patterns/section-heading";
 import { AcquireSection } from "@/components/docs/acquire-section";
 import { ComponentDoc } from "@/components/docs/component-doc";
 import { DemoPanel } from "@/components/docs/demo-panel";
@@ -91,7 +91,7 @@ export default function SectionHeadingPage() {
 
       <AcquireSection
         registryName="section-heading"
-        usage={`import { SectionHeading } from "@matt-pasek/usva/patterns/section-heading";
+        usage={`import { SectionHeading } from "usva/patterns/section-heading";
 
 <SectionHeading
   eyebrow="The problem"

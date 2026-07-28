@@ -1,5 +1,4 @@
 "use client";
-import { MockupShowcase } from "@matt-pasek/usva/patterns/mockup-showcase";
 import {
   type MotionValue,
   motion,
@@ -10,6 +9,7 @@ import {
 } from "motion/react";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import { MockupShowcase } from "usva/patterns/mockup-showcase";
 import { Scrub } from "./tiivistyma";
 
 const ink = "var(--usva-ink)";

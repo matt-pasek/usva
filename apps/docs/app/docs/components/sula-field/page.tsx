@@ -128,7 +128,7 @@ export default function SulaFieldPage() {
 
       <AcquireSection
         registryName="sula-field"
-        usage={`import { SulaField } from "@matt-pasek/usva/sula/sula-field";
+        usage={`import { SulaField } from "usva/sula/sula-field";
 
 <SulaField className="min-h-svh">
   <Hero />

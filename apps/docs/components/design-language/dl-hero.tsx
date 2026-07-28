@@ -1,9 +1,9 @@
 "use client";
 
-import { Kajastus } from "@matt-pasek/usva/atmospheres/kajastus";
-import { Button } from "@matt-pasek/usva/primitives/button";
 import { motion, useReducedMotion, type Variants } from "motion/react";
 import Link from "next/link";
+import { Kajastus } from "usva/atmospheres/kajastus";
+import { Button } from "usva/primitives/button";
 import { Wordmark } from "@/components/wordmark";
 import { lexeme } from "@/lib/lexicon";
 

@@ -14,8 +14,8 @@ body:
     attributes:
       label: Which package
       options:
-        - "@matt-pasek/usva"
-        - "@matt-pasek/usva-tokens"
+        - "usva"
+        - "usva-tokens"
         - registry (copied source via shadcn add)
         - the docs site
         - not sure

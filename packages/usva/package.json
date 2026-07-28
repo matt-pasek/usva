@@ -1,5 +1,5 @@
 {
-  "name": "@matt-pasek/usva",
+  "name": "usva",
   "version": "0.0.0",
   "type": "module",
   "license": "SEE LICENSE IN LICENSE.md",
@@ -610,7 +610,7 @@
   "dependencies": {
     "@base-ui/react": "^1.6.0",
     "@dnd-kit/core": "^6.3.1",
-    "@matt-pasek/usva-tokens": "workspace:*",
+    "usva-tokens": "workspace:*",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "highlight.js": "^11.11.1",
@@ -636,8 +636,8 @@
     "jsdom": "^29.1.1",
     "playwright": "^1.49.0",
     "pngjs": "^7.0.0",
-    "react": "^19",
-    "react-dom": "^19",
+    "react": "19.2.0",
+    "react-dom": "19.2.0",
     "storybook": "^10.5.5",
     "storybook-addon-pseudo-states": "^10.5.5",
     "vitest": "^2.1.0"

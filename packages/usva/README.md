@@ -1,4 +1,4 @@
-# @matt-pasek/usva
+# usva
 
 The components. A React design language in three themes, where kajo is atmospheric and dark, sisu is
 dense and quick, and savi is the light ground. One token vocabulary under all three.
@@ -6,10 +6,10 @@ dense and quick, and savi is the light ground. One token vocabulary under all th
 Docs and live demos: **[usva.build](https://usva.build)**.
 
 ```sh
-bun add @matt-pasek/usva @matt-pasek/usva-tokens
+bun add usva usva-tokens
 ```
 
-React 18 or 19. Tailwind v4. `@matt-pasek/usva-tokens` is not optional; it holds every value the
+React 18 or 19. Tailwind v4. `usva-tokens` is not optional; it holds every value the
 components resolve against.
 
 ## Setup
@@ -18,11 +18,11 @@ In your global stylesheet:
 
 ```css
 @import "tailwindcss";
-@import "@matt-pasek/usva-tokens/theme.css";
-@import "@matt-pasek/usva-tokens/themes/kajo.css";
-@import "@matt-pasek/usva-tokens/roles-safelist.css";
+@import "usva-tokens/theme.css";
+@import "usva-tokens/themes/kajo.css";
+@import "usva-tokens/roles-safelist.css";
 
-@source "../node_modules/@matt-pasek/usva/dist/**/*.js";
+@source "../node_modules/usva/dist/**/*.js";
 ```
 
 **The `@source` line is the one people miss.** Tailwind v4 only generates classes it has seen in a
@@ -40,9 +40,9 @@ Import from a component's own path. The package root exists, but reaching throug
 graph, including `motion` and `ogl`, into anything that touches one badge.
 
 ```tsx
-import { Button } from "@matt-pasek/usva/primitives/button";
-import { StatCard } from "@matt-pasek/usva/patterns/stat-card";
-import { cn } from "@matt-pasek/usva/cn";
+import { Button } from "usva/primitives/button";
+import { StatCard } from "usva/patterns/stat-card";
+import { cn } from "usva/cn";
 ```
 
 Every component is its own subpath export, in one of five layers:
@@ -62,8 +62,8 @@ server component.
 
 ```tsx
 "use client";
-import { Button, type ButtonStatus } from "@matt-pasek/usva/primitives/button";
-import { Card } from "@matt-pasek/usva/primitives/card";
+import { Button, type ButtonStatus } from "usva/primitives/button";
+import { Card } from "usva/primitives/card";
 import * as React from "react";
 
 export function SaveCard({ save }: { save: () => Promise<void> }) {

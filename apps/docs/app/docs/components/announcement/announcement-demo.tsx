@@ -1,5 +1,5 @@
 "use client";
-import { Announcement } from "@matt-pasek/usva/primitives/announcement";
+import { Announcement } from "usva/primitives/announcement";
 import { Playground } from "@/components/docs/playground";
 
 const TONES = [
@@ -46,7 +46,7 @@ const snippetFor = (c: Config): string => {
   ]
     .filter(Boolean)
     .join(" ");
-  return `import { Announcement } from "@matt-pasek/usva/primitives/announcement";
+  return `import { Announcement } from "usva/primitives/announcement";
 
 <Announcement ${attrs}>${c.label}</Announcement>`;
 };

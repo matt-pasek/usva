@@ -85,7 +85,7 @@ export default function TextareaPage() {
 
       <AcquireSection
         registryName="textarea"
-        usage={`import { Textarea } from "@matt-pasek/usva/primitives/textarea";
+        usage={`import { Textarea } from "usva/primitives/textarea";
 
 <Textarea placeholder="Tell us about yourself…" rows={3} />
 <Textarea autoGrow minRows={2} maxRows={10} />

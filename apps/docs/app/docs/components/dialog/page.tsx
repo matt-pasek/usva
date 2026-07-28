@@ -94,7 +94,7 @@ export default function DialogPage() {
 
       <AcquireSection
         registryName="dialog"
-        usage={`import { Dialog } from "@matt-pasek/usva/primitives/dialog";
+        usage={`import { Dialog } from "usva/primitives/dialog";
 
 <Dialog>
   <Dialog.Trigger>Open</Dialog.Trigger>

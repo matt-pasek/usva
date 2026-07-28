@@ -1,7 +1,7 @@
 "use client";
 
-import { Button } from "@matt-pasek/usva/primitives/button";
 import * as React from "react";
+import { Button } from "usva/primitives/button";
 import { useReducedMotion } from "./use-reduced-motion";
 
 const THEMES = ["kajo", "sisu", "savi"] as const;

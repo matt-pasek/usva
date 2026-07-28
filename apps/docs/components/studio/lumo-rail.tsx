@@ -1,7 +1,7 @@
 "use client";
-import { Button } from "@matt-pasek/usva/primitives/button";
 import { ChevronRight, Code2, PanelRightClose } from "lucide-react";
 import * as React from "react";
+import { Button } from "usva/primitives/button";
 import { CtrlColor, CtrlGrid, CtrlSelect } from "@/components/docs/controls";
 import { Lab } from "@/components/docs/lab";
 import { type Config, Control } from "@/components/docs/playground";

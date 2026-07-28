@@ -1,7 +1,7 @@
 "use client";
-import { Loimu } from "@matt-pasek/usva/atmospheres/loimu";
-import { Routa } from "@matt-pasek/usva/atmospheres/routa";
 import { usePathname } from "next/navigation";
+import { Loimu } from "usva/atmospheres/loimu";
+import { Routa } from "usva/atmospheres/routa";
 import { useTheme } from "@/components/theme-provider";
 
 /** Component pages that are themselves an animated field. The site atmosphere

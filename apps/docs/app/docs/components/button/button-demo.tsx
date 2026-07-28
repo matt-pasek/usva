@@ -1,7 +1,7 @@
 "use client";
-import { cn } from "@matt-pasek/usva/cn";
-import { Button } from "@matt-pasek/usva/primitives/button";
 import { Copy } from "lucide-react";
+import { cn } from "usva/cn";
+import { Button } from "usva/primitives/button";
 import { Playground } from "@/components/docs/playground";
 
 const VARIANTS = [
@@ -71,7 +71,7 @@ const snippetFor = (c: Config): string => {
     .join(" ");
 
   const child = c.iconOnly ? "<CopyIcon />" : c.label;
-  return `import { Button } from "@matt-pasek/usva/primitives/button";
+  return `import { Button } from "usva/primitives/button";
 
 <Button${attrs ? ` ${attrs}` : ""}>${child}</Button>`;
 };

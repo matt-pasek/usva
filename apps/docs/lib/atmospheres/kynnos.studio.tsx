@@ -1,4 +1,4 @@
-import { Kynnos, type KynnosParams } from "@matt-pasek/usva/atmospheres/kynnos";
+import { Kynnos, type KynnosParams } from "usva/atmospheres/kynnos";
 import { defineStudio } from "./types";
 
 type KynnosConfig = {
@@ -125,7 +125,7 @@ const snippet = (c: KynnosConfig): string => {
   if (c.dither !== base.dither) p.push(`dither: ${c.dither}`);
   if (p.length) lines.push(`  params={{ ${p.join(", ")} }}`);
 
-  return `import { Kynnos } from "@matt-pasek/usva/atmospheres/kynnos";
+  return `import { Kynnos } from "usva/atmospheres/kynnos";
 
 <Kynnos
 ${lines.join("\n")}

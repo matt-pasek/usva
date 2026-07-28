@@ -1,8 +1,8 @@
-import { Kajastus } from "@matt-pasek/usva/atmospheres/kajastus";
-import { Kynnos } from "@matt-pasek/usva/atmospheres/kynnos";
-import { Loimu } from "@matt-pasek/usva/atmospheres/loimu";
 import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
+import { Kajastus } from "usva/atmospheres/kajastus";
+import { Kynnos } from "usva/atmospheres/kynnos";
+import { Loimu } from "usva/atmospheres/loimu";
 import type { ThemeId } from "@/components/theme-provider";
 import { lexeme } from "@/lib/lexicon";
 import { THEME_ORDER, type ThemeDoc } from "@/lib/themes";

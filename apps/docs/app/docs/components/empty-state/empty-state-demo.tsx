@@ -1,7 +1,7 @@
 "use client";
-import { EmptyState } from "@matt-pasek/usva/patterns/empty-state";
-import { Button } from "@matt-pasek/usva/primitives/button";
 import { Folder } from "lucide-react";
+import { EmptyState } from "usva/patterns/empty-state";
+import { Button } from "usva/primitives/button";
 import { Playground } from "@/components/docs/playground";
 
 const VARIANTS = ["solid", "dashed"] as const;
@@ -55,8 +55,8 @@ const snippetFor = (c: Config): string => {
     c.showAction && `  action={<Button>${c.actionLabel}</Button>}`,
     "/>",
   ].filter(Boolean);
-  return `import { EmptyState } from "@matt-pasek/usva/patterns/empty-state";
-import { Button } from "@matt-pasek/usva/primitives/button";
+  return `import { EmptyState } from "usva/patterns/empty-state";
+import { Button } from "usva/primitives/button";
 
 ${lines.join("\n")}`;
 };

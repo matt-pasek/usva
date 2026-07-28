@@ -8,9 +8,9 @@ import {
   EntityMedia,
   EntityMeta,
   EntityTitle,
-} from "@matt-pasek/usva/patterns/entity-card";
-import { Badge } from "@matt-pasek/usva/primitives/badge";
-import { Button } from "@matt-pasek/usva/primitives/button";
+} from "usva/patterns/entity-card";
+import { Badge } from "usva/primitives/badge";
+import { Button } from "usva/primitives/button";
 import { Playground } from "@/components/docs/playground";
 
 const VARIANTS = ["stack", "row", "showcase"] as const;

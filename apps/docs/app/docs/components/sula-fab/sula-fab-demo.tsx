@@ -1,6 +1,6 @@
 "use client";
-import { SulaFab, type SulaFabAction } from "@matt-pasek/usva/sula/sula-fab";
 import { List, MessageSquare, Plus } from "lucide-react";
+import { SulaFab, type SulaFabAction } from "usva/sula/sula-fab";
 import { Playground } from "@/components/docs/playground";
 
 const ACTIONS: SulaFabAction[] = [
@@ -61,7 +61,7 @@ const snippetFor = (c: Config): string => {
   ]
     .filter(Boolean)
     .join("\n  ");
-  return `import { SulaFab } from "@matt-pasek/usva/sula/sula-fab";
+  return `import { SulaFab } from "usva/sula/sula-fab";
 
 <SulaFab
   ${attrs}

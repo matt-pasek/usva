@@ -59,7 +59,7 @@ export default function StepChipsPage() {
 
       <AcquireSection
         registryName="step-chips"
-        usage={`import { StepChips } from "@matt-pasek/usva/patterns/step-chips";
+        usage={`import { StepChips } from "usva/patterns/step-chips";
 
 <StepChips
   aria-label="Setup steps"

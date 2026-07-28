@@ -1,8 +1,4 @@
-import type {
-  SulaBlob,
-  SulaFieldBounds,
-  SulaNeck,
-} from "@matt-pasek/usva/sula/sula-field";
+import type { SulaBlob, SulaFieldBounds, SulaNeck } from "usva/sula/sula-field";
 import { describe, expect, test } from "vitest";
 import { convection } from "./convection";
 

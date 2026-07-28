@@ -1,6 +1,6 @@
 "use client";
-import { Button } from "@matt-pasek/usva/primitives/button";
-import { Callout } from "@matt-pasek/usva/primitives/callout";
+import { Button } from "usva/primitives/button";
+import { Callout } from "usva/primitives/callout";
 import { Playground } from "@/components/docs/playground";
 
 const TONES = ["neutral", "info", "success", "warning", "danger"] as const;
@@ -61,7 +61,7 @@ const snippetFor = (c: Config): string => {
   ]
     .filter(Boolean)
     .join(" ");
-  return `import { Callout } from "@matt-pasek/usva/primitives/callout";
+  return `import { Callout } from "usva/primitives/callout";
 
 <Callout${attrs ? ` ${attrs}` : ""}>
   ${c.body}

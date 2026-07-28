@@ -1,7 +1,7 @@
 "use client";
-import { cn } from "@matt-pasek/usva/cn";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { cn } from "usva/cn";
 import { DL_CHAPTERS, DL_GROUPS, dlHref } from "@/lib/design-language";
 
 const HUB = "/design-language";

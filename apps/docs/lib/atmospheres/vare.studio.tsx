@@ -1,4 +1,4 @@
-import { Vare, type VareParams } from "@matt-pasek/usva/atmospheres/vare";
+import { Vare, type VareParams } from "usva/atmospheres/vare";
 import { defineStudio } from "./types";
 
 const MODES = ["auto", "emissive", "absorptive"] as const;
@@ -113,7 +113,7 @@ const snippet = (c: VareConfig): string => {
   if (c.lens !== green.lens) p.push(`lens: ${c.lens}`);
   if (c.lensSigma !== green.lensSigma) p.push(`lensSigma: ${c.lensSigma}`);
   if (p.length) lines.push(`  params={{ ${p.join(", ")} }}`);
-  return `import { Vare } from "@matt-pasek/usva/atmospheres/vare";
+  return `import { Vare } from "usva/atmospheres/vare";
 
 <Vare
 ${lines.join("\n")}

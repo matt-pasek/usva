@@ -92,8 +92,8 @@ export default function PanelPage() {
 
       <AcquireSection
         registryName="panel"
-        usage={`import { Panel } from "@matt-pasek/usva/patterns/panel";
-import { Badge } from "@matt-pasek/usva/primitives/badge";
+        usage={`import { Panel } from "usva/patterns/panel";
+import { Badge } from "usva/primitives/badge";
 
 <Panel eyebrow="overview" title="Deployments" badge={<Badge live>live</Badge>}>
   <DeploymentList />

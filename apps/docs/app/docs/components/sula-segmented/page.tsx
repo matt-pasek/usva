@@ -131,7 +131,7 @@ export default function SulaSegmentedPage() {
 
       <AcquireSection
         registryName="sula-segmented"
-        usage={`import { SulaSegmented } from "@matt-pasek/usva/sula/sula-segmented";
+        usage={`import { SulaSegmented } from "usva/sula/sula-segmented";
 
 <SulaSegmented
   items={[

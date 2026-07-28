@@ -1,24 +1,20 @@
 "use client";
 
-import { Loimu } from "@matt-pasek/usva/atmospheres/loimu";
-import { Reveal } from "@matt-pasek/usva/motion/reveal";
-import { PageHeader } from "@matt-pasek/usva/patterns/page-header";
-import { SegmentedControl } from "@matt-pasek/usva/patterns/segmented-control";
-import { StatCard } from "@matt-pasek/usva/patterns/stat-card";
-import {
-  Toolbar,
-  ToolbarActions,
-  ToolbarGroup,
-} from "@matt-pasek/usva/patterns/toolbar";
-import { Badge } from "@matt-pasek/usva/primitives/badge";
-import { Button } from "@matt-pasek/usva/primitives/button";
-import { Card, CardBody, CardHeader } from "@matt-pasek/usva/primitives/card";
-import { Chip } from "@matt-pasek/usva/primitives/chip";
-import { Progress } from "@matt-pasek/usva/primitives/progress";
-import { SulaNav } from "@matt-pasek/usva/sula/sula-nav";
 import { RotateCw, Workflow } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import type * as React from "react";
+import { Loimu } from "usva/atmospheres/loimu";
+import { Reveal } from "usva/motion/reveal";
+import { PageHeader } from "usva/patterns/page-header";
+import { SegmentedControl } from "usva/patterns/segmented-control";
+import { StatCard } from "usva/patterns/stat-card";
+import { Toolbar, ToolbarActions, ToolbarGroup } from "usva/patterns/toolbar";
+import { Badge } from "usva/primitives/badge";
+import { Button } from "usva/primitives/button";
+import { Card, CardBody, CardHeader } from "usva/primitives/card";
+import { Chip } from "usva/primitives/chip";
+import { Progress } from "usva/primitives/progress";
+import { SulaNav } from "usva/sula/sula-nav";
 import { SULA_STOP } from "./dial-model";
 
 const STATS = [

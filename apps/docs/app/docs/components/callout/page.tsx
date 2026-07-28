@@ -96,7 +96,7 @@ export default function CalloutPage() {
 
       <AcquireSection
         registryName="callout"
-        usage={`import { Callout } from "@matt-pasek/usva/primitives/callout";
+        usage={`import { Callout } from "usva/primitives/callout";
 
 <Callout title="A note">Nothing is wrong. This is just context.</Callout>
 

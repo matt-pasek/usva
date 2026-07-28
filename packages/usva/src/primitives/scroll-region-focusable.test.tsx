@@ -13,9 +13,7 @@ describe("scrollable regions are keyboard reachable", () => {
   });
 
   it("Terminal exposes its command line as a focus stop", () => {
-    const { container } = render(
-      <Terminal command="bun add @matt-pasek/usva" />,
-    );
+    const { container } = render(<Terminal command="bun add usva" />);
     const code = container.querySelector("code");
     expect(code).toHaveClass("overflow-x-auto");
     expect(code).toHaveAttribute("tabindex", "0");

@@ -1,6 +1,6 @@
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
-import { ROLE_NAMES } from "@matt-pasek/usva-tokens";
+import { ROLE_NAMES } from "usva-tokens";
 import { describe, expect, test } from "vitest";
 import { agentSkill, importPath } from "./agent-skill";
 import { CATALOG, counts, DARK_ONLY, SUB_EXPORTS, THEMES } from "./catalog";

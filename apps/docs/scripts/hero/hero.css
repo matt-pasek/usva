@@ -1,7 +1,7 @@
 @import "tailwindcss";
-@import "@matt-pasek/usva-tokens/theme.css";
-@import "@matt-pasek/usva-tokens/themes/kajo.css";
-@import "@matt-pasek/usva-tokens/themes/savi.css";
+@import "usva-tokens/theme.css";
+@import "usva-tokens/themes/kajo.css";
+@import "usva-tokens/themes/savi.css";
 
 @import "@fontsource/fira-sans/400.css";
 @import "@fontsource/fira-sans/500.css";

@@ -1,5 +1,5 @@
 "use client";
-import { DisclosureRow } from "@matt-pasek/usva/patterns/disclosure-row";
+import { DisclosureRow } from "usva/patterns/disclosure-row";
 import { Playground } from "@/components/docs/playground";
 
 type Config = {
@@ -48,7 +48,7 @@ const snippetFor = (c: Config): string => {
   ]
     .filter(Boolean)
     .join("\n  ");
-  return `import { DisclosureRow } from "@matt-pasek/usva/patterns/disclosure-row";
+  return `import { DisclosureRow } from "usva/patterns/disclosure-row";
 
 <DisclosureRow
   summary="${c.summary}"${attrs ? `\n  ${attrs}` : ""}

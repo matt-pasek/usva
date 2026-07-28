@@ -12,7 +12,7 @@ different system.
 shaped by two live apps, which is the only reason anything is in here. a component earns its place
 by already working in something that shipped.
 
-[![npm](https://img.shields.io/npm/v/@matt-pasek/usva?color=%23111&label=%40matt-pasek%2Fusva)](https://www.npmjs.com/package/@matt-pasek/usva)
+[![npm](https://img.shields.io/npm/v/usva?color=%23111&label=%40matt-pasek%2Fusva)](https://www.npmjs.com/package/usva)
 [![license](https://img.shields.io/badge/license-MIT%20%2B%20Commons%20Clause-111)](LICENSE.md)
 [![CI](https://github.com/matt-pasek/usva/actions/workflows/ci.yml/badge.svg)](https://github.com/matt-pasek/usva/actions/workflows/ci.yml)
 
@@ -25,7 +25,7 @@ every component ships both ways, and you pick per component rather than per proj
 install it, and the package stays the source of truth. `bun update` carries fixes to you.
 
 ```sh
-bun add @matt-pasek/usva @matt-pasek/usva-tokens
+bun add usva usva-tokens
 ```
 
 or own it, and the source lands in your repo to fork as you like. it is generated from the same code
@@ -44,10 +44,10 @@ Tailwind v4. in your global stylesheet:
 
 ```css
 @import "tailwindcss";
-@import "@matt-pasek/usva-tokens/theme.css";
-@import "@matt-pasek/usva-tokens/themes/kajo.css";
-@import "@matt-pasek/usva-tokens/roles-safelist.css";
-@source "../node_modules/@matt-pasek/usva/dist/**/*.js";
+@import "usva-tokens/theme.css";
+@import "usva-tokens/themes/kajo.css";
+@import "usva-tokens/roles-safelist.css";
+@source "../node_modules/usva/dist/**/*.js";
 ```
 
 that last line is not optional. without it Tailwind never sees the classes that live only inside
@@ -57,7 +57,7 @@ happens, because a missing class is not a compile error.
 then import from the component's own path, never the package root:
 
 ```tsx
-import { Button } from "@matt-pasek/usva/primitives/button";
+import { Button } from "usva/primitives/button";
 ```
 
 full setup, including the theme switch, is at

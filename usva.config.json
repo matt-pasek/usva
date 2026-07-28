@@ -1,5 +1,4 @@
 {
   "siteOrigin": "https://usva.build",
-  "npmScope": "@matt-pasek",
-  "packageName": "@matt-pasek/usva"
+  "packageName": "usva"
 }

@@ -1,5 +1,5 @@
 "use client";
-import { Terminal } from "@matt-pasek/usva/primitives/terminal";
+import { Terminal } from "usva/primitives/terminal";
 import { Playground } from "@/components/docs/playground";
 
 type Config = {
@@ -9,7 +9,7 @@ type Config = {
 };
 
 const base: Config = {
-  command: "bun add @matt-pasek/usva",
+  command: "bun add usva",
   prompt: "$",
   copyable: true,
 };
@@ -32,7 +32,7 @@ const snippetFor = (c: Config): string => {
   ]
     .filter(Boolean)
     .join(" ");
-  return `import { Terminal } from "@matt-pasek/usva/primitives/terminal";
+  return `import { Terminal } from "usva/primitives/terminal";
 
 <Terminal ${attrs} />`;
 };

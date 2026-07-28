@@ -1,7 +1,4 @@
 "use client";
-import { Dialog } from "@matt-pasek/usva/primitives/dialog";
-import { Input } from "@matt-pasek/usva/primitives/input";
-import { ROLE_NAMES } from "@matt-pasek/usva-tokens";
 import { useRouter } from "next/navigation";
 import {
   useCallback,
@@ -11,6 +8,9 @@ import {
   useRef,
   useState,
 } from "react";
+import { Dialog } from "usva/primitives/dialog";
+import { Input } from "usva/primitives/input";
+import { ROLE_NAMES } from "usva-tokens";
 import {
   CATALOG,
   type CatalogEntry,

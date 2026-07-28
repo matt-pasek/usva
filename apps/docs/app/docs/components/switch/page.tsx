@@ -95,7 +95,7 @@ export default function SwitchPage() {
 
       <AcquireSection
         registryName="switch"
-        usage={`import { Switch } from "@matt-pasek/usva/primitives/switch";
+        usage={`import { Switch } from "usva/primitives/switch";
 
 <Switch
   label="Notifications"

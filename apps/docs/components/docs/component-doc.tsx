@@ -1,5 +1,5 @@
-import { cn } from "@matt-pasek/usva/cn";
 import type { ReactNode } from "react";
+import { cn } from "usva/cn";
 import { JsonLd } from "@/components/json-ld";
 import {
   bySlug,

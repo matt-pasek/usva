@@ -1,7 +1,7 @@
 "use client";
-import { cn } from "@matt-pasek/usva/cn";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { cn } from "usva/cn";
 import {
   byLayer,
   INTENSITY_BY_LAYER,

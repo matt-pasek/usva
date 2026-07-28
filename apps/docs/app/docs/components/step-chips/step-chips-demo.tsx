@@ -1,5 +1,5 @@
 "use client";
-import { StepChips } from "@matt-pasek/usva/patterns/step-chips";
+import { StepChips } from "usva/patterns/step-chips";
 import { Playground } from "@/components/docs/playground";
 
 type Config = {
@@ -29,7 +29,7 @@ const snippetFor = (c: Config): string => {
   const steps = toSteps(c.steps)
     .map((step) => `"${step}"`)
     .join(", ");
-  return `import { StepChips } from "@matt-pasek/usva/patterns/step-chips";
+  return `import { StepChips } from "usva/patterns/step-chips";
 
 <StepChips
   aria-label="${c.label}"

@@ -34,15 +34,22 @@ const jsEntrypoints = (dir) =>
     .filter((key) => !/\.(css|json)$/.test(key))
     .map((key) => (key === "." ? "." : key.replace(/^\.\//, "")));
 
+const tarballName = (dir) => {
+  const { name, version } = JSON.parse(
+    readFileSync(join(ROOT, dir, "package.json"), "utf8"),
+  );
+  return `${name.replace("@", "").replace("/", "-")}-${version}.tgz`;
+};
+
 const PACKAGES = [
   {
     dir: "packages/usva",
-    tarball: "matt-pasek-usva-0.0.0.tgz",
+    tarball: tarballName("packages/usva"),
     entrypoints: jsEntrypoints("packages/usva"),
   },
   {
     dir: "packages/tokens",
-    tarball: "matt-pasek-usva-tokens-0.0.0.tgz",
+    tarball: tarballName("packages/tokens"),
     entrypoints: jsEntrypoints("packages/tokens"),
   },
 ];
@@ -61,7 +68,7 @@ const require = createRequire(import.meta.url);
 let bad = 0;
 const fail = (m) => { console.log("FAIL", m); bad++; };
 
-const usva = await import("@matt-pasek/usva");
+const usva = await import("usva");
 const names = Object.keys(usva);
 console.log("root exports:", names.length);
 if (names.length < 100) fail(\`root barrel only exported \${names.length} names\`);
@@ -69,31 +76,31 @@ for (const n of names) if (usva[n] === undefined) fail(\`root export \${n} is un
 for (const n of ["Button", "Card", "CodeSnippet", "registerCodeLanguage", "Reveal", "cn"])
   if (!(n in usva)) fail(\`expected root export missing: \${n}\`);
 
-const { cn } = await import("@matt-pasek/usva/cn");
+const { cn } = await import("usva/cn");
 if (cn("a", "b") !== "a b") fail("cn subpath broken");
 
-if (!Object.keys(await import("@matt-pasek/usva-tokens")).length) fail("tokens root empty");
+if (!Object.keys(await import("usva-tokens")).length) fail("tokens root empty");
 
 // A component subpath is the lean way in, so prove one resolves and carries the
 // component rather than trusting the exports map to be more than a promise.
-const { Badge } = await import("@matt-pasek/usva/primitives/badge");
+const { Badge } = await import("usva/primitives/badge");
 if (typeof Badge === "undefined") fail("primitives/badge subpath broken");
 
 for (const sub of [
-  "@matt-pasek/usva-tokens/theme.css",
-  "@matt-pasek/usva-tokens/themes/kajo.css",
-  "@matt-pasek/usva-tokens/themes/sisu.css",
-  "@matt-pasek/usva-tokens/themes/savi.css",
-  "@matt-pasek/usva-tokens/roles-safelist.css",
-  "@matt-pasek/usva-tokens/tokens.dtcg.json",
-  "@matt-pasek/usva-tokens/tokens.studio.json",
+  "usva-tokens/theme.css",
+  "usva-tokens/themes/kajo.css",
+  "usva-tokens/themes/sisu.css",
+  "usva-tokens/themes/savi.css",
+  "usva-tokens/roles-safelist.css",
+  "usva-tokens/tokens.dtcg.json",
+  "usva-tokens/tokens.studio.json",
 ]) {
   try {
     if (!existsSync(require.resolve(sub))) fail(\`\${sub} resolves to a missing file\`);
   } catch (e) { fail(\`\${sub} does not resolve: \${e.code ?? e.message}\`); }
 }
 
-const root = new URL("./node_modules/@matt-pasek/usva/", import.meta.url);
+const root = new URL("./node_modules/usva/", import.meta.url);
 for (const t of ["dist/index.d.ts", "dist/cn.d.ts"])
   if (!existsSync(new URL(t, root))) fail(\`missing types: \${t}\`);
 
@@ -102,9 +109,9 @@ process.exit(bad ? 1 : 0);
 `;
 
 const REACT_18_APP = `import * as React from "react";
-import * as usva from "@matt-pasek/usva";
-import { Button, CodeSnippet } from "@matt-pasek/usva";
-import { cn } from "@matt-pasek/usva/cn";
+import * as usva from "usva";
+import { Button, CodeSnippet } from "usva";
+import { cn } from "usva/cn";
 
 // naming the namespace keeps the whole declaration graph in the program
 export const surface: keyof typeof usva = "Button";
@@ -168,12 +175,12 @@ try {
         private: true,
         type: "module",
         dependencies: {
-          "@matt-pasek/usva": `file:${join(work, PACKAGES[0].tarball)}`,
-          "@matt-pasek/usva-tokens": tokensTarball,
+          usva: `file:${join(work, PACKAGES[0].tarball)}`,
+          "usva-tokens": tokensTarball,
           react: "^19",
           "react-dom": "^19",
         },
-        overrides: { "@matt-pasek/usva-tokens": tokensTarball },
+        overrides: { "usva-tokens": tokensTarball },
       },
       null,
       2,
@@ -198,8 +205,8 @@ try {
         name: "usva-react18-fixture",
         private: true,
         dependencies: {
-          "@matt-pasek/usva": `file:${join(work, PACKAGES[0].tarball)}`,
-          "@matt-pasek/usva-tokens": tokensTarball,
+          usva: `file:${join(work, PACKAGES[0].tarball)}`,
+          "usva-tokens": tokensTarball,
           react: "^18",
           "react-dom": "^18",
         },
@@ -208,7 +215,7 @@ try {
           "@types/react-dom": "^18",
           typescript: "^5.7.2",
         },
-        overrides: { "@matt-pasek/usva-tokens": tokensTarball },
+        overrides: { "usva-tokens": tokensTarball },
       },
       null,
       2,

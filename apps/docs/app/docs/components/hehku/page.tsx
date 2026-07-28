@@ -109,7 +109,7 @@ export default function HehkuPage() {
 
       <AcquireSection
         registryName="hehku"
-        usage={`import { Hehku } from "@matt-pasek/usva/atmospheres/hehku";
+        usage={`import { Hehku } from "usva/atmospheres/hehku";
 
 <Hehku className="min-h-svh">
   <Hero />

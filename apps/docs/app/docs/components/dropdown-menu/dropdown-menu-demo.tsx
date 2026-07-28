@@ -1,5 +1,5 @@
 "use client";
-import { DropdownMenu } from "@matt-pasek/usva/primitives/dropdown-menu";
+import { DropdownMenu } from "usva/primitives/dropdown-menu";
 import { Playground } from "@/components/docs/playground";
 
 type Config = {
@@ -32,7 +32,7 @@ const snippetFor = (c: Config): string => {
   const del = c.disableDelete
     ? "<DropdownMenu.Item disabled>Delete</DropdownMenu.Item>"
     : "<DropdownMenu.Item>Delete</DropdownMenu.Item>";
-  return `import { DropdownMenu } from "@matt-pasek/usva/primitives/dropdown-menu";
+  return `import { DropdownMenu } from "usva/primitives/dropdown-menu";
 
 <DropdownMenu>
   <DropdownMenu.Trigger>${c.triggerLabel}</DropdownMenu.Trigger>

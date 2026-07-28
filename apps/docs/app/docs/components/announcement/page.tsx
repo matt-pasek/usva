@@ -74,7 +74,7 @@ export default function AnnouncementPage() {
 
       <AcquireSection
         registryName="announcement"
-        usage={`import { Announcement } from "@matt-pasek/usva/primitives/announcement";
+        usage={`import { Announcement } from "usva/primitives/announcement";
 
 <Announcement badge="NEW" tone="live" href="/changelog">
   v2.0.1 just shipped

@@ -3,7 +3,7 @@ import { axe } from "jest-axe";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { Terminal } from "./terminal.js";
 
-const COMMAND = "bun add @matt-pasek/usva";
+const COMMAND = "bun add usva";
 
 describe("Terminal", () => {
   afterEach(() => {
@@ -13,7 +13,19 @@ describe("Terminal", () => {
   it("renders the command with a prompt", () => {
     render(<Terminal command={COMMAND} />);
     expect(screen.getByText("$")).toBeInTheDocument();
-    expect(screen.getByText("@matt-pasek/usva")).toBeInTheDocument();
+    expect(screen.getByText("usva")).toHaveClass("text-accent-alt");
+  });
+
+  it("accents every package an install verb takes, never its flags", () => {
+    render(<Terminal command="npm i -D usva usva-tokens" />);
+    expect(screen.getByText("usva")).toHaveClass("text-accent-alt");
+    expect(screen.getByText("usva-tokens")).toHaveClass("text-accent-alt");
+    expect(screen.queryByText("-D")).toBeNull();
+  });
+
+  it("leaves a command with no install verb cold", () => {
+    render(<Terminal command="bun run build" />);
+    expect(screen.queryByText("build")).toBeNull();
   });
 
   it("accents scoped packages and urls", () => {

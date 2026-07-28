@@ -1,7 +1,7 @@
 "use client";
-import { CtaBanner } from "@matt-pasek/usva/patterns/cta-banner";
-import { Button } from "@matt-pasek/usva/primitives/button";
-import { Chip } from "@matt-pasek/usva/primitives/chip";
+import { CtaBanner } from "usva/patterns/cta-banner";
+import { Button } from "usva/primitives/button";
+import { Chip } from "usva/primitives/chip";
 import { Playground } from "@/components/docs/playground";
 
 const HEADING_LEVELS = ["h2", "h3", "h4"] as const;
@@ -54,9 +54,9 @@ const snippetFor = (c: Config): string => {
     lines.push(`  footer={<><Chip>Fintech</Chip><Chip>Health</Chip></>}`);
   }
   const imports = [
-    `import { CtaBanner } from "@matt-pasek/usva/patterns/cta-banner";`,
-    `import { Button } from "@matt-pasek/usva/primitives/button";`,
-    c.footer && `import { Chip } from "@matt-pasek/usva/primitives/chip";`,
+    `import { CtaBanner } from "usva/patterns/cta-banner";`,
+    `import { Button } from "usva/primitives/button";`,
+    c.footer && `import { Chip } from "usva/primitives/chip";`,
   ].filter(Boolean);
   return `${imports.join("\n")}
 

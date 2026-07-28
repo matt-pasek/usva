@@ -1,5 +1,5 @@
 "use client";
-import { ColorField } from "@matt-pasek/usva/primitives/color-field";
+import { ColorField } from "usva/primitives/color-field";
 import { Playground } from "@/components/docs/playground";
 
 type Config = {
@@ -25,7 +25,7 @@ const snippetFor = (c: Config): string => {
   ]
     .filter(Boolean)
     .join(" ");
-  return `import { ColorField } from "@matt-pasek/usva/primitives/color-field";
+  return `import { ColorField } from "usva/primitives/color-field";
 
 <ColorField ${attrs} />`;
 };

@@ -11,11 +11,15 @@ const fail = (message) => {
 };
 
 if (git("status --porcelain") !== "")
-  fail("the working tree is dirty. publish what is committed, not what is open in an editor.");
+  fail(
+    "the working tree is dirty. publish what is committed, not what is open in an editor.",
+  );
 
 const branch = git("rev-parse --abbrev-ref HEAD");
 if (branch !== "main" && process.env.USVA_RELEASE_ANY_BRANCH !== "1")
-  fail(`on ${branch}, not main. set USVA_RELEASE_ANY_BRANCH=1 if that is deliberate.`);
+  fail(
+    `on ${branch}, not main. set USVA_RELEASE_ANY_BRANCH=1 if that is deliberate.`,
+  );
 
 const pending = readdirSync(resolve(root, ".changeset")).filter(
   (f) => f.endsWith(".md") && f !== "README.md",

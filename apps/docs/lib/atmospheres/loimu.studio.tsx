@@ -1,4 +1,4 @@
-import { Loimu, type LoimuParams } from "@matt-pasek/usva/atmospheres/loimu";
+import { Loimu, type LoimuParams } from "usva/atmospheres/loimu";
 import { DarkStage } from "@/components/dark-stage";
 import { defineStudio } from "./types";
 
@@ -144,7 +144,7 @@ const snippet = (c: LoimuConfig): string => {
   if (c.edgeBands !== green.edgeBands) p.push(`edgeBands: ${c.edgeBands}`);
   if (c.flowLength !== green.flowLength) p.push(`flowLength: ${c.flowLength}`);
   if (p.length) lines.push(`  params={{ ${p.join(", ")} }}`);
-  return `import { Loimu } from "@matt-pasek/usva/atmospheres/loimu";
+  return `import { Loimu } from "usva/atmospheres/loimu";
 
 <Loimu
 ${lines.join("\n")}

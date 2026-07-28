@@ -8,9 +8,9 @@
 
 ## Packages touched
 
-- [ ] `@matt-pasek/usva`
-- [ ] `@matt-pasek/usva-tokens`
-- [ ] `@matt-pasek/usva-cli`
+- [ ] `usva`
+- [ ] `usva-tokens`
+- [ ] `usva-cli`
 - [ ] `apps/docs`
 
 ## Checks

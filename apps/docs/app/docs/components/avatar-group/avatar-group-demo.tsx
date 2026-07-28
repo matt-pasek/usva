@@ -1,5 +1,5 @@
 "use client";
-import { Avatar, AvatarGroup } from "@matt-pasek/usva/primitives/avatar";
+import { Avatar, AvatarGroup } from "usva/primitives/avatar";
 import { Playground } from "@/components/docs/playground";
 
 const SIZES = ["sm", "md", "lg"] as const;
@@ -51,7 +51,7 @@ const snippetFor = (c: Config): string => {
     .join(" ");
   const tone = c.tone !== "neutral" ? ` tone="${c.tone}"` : "";
   const size = c.size !== "md" ? ` size="${c.size}"` : "";
-  return `import { Avatar, AvatarGroup } from "@matt-pasek/usva/primitives/avatar";
+  return `import { Avatar, AvatarGroup } from "usva/primitives/avatar";
 
 <AvatarGroup ${attrs}>
   <Avatar${size}${tone} alt="Ada" fallback="AL" />

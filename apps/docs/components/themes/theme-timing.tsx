@@ -1,8 +1,8 @@
 "use client";
-import { Button } from "@matt-pasek/usva/primitives/button";
 import { RotateCcw } from "lucide-react";
 import { useReducedMotion } from "motion/react";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { Button } from "usva/primitives/button";
 import { ChapterHeading } from "@/components/chapter-heading";
 import { useTheme } from "@/components/theme-provider";
 import type { ThemeDoc } from "@/lib/themes";

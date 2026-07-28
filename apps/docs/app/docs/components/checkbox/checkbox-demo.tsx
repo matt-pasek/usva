@@ -1,5 +1,5 @@
 "use client";
-import { Checkbox } from "@matt-pasek/usva/primitives/checkbox";
+import { Checkbox } from "usva/primitives/checkbox";
 import { Playground } from "@/components/docs/playground";
 
 const SIZES = ["sm", "md"] as const;
@@ -60,7 +60,7 @@ const snippetFor = (c: Config): string => {
     c.indeterminate && "indeterminate",
     c.disabled && "disabled",
   ].filter(Boolean);
-  return `import { Checkbox } from "@matt-pasek/usva/primitives/checkbox";
+  return `import { Checkbox } from "usva/primitives/checkbox";
 
 <Checkbox
   ${attrs.join("\n  ")}

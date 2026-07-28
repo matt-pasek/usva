@@ -1,5 +1,6 @@
 "use client";
-import { SegmentedControl } from "@matt-pasek/usva/patterns/segmented-control";
+import * as React from "react";
+import { SegmentedControl } from "usva/patterns/segmented-control";
 import {
   Card,
   CardBody,
@@ -7,8 +8,7 @@ import {
   CardHeader,
   type CardHighlight,
   CardTitle,
-} from "@matt-pasek/usva/primitives/card";
-import * as React from "react";
+} from "usva/primitives/card";
 
 const options: { value: CardHighlight; label: string }[] = [
   { value: "none", label: "none" },

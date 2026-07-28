@@ -1,7 +1,7 @@
 "use client";
 
-import { SegmentedControl } from "@matt-pasek/usva/patterns/segmented-control";
 import * as React from "react";
+import { SegmentedControl } from "usva/patterns/segmented-control";
 import { THEMES } from "@/lib/catalog";
 import { AA_NORMAL, contrastRatio, parseRgb, type Rgb } from "@/lib/contrast";
 

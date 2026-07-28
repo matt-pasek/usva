@@ -1,7 +1,7 @@
 "use client";
-import { type Step, StepList } from "@matt-pasek/usva/patterns/step-list";
 import { Box, PenLine, RefreshCw, Send, TrendingUp } from "lucide-react";
 import type * as React from "react";
+import { type Step, StepList } from "usva/patterns/step-list";
 import { Playground } from "@/components/docs/playground";
 
 const HEADING_LEVELS = ["h2", "h3", "h4"] as const;
@@ -65,7 +65,7 @@ const snippetFor = (c: Config): string => {
     .join("\n");
   const level =
     c.headingLevel !== "h4" ? `\n  headingLevel="${c.headingLevel}"` : "";
-  return `import { StepList } from "@matt-pasek/usva/patterns/step-list";
+  return `import { StepList } from "usva/patterns/step-list";
 
 <StepList${level}
   steps={[

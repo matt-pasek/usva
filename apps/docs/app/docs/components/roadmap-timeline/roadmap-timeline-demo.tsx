@@ -3,7 +3,7 @@ import {
   type RoadmapMilestone,
   RoadmapTimeline,
   type RoadmapTone,
-} from "@matt-pasek/usva/patterns/roadmap-timeline";
+} from "usva/patterns/roadmap-timeline";
 import { Playground } from "@/components/docs/playground";
 
 const HEADING_LEVELS = ["h2", "h3", "h4"] as const;
@@ -115,7 +115,7 @@ const snippetFor = (c: Config): string => {
   ]
     .filter(Boolean)
     .join("");
-  return `import { RoadmapTimeline } from "@matt-pasek/usva/patterns/roadmap-timeline";
+  return `import { RoadmapTimeline } from "usva/patterns/roadmap-timeline";
 
 <RoadmapTimeline${attrs}
   milestones={[

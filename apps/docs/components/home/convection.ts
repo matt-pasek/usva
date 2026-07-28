@@ -3,7 +3,7 @@ import type {
   SulaFieldBounds,
   SulaFieldDrive,
   SulaNeck,
-} from "@matt-pasek/usva/sula/sula-field";
+} from "usva/sula/sula-field";
 
 /**
  * The lava lamp's cycle, as a pure function of time.

@@ -73,9 +73,9 @@ export default function TerminalPage() {
 
       <AcquireSection
         registryName="terminal"
-        usage={`import { Terminal } from "@matt-pasek/usva/primitives/terminal";
+        usage={`import { Terminal } from "usva/primitives/terminal";
 
-<Terminal command="bun add @matt-pasek/usva" />`}
+<Terminal command="bun add usva" />`}
       />
     </ComponentDoc>
   );

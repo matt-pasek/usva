@@ -1,11 +1,11 @@
 "use client";
-import { Button } from "@matt-pasek/usva/primitives/button";
+import { Button } from "usva/primitives/button";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@matt-pasek/usva/primitives/tooltip";
+} from "usva/primitives/tooltip";
 import { Playground } from "@/components/docs/playground";
 
 type Config = {
@@ -25,7 +25,7 @@ const templates: Record<string, Config> = {
 };
 
 const snippetFor = (c: Config): string =>
-  `import { Tooltip, TooltipContent, TooltipTrigger } from "@matt-pasek/usva/primitives/tooltip";
+  `import { Tooltip, TooltipContent, TooltipTrigger } from "usva/primitives/tooltip";
 
 <Tooltip>
   <TooltipTrigger render={<Button variant="outline">Hover me</Button>} />

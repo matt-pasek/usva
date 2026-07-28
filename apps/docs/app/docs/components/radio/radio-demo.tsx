@@ -1,6 +1,6 @@
 "use client";
-import { Radio, RadioGroup } from "@matt-pasek/usva/primitives/radio";
 import { useState } from "react";
+import { Radio, RadioGroup } from "usva/primitives/radio";
 import { Playground } from "@/components/docs/playground";
 
 const ORIENTATIONS = ["vertical", "horizontal"] as const;
@@ -64,7 +64,7 @@ const snippetFor = (c: Config): string => {
     return `  <Radio ${attrs} />`;
   });
 
-  return `import { Radio, RadioGroup } from "@matt-pasek/usva/primitives/radio";
+  return `import { Radio, RadioGroup } from "usva/primitives/radio";
 
 <RadioGroup ${groupAttrs}>
 ${lines.join("\n")}

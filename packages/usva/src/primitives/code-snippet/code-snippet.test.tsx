@@ -3,7 +3,7 @@ import { axe } from "jest-axe";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { CodeSnippet, registerCodeLanguage } from "./code-snippet.js";
 
-const CODE = `import { Button } from "@matt-pasek/usva";`;
+const CODE = `import { Button } from "usva";`;
 
 describe("CodeSnippet", () => {
   afterEach(() => {
@@ -12,7 +12,7 @@ describe("CodeSnippet", () => {
 
   it("renders the code", () => {
     render(<CodeSnippet code={CODE} />);
-    expect(screen.getByText(/@matt-pasek\/usva/)).toBeInTheDocument();
+    expect(screen.getByText(/usva/)).toBeInTheDocument();
   });
 
   it("highlights tokens for a known language", () => {

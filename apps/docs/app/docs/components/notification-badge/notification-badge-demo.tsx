@@ -1,7 +1,7 @@
 "use client";
-import { Button } from "@matt-pasek/usva/primitives/button";
-import { NotificationBadge } from "@matt-pasek/usva/primitives/notification-badge";
 import { Bell } from "lucide-react";
+import { Button } from "usva/primitives/button";
+import { NotificationBadge } from "usva/primitives/notification-badge";
 import { Playground } from "@/components/docs/playground";
 
 const TONES = ["danger", "accent", "accent-alt", "warning"] as const;
@@ -38,8 +38,8 @@ const snippetFor = (c: Config): string => {
   ]
     .filter(Boolean)
     .join(" ");
-  return `import { Button } from "@matt-pasek/usva/primitives/button";
-import { NotificationBadge } from "@matt-pasek/usva/primitives/notification-badge";
+  return `import { Button } from "usva/primitives/button";
+import { NotificationBadge } from "usva/primitives/notification-badge";
 
 <NotificationBadge ${attrs}>
   <Button variant="outline" iconOnly aria-label="Notifications">

@@ -1,5 +1,5 @@
 "use client";
-import { Select } from "@matt-pasek/usva/primitives/select";
+import { Select } from "usva/primitives/select";
 import { Playground } from "@/components/docs/playground";
 
 const fruits = ["Apple", "Banana", "Cherry"];
@@ -30,7 +30,7 @@ const snippetFor = (c: Config): string => {
   ]
     .filter(Boolean)
     .join(" ");
-  return `import { Select } from "@matt-pasek/usva/primitives/select";
+  return `import { Select } from "usva/primitives/select";
 
 <Select${attrs ? ` ${attrs}` : ""}>
   <Select.Trigger aria-label="Fruit">

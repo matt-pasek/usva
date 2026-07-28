@@ -1,4 +1,4 @@
-import { ROLE_NAMES } from "@matt-pasek/usva-tokens";
+import { ROLE_NAMES } from "usva-tokens";
 import {
   byLayer,
   type CatalogEntry,

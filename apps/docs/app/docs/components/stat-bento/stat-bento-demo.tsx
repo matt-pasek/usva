@@ -1,5 +1,5 @@
 "use client";
-import { StatBento } from "@matt-pasek/usva/patterns/stat-bento";
+import { StatBento } from "usva/patterns/stat-bento";
 import { Playground } from "@/components/docs/playground";
 
 type Config = {
@@ -63,7 +63,7 @@ const snippetFor = (c: Config): string => {
     cellSrc(c.value2, c.suffix2, c.label2),
     cellSrc(c.value3, c.suffix3, c.label3),
   ].join("\n");
-  return `import { StatBento } from "@matt-pasek/usva/patterns/stat-bento";
+  return `import { StatBento } from "usva/patterns/stat-bento";
 
 <StatBento${c.animate ? " animate" : ""}
   stats={[

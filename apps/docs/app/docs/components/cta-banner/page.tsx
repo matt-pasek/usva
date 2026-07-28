@@ -72,9 +72,9 @@ export default function CtaBannerPage() {
 
       <AcquireSection
         registryName="cta-banner"
-        usage={`import { CtaBanner } from "@matt-pasek/usva/patterns/cta-banner";
-import { Button } from "@matt-pasek/usva/primitives/button";
-import { Chip } from "@matt-pasek/usva/primitives/chip";
+        usage={`import { CtaBanner } from "usva/patterns/cta-banner";
+import { Button } from "usva/primitives/button";
+import { Chip } from "usva/primitives/chip";
 
 <CtaBanner
   title="Have something in mind?"

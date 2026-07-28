@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { CodeSnippet } from "./code-snippet.js";
 
-const CODE = `import { Button } from "@matt-pasek/usva";
+const CODE = `import { Button } from "usva";
 
 export function Save() {
   return <Button variant="solid">save</Button>;

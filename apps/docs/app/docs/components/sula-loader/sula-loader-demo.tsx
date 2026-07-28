@@ -1,6 +1,6 @@
 "use client";
-import type { LoaderMotion } from "@matt-pasek/usva/sula/sula-loader";
-import { SulaLoader } from "@matt-pasek/usva/sula/sula-loader";
+import type { LoaderMotion } from "usva/sula/sula-loader";
+import { SulaLoader } from "usva/sula/sula-loader";
 import { Playground } from "@/components/docs/playground";
 
 const MOTIONS = ["orbit", "cluster", "twin"] as const;
@@ -47,7 +47,7 @@ const snippetFor = (c: Config): string => {
   ]
     .filter(Boolean)
     .join(" ");
-  return `import { SulaLoader } from "@matt-pasek/usva/sula/sula-loader";
+  return `import { SulaLoader } from "usva/sula/sula-loader";
 
 <SulaLoader${attrs ? ` ${attrs}` : ""} />`;
 };

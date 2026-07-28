@@ -61,7 +61,7 @@ export default function GlowCardPage() {
 
       <AcquireSection
         registryName="card"
-        usage={`import { CardBody, CardHeader, CardTitle, GlowCard } from "@matt-pasek/usva/primitives/card";
+        usage={`import { CardBody, CardHeader, CardTitle, GlowCard } from "usva/primitives/card";
 
 <GlowCard>
   <CardHeader>

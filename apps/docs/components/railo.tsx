@@ -1,5 +1,5 @@
-import { cn } from "@matt-pasek/usva/cn";
 import type { CSSProperties } from "react";
+import { cn } from "usva/cn";
 import {
   RAILO_CUTS,
   RAILO_VIEW_BOX,
