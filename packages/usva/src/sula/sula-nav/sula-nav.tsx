@@ -19,6 +19,7 @@ import {
   restDiffers,
 } from "../sula-core/geometry.js";
 import { createPauseGate } from "../sula-core/pause.js";
+import { useContextRecovery } from "../sula-core/recovery.js";
 import { clamp01, smoother, smoothstep } from "../sula-motion/curves.js";
 import { createEnergyTracker } from "../sula-motion/energy.js";
 import {
@@ -350,12 +351,13 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
     const leftKey = leftSats.map((s) => s.id).join(" ");
     const rightKey = rightSats.map((s) => s.id).join(" ");
 
-    const [failed, setFailed] = React.useState(false);
+    const { failed, generation, onContextLost } = useContextRecovery(canvasRef);
     const [mounted, setMounted] = React.useState(false);
     useIsomorphicLayoutEffect(() => setMounted(true), []);
 
     const isFluid = fluid && !reduced && !failed && mounted;
     const fluidShell = fluid && !failed && (!mounted || !reduced);
+    const keepCanvas = fluid && (!mounted || !reduced);
 
     const resolvedActiveView = activeView ?? views[0]?.href;
     const activeViewIndex = Math.max(
@@ -372,6 +374,18 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
     const setSidesRef = React.useRef<(open: boolean) => void>(() => {});
     const sidesOpenRef = React.useRef(sidesOpen);
     sidesOpenRef.current = sidesOpen;
+
+    const overrides = React.useMemo(
+      () => ({ backdrop, tint, accent: accentColor, shine }),
+      [backdrop, tint, accentColor, shine],
+    );
+    const overridesRef = React.useRef(overrides);
+    overridesRef.current = overrides;
+    const mergeRadiusRef = React.useRef(mergeRadius);
+    mergeRadiusRef.current = mergeRadius;
+    const revealDelayRef = React.useRef(revealDelay);
+    revealDelayRef.current = revealDelay;
+    const fieldRef = React.useRef<ReturnType<typeof createField>>(null);
 
     const [indicator, setIndicator] = React.useState({
       left: 0,
@@ -426,16 +440,16 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
       const nav = navRef.current;
       if (!canvas || !stage || !nav) return;
 
-      const overrides = { backdrop, tint, accent: accentColor, shine };
       const field = createField({
         canvas,
-        colors: readColors(nav, overrides),
-        onContextLost: () => setFailed(true),
+        colors: readColors(nav, overridesRef.current),
+        onContextLost,
       });
       if (!field) {
-        setFailed(true);
+        onContextLost();
         return;
       }
+      fieldRef.current = field;
 
       let rest: Blob[] = [];
       let panelRest: Blob | null = null;
@@ -633,7 +647,12 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
           }
           const restI = rest[i];
           if (!restI) continue;
-          const side = revealSide(load.bar, restI, sT.value, mergeRadius);
+          const side = revealSide(
+            load.bar,
+            restI,
+            sT.value,
+            mergeRadiusRef.current,
+          );
           const sideBlob = flowStretch(side.blob, sT.value, false);
           rowBlobs.push(sideBlob);
           aligned[i] = sideBlob;
@@ -651,7 +670,7 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
         const speed =
           Math.abs(vBar) + Math.abs(vSide) + Math.abs(vDrip) + Math.abs(vMenu);
         energy.bump(speed);
-        const liveK = mergeRadius;
+        const liveK = mergeRadiusRef.current;
         /* Rest tension necks between adjacent row parts. The reach uses a
          * slightly wider k so parts at the default flex gap still neck at rest.
          * They persist because the last drawn frame keeps them once the field
@@ -710,7 +729,7 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
         }
 
         energy.bump(Math.abs(vSwitch));
-        const liveK = mergeRadius;
+        const liveK = mergeRadiusRef.current;
         /* Same reach as the rest path, so when the switch spring's `.finished`
          * hands off to loadFrame a beat after settle the necks do not resize. */
         const necks = bridgeNecks(blobs, liveK * NECK_REACH, merge);
@@ -869,8 +888,8 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
               loaded = true;
               if (collectParts().length > 1) setSides(sidesOpenRef.current);
             };
-            if (revealDelay > 0) {
-              revealTimer = window.setTimeout(handOff, revealDelay);
+            if (revealDelayRef.current > 0) {
+              revealTimer = window.setTimeout(handOff, revealDelayRef.current);
             } else {
               handOff();
             }
@@ -978,22 +997,19 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
         gate.dispose();
         cancelAnimationFrame(raf);
         field.dispose();
+        fieldRef.current = null;
         for (const node of collectParts()) {
           node.style.transform = "";
           node.style.opacity = "";
         }
       };
-    }, [
-      isFluid,
-      backdrop,
-      tint,
-      accentColor,
-      shine,
-      mergeRadius,
-      revealDelay,
-      revealAfter,
-      collectParts,
-    ]);
+    }, [isFluid, revealAfter, collectParts, generation]);
+
+    React.useEffect(() => {
+      const nav = navRef.current;
+      if (!nav) return;
+      fieldRef.current?.setColors(readColors(nav, overrides));
+    }, [overrides]);
 
     const previousViewIndex = React.useRef(activeViewIndex);
     React.useLayoutEffect(() => {
@@ -1219,11 +1235,14 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
       );
     });
 
-    const stage = fluidShell ? (
+    const stage = keepCanvas ? (
       <div
         ref={stageRef}
         aria-hidden="true"
-        className="pointer-events-none absolute overflow-hidden"
+        className={cn(
+          "pointer-events-none absolute overflow-hidden",
+          !fluidShell && "hidden",
+        )}
         style={{
           top: -DROP_HEIGHT,
           bottom: collapsed ? -PANEL_REACH : -CANVAS_SLACK,

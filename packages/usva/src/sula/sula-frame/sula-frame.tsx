@@ -10,6 +10,7 @@ import {
   resolveColor,
   shineForBackdrop,
 } from "../sula-core/field.js";
+import { useContextRecovery } from "../sula-core/recovery.js";
 import { clamp01 } from "../sula-motion/curves.js";
 import {
   BLOB_K,
@@ -116,13 +117,23 @@ export const SulaFrame = React.forwardRef<HTMLDivElement, SulaFrameProps>(
     const introRef = React.useRef(intro);
     introRef.current = intro;
 
-    const [failed, setFailed] = React.useState(false);
+    const overrides = React.useMemo(
+      () => ({ backdrop, tint, accent: accentColor, shine }),
+      [backdrop, tint, accentColor, shine],
+    );
+    const overridesRef = React.useRef(overrides);
+    overridesRef.current = overrides;
+    const fieldRef = React.useRef<ReturnType<typeof createBorderField>>(null);
+
+    const { failed, generation, onContextLost } = useContextRecovery(canvasRef);
     const [mounted, setMounted] = React.useState(false);
     React.useEffect(() => setMounted(true), []);
 
     const animated = fluid && !reduced && !failed && mounted;
     const staticBorder = mounted && (!fluid || reduced || failed);
+    const keepCanvas = fluid && !reduced && mounted;
 
+    // biome-ignore lint/correctness/useExhaustiveDependencies: `generation` is not read here, it is what rebuilds the field on a restored context
     React.useEffect(() => {
       if (!animated) return;
       const canvas = canvasRef.current;
@@ -131,18 +142,18 @@ export const SulaFrame = React.forwardRef<HTMLDivElement, SulaFrameProps>(
       const measureNode = fixed ? layer : container;
       if (!canvas || !layer || !measureNode) return;
 
-      const overrides = { backdrop, tint, accent: accentColor, shine };
       const field = createBorderField({
         canvas,
-        colors: readColors(measureNode, overrides),
-        onContextLost: () => setFailed(true),
+        colors: readColors(measureNode, overridesRef.current),
+        onContextLost,
       });
       if (!field) {
-        setFailed(true);
+        onContextLost();
         return;
       }
+      fieldRef.current = field;
       const refreshColors = () =>
-        field.setColors(readColors(measureNode, overrides));
+        field.setColors(readColors(measureNode, overridesRef.current));
 
       let width = 0;
       let height = 0;
@@ -344,10 +355,17 @@ export const SulaFrame = React.forwardRef<HTMLDivElement, SulaFrameProps>(
         themeObserver?.disconnect();
         stop();
         field.dispose();
+        fieldRef.current = null;
         canvas.style.width = "";
         canvas.style.height = "";
       };
-    }, [animated, fixed, backdrop, tint, accentColor, shine]);
+    }, [animated, fixed, generation]);
+
+    React.useEffect(() => {
+      const measureNode = fixed ? layerRef.current : containerRef.current;
+      if (!measureNode) return;
+      fieldRef.current?.setColors(readColors(measureNode, overrides));
+    }, [overrides, fixed]);
 
     const staticRingStyle: React.CSSProperties = {
       position: fixed ? "fixed" : "absolute",
@@ -358,19 +376,22 @@ export const SulaFrame = React.forwardRef<HTMLDivElement, SulaFrameProps>(
         "0 0 24px color-mix(in oklab, var(--usva-accent) 22%, transparent)",
     };
 
-    const layer = animated ? (
+    const layer = keepCanvas ? (
       <div
         ref={layerRef}
         aria-hidden="true"
-        className={
+        className={cn(
           fixed
             ? "pointer-events-none fixed inset-0 z-[2147483647]"
-            : "pointer-events-none absolute inset-0 z-10"
-        }
+            : "pointer-events-none absolute inset-0 z-10",
+          !animated && "hidden",
+        )}
       >
         <canvas ref={canvasRef} className="block h-full w-full" />
       </div>
-    ) : staticBorder ? (
+    ) : null;
+
+    const ring = staticBorder ? (
       <div
         aria-hidden="true"
         className={cn("pointer-events-none", fixed ? "z-[2147483647]" : "z-10")}
@@ -391,6 +412,7 @@ export const SulaFrame = React.forwardRef<HTMLDivElement, SulaFrameProps>(
           {...props}
         >
           {layer ? createPortal(layer, document.body) : null}
+          {ring ? createPortal(ring, document.body) : null}
           {children}
         </div>
       );
@@ -409,6 +431,7 @@ export const SulaFrame = React.forwardRef<HTMLDivElement, SulaFrameProps>(
         {...props}
       >
         {layer}
+        {ring}
         {children}
       </div>
     );

@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { act, render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { SulaFrame } from "./sula-frame.js";
@@ -15,19 +15,24 @@ vi.mock("../sula-core/field.js", () => ({
   liftTint: (tint: [number, number, number]) => tint,
 }));
 
+const setColors = vi.fn();
+const createBorderField = vi.fn((_options: unknown) => ({
+  resize: vi.fn(),
+  setColors,
+  draw: vi.fn(),
+  dispose: vi.fn(),
+}));
+
 vi.mock("../sula-core/border.js", () => ({
-  createBorderField: () => ({
-    resize: vi.fn(),
-    setColors: vi.fn(),
-    draw: vi.fn(),
-    dispose: vi.fn(),
-  }),
+  createBorderField: (options: unknown) => createBorderField(options),
 }));
 
 const canvasOf = (container: HTMLElement) => container.querySelector("canvas");
 
 beforeEach(() => {
   reducedMotion.current = false;
+  createBorderField.mockClear();
+  setColors.mockClear();
 });
 afterEach(() => {
   vi.restoreAllMocks();
@@ -89,6 +94,42 @@ describe("SulaFrame", () => {
     );
     expect(canvasOf(container)).toBeNull();
     expect(container.querySelector('[aria-hidden="true"]')).not.toBeNull();
+  });
+
+  it("pushes a colour change through without rebuilding the gl context", () => {
+    const { rerender } = render(<SulaFrame shine={0.2} />);
+    expect(createBorderField).toHaveBeenCalledTimes(1);
+
+    for (const shine of [0.3, 0.4, 0.5, 0.6, 0.7]) {
+      rerender(<SulaFrame shine={shine} />);
+    }
+
+    expect(createBorderField).toHaveBeenCalledTimes(1);
+    expect(setColors).toHaveBeenCalled();
+  });
+
+  it("recovers when the browser hands the context back", async () => {
+    let lose = () => {};
+    createBorderField.mockImplementationOnce((options: unknown) => {
+      lose = (options as { onContextLost: () => void }).onContextLost;
+      return { resize: vi.fn(), setColors, draw: vi.fn(), dispose: vi.fn() };
+    });
+
+    const { container } = render(<SulaFrame />);
+    const canvas = canvasOf(container);
+    expect(canvas).not.toBeNull();
+    expect(createBorderField).toHaveBeenCalledTimes(1);
+
+    await act(async () => lose());
+
+    expect(canvasOf(container)).not.toBeNull();
+    expect(container.querySelector('[aria-hidden="true"]')).not.toBeNull();
+
+    await act(async () => {
+      canvas?.dispatchEvent(new Event("webglcontextrestored"));
+    });
+
+    expect(createBorderField).toHaveBeenCalledTimes(2);
   });
 
   it("has no axe violations in wrapper mode", async () => {

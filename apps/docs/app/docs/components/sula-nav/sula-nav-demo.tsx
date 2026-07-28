@@ -154,11 +154,11 @@ function Preview({ c }: { c: Config }) {
 
 const snippetFor = (c: Config): string => {
   const attrs = [
-    !c.fluid && "  fluid={false}",
-    !c.sidesOpen && "  sidesOpen={false}",
-    c.shine !== base.shine && `  shine={${c.shine}}`,
-    c.mergeRadius !== base.mergeRadius && `  mergeRadius={${c.mergeRadius}}`,
-    c.revealDelay !== base.revealDelay && `  revealDelay={${c.revealDelay}}`,
+    !c.fluid && "    fluid={false}",
+    !c.sidesOpen && "    sidesOpen={false}",
+    c.shine !== base.shine && `    shine={${c.shine}}`,
+    c.mergeRadius !== base.mergeRadius && `    mergeRadius={${c.mergeRadius}}`,
+    c.revealDelay !== base.revealDelay && `    revealDelay={${c.revealDelay}}`,
   ].filter(Boolean);
   const sat = c.satellites
     ? `    satellites={[
@@ -235,12 +235,7 @@ export function SulaNavDemo() {
         },
       ]}
       snippet={snippetFor}
-      render={(c) => (
-        <Preview
-          key={`${c.fluid}-${c.satellites}-${c.shine}-${c.mergeRadius}-${c.revealDelay}`}
-          c={c}
-        />
-      )}
+      render={(c) => <Preview c={c} />}
     />
   );
 }

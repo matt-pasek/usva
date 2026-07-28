@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { axe } from "jest-axe";
 import type * as React from "react";
@@ -13,15 +13,21 @@ vi.mock("motion/react", async (importOriginal) => ({
   useReducedMotion: () => reducedMotion.current,
 }));
 
+const fieldSetColors = vi.hoisted(() => vi.fn());
+const createFieldSpy = vi.hoisted(() => vi.fn());
+
 vi.mock("../sula-core/field.js", () => ({
   resolveColor: () => [0, 0, 0],
   shineForBackdrop: () => 1,
-  createField: () => ({
-    resize: vi.fn(),
-    setColors: vi.fn(),
-    draw: fieldDraw,
-    dispose: vi.fn(),
-  }),
+  createField: (options: unknown) => {
+    createFieldSpy(options);
+    return {
+      resize: vi.fn(),
+      setColors: fieldSetColors,
+      draw: fieldDraw,
+      dispose: vi.fn(),
+    };
+  },
 }));
 
 const views: SulaNavView[] = [
@@ -59,6 +65,8 @@ const matchMedia = (reduced: boolean, below = false) =>
 beforeEach(() => {
   reducedMotion.current = false;
   fieldDraw.mockClear();
+  fieldSetColors.mockClear();
+  createFieldSpy.mockClear();
   vi.stubGlobal("matchMedia", matchMedia(false));
 });
 afterEach(() => {
@@ -68,6 +76,51 @@ afterEach(() => {
 const canvasOf = (container: HTMLElement) => container.querySelector("canvas");
 
 describe("SulaNav", () => {
+  it("retunes live without rebuilding the gl context", () => {
+    const { rerender } = render(
+      <SulaNav views={views} shine={0.2} mergeRadius={10} revealDelay={100} />,
+    );
+    expect(createFieldSpy).toHaveBeenCalledTimes(1);
+
+    for (const shine of [0.3, 0.4, 0.5, 0.6, 0.7]) {
+      rerender(
+        <SulaNav
+          views={views}
+          shine={shine}
+          mergeRadius={shine * 20}
+          revealDelay={shine * 200}
+        />,
+      );
+    }
+
+    expect(createFieldSpy).toHaveBeenCalledTimes(1);
+    expect(fieldSetColors).toHaveBeenCalled();
+  });
+
+  it("recovers when the browser hands the context back", async () => {
+    let lose = () => {};
+    createFieldSpy.mockImplementationOnce((options: unknown) => {
+      lose = (options as { onContextLost: () => void }).onContextLost;
+    });
+
+    const { container } = render(<SulaNav views={views} />);
+    const canvas = canvasOf(container);
+    expect(canvas).not.toBeNull();
+    expect(createFieldSpy).toHaveBeenCalledTimes(1);
+
+    await act(async () => lose());
+
+    // The canvas has to stay in the document, or it is never offered a
+    // replacement context and the static fallback becomes permanent.
+    expect(canvasOf(container)).not.toBeNull();
+
+    await act(async () => {
+      canvas?.dispatchEvent(new Event("webglcontextrestored"));
+    });
+
+    expect(createFieldSpy).toHaveBeenCalledTimes(2);
+  });
+
   it("is a labelled landmark holding the active view's section links", () => {
     render(<SulaNav views={views} activeView="/" ariaLabel="Site" />);
     const nav = screen.getByRole("navigation", { name: "Site" });
