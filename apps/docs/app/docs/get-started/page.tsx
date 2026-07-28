@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Reveal } from "usva/motion/reveal";
+import { Card } from "usva/primitives/card";
 import { counts } from "@/lib/catalog";
 import { pageMetadata } from "@/lib/site";
 
@@ -10,6 +12,12 @@ export const metadata: Metadata = pageMetadata("/docs/get-started", {
 });
 
 const next = [
+  {
+    href: "/docs/get-started/installation",
+    title: "installation",
+    body: "two ways in, and you pick per component rather than once for the project. about five minutes to a button on your own screen.",
+    lead: true,
+  },
   {
     href: "/docs/get-started/theming",
     title: "theming",
@@ -56,40 +64,42 @@ export default function GetStartedPage() {
       </section>
 
       <section className="grid gap-4 sm:grid-cols-2">
-        <Link
-          className="group flex flex-col gap-2 rounded-lg border border-border-strong bg-surface p-5 transition-colors duration-150 ease-soft hover:border-accent sm:col-span-2"
-          href="/docs/get-started/installation"
-        >
-          <span className="flex items-baseline gap-2">
-            <span className="font-mono text-muted text-xs tabular-nums">
-              01
-            </span>
-            <span className="font-semibold text-ink group-hover:text-accent">
-              installation
-            </span>
-          </span>
-          <span className="text-muted text-sm">
-            two ways in, and you pick per component rather than once for the
-            project. about five minutes to a button on your own screen.
-          </span>
-        </Link>
-
         {next.map((item, index) => (
-          <Link
+          <Reveal
             key={item.href}
-            className="group flex flex-col gap-2 rounded-lg border border-border bg-surface p-5 transition-colors duration-150 ease-soft hover:border-border-strong"
-            href={item.href}
+            force
+            delay={index * 0.08}
+            className={item.lead ? "sm:col-span-2" : undefined}
           >
-            <span className="flex items-baseline gap-2">
-              <span className="font-mono text-muted text-xs tabular-nums">
-                {String(index + 2).padStart(2, "0")}
-              </span>
-              <span className="font-semibold text-ink group-hover:text-accent">
-                {item.title}
-              </span>
-            </span>
-            <span className="text-muted text-sm">{item.body}</span>
-          </Link>
+            <Link
+              href={item.href}
+              className="group block h-full rounded-2xl outline-none focus-visible:ring-focus"
+            >
+              <Card
+                interactive
+                highlight={item.lead ? "edge" : "none"}
+                className="flex h-full flex-col gap-2 p-5"
+              >
+                <span className="flex items-baseline gap-2">
+                  <span className="font-mono text-muted text-xs tabular-nums">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <span className="font-semibold text-ink transition-colors duration-base ease-soft group-hover:text-accent">
+                    {item.title}
+                  </span>
+                  <span
+                    aria-hidden="true"
+                    className="ml-auto text-muted transition-[transform,color] duration-base ease-soft group-hover:translate-x-0.5 group-hover:text-accent motion-reduce:transform-none"
+                  >
+                    →
+                  </span>
+                </span>
+                <span className="text-pretty text-muted text-sm">
+                  {item.body}
+                </span>
+              </Card>
+            </Link>
+          </Reveal>
         ))}
       </section>
     </main>
