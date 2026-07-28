@@ -40,6 +40,16 @@ const SUB_EXPORTS: Record<string, Item[]> = {
       child: true,
     },
   ],
+  "bento-grid": [
+    { href: "/docs/components/bento-card", label: "bento-card", child: true },
+    { href: "/docs/components/bento-info", label: "bento-info", child: true },
+    {
+      href: "/docs/components/bento-metric",
+      label: "bento-metric",
+      child: true,
+    },
+    { href: "/docs/components/bento-text", label: "bento-text", child: true },
+  ],
   card: [
     {
       href: "/docs/components/glow-card",

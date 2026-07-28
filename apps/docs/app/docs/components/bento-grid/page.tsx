@@ -17,48 +17,6 @@ const props = [
     type: "number",
     desc: "explicit column count. omit for a responsive auto-fit grid.",
   },
-  {
-    name: "span",
-    type: "number",
-    desc: (
-      <>
-        BentoCard: columns the cell spans. <b>nothing clamps it</b>, overshoot
-        columns and the card overflows its track.
-      </>
-    ),
-  },
-  {
-    name: "rowSpan",
-    type: "number",
-    desc: "BentoCard: rows the cell spans. rows are minmax, so it raises the floor, not the height.",
-  },
-  {
-    name: "highlight",
-    type: '"none" | "wash" | "edge" | "ring"',
-    desc: "BentoCard: inherits the Card highlight vocabulary.",
-  },
-  {
-    name: "value / label / suffix",
-    type: "ReactNode",
-    desc: "BentoMetric: the stat, its pill label, and the accent unit after the number.",
-  },
-  {
-    name: "size",
-    type: '"md" | "lg"',
-    defaultValue: '"md"',
-    desc: "BentoMetric: lg is the standalone stat treatment, display weight and full-strength ink.",
-  },
-  {
-    name: "animate",
-    type: "boolean",
-    defaultValue: "false",
-    desc: "BentoMetric: count up from zero on mount. ignored for non-numeric values.",
-  },
-  {
-    name: "title / body",
-    type: "ReactNode",
-    desc: "BentoText: the heading and its optional paragraph. label and icon are shared with BentoInfo.",
-  },
 ];
 
 export default function BentoGridPage() {

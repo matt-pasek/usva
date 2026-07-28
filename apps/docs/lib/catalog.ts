@@ -638,6 +638,10 @@ export const CATALOG: CatalogEntry[] = [
 
 export const SUB_EXPORTS: { slug: string; name: string; parent: string }[] = [
   { slug: "avatar-group", name: "AvatarGroup", parent: "avatar" },
+  { slug: "bento-card", name: "BentoCard", parent: "bento-grid" },
+  { slug: "bento-info", name: "BentoInfo", parent: "bento-grid" },
+  { slug: "bento-metric", name: "BentoMetric", parent: "bento-grid" },
+  { slug: "bento-text", name: "BentoText", parent: "bento-grid" },
   { slug: "glow-card", name: "GlowCard", parent: "card" },
   { slug: "reveal-group", name: "RevealGroup", parent: "reveal" },
   { slug: "skeleton-mirror", name: "SkeletonMirror", parent: "skeleton" },
