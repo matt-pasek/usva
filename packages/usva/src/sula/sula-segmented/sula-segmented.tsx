@@ -10,6 +10,8 @@ import {
 } from "../sula-core/field.js";
 import { type Blob, type Neck, packUniforms } from "../sula-core/geometry.js";
 import { createPauseGate } from "../sula-core/pause.js";
+import { useContextRecovery } from "../sula-core/recovery.js";
+import { useFieldRetune } from "../sula-core/retune.js";
 import { createEnergyTracker } from "../sula-motion/energy.js";
 import { switchSpring } from "../sula-motion/springs.js";
 import { indicatorPhase, pillFromRect } from "./segmented-geometry.js";
@@ -106,7 +108,16 @@ export const SulaSegmented = React.forwardRef<
     const stageRef = React.useRef<HTMLDivElement | null>(null);
     const segmentRefs = React.useRef<Array<HTMLButtonElement | null>>([]);
 
-    const [failed, setFailed] = React.useState(false);
+    const { failed, generation, onContextLost, onContextReady } =
+      useContextRecovery(canvasRef);
+    const overrides = React.useMemo(
+      () => ({ backdrop, tint, accent: accentColor, shine }),
+      [backdrop, tint, accentColor, shine],
+    );
+    const overridesRef = React.useRef(overrides);
+    overridesRef.current = overrides;
+    const fieldRef = React.useRef<ReturnType<typeof createField>>(null);
+    const wakeRef = React.useRef<(() => void) | null>(null);
     const [mounted, setMounted] = React.useState(false);
     React.useEffect(() => setMounted(true), []);
 
@@ -152,6 +163,7 @@ export const SulaSegmented = React.forwardRef<
       return () => observer.disconnect();
     }, [measurePlain]);
 
+    // biome-ignore lint/correctness/useExhaustiveDependencies: `generation` is not read here, it is what rebuilds the field on a restored context
     React.useEffect(() => {
       if (!isFluid) return;
       const canvas = canvasRef.current;
@@ -159,16 +171,17 @@ export const SulaSegmented = React.forwardRef<
       const root = rootRef.current;
       if (!canvas || !stage || !root) return;
 
-      const overrides = { backdrop, tint, accent: accentColor, shine };
       const field = createField({
         canvas,
-        colors: readColors(root, overrides),
-        onContextLost: () => setFailed(true),
+        colors: readColors(root, overridesRef.current),
+        onContextLost,
       });
       if (!field) {
-        setFailed(true);
+        onContextLost();
         return;
       }
+      fieldRef.current = field;
+      onContextReady();
 
       let pills: Blob[] = [];
       let canvasH = 0;
@@ -253,6 +266,7 @@ export const SulaSegmented = React.forwardRef<
         cancelAnimationFrame(raf);
         raf = requestAnimationFrame(tick);
       };
+      wakeRef.current = wake;
       const gate = createPauseGate({
         target: root,
         onPause: () => cancelAnimationFrame(raf),
@@ -329,7 +343,7 @@ export const SulaSegmented = React.forwardRef<
         typeof MutationObserver === "undefined"
           ? null
           : new MutationObserver(() => {
-              field.setColors(readColors(root, overrides));
+              field.setColors(readColors(root, overridesRef.current));
               wake();
             });
       themeObserver?.observe(document.documentElement, {
@@ -347,10 +361,19 @@ export const SulaSegmented = React.forwardRef<
         gate.dispose();
         cancelAnimationFrame(raf);
         field.dispose();
+        fieldRef.current = null;
+        wakeRef.current = null;
         canvas.style.width = "";
         canvas.style.height = "";
       };
-    }, [isFluid, backdrop, tint, accentColor, shine]);
+    }, [isFluid, generation]);
+
+    useFieldRetune(
+      fieldRef,
+      () => (rootRef.current ? readColors(rootRef.current, overrides) : null),
+      overrides,
+      wakeRef,
+    );
 
     const previousIndex = React.useRef(activeIndex);
     React.useLayoutEffect(() => {

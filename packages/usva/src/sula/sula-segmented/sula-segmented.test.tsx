@@ -10,15 +10,21 @@ vi.mock("motion/react", async (importOriginal) => ({
   useReducedMotion: () => reducedMotion.current,
 }));
 
+const createFieldSpy = vi.hoisted(() => vi.fn());
+const fieldSetColors = vi.hoisted(() => vi.fn());
+
 vi.mock("../sula-core/field.js", () => ({
   resolveColor: () => [0, 0, 0],
   shineForBackdrop: () => 1,
-  createField: () => ({
-    resize: vi.fn(),
-    setColors: vi.fn(),
-    draw: vi.fn(),
-    dispose: vi.fn(),
-  }),
+  createField: (options: unknown) => {
+    createFieldSpy(options);
+    return {
+      resize: vi.fn(),
+      setColors: fieldSetColors,
+      draw: vi.fn(),
+      dispose: vi.fn(),
+    };
+  },
 }));
 
 const items: SulaSegmentedItem[] = [
@@ -41,6 +47,8 @@ const matchMedia = (reduced: boolean) =>
 
 beforeEach(() => {
   reducedMotion.current = false;
+  createFieldSpy.mockClear();
+  fieldSetColors.mockClear();
   vi.stubGlobal("matchMedia", matchMedia(false));
 });
 afterEach(() => {
@@ -51,6 +59,20 @@ afterEach(() => {
 const canvasOf = (container: HTMLElement) => container.querySelector("canvas");
 
 describe("SulaSegmented", () => {
+  it("retunes live without rebuilding the gl context", () => {
+    // Every rebuild burns a WebGL context, and the browser answers by dropping
+    // the oldest live one on the page, which is some other surface entirely.
+    const { rerender } = render(<SulaSegmented items={items} shine={0.2} />);
+    expect(createFieldSpy).toHaveBeenCalledTimes(1);
+
+    for (const shine of [0.3, 0.4, 0.5, 0.6, 0.7]) {
+      rerender(<SulaSegmented items={items} shine={shine} />);
+    }
+
+    expect(createFieldSpy).toHaveBeenCalledTimes(1);
+    expect(fieldSetColors).toHaveBeenCalled();
+  });
+
   it("renders a radiogroup with one radio per item", () => {
     render(<SulaSegmented items={items} />);
     expect(screen.getByRole("radiogroup")).toBeInTheDocument();

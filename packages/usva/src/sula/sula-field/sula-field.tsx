@@ -11,6 +11,7 @@ import {
 } from "../sula-core/field.js";
 import { packHover, packUniforms } from "../sula-core/geometry.js";
 import { createPauseGate } from "../sula-core/pause.js";
+import { useContextRecovery } from "../sula-core/recovery.js";
 import {
   ambientDrift,
   MAX_FIELD_BLOBS,
@@ -123,7 +124,18 @@ export const SulaField = React.forwardRef<HTMLDivElement, SulaFieldProps>(
     const driveRef = React.useRef<SulaFieldDrive>(drive ?? ambientDrift);
     driveRef.current = drive ?? ambientDrift;
 
-    const [failed, setFailed] = React.useState(false);
+    const { failed, generation, onContextLost, onContextReady } =
+      useContextRecovery(canvasRef);
+    const overrides = React.useMemo(
+      () => ({ backdrop, tint, accent: accentColor, shine }),
+      [backdrop, tint, accentColor, shine],
+    );
+    const overridesRef = React.useRef(overrides);
+    overridesRef.current = overrides;
+    /* This surface swaps two colour sets per pass, so a retune recomputes both
+     * rather than pushing one through setColors, which the next pass would
+     * overwrite anyway. */
+    const refreshRef = React.useRef<(() => void) | null>(null);
     const [mounted, setMounted] = React.useState(false);
     React.useEffect(() => setMounted(true), []);
 
@@ -131,34 +143,36 @@ export const SulaField = React.forwardRef<HTMLDivElement, SulaFieldProps>(
     const still = fluid && reduced && !failed && mounted;
     const fieldOn = animated || still;
 
+    // biome-ignore lint/correctness/useExhaustiveDependencies: `generation` is not read here, it is what rebuilds the field on a restored context
     React.useEffect(() => {
       if (!fieldOn) return;
       const canvas = canvasRef.current;
       const container = containerRef.current;
       if (!canvas || !container) return;
 
-      const overrides = { backdrop, tint, accent: accentColor, shine };
-      let base = readColors(container, overrides);
+      let base = readColors(container, overridesRef.current);
       let backColors: FieldColors = { ...base, shine: 0 };
       let frontColors: FieldColors = {
         ...base,
         tint: liftTint(base.tint, base.accent),
       };
       const refreshColors = () => {
-        base = readColors(container, overrides);
+        base = readColors(container, overridesRef.current);
         backColors = { ...base, shine: 0 };
         frontColors = { ...base, tint: liftTint(base.tint, base.accent) };
       };
+      refreshRef.current = refreshColors;
 
       const field = createField({
         canvas,
         colors: frontColors,
-        onContextLost: () => setFailed(true),
+        onContextLost,
       });
       if (!field) {
-        setFailed(true);
+        onContextLost();
         return;
       }
+      onContextReady();
 
       let width = 0;
       let height = 0;
@@ -264,6 +278,7 @@ export const SulaField = React.forwardRef<HTMLDivElement, SulaFieldProps>(
         return () => {
           observer?.disconnect();
           field.dispose();
+          refreshRef.current = null;
           canvas.style.width = "";
           canvas.style.height = "";
         };
@@ -338,7 +353,12 @@ export const SulaField = React.forwardRef<HTMLDivElement, SulaFieldProps>(
         canvas.style.width = "";
         canvas.style.height = "";
       };
-    }, [fieldOn, still, stillTime, backdrop, tint, accentColor, shine]);
+    }, [fieldOn, still, stillTime, generation]);
+
+    // biome-ignore lint/correctness/useExhaustiveDependencies: `overrides` is not read here, the effect closure reads it live
+    React.useEffect(() => {
+      refreshRef.current?.();
+    }, [overrides]);
 
     return (
       <div

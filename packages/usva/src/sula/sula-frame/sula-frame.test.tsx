@@ -132,6 +132,30 @@ describe("SulaFrame", () => {
     expect(createBorderField).toHaveBeenCalledTimes(2);
   });
 
+  it("retries after a loss the browser never offers back", async () => {
+    vi.useFakeTimers();
+    try {
+      let lose = () => {};
+      createBorderField.mockImplementationOnce((options: unknown) => {
+        lose = (options as { onContextLost: () => void }).onContextLost;
+        return { resize: vi.fn(), setColors, draw: vi.fn(), dispose: vi.fn() };
+      });
+
+      render(<SulaFrame />);
+      expect(createBorderField).toHaveBeenCalledTimes(1);
+
+      act(() => lose());
+      expect(createBorderField).toHaveBeenCalledTimes(1);
+
+      act(() => {
+        vi.advanceTimersByTime(500);
+      });
+      expect(createBorderField).toHaveBeenCalledTimes(2);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
   it("has no axe violations in wrapper mode", async () => {
     const { container } = render(
       <SulaFrame>

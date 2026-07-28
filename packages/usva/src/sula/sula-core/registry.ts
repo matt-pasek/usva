@@ -12,5 +12,6 @@ export const sulaCoreRegistry = {
     { path: "border-shader.ts", target: "components/ui/border-shader.ts" },
     { path: "border.ts", target: "components/ui/border.ts" },
     { path: "recovery.ts", target: "components/ui/recovery.ts" },
+    { path: "retune.ts", target: "components/ui/retune.ts" },
   ],
 } as const;

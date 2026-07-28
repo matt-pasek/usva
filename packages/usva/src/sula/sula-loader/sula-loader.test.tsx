@@ -10,15 +10,21 @@ vi.mock("motion/react", async (importOriginal) => ({
   useReducedMotion: () => reducedMotion.current,
 }));
 
+const createFieldSpy = vi.hoisted(() => vi.fn());
+const fieldSetColors = vi.hoisted(() => vi.fn());
+
 vi.mock("../sula-core/field.js", () => ({
   resolveColor: () => [0, 0, 0],
   shineForBackdrop: () => 1,
-  createField: () => ({
-    resize: vi.fn(),
-    setColors: vi.fn(),
-    draw: vi.fn(),
-    dispose: vi.fn(),
-  }),
+  createField: (options: unknown) => {
+    createFieldSpy(options);
+    return {
+      resize: vi.fn(),
+      setColors: fieldSetColors,
+      draw: vi.fn(),
+      dispose: vi.fn(),
+    };
+  },
 }));
 
 vi.mock("./loader-geometry.js", async (importOriginal) => {
@@ -32,12 +38,28 @@ const circlesOf = (container: HTMLElement) =>
 
 beforeEach(() => {
   reducedMotion.current = false;
+  createFieldSpy.mockClear();
+  fieldSetColors.mockClear();
 });
 afterEach(() => {
   vi.restoreAllMocks();
 });
 
 describe("SulaLoader", () => {
+  it("retunes live without rebuilding the gl context", () => {
+    // Every rebuild burns a WebGL context, and the browser answers by dropping
+    // the oldest live one on the page, which is some other surface entirely.
+    const { rerender } = render(<SulaLoader label="Loading" shine={0.2} />);
+    expect(createFieldSpy).toHaveBeenCalledTimes(1);
+
+    for (const shine of [0.3, 0.4, 0.5, 0.6, 0.7]) {
+      rerender(<SulaLoader label="Loading" shine={shine} />);
+    }
+
+    expect(createFieldSpy).toHaveBeenCalledTimes(1);
+    expect(fieldSetColors).toHaveBeenCalled();
+  });
+
   it("announces its status with the label", () => {
     render(<SulaLoader label="Loading dashboard" />);
     const status = screen.getByRole("status");

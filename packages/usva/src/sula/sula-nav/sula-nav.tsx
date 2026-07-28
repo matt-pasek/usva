@@ -20,6 +20,7 @@ import {
 } from "../sula-core/geometry.js";
 import { createPauseGate } from "../sula-core/pause.js";
 import { useContextRecovery } from "../sula-core/recovery.js";
+import { useFieldRetune } from "../sula-core/retune.js";
 import { clamp01, smoother, smoothstep } from "../sula-motion/curves.js";
 import { createEnergyTracker } from "../sula-motion/energy.js";
 import {
@@ -351,7 +352,8 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
     const leftKey = leftSats.map((s) => s.id).join(" ");
     const rightKey = rightSats.map((s) => s.id).join(" ");
 
-    const { failed, generation, onContextLost } = useContextRecovery(canvasRef);
+    const { failed, generation, onContextLost, onContextReady } =
+      useContextRecovery(canvasRef);
     const [mounted, setMounted] = React.useState(false);
     useIsomorphicLayoutEffect(() => setMounted(true), []);
 
@@ -386,6 +388,7 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
     const revealDelayRef = React.useRef(revealDelay);
     revealDelayRef.current = revealDelay;
     const fieldRef = React.useRef<ReturnType<typeof createField>>(null);
+    const wakeRef = React.useRef<(() => void) | null>(null);
 
     const [indicator, setIndicator] = React.useState({
       left: 0,
@@ -450,6 +453,7 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
         return;
       }
       fieldRef.current = field;
+      onContextReady();
 
       let rest: Blob[] = [];
       let panelRest: Blob | null = null;
@@ -772,6 +776,7 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
         cancelAnimationFrame(raf);
         raf = requestAnimationFrame(tick);
       };
+      wakeRef.current = wake;
       const gate = createPauseGate({
         target: nav,
         onPause: () => cancelAnimationFrame(raf),
@@ -1005,11 +1010,19 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
       };
     }, [isFluid, revealAfter, collectParts, generation]);
 
+    useFieldRetune(
+      fieldRef,
+      () => (navRef.current ? readColors(navRef.current, overrides) : null),
+      overrides,
+      wakeRef,
+    );
+
+    /* The loop reads mergeRadius live, but a parked one is holding its last
+     * frame and would not show the new merge until the pointer arrived. */
+    // biome-ignore lint/correctness/useExhaustiveDependencies: `mergeRadius` is not read here, the loop reads it live
     React.useEffect(() => {
-      const nav = navRef.current;
-      if (!nav) return;
-      fieldRef.current?.setColors(readColors(nav, overrides));
-    }, [overrides]);
+      wakeRef.current?.();
+    }, [mergeRadius]);
 
     const previousViewIndex = React.useRef(activeViewIndex);
     React.useLayoutEffect(() => {

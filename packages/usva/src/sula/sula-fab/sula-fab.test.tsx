@@ -10,15 +10,21 @@ vi.mock("motion/react", async (importOriginal) => ({
   useReducedMotion: () => reducedMotion.current,
 }));
 
+const createFieldSpy = vi.hoisted(() => vi.fn());
+const fieldSetColors = vi.hoisted(() => vi.fn());
+
 vi.mock("../sula-core/field.js", () => ({
   resolveColor: () => [0, 0, 0],
   shineForBackdrop: () => 1,
-  createField: () => ({
-    resize: vi.fn(),
-    setColors: vi.fn(),
-    draw: vi.fn(),
-    dispose: vi.fn(),
-  }),
+  createField: (options: unknown) => {
+    createFieldSpy(options);
+    return {
+      resize: vi.fn(),
+      setColors: fieldSetColors,
+      draw: vi.fn(),
+      dispose: vi.fn(),
+    };
+  },
 }));
 
 const Icon = () => <svg aria-hidden="true" viewBox="0 0 4 4" />;
@@ -43,6 +49,8 @@ const matchMedia = (reduced: boolean) =>
 
 beforeEach(() => {
   reducedMotion.current = false;
+  createFieldSpy.mockClear();
+  fieldSetColors.mockClear();
   vi.stubGlobal("matchMedia", matchMedia(false));
 });
 afterEach(() => {
@@ -58,6 +66,22 @@ const tooltipPositions = (container: HTMLElement) =>
   );
 
 describe("SulaFab", () => {
+  it("retunes live without rebuilding the gl context", () => {
+    // Every rebuild burns a WebGL context, and the browser answers by dropping
+    // the oldest live one on the page, which is some other surface entirely.
+    const { rerender } = render(
+      <SulaFab actions={actions} shine={0.2} gap={10} />,
+    );
+    expect(createFieldSpy).toHaveBeenCalledTimes(1);
+
+    for (const shine of [0.3, 0.4, 0.5, 0.6, 0.7]) {
+      rerender(<SulaFab actions={actions} shine={shine} gap={shine * 20} />);
+    }
+
+    expect(createFieldSpy).toHaveBeenCalledTimes(1);
+    expect(fieldSetColors).toHaveBeenCalled();
+  });
+
   it("collapses the trigger with aria-expanded false while closed", () => {
     render(<SulaFab actions={actions} />);
     expect(trigger()).toHaveAttribute("aria-expanded", "false");

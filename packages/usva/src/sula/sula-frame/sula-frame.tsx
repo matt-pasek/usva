@@ -125,7 +125,8 @@ export const SulaFrame = React.forwardRef<HTMLDivElement, SulaFrameProps>(
     overridesRef.current = overrides;
     const fieldRef = React.useRef<ReturnType<typeof createBorderField>>(null);
 
-    const { failed, generation, onContextLost } = useContextRecovery(canvasRef);
+    const { failed, generation, onContextLost, onContextReady } =
+      useContextRecovery(canvasRef);
     const [mounted, setMounted] = React.useState(false);
     React.useEffect(() => setMounted(true), []);
 
@@ -152,6 +153,7 @@ export const SulaFrame = React.forwardRef<HTMLDivElement, SulaFrameProps>(
         return;
       }
       fieldRef.current = field;
+      onContextReady();
       const refreshColors = () =>
         field.setColors(readColors(measureNode, overridesRef.current));
 

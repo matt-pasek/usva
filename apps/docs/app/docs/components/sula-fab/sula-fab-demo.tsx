@@ -73,7 +73,7 @@ function Preview(c: Config) {
   return (
     <div className="flex min-h-64 w-full items-end justify-center py-8">
       <SulaFab
-        key={`${c.layout}-${c.direction}-${c.fluid}-${c.gap}`}
+        key={`${c.layout}-${c.direction}-${c.fluid}`}
         fluid={c.fluid}
         layout={c.layout}
         direction={c.direction}

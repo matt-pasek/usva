@@ -9,6 +9,8 @@ import {
   shineForBackdrop,
 } from "../sula-core/field.js";
 import { packUniforms } from "../sula-core/geometry.js";
+import { useContextRecovery } from "../sula-core/recovery.js";
+import { useFieldRetune } from "../sula-core/retune.js";
 import {
   LOOP_PERIODS,
   type LoaderMotion,
@@ -85,7 +87,15 @@ export const SulaLoader = React.forwardRef<HTMLDivElement, SulaLoaderProps>(
     const canvasRef = React.useRef<HTMLCanvasElement | null>(null);
     const gooId = React.useId();
 
-    const [failed, setFailed] = React.useState(false);
+    const { failed, generation, onContextLost, onContextReady } =
+      useContextRecovery(canvasRef);
+    const overrides = React.useMemo(
+      () => ({ backdrop, tint, accent: accentColor, shine }),
+      [backdrop, tint, accentColor, shine],
+    );
+    const overridesRef = React.useRef(overrides);
+    overridesRef.current = overrides;
+    const fieldRef = React.useRef<ReturnType<typeof createField>>(null);
     const [mounted, setMounted] = React.useState(false);
     React.useEffect(() => setMounted(true), []);
 
@@ -100,22 +110,24 @@ export const SulaLoader = React.forwardRef<HTMLDivElement, SulaLoaderProps>(
 
     const isFluid = fluid && !reduced && !failed && mounted;
 
+    // biome-ignore lint/correctness/useExhaustiveDependencies: `generation` is not read here, it is what rebuilds the field on a restored context
     React.useEffect(() => {
       if (!isFluid) return;
       const canvas = canvasRef.current;
       const root = rootRef.current;
       if (!canvas || !root) return;
 
-      const overrides = { backdrop, tint, accent: accentColor, shine };
       const field = createField({
         canvas,
-        colors: readColors(root, overrides),
-        onContextLost: () => setFailed(true),
+        colors: readColors(root, overridesRef.current),
+        onContextLost,
       });
       if (!field) {
-        setFailed(true);
+        onContextLost();
         return;
       }
+      fieldRef.current = field;
+      onContextReady();
 
       const dpr = Math.min(window.devicePixelRatio || 1, MAX_DPR);
       canvas.style.width = `${size}px`;
@@ -183,7 +195,7 @@ export const SulaLoader = React.forwardRef<HTMLDivElement, SulaLoaderProps>(
         typeof MutationObserver === "undefined"
           ? null
           : new MutationObserver(() => {
-              field.setColors(readColors(root, overrides));
+              field.setColors(readColors(root, overridesRef.current));
             });
       themeObserver?.observe(document.documentElement, {
         attributes: true,
@@ -199,10 +211,17 @@ export const SulaLoader = React.forwardRef<HTMLDivElement, SulaLoaderProps>(
         themeObserver?.disconnect();
         stop();
         field.dispose();
+        fieldRef.current = null;
         canvas.style.width = "";
         canvas.style.height = "";
       };
-    }, [isFluid, size, backdrop, tint, accentColor, shine]);
+    }, [isFluid, size, generation]);
+
+    useFieldRetune(
+      fieldRef,
+      () => (rootRef.current ? readColors(rootRef.current, overrides) : null),
+      overrides,
+    );
 
     const still = loaderFrame(motion, STATIC_PHASES[motion], size);
     const blur = size * 0.05;

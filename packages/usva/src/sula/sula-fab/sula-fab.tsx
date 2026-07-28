@@ -15,6 +15,8 @@ import {
   packUniforms,
 } from "../sula-core/geometry.js";
 import { createPauseGate } from "../sula-core/pause.js";
+import { useContextRecovery } from "../sula-core/recovery.js";
+import { useFieldRetune } from "../sula-core/retune.js";
 import { clamp01, smoothstep } from "../sula-motion/curves.js";
 import { createEnergyTracker } from "../sula-motion/energy.js";
 import { sideSpring } from "../sula-motion/springs.js";
@@ -154,11 +156,25 @@ export const SulaFab = React.forwardRef<HTMLDivElement, SulaFabProps>(
     const triggerRef = React.useRef<HTMLButtonElement | null>(null);
     const actionRefs = React.useRef<Array<HTMLElement | null>>([]);
 
-    const [failed, setFailed] = React.useState(false);
+    const { failed, generation, onContextLost, onContextReady } =
+      useContextRecovery(canvasRef);
+    const overrides = React.useMemo(
+      () => ({ backdrop, tint, accent: accentColor, shine }),
+      [backdrop, tint, accentColor, shine],
+    );
+    const overridesRef = React.useRef(overrides);
+    overridesRef.current = overrides;
+    const gapRef = React.useRef(gap);
+    gapRef.current = gap;
+    const fieldRef = React.useRef<ReturnType<typeof createField>>(null);
+    const wakeRef = React.useRef<(() => void) | null>(null);
+    const measureRef = React.useRef<(() => void) | null>(null);
     const [mounted, setMounted] = React.useState(false);
     React.useEffect(() => setMounted(true), []);
 
     const isFluid = fluid && !reduced && !failed && mounted;
+    /* Kept mounted through a failure so the context can be handed back. */
+    const keepCanvas = fluid && !reduced && mounted;
     const resolvedTooltipPosition =
       tooltipPosition ?? (layout === "arc" ? "top" : "left");
 
@@ -189,6 +205,7 @@ export const SulaFab = React.forwardRef<HTMLDivElement, SulaFabProps>(
 
     const openTargetRef = React.useRef<(next: boolean) => void>(() => {});
 
+    // biome-ignore lint/correctness/useExhaustiveDependencies: `generation` is not read here, it is what rebuilds the field on a restored context
     React.useEffect(() => {
       if (!isFluid) return;
       const canvas = canvasRef.current;
@@ -197,16 +214,17 @@ export const SulaFab = React.forwardRef<HTMLDivElement, SulaFabProps>(
       const trigger = triggerRef.current;
       if (!canvas || !stage || !root || !trigger) return;
 
-      const overrides = { backdrop, tint, accent: accentColor, shine };
       const field = createField({
         canvas,
-        colors: readColors(root, overrides),
-        onContextLost: () => setFailed(true),
+        colors: readColors(root, overridesRef.current),
+        onContextLost,
       });
       if (!field) {
-        setFailed(true);
+        onContextLost();
         return;
       }
+      fieldRef.current = field;
+      onContextReady();
 
       let triggerBlob: Blob = { cx: 0, cy: 0, hw: 0, hh: 0, r: 0 };
       let triggerCenter = { x: 0, y: 0 };
@@ -253,7 +271,7 @@ export const SulaFab = React.forwardRef<HTMLDivElement, SulaFabProps>(
         const offsets = fabSlots(actions.length, layout, direction, {
           triggerR,
           beadR,
-          gap,
+          gap: gapRef.current,
         });
 
         // Stage bounds in root coords, covering the trigger and every slot.
@@ -386,6 +404,8 @@ export const SulaFab = React.forwardRef<HTMLDivElement, SulaFabProps>(
         cancelAnimationFrame(raf);
         raf = requestAnimationFrame(tick);
       };
+      wakeRef.current = wake;
+      measureRef.current = measure;
       const gate = createPauseGate({
         target: root,
         onPause: () => cancelAnimationFrame(raf),
@@ -455,7 +475,7 @@ export const SulaFab = React.forwardRef<HTMLDivElement, SulaFabProps>(
         typeof MutationObserver === "undefined"
           ? null
           : new MutationObserver(() => {
-              field.setColors(readColors(root, overrides));
+              field.setColors(readColors(root, overridesRef.current));
               wake();
             });
       themeObserver?.observe(document.documentElement, {
@@ -476,6 +496,9 @@ export const SulaFab = React.forwardRef<HTMLDivElement, SulaFabProps>(
         gate.dispose();
         cancelAnimationFrame(raf);
         field.dispose();
+        fieldRef.current = null;
+        wakeRef.current = null;
+        measureRef.current = null;
         canvas.style.width = "";
         canvas.style.height = "";
         for (const node of actionRefs.current) {
@@ -484,17 +507,22 @@ export const SulaFab = React.forwardRef<HTMLDivElement, SulaFabProps>(
           node.style.opacity = "";
         }
       };
-    }, [
-      isFluid,
-      backdrop,
-      tint,
-      accentColor,
-      shine,
-      actions.length,
-      layout,
-      direction,
-      gap,
-    ]);
+    }, [isFluid, actions.length, layout, direction, generation]);
+
+    useFieldRetune(
+      fieldRef,
+      () => (rootRef.current ? readColors(rootRef.current, overrides) : null),
+      overrides,
+      wakeRef,
+    );
+
+    /* gap moves every slot, so the field has to re-measure, and a parked loop
+     * needs waking or the new spacing waits for the pointer. */
+    // biome-ignore lint/correctness/useExhaustiveDependencies: `gap` is not read here, the effect closure reads it live
+    React.useEffect(() => {
+      measureRef.current?.();
+      wakeRef.current?.();
+    }, [gap]);
 
     // Drive the field toggle from the open state.
     const previousOpen = React.useRef(open);
@@ -547,11 +575,14 @@ export const SulaFab = React.forwardRef<HTMLDivElement, SulaFabProps>(
         className={cn("relative inline-flex", className)}
         {...props}
       >
-        {isFluid ? (
+        {keepCanvas ? (
           <div
             ref={stageRef}
             aria-hidden="true"
-            className="pointer-events-none absolute overflow-hidden"
+            className={cn(
+              "pointer-events-none absolute overflow-hidden",
+              !isFluid && "hidden",
+            )}
           >
             <canvas ref={canvasRef} />
           </div>
