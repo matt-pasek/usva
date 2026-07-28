@@ -52,7 +52,9 @@ const BREAK_FACTOR = 0.9;
 /** Neck radius at zero separation, as a multiple of the merge radius. A fat neck
  * reads as surface tension; a thin one reads as a stray thread. */
 const NECK_THICKNESS = 1.15;
-/** A neck never falls below this before the snap, or the eye misses the tether. */
+/** Geometric floor for a neck while its field strength melts to zero. The
+ * capsule must stay substantial enough to read as a waist; `strength`, not a
+ * vanishing radius, owns the continuous attach/detach tail. */
 export const NECK_MIN = 1.5;
 
 export function neckBreakDistance(k: number): number {
@@ -151,9 +153,11 @@ function supportAlong(b: Blob, ux: number, uy: number): number {
  * sits: each neck runs centre-to-centre along the pair's own axis, from surface
  * to surface. Thickness grows with `merge` (REST at rest, 1 at the peak of a
  * transition) and with how close the two sit, so near pairs join in a soft
- * concave waist and far pairs get nothing at all: a neck too thin to read as a
- * waist is skipped rather than clamped up into a thread. Blobs must be handed in
- * adjacency order.
+ * concave waist. At the edge of the reach the capsule holds its geometric floor
+ * while its field strength eases from zero, matching the same melt used by
+ * authored Sula necks: approaching bodies reach toward each other before joining,
+ * and separating bodies flow back into themselves instead of losing a whole neck
+ * in one frame. Blobs must be handed in adjacency order.
  */
 export function bridgeNecks(blobs: Blob[], k: number, merge: number): Neck[] {
   const m = clamp01(merge);
@@ -175,14 +179,15 @@ export function bridgeNecks(blobs: Blob[], k: number, merge: number): Neck[] {
     const closeness = 1 - clamp01(Math.max(gap, 0) / reach);
     const base = Math.min(a.hw, a.hh, b.hw, b.hh);
     const thickness = base * mix(0.25, 0.9, m) * closeness;
-    if (thickness < NECK_MIN) continue;
+    const mergeStrength = smoothstep(0, BRIDGE_FULL, m);
+    const distanceStrength = smoothstep(0, BRIDGE_FULL, closeness);
     necks.push({
       ax: a.cx + ux * supA,
       ay: a.cy + uy * supA,
       bx: b.cx - ux * supB,
       by: b.cy - uy * supB,
-      r: thickness,
-      strength: smoothstep(0, BRIDGE_FULL, m),
+      r: Math.max(thickness, NECK_MIN),
+      strength: mergeStrength * distanceStrength,
     });
   }
   return necks;

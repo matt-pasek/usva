@@ -178,10 +178,26 @@ describe("bridgeNecks", () => {
     expect(near?.r ?? 0).toBeGreaterThan(far?.r ?? 0);
   });
 
-  it("skips a pair too thin to waist instead of emitting a thread", () => {
-    // Just inside reach, but the closeness-scaled radius lands under NECK_MIN.
-    const blobs = [blob({ cx: 0, hw: 20 }), blob({ cx: 80, hw: 20 })];
-    expect(bridgeNecks(blobs, K, 1)).toEqual([]);
+  it("begins reaching before contact and strengthens continuously as the gap closes", () => {
+    const reach = K * 1.6;
+    const strengths = [0.05, 0.1, 0.2, 0.4].map((closeness) => {
+      const gap = reach * (1 - closeness);
+      const neck = bridgeNecks(
+        [blob({ cx: 0, hw: 20 }), blob({ cx: 40 + gap, hw: 20 })],
+        K,
+        1,
+      )[0];
+
+      expect(neck).toBeDefined();
+      expect(neck?.strength ?? 0).toBeGreaterThan(0);
+      return neck?.strength ?? 0;
+    });
+
+    for (let i = 1; i < strengths.length; i++) {
+      expect(strengths[i]).toBeGreaterThan(strengths[i - 1] as number);
+    }
+    expect(strengths[0]).toBeLessThan(0.1);
+    expect(strengths.at(-1)).toBe(1);
   });
 
   it("skips a pair past the reach entirely", () => {
