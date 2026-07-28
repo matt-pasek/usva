@@ -65,6 +65,8 @@ export const Knob = React.forwardRef<HTMLDivElement, KnobProps>(
       showValue,
       formatValue,
       disabled,
+      "aria-label": ariaLabel,
+      "aria-labelledby": ariaLabelledBy,
       ...props
     },
     ref,
@@ -123,7 +125,8 @@ export const Knob = React.forwardRef<HTMLDivElement, KnobProps>(
           aria-valuemax={max}
           aria-valuenow={current}
           aria-valuetext={formatted}
-          aria-labelledby={label ? labelId : undefined}
+          aria-label={ariaLabel}
+          aria-labelledby={label ? labelId : ariaLabelledBy}
           aria-disabled={disabled || undefined}
           data-dragging={dragging ? "" : undefined}
           data-disabled={disabled ? "" : undefined}
@@ -162,7 +165,7 @@ export const Knob = React.forwardRef<HTMLDivElement, KnobProps>(
           </svg>
 
           <div
-            className="absolute rounded-full bg-sunken shadow-raised cursor-ew-resize"
+            className="absolute rounded-full bg-sunken shadow-raised"
             style={{ inset: center - bodyRadius }}
           />
 

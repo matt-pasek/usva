@@ -1,8 +1,9 @@
-import { render, screen } from "@testing-library/react";
+import { createEvent, fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { axe } from "jest-axe";
 import { describe, expect, it, vi } from "vitest";
 import { Knob } from "./knob.js";
+import { KNOB_DRAG_TRAVEL } from "./knob-geometry.js";
 
 const knob = () => screen.getByRole("slider", { name: "Volume" });
 
@@ -19,6 +20,31 @@ describe("Knob", () => {
       <Knob label="Volume" defaultValue={59} formatValue={(v) => `${v} %`} />,
     );
     expect(knob()).toHaveAttribute("aria-valuetext", "59 %");
+  });
+
+  it("names the dial from aria-label when there is no visible label", () => {
+    render(<Knob aria-label="Volume" defaultValue={59} />);
+    expect(knob()).toHaveAttribute("aria-valuenow", "59");
+  });
+
+  it("names the dial from aria-labelledby when there is no visible label", () => {
+    render(
+      <>
+        <span id="knob-caption">Volume</span>
+        <Knob aria-labelledby="knob-caption" defaultValue={59} />
+      </>,
+    );
+    expect(knob()).toHaveAttribute("aria-valuenow", "59");
+  });
+
+  it("lets a visible label win over aria-labelledby", () => {
+    render(
+      <>
+        <span id="knob-caption">Ignored</span>
+        <Knob label="Volume" aria-labelledby="knob-caption" defaultValue={59} />
+      </>,
+    );
+    expect(knob()).toBeInTheDocument();
   });
 
   it("shows the readout only when asked", () => {
@@ -134,6 +160,71 @@ describe("Knob", () => {
       knob().focus();
       await user.keyboard("{ArrowRight}");
       expect(onValueChange).not.toHaveBeenCalled();
+    });
+  });
+
+  describe("pointer drag", () => {
+    const drag = (dx: number, dy: number) => {
+      const dial = knob();
+      fireEvent.pointerDown(dial, { button: 0, clientX: 0, clientY: 0 });
+      fireEvent.pointerMove(dial, { clientX: dx, clientY: dy });
+      fireEvent.pointerUp(dial, { clientX: dx, clientY: dy });
+    };
+
+    it("does not move on press alone, so a grab never jumps the value", () => {
+      render(<Knob label="Volume" defaultValue={40} />);
+      fireEvent.pointerDown(knob(), { button: 0, clientX: 0, clientY: 0 });
+      expect(knob()).toHaveAttribute("aria-valuenow", "40");
+    });
+
+    it("rises to the right and falls to the left", () => {
+      render(<Knob label="Volume" defaultValue={0} />);
+      drag(KNOB_DRAG_TRAVEL / 2, 0);
+      expect(knob()).toHaveAttribute("aria-valuenow", "50");
+    });
+
+    it("rises upward too, so neither axis is dead", () => {
+      render(<Knob label="Volume" defaultValue={0} />);
+      drag(0, -KNOB_DRAG_TRAVEL / 2);
+      expect(knob()).toHaveAttribute("aria-valuenow", "50");
+    });
+
+    it("prevents the default press, so dragging selects no text", () => {
+      render(<Knob label="Volume" defaultValue={40} />);
+      const press = createEvent.pointerDown(knob(), {
+        button: 0,
+        clientX: 0,
+        clientY: 0,
+      });
+      fireEvent(knob(), press);
+      expect(press.defaultPrevented).toBe(true);
+    });
+
+    it("ignores a drag while disabled", () => {
+      const onValueChange = vi.fn();
+      render(
+        <Knob
+          label="Volume"
+          defaultValue={40}
+          disabled
+          onValueChange={onValueChange}
+        />,
+      );
+      drag(KNOB_DRAG_TRAVEL, 0);
+      expect(onValueChange).not.toHaveBeenCalled();
+    });
+
+    it("commits once, when the pointer is released", () => {
+      const onValueCommitted = vi.fn();
+      render(
+        <Knob
+          label="Volume"
+          defaultValue={0}
+          onValueCommitted={onValueCommitted}
+        />,
+      );
+      drag(KNOB_DRAG_TRAVEL / 2, 0);
+      expect(onValueCommitted).toHaveBeenCalledTimes(1);
     });
   });
 

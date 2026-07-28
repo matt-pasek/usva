@@ -3,12 +3,10 @@ import {
   arcLength,
   arcPath,
   dashForTurn,
-  isScrubZone,
-  KNOB_SCRUB_TRAVEL,
+  dragValue,
+  KNOB_DRAG_TRAVEL,
   KNOB_START_ANGLE,
   KNOB_SWEEP,
-  pointerToTurn,
-  scrubValue,
   snapToStep,
   stepValue,
   turnToAngle,
@@ -79,52 +77,54 @@ describe("arcPath and dashForTurn", () => {
   });
 });
 
-describe("pointerToTurn", () => {
-  const radius = 50;
-
-  it("rejects the dead zone at the centre", () => {
-    expect(pointerToTurn(0, 0, radius, 0.5)).toBeNull();
-    expect(pointerToTurn(5, 5, radius, 0.5)).toBeNull();
+describe("dragValue", () => {
+  it("covers the whole range over one travel distance", () => {
+    expect(dragValue(0, KNOB_DRAG_TRAVEL, 0, 0, 100, 1)).toBe(100);
+    expect(dragValue(100, -KNOB_DRAG_TRAVEL, 0, 0, 100, 1)).toBe(0);
   });
 
-  it("accepts a pointer beyond the dead zone", () => {
-    expect(pointerToTurn(0, -40, radius, 0.5)).toBe(0.5);
+  it("reads up and right as the same rise", () => {
+    expect(dragValue(0, KNOB_DRAG_TRAVEL / 2, 0, 0, 100, 1)).toBe(50);
+    expect(dragValue(0, 0, -KNOB_DRAG_TRAVEL / 2, 0, 100, 1)).toBe(50);
   });
 
-  it("reads twelve o'clock as the midpoint", () => {
-    expect(pointerToTurn(0, -radius, radius, 0.5)).toBeCloseTo(0.5, 10);
+  it("reads down and left as the same fall", () => {
+    expect(dragValue(100, -KNOB_DRAG_TRAVEL / 2, 0, 0, 100, 1)).toBe(50);
+    expect(dragValue(100, 0, KNOB_DRAG_TRAVEL / 2, 0, 100, 1)).toBe(50);
   });
 
-  it("reads the two ends of the sweep", () => {
-    expect(pointerToTurn(-35, 35, radius, 0.1)).toBeCloseTo(0, 10);
-    expect(pointerToTurn(35, 35, radius, 0.9)).toBeCloseTo(1, 10);
+  it("adds the two axes, so a diagonal moves further than either", () => {
+    const half = KNOB_DRAG_TRAVEL / 2;
+    expect(dragValue(0, half, -half, 0, 100, 1)).toBe(100);
   });
 
-  it("pins to the top of the range rather than crossing the gap", () => {
-    expect(pointerToTurn(-5, radius, radius, 0.98)).toBe(1);
+  it("cancels a drag that goes up and left in equal measure", () => {
+    const d = KNOB_DRAG_TRAVEL / 2;
+    expect(dragValue(40, -d, -d, 0, 100, 1)).toBe(40);
   });
 
-  it("pins to the bottom of the range rather than crossing the gap", () => {
-    expect(pointerToTurn(5, radius, radius, 0.02)).toBe(0);
+  it("measures from where the press started, not from zero", () => {
+    expect(dragValue(30, KNOB_DRAG_TRAVEL / 10, 0, 0, 100, 1)).toBe(40);
   });
 
-  it("jumps straight to the press position when there is no previous turn", () => {
-    expect(pointerToTurn(-35, 35, radius, null)).toBeCloseTo(0, 10);
-    expect(pointerToTurn(0, -radius, radius, null)).toBeCloseTo(0.5, 10);
+  it("quarters the distance when fine", () => {
+    expect(dragValue(0, KNOB_DRAG_TRAVEL, 0, 0, 100, 1, true)).toBe(25);
   });
 
-  it("still rejects the dead zone with no previous turn", () => {
-    expect(pointerToTurn(0, 0, radius, null)).toBeNull();
+  it("clamps and snaps like every other path", () => {
+    expect(dragValue(90, KNOB_DRAG_TRAVEL, 0, 0, 100, 1)).toBe(100);
+    expect(dragValue(0, KNOB_DRAG_TRAVEL / 2, 0, 0, 100, 30)).toBe(60);
   });
 
-  it("allows ordinary travel that stays under half a turn", () => {
-    expect(pointerToTurn(radius, 0, radius, 0.5)).toBeCloseTo(5 / 6, 10);
+  it("respects a range that does not start at zero", () => {
+    expect(dragValue(0, KNOB_DRAG_TRAVEL / 2, 0, -12, 12, 1)).toBe(12);
   });
 
-  it("reads three and nine o'clock symmetrically about the midpoint", () => {
-    const right = pointerToTurn(radius, 0, radius, 0.5) ?? 0;
-    const left = pointerToTurn(-radius, 0, radius, 0.5) ?? 0;
-    expect(right - 0.5).toBeCloseTo(0.5 - left, 10);
+  /** The old arc mode died at the bottom of the sweep. Nothing is dead now. */
+  it("keeps moving wherever the pointer has wandered", () => {
+    const far = KNOB_DRAG_TRAVEL * 4;
+    expect(dragValue(50, 0, far, 0, 100, 1)).toBe(0);
+    expect(dragValue(50, 0, -far, 0, 100, 1)).toBe(100);
   });
 });
 
@@ -152,49 +152,6 @@ describe("snapToStep", () => {
 
   it("passes through when the step is zero", () => {
     expect(snapToStep(37.4, 0, 100, 0)).toBe(37.4);
-  });
-});
-
-describe("isScrubZone", () => {
-  const radius = 50;
-
-  it("claims the dial body", () => {
-    expect(isScrubZone(0, 0, radius)).toBe(true);
-    expect(isScrubZone(20, 0, radius)).toBe(true);
-  });
-
-  it("leaves the ring to the arc", () => {
-    expect(isScrubZone(0, -radius, radius)).toBe(false);
-    expect(isScrubZone(45, 0, radius)).toBe(false);
-  });
-});
-
-describe("scrubValue", () => {
-  it("covers the whole range over one travel distance", () => {
-    expect(scrubValue(0, KNOB_SCRUB_TRAVEL, 0, 100, 1)).toBe(100);
-    expect(scrubValue(100, -KNOB_SCRUB_TRAVEL, 0, 100, 1)).toBe(0);
-  });
-
-  it("moves proportionally to horizontal travel", () => {
-    expect(scrubValue(0, KNOB_SCRUB_TRAVEL / 2, 0, 100, 1)).toBe(50);
-    expect(scrubValue(50, -KNOB_SCRUB_TRAVEL / 4, 0, 100, 1)).toBe(25);
-  });
-
-  it("measures from where the press started, not from zero", () => {
-    expect(scrubValue(30, KNOB_SCRUB_TRAVEL / 10, 0, 100, 1)).toBe(40);
-  });
-
-  it("quarters the distance when fine", () => {
-    expect(scrubValue(0, KNOB_SCRUB_TRAVEL, 0, 100, 1, true)).toBe(25);
-  });
-
-  it("clamps and snaps like every other path", () => {
-    expect(scrubValue(90, KNOB_SCRUB_TRAVEL, 0, 100, 1)).toBe(100);
-    expect(scrubValue(0, KNOB_SCRUB_TRAVEL / 2, 0, 100, 30)).toBe(60);
-  });
-
-  it("respects a range that does not start at zero", () => {
-    expect(scrubValue(0, KNOB_SCRUB_TRAVEL / 2, -12, 12, 1)).toBe(12);
   });
 });
 

@@ -1,9 +1,7 @@
 export const KNOB_SWEEP = 270;
 export const KNOB_START_ANGLE = -135;
-export const KNOB_DEAD_ZONE = 0.2;
 
-export const KNOB_SCRUB_ZONE = 0.55;
-export const KNOB_SCRUB_TRAVEL = 240;
+export const KNOB_DRAG_TRAVEL = 150;
 
 const clamp01 = (n: number) => (n < 0 ? 0 : n > 1 ? 1 : n);
 const clamp = (n: number, min: number, max: number) =>
@@ -46,21 +44,6 @@ export function arcPath(radius: number, center: number): string {
   return `M ${round(start.x)} ${round(start.y)} A ${radius} ${radius} 0 ${largeArc} 1 ${round(end.x)} ${round(end.y)}`;
 }
 
-export function pointerToTurn(
-  dx: number,
-  dy: number,
-  radius: number,
-  prevTurn: number | null,
-): number | null {
-  if (Math.hypot(dx, dy) < radius * KNOB_DEAD_ZONE) return null;
-  const angle = (Math.atan2(dx, -dy) * 180) / Math.PI;
-  const turn = clamp01((angle - KNOB_START_ANGLE) / KNOB_SWEEP);
-  if (prevTurn !== null && Math.abs(turn - prevTurn) > 0.5) {
-    return prevTurn > 0.5 ? 1 : 0;
-  }
-  return turn;
-}
-
 const decimalsOf = (step: number): number => {
   const text = String(step);
   if (text.includes("e")) return 12;
@@ -94,18 +77,16 @@ export function stepValue(
   return snapToStep(value + delta * step, min, max, step);
 }
 
-export function isScrubZone(dx: number, dy: number, radius: number): boolean {
-  return Math.hypot(dx, dy) < radius * KNOB_SCRUB_ZONE;
-}
-
-export function scrubValue(
+export function dragValue(
   startValue: number,
   dx: number,
+  dy: number,
   min: number,
   max: number,
   step: number,
   fine = false,
 ): number {
-  const travelled = (dx / KNOB_SCRUB_TRAVEL) * (max - min) * (fine ? 0.25 : 1);
-  return snapToStep(startValue + travelled, min, max, step);
+  const travel = dx - dy;
+  const moved = (travel / KNOB_DRAG_TRAVEL) * (max - min) * (fine ? 0.25 : 1);
+  return snapToStep(startValue + moved, min, max, step);
 }

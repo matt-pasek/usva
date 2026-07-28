@@ -1,16 +1,6 @@
 "use client";
 import * as React from "react";
-import {
-  isScrubZone,
-  pointerToTurn,
-  scrubValue,
-  snapToStep,
-  stepValue,
-  turnToValue,
-  valueToTurn,
-} from "./knob-geometry.js";
-
-type DragMode = "arc" | "scrub";
+import { dragValue, snapToStep, stepValue } from "./knob-geometry.js";
 
 export interface UseKnobValueOptions {
   value?: number;
@@ -69,18 +59,15 @@ export function useKnobValue({
   const [uncontrolled, setUncontrolled] = React.useState(() =>
     snapToStep(defaultValue ?? min, min, max, step),
   );
-  const [mode, setMode] = React.useState<DragMode | null>(null);
-  const dragging = mode !== null;
+  const [dragging, setDragging] = React.useState(false);
 
   const isControlled = value !== undefined;
   const current = isControlled
     ? snapToStep(value, min, max, step)
     : uncontrolled;
 
-  const rectRef = React.useRef<DOMRect | null>(null);
-  const turnRef = React.useRef(0);
   const pendingRef = React.useRef(false);
-  const scrubRef = React.useRef({ x: 0, value: 0 });
+  const dragRef = React.useRef({ x: 0, y: 0, value: 0 });
 
   const change = (next: number) => {
     if (next === current) return;
@@ -88,75 +75,36 @@ export function useKnobValue({
     onValueChange?.(next);
   };
 
-  const offsetFrom = (
-    event: React.PointerEvent<HTMLElement>,
-    rect: DOMRect,
-  ) => ({
-    dx: event.clientX - (rect.left + rect.width / 2),
-    dy: event.clientY - (rect.top + rect.height / 2),
-    radius: rect.width / 2,
-  });
-
-  const track = (
-    event: React.PointerEvent<HTMLElement>,
-    active: DragMode,
-    jump = false,
-  ) => {
-    const rect = rectRef.current;
-    if (!rect) return;
-
-    if (active === "scrub") {
-      const start = scrubRef.current;
-      change(
-        scrubValue(
-          start.value,
-          event.clientX - start.x,
-          min,
-          max,
-          step,
-          event.shiftKey,
-        ),
-      );
-      return;
-    }
-
-    const { dx, dy, radius } = offsetFrom(event, rect);
-    const turn = pointerToTurn(dx, dy, radius, jump ? null : turnRef.current);
-    if (turn === null) return;
-    turnRef.current = turn;
-    change(snapToStep(turnToValue(turn, min, max), min, max, step));
-  };
-
   const onPointerDown = (event: React.PointerEvent<HTMLElement>) => {
     if (disabled || event.button !== 0) return;
-    const element = event.currentTarget;
-    element.setPointerCapture?.(event.pointerId);
-    const rect = element.getBoundingClientRect();
-    rectRef.current = rect;
-
-    const { dx, dy, radius } = offsetFrom(event, rect);
-    const active: DragMode = isScrubZone(dx, dy, radius) ? "scrub" : "arc";
-    setMode(active);
-
-    if (active === "scrub") {
-      scrubRef.current = { x: event.clientX, value: current };
-      return;
-    }
-    turnRef.current = valueToTurn(current, min, max);
-    track(event, active, true);
+    event.preventDefault();
+    event.currentTarget.setPointerCapture?.(event.pointerId);
+    dragRef.current = { x: event.clientX, y: event.clientY, value: current };
+    setDragging(true);
   };
 
   const onPointerMove = (event: React.PointerEvent<HTMLElement>) => {
-    if (mode) track(event, mode);
+    if (!dragging) return;
+    const start = dragRef.current;
+    change(
+      dragValue(
+        start.value,
+        event.clientX - start.x,
+        event.clientY - start.y,
+        min,
+        max,
+        step,
+        event.shiftKey,
+      ),
+    );
   };
 
   const endDrag = (event: React.PointerEvent<HTMLElement>) => {
-    if (!mode) return;
+    if (!dragging) return;
     if (event.currentTarget.hasPointerCapture?.(event.pointerId)) {
       event.currentTarget.releasePointerCapture(event.pointerId);
     }
-    rectRef.current = null;
-    setMode(null);
+    setDragging(false);
     onValueCommitted?.(current);
   };
 
