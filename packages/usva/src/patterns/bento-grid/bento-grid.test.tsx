@@ -116,6 +116,27 @@ describe("Bento cells", () => {
     const pill = screen.getByText("active users");
     expect(pill.className).toContain("whitespace-nowrap");
   });
+
+  it("BentoMetric renders a note under the value", () => {
+    render(<BentoMetric value="41" label="repos" note="9 of them abandoned" />);
+    expect(screen.getByText("9 of them abandoned")).toBeInTheDocument();
+  });
+
+  it("BentoMetric omits the note element when no note is given", () => {
+    const { container } = render(<BentoMetric value="41" label="repos" />);
+    expect(container.querySelector("p + p")).toBeNull();
+  });
+
+  it("BentoMetric pins the label to the bottom at every size", () => {
+    for (const size of ["md", "lg"] as const) {
+      const { container } = render(
+        <BentoMetric size={size} value="41" label="repos" />,
+      );
+      expect(container.firstElementChild?.className).toContain(
+        "justify-between",
+      );
+    }
+  });
 });
 
 describe("BentoMetric count-up", () => {

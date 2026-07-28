@@ -293,6 +293,8 @@ export interface BentoMetricProps
   icon?: React.ReactNode;
   /** Trailing unit on the value, keyed to the alternate accent. */
   suffix?: React.ReactNode;
+  /** Aside under the value. Flavour text, a caveat, a comparison. */
+  note?: React.ReactNode;
   /** `lg` is the standalone stat treatment: display weight, full-strength ink. */
   size?: keyof typeof metricValueSizes;
   /** Count up from zero on mount. Ignored for non-numeric values. */
@@ -301,7 +303,17 @@ export interface BentoMetricProps
 
 export const BentoMetric = React.forwardRef<HTMLDivElement, BentoMetricProps>(
   (
-    { className, value, label, icon, suffix, size = "md", animate, ...props },
+    {
+      className,
+      value,
+      label,
+      icon,
+      suffix,
+      note,
+      size = "md",
+      animate,
+      ...props
+    },
     ref,
   ) => {
     const target = parseTarget(value);
@@ -313,22 +325,27 @@ export const BentoMetric = React.forwardRef<HTMLDivElement, BentoMetricProps>(
     return (
       <div
         ref={ref}
-        className={cn(
-          cellShell,
-          size === "lg" ? "justify-between" : "justify-start",
-          className,
-        )}
+        className={cn(cellShell, "justify-between", className)}
         {...props}
       >
-        <p
-          className={cn(
-            "leading-none tracking-[-0.04em] tabular-nums",
-            metricValueSizes[size],
+        <div>
+          <p
+            className={cn(
+              "leading-none tracking-[-0.04em] tabular-nums",
+              metricValueSizes[size],
+            )}
+          >
+            {shown}
+            {suffix != null && (
+              <span className="text-accent-alt">{suffix}</span>
+            )}
+          </p>
+          {note != null && (
+            <p className="mt-3 font-mono text-[0.6875rem] leading-relaxed text-muted">
+              {note}
+            </p>
           )}
-        >
-          {shown}
-          {suffix != null && <span className="text-accent-alt">{suffix}</span>}
-        </p>
+        </div>
         <span className="mt-4 inline-flex w-fit max-w-full items-center gap-2 self-start whitespace-nowrap rounded-full bg-ink/[0.06] px-3 py-1.5 font-mono text-[0.6875rem] tracking-[0.1em] text-muted [&_svg]:size-3">
           {icon}
           {label}
@@ -370,7 +387,7 @@ export interface BentoTextProps
 
 export const BentoText = React.forwardRef<HTMLDivElement, BentoTextProps>(
   ({ className, label, icon, title, body, children, ...props }, ref) => (
-    <div ref={ref} className={cn(cellShell, "sm:p-8", className)} {...props}>
+    <div ref={ref} className={cn(cellShell, className)} {...props}>
       {label != null && <CellLabel icon={icon} label={label} />}
       <h3 className="text-xl font-semibold tracking-[-0.01em] text-ink">
         {title}
