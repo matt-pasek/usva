@@ -12,7 +12,7 @@ import { type ReactNode, type RefObject, useRef } from "react";
 import { HEAVE, type Span, WEIGHT } from "./home-motion";
 
 /**
- * tiivistymä — condensate.
+ * tiivistymä: condensate.
  *
  * Nothing on this page fires on viewport entry. Copy climbs out from behind
  * its own edge as a continuous function of scroll: scrub back and it climbs
