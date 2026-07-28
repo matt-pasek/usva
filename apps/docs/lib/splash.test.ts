@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { SPLASH_LEAD_S, useSplashLead } from "./splash";
+import { SPLASH_LEAD_S, splashLead } from "./splash";
 import { SPLASH_MS, splashScript } from "./splash-script";
 
 type NavType = "navigate" | "reload" | "back_forward";
@@ -92,13 +92,22 @@ describe("splash lead", () => {
 
   it("is nothing when no splash is playing", () => {
     stubBrowser({ navigation: "reload" });
-    expect(useSplashLead()).toBe(0);
+    expect(splashLead()).toBe(0);
   });
 
   it("is the lead while the splash is playing", () => {
     stubBrowser({ navigation: "navigate" });
     runScript();
-    expect(useSplashLead()).toBe(SPLASH_LEAD_S);
+    expect(splashLead()).toBe(SPLASH_LEAD_S);
+  });
+
+  it("is nothing again once the cover has cleared its mark", () => {
+    const dataset = stubBrowser({ navigation: "navigate" });
+    runScript();
+    expect(splashLead()).toBe(SPLASH_LEAD_S);
+
+    delete dataset.splash;
+    expect(splashLead()).toBe(0);
   });
 
   it("lands before the cover is gone, so the two gestures overlap", () => {

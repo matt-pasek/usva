@@ -94,6 +94,7 @@ export function RailoSplash() {
     };
     const done = setTimeout(() => {
       release();
+      delete root.dataset.splash;
       setGone(true);
     }, SPLASH_MS);
 
