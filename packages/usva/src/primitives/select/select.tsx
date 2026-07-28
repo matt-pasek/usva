@@ -2,6 +2,7 @@
 import { Select as Base } from "@base-ui/react/select";
 import * as React from "react";
 import { cn } from "../../cn.js";
+import { useScopedTheme } from "../overlay-core/use-scoped-theme.js";
 
 export type SelectProps<Value = string> = Base.Root.Props<Value>;
 
@@ -50,25 +51,36 @@ export const SelectValue = Base.Value;
 export const SelectContent = React.forwardRef<
   HTMLDivElement,
   React.ComponentPropsWithoutRef<typeof Base.Popup> & { sideOffset?: number }
->(({ className, sideOffset = 6, children, ...props }, ref) => (
-  <Base.Portal>
-    <Base.Positioner sideOffset={sideOffset} className="z-dropdown">
-      <Base.Popup
-        ref={ref}
-        className={cn(
-          "rim-light max-h-[min(24rem,var(--available-height))] min-w-[var(--anchor-width)] overflow-auto rounded-lg border border-border bg-surface-2 p-1 text-sm text-ink shadow-floating",
-          "origin-[var(--transform-origin)] transition-enter duration-base ease-spring motion-reduce:transition-none motion-reduce:transform-none",
-          "data-[starting-style]:translate-y-1 data-[starting-style]:scale-[0.97] data-[starting-style]:opacity-0 data-[starting-style]:blur-[2px]",
-          "data-[ending-style]:scale-[0.98] data-[ending-style]:opacity-0 data-[ending-style]:duration-fast data-[ending-style]:ease-soft",
-          className,
-        )}
-        {...props}
-      >
-        <Base.List>{children}</Base.List>
-      </Base.Popup>
-    </Base.Positioner>
-  </Base.Portal>
-));
+>(({ className, sideOffset = 6, children, ...props }, ref) => {
+  const [probe, theme] = useScopedTheme();
+
+  return (
+    <>
+      <span ref={probe} hidden />
+      <Base.Portal>
+        <Base.Positioner
+          data-theme={theme}
+          sideOffset={sideOffset}
+          className="z-dropdown"
+        >
+          <Base.Popup
+            ref={ref}
+            className={cn(
+              "rim-light max-h-[min(24rem,var(--available-height))] min-w-[var(--anchor-width)] overflow-auto rounded-lg border border-border bg-surface-2 p-1 text-sm text-ink shadow-floating",
+              "origin-[var(--transform-origin)] transition-enter duration-base ease-spring motion-reduce:transition-none motion-reduce:transform-none",
+              "data-[starting-style]:translate-y-1 data-[starting-style]:scale-[0.97] data-[starting-style]:opacity-0 data-[starting-style]:blur-[2px]",
+              "data-[ending-style]:scale-[0.98] data-[ending-style]:opacity-0 data-[ending-style]:duration-fast data-[ending-style]:ease-soft",
+              className,
+            )}
+            {...props}
+          >
+            <Base.List>{children}</Base.List>
+          </Base.Popup>
+        </Base.Positioner>
+      </Base.Portal>
+    </>
+  );
+});
 SelectContent.displayName = "SelectContent";
 
 export type SelectItemProps = React.ComponentPropsWithoutRef<typeof Base.Item>;

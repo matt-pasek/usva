@@ -8,6 +8,7 @@ import {
   SURFACE_ELEVATED,
   SURFACE_SKIN,
 } from "../card/card.js";
+import { useScopedTheme } from "../overlay-core/use-scoped-theme.js";
 
 export type DrawerSide = "top" | "right" | "bottom" | "left";
 export type DrawerSize = "sm" | "md" | "lg";
@@ -86,48 +87,57 @@ export const DrawerContent = React.forwardRef<
       ...props
     },
     ref,
-  ) => (
-    <Base.Portal>
-      <Base.Backdrop
-        className={cn(
-          "fixed inset-0 z-overlay transition-opacity duration-base motion-reduce:transition-none",
-          "data-[starting-style]:opacity-0 data-[ending-style]:opacity-0",
-          surface === "glass"
-            ? "bg-scrim/40 backdrop-blur-[3px]"
-            : "bg-scrim backdrop-blur-sm",
-          backdropClassName,
-        )}
-      />
-      <Base.Popup
-        ref={ref}
-        data-side={side}
-        data-surface={surface}
-        data-highlight={highlight !== "none" ? highlight : undefined}
-        className={cn(
-          "fixed z-overlay flex flex-col overflow-y-auto",
-          "isolate border-border p-6 text-ink",
-          sideAnchor[side],
-          sideSize[side][size],
-          SURFACE_SKIN[surface],
-          highlight === "ring"
-            ? "glow-ring"
-            : SURFACE_ELEVATED[surface] && "shadow-overlay",
-          highlight === "wash" && "wash-accent",
-          highlight === "edge" &&
-            "after:absolute after:inset-x-6 after:top-0 after:h-px after:hairline-accent",
-          "transition-enter duration-[350ms] ease-spring",
-          "motion-reduce:transition-none motion-reduce:transform-none",
-          "data-[starting-style]:opacity-0 data-[ending-style]:opacity-0",
-          "data-[ending-style]:duration-base data-[ending-style]:ease-soft",
-          sideEnter[side],
-          className,
-        )}
-        {...props}
-      >
-        {children}
-      </Base.Popup>
-    </Base.Portal>
-  ),
+  ) => {
+    const [probe, scopedTheme] = useScopedTheme();
+
+    return (
+      <>
+        <span ref={probe} hidden />
+        <Base.Portal>
+          <Base.Backdrop
+            data-theme={scopedTheme}
+            className={cn(
+              "fixed inset-0 z-overlay transition-opacity duration-base motion-reduce:transition-none",
+              "data-[starting-style]:opacity-0 data-[ending-style]:opacity-0",
+              surface === "glass"
+                ? "bg-scrim/40 backdrop-blur-[3px]"
+                : "bg-scrim backdrop-blur-sm",
+              backdropClassName,
+            )}
+          />
+          <Base.Popup
+            ref={ref}
+            data-theme={scopedTheme}
+            data-side={side}
+            data-surface={surface}
+            data-highlight={highlight !== "none" ? highlight : undefined}
+            className={cn(
+              "fixed z-overlay flex flex-col overflow-y-auto",
+              "isolate border-border p-6 text-ink",
+              sideAnchor[side],
+              sideSize[side][size],
+              SURFACE_SKIN[surface],
+              highlight === "ring"
+                ? "glow-ring"
+                : SURFACE_ELEVATED[surface] && "shadow-overlay",
+              highlight === "wash" && "wash-accent",
+              highlight === "edge" &&
+                "after:absolute after:inset-x-6 after:top-0 after:h-px after:hairline-accent",
+              "transition-enter duration-[350ms] ease-spring",
+              "motion-reduce:transition-none motion-reduce:transform-none",
+              "data-[starting-style]:opacity-0 data-[ending-style]:opacity-0",
+              "data-[ending-style]:duration-base data-[ending-style]:ease-soft",
+              sideEnter[side],
+              className,
+            )}
+            {...props}
+          >
+            {children}
+          </Base.Popup>
+        </Base.Portal>
+      </>
+    );
+  },
 );
 DrawerContent.displayName = "DrawerContent";
 

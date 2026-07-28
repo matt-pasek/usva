@@ -8,6 +8,7 @@ import {
   SURFACE_ELEVATED,
   SURFACE_SKIN,
 } from "../card/card.js";
+import { useScopedTheme } from "../overlay-core/use-scoped-theme.js";
 
 export type DialogProps = Base.Root.Props;
 
@@ -50,44 +51,50 @@ export const DialogContent = React.forwardRef<
     ref,
   ) => {
     const modal = React.useContext(DialogModalContext);
+    const [probe, scopedTheme] = useScopedTheme();
     return (
-      <Base.Portal>
-        {modal === true ? (
-          <Base.Backdrop
+      <>
+        <span ref={probe} hidden />
+        <Base.Portal>
+          {modal === true ? (
+            <Base.Backdrop
+              data-theme={scopedTheme}
+              className={cn(
+                "fixed inset-0 z-overlay transition-opacity duration-base motion-reduce:transition-none",
+                "data-[starting-style]:opacity-0 data-[ending-style]:opacity-0",
+                surface === "glass"
+                  ? "bg-scrim/40 backdrop-blur-[3px]"
+                  : "bg-scrim backdrop-blur-sm",
+                backdropClassName,
+              )}
+            />
+          ) : null}
+          <Base.Popup
+            ref={ref}
+            data-theme={scopedTheme}
+            data-surface={surface}
+            data-highlight={highlight !== "none" ? highlight : undefined}
             className={cn(
-              "fixed inset-0 z-overlay transition-opacity duration-base motion-reduce:transition-none",
-              "data-[starting-style]:opacity-0 data-[ending-style]:opacity-0",
-              surface === "glass"
-                ? "bg-scrim/40 backdrop-blur-[3px]"
-                : "bg-scrim backdrop-blur-sm",
-              backdropClassName,
+              "fixed left-1/2 top-1/2 z-overlay w-full max-w-md -translate-x-1/2 -translate-y-1/2",
+              "isolate rounded-2xl border border-border p-6 text-ink",
+              SURFACE_SKIN[surface],
+              highlight === "ring"
+                ? "glow-ring"
+                : SURFACE_ELEVATED[surface] && "shadow-overlay",
+              highlight === "wash" && "wash-accent",
+              highlight === "edge" &&
+                "after:absolute after:inset-x-6 after:top-0 after:h-px after:hairline-accent",
+              "transition-enter duration-[350ms] ease-spring motion-reduce:transition-none motion-reduce:transform-none",
+              "data-[starting-style]:opacity-0 data-[starting-style]:blur-[4px] data-[starting-style]:scale-[0.96] data-[starting-style]:-translate-x-1/2 data-[starting-style]:-translate-y-[calc(50%-0.75rem)]",
+              "data-[ending-style]:opacity-0 data-[ending-style]:scale-[0.98] data-[ending-style]:-translate-x-1/2 data-[ending-style]:-translate-y-[calc(50%-0.25rem)] data-[ending-style]:duration-base data-[ending-style]:ease-soft",
+              className,
             )}
-          />
-        ) : null}
-        <Base.Popup
-          ref={ref}
-          data-surface={surface}
-          data-highlight={highlight !== "none" ? highlight : undefined}
-          className={cn(
-            "fixed left-1/2 top-1/2 z-overlay w-full max-w-md -translate-x-1/2 -translate-y-1/2",
-            "isolate rounded-2xl border border-border p-6 text-ink",
-            SURFACE_SKIN[surface],
-            highlight === "ring"
-              ? "glow-ring"
-              : SURFACE_ELEVATED[surface] && "shadow-overlay",
-            highlight === "wash" && "wash-accent",
-            highlight === "edge" &&
-              "after:absolute after:inset-x-6 after:top-0 after:h-px after:hairline-accent",
-            "transition-enter duration-[350ms] ease-spring motion-reduce:transition-none motion-reduce:transform-none",
-            "data-[starting-style]:opacity-0 data-[starting-style]:blur-[4px] data-[starting-style]:scale-[0.96] data-[starting-style]:-translate-x-1/2 data-[starting-style]:-translate-y-[calc(50%-0.75rem)]",
-            "data-[ending-style]:opacity-0 data-[ending-style]:scale-[0.98] data-[ending-style]:-translate-x-1/2 data-[ending-style]:-translate-y-[calc(50%-0.25rem)] data-[ending-style]:duration-base data-[ending-style]:ease-soft",
-            className,
-          )}
-          {...props}
-        >
-          {children}
-        </Base.Popup>
-      </Base.Portal>
+            {...props}
+          >
+            {children}
+          </Base.Popup>
+        </Base.Portal>
+      </>
     );
   },
 );

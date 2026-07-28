@@ -2,6 +2,7 @@
 import { Toast as Base } from "@base-ui/react/toast";
 import type * as React from "react";
 import { cn } from "../../cn.js";
+import { useScopedTheme } from "../overlay-core/use-scoped-theme.js";
 
 export type ToastType = "success" | "warning" | "danger" | "info";
 
@@ -186,10 +187,16 @@ function ToastList() {
  * to sit underneath this. Toasts fired before it mounts are dropped, not queued.
  */
 export function Toaster({ limit, timeout }: ToasterProps) {
+  const [probe, scopedTheme] = useScopedTheme();
+
   return (
     <Base.Provider toastManager={toastManager} limit={limit} timeout={timeout}>
+      <span ref={probe} hidden />
       <Base.Portal>
-        <Base.Viewport className="pointer-events-none fixed bottom-4 left-4 right-4 z-toast flex w-auto flex-col-reverse gap-2 sm:left-auto sm:w-full sm:max-w-sm">
+        <Base.Viewport
+          data-theme={scopedTheme}
+          className="pointer-events-none fixed bottom-4 left-4 right-4 z-toast flex w-auto flex-col-reverse gap-2 sm:left-auto sm:w-full sm:max-w-sm"
+        >
           <ToastList />
         </Base.Viewport>
       </Base.Portal>

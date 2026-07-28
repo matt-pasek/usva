@@ -20,9 +20,10 @@ const LAYER_DIRS: Record<Layer, string> = {
   atmosphere: "atmospheres",
 };
 
-// shared infrastructure, not components: they have no docs page and no registry entry of their own
+// shared infrastructure, not components
 const INFRASTRUCTURE = new Set([
   "atmospheres-core",
+  "overlay-core",
   "sula-core",
   "sula-motion",
 ]);

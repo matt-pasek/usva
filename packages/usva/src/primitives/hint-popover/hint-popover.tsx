@@ -2,6 +2,7 @@
 import { Popover as Base } from "@base-ui/react/popover";
 import * as React from "react";
 import { cn } from "../../cn.js";
+import { useScopedTheme } from "../overlay-core/use-scoped-theme.js";
 
 export type HintTone =
   | "neutral"
@@ -70,6 +71,7 @@ export function HintPopover({
   className,
 }: HintPopoverProps) {
   const [open, setOpen] = React.useState(false);
+  const [probe, scopedTheme] = useScopedTheme();
   const timer = React.useRef<ReturnType<typeof setTimeout> | undefined>(
     undefined,
   );
@@ -146,8 +148,14 @@ export function HintPopover({
           suppressFocusOpen.current = false;
         }}
       />
+      <span ref={probe} hidden />
       <Base.Portal>
-        <Base.Positioner side={side} sideOffset={8} className="z-overlay">
+        <Base.Positioner
+          data-theme={scopedTheme}
+          side={side}
+          sideOffset={8}
+          className="z-overlay"
+        >
           <Base.Popup
             onPointerEnter={cancel}
             onPointerLeave={hoverOut}
