@@ -2,7 +2,7 @@
 import type { ReactNode } from "react";
 import { cn } from "usva/cn";
 import { ColorField } from "usva/primitives/color-field";
-import { Slider } from "usva/primitives/slider";
+import { Knob } from "usva/primitives/knob";
 import { Lab } from "./lab";
 
 export function ControlsHead({ note }: { note?: ReactNode }) {
@@ -178,15 +178,15 @@ export function CtrlSlider({
   return (
     <CtrlRow label={label} sub={sub}>
       <span className="flex items-center gap-2.5">
-        <Slider
+        <Knob
           size="sm"
           aria-label={label}
           value={value}
           min={min}
           max={max}
           step={step}
-          onValueChange={(next) => onChange(next as number)}
-          className="w-[6.5rem]"
+          onValueChange={onChange}
+          className="shrink-0"
         />
         <output className="w-12 shrink-0 text-right font-mono text-[0.7rem] tabular-nums text-muted">
           {String(Number.parseFloat(value.toFixed(3)))}
