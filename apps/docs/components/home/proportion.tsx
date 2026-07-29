@@ -200,7 +200,7 @@ export function Proportion() {
                 </motion.span>
               </span>
 
-              <dl className="mt-8 grid grid-cols-2 gap-x-6 gap-y-4 sm:grid-cols-3 lg:grid-cols-2">
+              <dl className="mt-8 grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-3 lg:grid-cols-2">
                 {ORDER.map((layer) => (
                   <div key={layer} className="flex items-center gap-2.5">
                     <dt className="flex items-center gap-2.5 font-mono text-xs text-muted">
