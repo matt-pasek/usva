@@ -643,8 +643,12 @@ export const SUB_EXPORTS: { slug: string; name: string; parent: string }[] = [
   { slug: "bento-metric", name: "BentoMetric", parent: "bento-grid" },
   { slug: "bento-text", name: "BentoText", parent: "bento-grid" },
   { slug: "glow-card", name: "GlowCard", parent: "card" },
+  { slug: "page-loader", name: "PageLoader", parent: "spinner" },
+  { slug: "radio-group", name: "RadioGroup", parent: "radio" },
   { slug: "reveal-group", name: "RevealGroup", parent: "reveal" },
+  { slug: "skeleton-group", name: "SkeletonGroup", parent: "skeleton" },
   { slug: "skeleton-mirror", name: "SkeletonMirror", parent: "skeleton" },
+  { slug: "toaster", name: "Toaster", parent: "toast" },
 ];
 
 export const subExportsOf = (

@@ -57,13 +57,25 @@ const SUB_EXPORTS: Record<string, Item[]> = {
       child: true,
     },
   ],
+  radio: [
+    { href: "/docs/components/radio-group", label: "radio-group", child: true },
+  ],
   skeleton: [
+    {
+      href: "/docs/components/skeleton-group",
+      label: "skeleton-group",
+      child: true,
+    },
     {
       href: "/docs/components/skeleton-mirror",
       label: "skeleton-mirror",
       child: true,
     },
   ],
+  spinner: [
+    { href: "/docs/components/page-loader", label: "page-loader", child: true },
+  ],
+  toast: [{ href: "/docs/components/toaster", label: "toaster", child: true }],
   reveal: [
     {
       href: "/docs/components/reveal-group",
