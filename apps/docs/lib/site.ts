@@ -6,7 +6,7 @@ export const SITE_ORIGIN: string = config.siteOrigin;
 export const PACKAGE_NAME: string = config.packageName;
 
 export const SITE_DESCRIPTION =
-  "An open-source React design system: dual-distributed as an npm package and a shadcn-compatible registry.";
+  "A source-available React design system: dual-distributed as an npm package and a shadcn-compatible registry.";
 
 export const registryUrl = (name: string): string =>
   `${SITE_ORIGIN}/r/${name}.json`;

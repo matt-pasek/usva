@@ -3,6 +3,7 @@ name: Release
 on:
   push:
     branches: [main]
+  workflow_dispatch:
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
@@ -41,10 +42,6 @@ jobs:
       - run: bun run registry
       - run: node scripts/verify-packages.mjs
 
-      - name: bootstrap npm auth
-        if: env.NPM_TOKEN != ''
-        run: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
-
       - uses: changesets/action@v1
         with:
           version: bun run version-packages
@@ -53,3 +50,4 @@ jobs:
           title: "chore: version packages"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
