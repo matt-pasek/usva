@@ -174,7 +174,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       return (
         <Slot
           {...props}
-          ref={ref}
+          slotRef={ref}
           onClick={onClick}
           className={cn(
             buttonVariants({ variant, size, iconOnly, active, shape }),
@@ -362,15 +362,20 @@ function childRef(element: React.ReactElement): React.Ref<unknown> | undefined {
     : (element as unknown as { ref?: React.Ref<unknown> }).ref;
 }
 
+/**
+ * Carries the ref under a name of its own. React 18 reserves `ref`, strips it
+ * from a function component's props and warns, so a Slot that read `props.ref`
+ * would forward nothing there while working on 19.
+ */
 function Slot({
   children,
   className,
   style,
-  ref,
+  slotRef,
   ...props
 }: React.ButtonHTMLAttributes<HTMLElement> & {
   children?: React.ReactNode;
-  ref?: React.Ref<unknown>;
+  slotRef?: React.Ref<unknown>;
 }) {
   const element = React.isValidElement<React.HTMLAttributes<HTMLElement>>(
     children,
@@ -381,13 +386,13 @@ function Slot({
 
   const composedRef = React.useCallback(
     (node: unknown) => {
-      for (const target of [ref, theirRef]) {
+      for (const target of [slotRef, theirRef]) {
         if (typeof target === "function") target(node);
         else if (target)
           (target as React.MutableRefObject<unknown>).current = node;
       }
     },
-    [ref, theirRef],
+    [slotRef, theirRef],
   );
 
   if (!element) return null;
