@@ -5,6 +5,8 @@ import * as React from "react";
 import { cn } from "../../cn.js";
 import { Spinner } from "../spinner/spinner.js";
 
+declare const process: { env: { NODE_ENV?: string } };
+
 export type ButtonStatus = "idle" | "loading" | "success" | "error";
 
 export const buttonVariants = cva(
