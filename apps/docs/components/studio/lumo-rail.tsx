@@ -1,5 +1,5 @@
 "use client";
-import { ChevronRight, Code2, PanelRightClose } from "lucide-react";
+import { ChevronRight, Code2 } from "lucide-react";
 import * as React from "react";
 import { Button } from "usva/primitives/button";
 import { CtrlColor, CtrlGrid, CtrlSelect } from "@/components/docs/controls";
@@ -76,7 +76,6 @@ export function LumoRail({
   onReset,
   onShare,
   onExport,
-  onCollapse,
 }: {
   studio: ErasedStudio;
   studios: ErasedStudio[];
@@ -91,7 +90,6 @@ export function LumoRail({
   onReset: () => void;
   onShare: () => void;
   onExport: () => void;
-  onCollapse: () => void;
 }) {
   const [shared, setShared] = React.useState(false);
   const [copied, setCopied] = React.useState(false);
@@ -113,23 +111,10 @@ export function LumoRail({
 
   return (
     <div className="flex h-full w-full flex-col">
-      <div className="mb-2 flex shrink-0 items-center justify-between">
+      <div className="mb-2 flex shrink-0 items-center">
         <span className="font-mono text-[0.65rem] uppercase tracking-[0.14em] text-muted">
           controls
         </span>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={onCollapse}
-          className="font-mono uppercase tracking-[0.14em] text-muted hover:text-ink"
-        >
-          <PanelRightClose
-            aria-hidden="true"
-            strokeWidth={1.8}
-            className="size-3.5"
-          />
-          hide
-        </Button>
       </div>
       <div className="min-h-0 flex-1 space-y-4 overflow-y-auto pr-1">
         <div className="space-y-2">

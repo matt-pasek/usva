@@ -1,7 +1,9 @@
 "use client";
+import { PanelLeftClose, PanelLeftOpen } from "lucide-react";
 import * as React from "react";
 // biome-ignore lint/style/noRestrictedImports: atmospheres-core ships no subpath
 import { type AtmosphereName, hiddenOnGround } from "usva";
+import { Button } from "usva/primitives/button";
 import type { Config } from "@/components/docs/playground";
 import { useTheme } from "@/components/theme-provider";
 import { type ErasedStudio, studioByName, studios } from "@/lib/atmospheres";
@@ -48,6 +50,28 @@ export function LumoStudio() {
     setConfig({ ...presetOf(studio), ...shared.config });
     setTemplate("custom");
   }, []);
+
+  const synced = React.useRef(false);
+
+  /**
+   * Keeps the address bar holding the sky currently on screen, so a refresh
+   * does not throw the tuning away. The first pass is skipped deliberately: it
+   * shares a commit with the effect above, so writing then would replace an
+   * arriving ?s= with the default preset before that token was ever applied.
+   * Skipping it also leaves a plain /studio clean until something is tuned.
+   */
+  React.useEffect(() => {
+    if (!synced.current) {
+      synced.current = true;
+      return;
+    }
+    const token = encodeShare({ atmosphere: name, config });
+    window.history.replaceState(
+      null,
+      "",
+      `${window.location.pathname}?s=${token}`,
+    );
+  }, [name, config]);
 
   const effectiveTheme = groundTheme(name, theme);
 
@@ -97,46 +121,80 @@ export function LumoStudio() {
   };
 
   return (
-    <div
-      className={`mx-auto flex min-h-0 w-full max-w-[112rem] flex-1 flex-col lg:flex-row ${
-        railOpen ? "gap-4" : "gap-0"
-      }`}
-    >
+    <>
+      <header className="mx-auto flex w-full max-w-[112rem] shrink-0 items-center gap-3 pb-3">
+        <span className="flex items-baseline gap-3">
+          <h1 className="text-xl font-extrabold tracking-tight text-ink">
+            the atmosphere studio
+          </h1>
+          <span className="font-mono text-[0.65rem] uppercase tracking-widest text-muted">
+            lumo · cast a sky
+          </span>
+        </span>
+        {/* Sits in the page chrome rather than on the stage, so collapsing the
+            rail never moves the control that collapses it. */}
+        <Button
+          variant="outline"
+          size="sm"
+          aria-expanded={railOpen}
+          onClick={() => setRailOpen((open) => !open)}
+          className="ml-auto font-mono uppercase tracking-[0.14em] text-muted hover:text-ink"
+        >
+          {railOpen ? (
+            <PanelLeftClose
+              aria-hidden="true"
+              strokeWidth={1.8}
+              className="size-3.5"
+            />
+          ) : (
+            <PanelLeftOpen
+              aria-hidden="true"
+              strokeWidth={1.8}
+              className="size-3.5"
+            />
+          )}
+          {railOpen ? "hide" : "controls"}
+        </Button>
+      </header>
+
       <div
-        aria-hidden={!railOpen}
-        className={`grid shrink-0 overflow-hidden transition-all duration-300 ease-soft lg:[grid-template-rows:none] ${
-          railOpen
-            ? "[grid-template-rows:1fr] opacity-100 lg:w-[22rem]"
-            : "pointer-events-none [grid-template-rows:0fr] opacity-0 lg:w-0"
+        className={`mx-auto flex min-h-0 w-full max-w-[112rem] flex-1 flex-col lg:flex-row ${
+          railOpen ? "gap-4" : "gap-0"
         }`}
       >
-        <aside className="min-h-0 w-full overflow-hidden lg:h-full lg:w-[22rem]">
-          <LumoRail
-            studio={studio}
-            studios={studios}
-            config={config}
-            template={template}
-            templateNames={Object.keys(studio.templates)}
-            canvasBg={canvasBg}
-            onPatch={patch}
-            onAtmosphere={changeAtmosphere}
-            onTemplate={applyTemplate}
-            onCanvasBg={setCanvasBg}
-            onReset={reset}
-            onShare={share}
-            onExport={exportCode}
-            onCollapse={() => setRailOpen(false)}
-          />
-        </aside>
+        <div
+          aria-hidden={!railOpen}
+          className={`grid shrink-0 overflow-hidden transition-all duration-300 ease-soft lg:[grid-template-rows:none] ${
+            railOpen
+              ? "[grid-template-rows:1fr] opacity-100 lg:w-[22rem]"
+              : "pointer-events-none [grid-template-rows:0fr] opacity-0 lg:w-0"
+          }`}
+        >
+          <aside className="min-h-0 w-full overflow-hidden lg:h-full lg:w-[22rem]">
+            <LumoRail
+              studio={studio}
+              studios={studios}
+              config={config}
+              template={template}
+              templateNames={Object.keys(studio.templates)}
+              canvasBg={canvasBg}
+              onPatch={patch}
+              onAtmosphere={changeAtmosphere}
+              onTemplate={applyTemplate}
+              onCanvasBg={setCanvasBg}
+              onReset={reset}
+              onShare={share}
+              onExport={exportCode}
+            />
+          </aside>
+        </div>
+        <LumoStage
+          studio={studio}
+          config={config}
+          canvasBg={canvasBg}
+          theme={effectiveTheme}
+        />
       </div>
-      <LumoStage
-        studio={studio}
-        config={config}
-        canvasBg={canvasBg}
-        theme={effectiveTheme}
-        railOpen={railOpen}
-        onExpandRail={() => setRailOpen(true)}
-      />
-    </div>
+    </>
   );
 }

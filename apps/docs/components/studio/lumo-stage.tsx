@@ -1,5 +1,5 @@
 "use client";
-import { Download, PanelLeftOpen } from "lucide-react";
+import { Download } from "lucide-react";
 import * as React from "react";
 // biome-ignore lint/style/noRestrictedImports: atmospheres-core ships no subpath.
 import { captureAtmosphere } from "usva";
@@ -23,15 +23,11 @@ export function LumoStage({
   config,
   canvasBg,
   theme,
-  railOpen,
-  onExpandRail,
 }: {
   studio: ErasedStudio;
   config: Config;
   canvasBg: string;
   theme: string;
-  railOpen: boolean;
-  onExpandRail: () => void;
 }) {
   const stageRef = React.useRef<HTMLDivElement | null>(null);
   const [status, setStatus] = React.useState<"idle" | "saving" | "error">(
@@ -68,23 +64,6 @@ export function LumoStage({
       <span className="pointer-events-none absolute left-3 top-3 rounded-full border border-white/15 bg-black/35 px-3 py-1 font-mono text-[0.65rem] uppercase tracking-[0.14em] text-white/85 backdrop-blur-sm">
         {studio.label}
       </span>
-
-      {!railOpen && (
-        <Button
-          variant="glass"
-          shape="pill"
-          size="sm"
-          onClick={onExpandRail}
-          className="absolute right-3 top-3 font-mono uppercase tracking-[0.14em]"
-        >
-          <PanelLeftOpen
-            aria-hidden="true"
-            strokeWidth={1.8}
-            className="size-3.5"
-          />
-          controls
-        </Button>
-      )}
 
       <Button
         variant="glass"
