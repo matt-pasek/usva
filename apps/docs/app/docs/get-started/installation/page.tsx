@@ -42,6 +42,18 @@ const setup = `@import "tailwindcss";
 /* the utilities live in the built package, so tailwind has to see it */
 @source "../node_modules/usva/dist/**/*.js";`;
 
+const registrySetup = `@import "tailwindcss";
+
+/* whatever shadcn init wrote, left exactly where it put it */
+@import "shadcn/tailwind.css";
+@theme inline {
+  /* ... */
+}
+
+/* usva last. its @theme has to be read after shadcn's @theme inline */
+@import "usva-tokens/theme.css";
+@import "usva-tokens/themes/kajo.css";`;
+
 const usage = `import { Button } from "${PACKAGE_NAME}";
 
 export function Save() {
@@ -181,7 +193,37 @@ export default function InstallationPage() {
           the <code className="font-mono text-ink">@source</code> line is the
           one people miss. tailwind only generates the utilities it can see
           used, and it cannot see inside a dependency unless you point at it. if
-          a component renders with no colour, this is why.
+          a component renders with no colour, this is why. copying source in
+          instead, you do not need it: the files land in your own tree, which
+          tailwind already scans.
+        </p>
+      </section>
+
+      <section className="flex flex-col gap-4">
+        <h2 className="font-bold text-ink text-xl tracking-tight">
+          if you ran shadcn init, order matters
+        </h2>
+        <p className="text-muted">
+          <code className="font-mono text-ink">shadcn init</code> appends its
+          own <code className="font-mono text-ink">@theme inline</code> block to
+          your css, and four of its role names are also ours:{" "}
+          <code className="font-mono text-ink">border</code>,{" "}
+          <code className="font-mono text-ink">accent</code>,{" "}
+          <code className="font-mono text-ink">muted</code> and{" "}
+          <code className="font-mono text-ink">ring</code>. whichever block is
+          read last wins, and init appends, so it wins by default.
+        </p>
+        <CodeSnippet
+          label="src/index.css"
+          language="css"
+          code={registrySetup}
+        />
+        <p className="text-sm text-muted">
+          the failure is quiet, which is what makes it worth knowing. the other
+          twenty-one roles still resolve, so the component looks deliberate and
+          only those four colours are someone else&rsquo;s. an outline Button
+          with a near-white border instead of a dim one is the usual tell. move
+          the usva imports to the bottom and all four come back.
         </p>
       </section>
 

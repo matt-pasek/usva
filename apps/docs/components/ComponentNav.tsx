@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useRef } from "react";
 import { cn } from "usva/cn";
 import {
   byLayer,
@@ -9,6 +10,7 @@ import {
   LAYER_LABEL,
   type Layer,
 } from "../lib/catalog";
+import { useCenteredChip } from "../lib/use-centered-chip";
 
 type Props = { orientation?: "vertical" | "horizontal" };
 
@@ -188,13 +190,16 @@ function Row({ item, active }: { item: Item; active: boolean }) {
 export function ComponentNav({ orientation = "vertical" }: Props) {
   const pathname = usePathname();
   const groups = componentGroups();
+  const strip = useRef<HTMLElement>(null);
+  useCenteredChip(strip);
 
   if (orientation === "horizontal") {
     const items = [...GET_STARTED, ...groups.flatMap((g) => g.items)];
     return (
       <nav
+        ref={strip}
         aria-label="Documentation"
-        className="flex gap-2 overflow-x-auto pb-1"
+        className="flex gap-2 overflow-x-auto scroll-px-4 px-4 py-3 scrollbar-none [&::-webkit-scrollbar]:hidden"
       >
         {items.map((item) => {
           const chipClass = cn(

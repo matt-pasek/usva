@@ -7,12 +7,13 @@ import {
 } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { SITE_ORIGIN } from "./config.js";
+import { registryUrl, SITE_ORIGIN } from "./config.js";
 import { rewriteImports } from "./rewrite-imports.js";
 
 export interface RegistryFile {
   path: string;
   target: string;
+  type?: "registry:ui";
   content?: string;
 }
 export interface RegistryItem {
@@ -60,11 +61,21 @@ async function emit(dir: string, name: string): Promise<RegistryItem> {
   if (!item) throw new Error(`no registry export found for ${name}`);
   const files = item.files.map((f) => ({
     ...f,
+    type: item.type,
     content: rewriteImports(readFileSync(`${dir}/${name}/${f.path}`, "utf8")),
   }));
   writeFileSync(
     `${OUT}/${name}.json`,
-    JSON.stringify({ ...item, files }, null, 2),
+    JSON.stringify(
+      {
+        $schema: "https://ui.shadcn.com/schema/registry-item.json",
+        ...item,
+        registryDependencies: item.registryDependencies.map(registryUrl),
+        files,
+      },
+      null,
+      2,
+    ),
   );
   return item;
 }
@@ -81,8 +92,12 @@ function emitIndex(items: RegistryItem[]): void {
           name: item.name,
           type: item.type,
           dependencies: item.dependencies,
-          registryDependencies: item.registryDependencies,
-          files: item.files.map(({ path, target }) => ({ path, target })),
+          registryDependencies: item.registryDependencies.map(registryUrl),
+          files: item.files.map(({ path, target }) => ({
+            path,
+            target,
+            type: item.type,
+          })),
         })),
       },
       null,

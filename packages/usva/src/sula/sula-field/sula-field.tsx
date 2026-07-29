@@ -21,6 +21,11 @@ import {
 } from "./drive.js";
 import { nearestBlob, POINTER_EASE, WAKE_EASE } from "./field-geometry.js";
 
+// Bundlers replace this expression statically, but a Vite app types itself with
+// `types: ["vite/client"]` and has no `process`, so copied source fails tsc
+// without a local declaration. Module scope, so it shadows nothing in Next.
+declare const process: { env: { NODE_ENV?: string } };
+
 export interface SulaFieldProps extends React.HTMLAttributes<HTMLDivElement> {
   /** Drift-rate multiplier; higher drifts faster. Defaults to 1. */
   speed?: number;

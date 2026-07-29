@@ -123,7 +123,12 @@ export function StandingIn() {
                   </div>
 
                   <div className="flex max-w-xl flex-col gap-7 lg:pt-16">
-                    <dl className="flex flex-col gap-7">
+                    <input
+                      id={`detail-${theme}`}
+                      type="checkbox"
+                      className="peer sr-only"
+                    />
+                    <dl className="flex max-h-52 flex-col gap-7 overflow-hidden peer-checked:max-h-none sm:max-h-none">
                       <div className="flex flex-col gap-1.5">
                         <dt className="font-mono text-xs uppercase tracking-[0.25em] text-muted">
                           atmosphere
@@ -148,6 +153,12 @@ export function StandingIn() {
                         <dd className="text-ink">{doc.notThis.join(", ")}.</dd>
                       </div>
                     </dl>
+                    <label
+                      htmlFor={`detail-${theme}`}
+                      className="w-fit cursor-pointer font-mono text-xs text-accent underline-offset-4 hover:underline peer-checked:hidden sm:hidden"
+                    >
+                      ↓ the rest of it
+                    </label>
                     <Link
                       href={`/themes/${theme}`}
                       className="mt-1 inline-flex w-fit rounded font-mono text-xs text-accent underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-focus"

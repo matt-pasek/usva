@@ -37,6 +37,7 @@ export function pageMetadata(path: string, meta: Metadata): Metadata {
       width: OG_SIZE.width,
       height: OG_SIZE.height,
       alt: ogAlt(meta),
+      type: "image/png",
     },
   ];
   return {

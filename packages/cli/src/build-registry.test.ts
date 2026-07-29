@@ -21,6 +21,9 @@ const dirsIn = (root: string): string[] =>
     .map((e) => e.name)
     .sort();
 
+const depName = (dep: string): string =>
+  dep.replace(/^.*\/r\//, "").replace(/\.json$/, "");
+
 describe("buildRegistry", () => {
   beforeAll(async () => {
     await buildRegistry();
@@ -140,6 +143,27 @@ describe("buildRegistry", () => {
     ...SULA_NAMES,
     ...MOTION_NAMES,
     ...ATMOSPHERE_NAMES,
+  ])("%s is installable by shadcn", (name) => {
+    const read = () =>
+      JSON.parse(readFileSync(`../../registry/r/${name}.json`, "utf8"));
+
+    it("types every file, not just the item", () => {
+      for (const file of read().files as { type?: string }[])
+        expect(file.type).toBe("registry:ui");
+    });
+
+    it("addresses every registryDependency by absolute url", () => {
+      for (const dep of read().registryDependencies as string[])
+        expect(dep).toMatch(/^https?:\/\/.+\/r\/[a-z-]+\.json$/);
+    });
+  });
+
+  describe.each([
+    ...NAMES,
+    ...PATTERN_NAMES,
+    ...SULA_NAMES,
+    ...MOTION_NAMES,
+    ...ATMOSPHERE_NAMES,
   ])("%s is self-contained", (name) => {
     it("emits no import that escapes components/ui", () => {
       const json = JSON.parse(
@@ -175,7 +199,9 @@ describe("buildRegistry", () => {
     const missing: string[] = [];
     for (const name of allNames) {
       const json = read(name);
-      const declared: string[] = json.registryDependencies;
+      const declared: string[] = (json.registryDependencies as string[]).map(
+        depName,
+      );
       const own = provides.get(name) ?? new Set<string>();
       // A dependency resolves as either a direct basename (old convention) or an
       // item name whose emitted files provide the basename (new convention).

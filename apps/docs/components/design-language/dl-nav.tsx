@@ -1,8 +1,10 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useRef } from "react";
 import { cn } from "usva/cn";
 import { DL_CHAPTERS, DL_GROUPS, dlHref } from "@/lib/design-language";
+import { useCenteredChip } from "@/lib/use-centered-chip";
 
 const HUB = "/design-language";
 
@@ -60,6 +62,8 @@ export function DesignLanguageNav({
   orientation?: "vertical" | "horizontal";
 }) {
   const pathname = usePathname();
+  const strip = useRef<HTMLElement>(null);
+  useCenteredChip(strip);
 
   if (orientation === "horizontal") {
     const all = [
@@ -72,7 +76,10 @@ export function DesignLanguageNav({
       { href: "/themes", number: "↗", label: "themes" },
     ];
     return (
-      <nav className="flex gap-2 overflow-x-auto pb-1">
+      <nav
+        ref={strip}
+        className="flex gap-2 overflow-x-auto scroll-px-4 px-4 py-3 scrollbar-none [&::-webkit-scrollbar]:hidden"
+      >
         {all.map((item) => (
           <Link
             key={item.href}

@@ -123,11 +123,11 @@ export function LumoStudio() {
   return (
     <>
       <header className="mx-auto flex w-full max-w-[112rem] shrink-0 items-center gap-3 pb-3">
-        <span className="flex items-baseline gap-3">
-          <h1 className="text-xl font-extrabold tracking-tight text-ink">
+        <span className="flex min-w-0 items-baseline gap-3">
+          <h1 className="truncate text-base font-extrabold tracking-tight text-ink sm:text-xl">
             the atmosphere studio
           </h1>
-          <span className="font-mono text-[0.65rem] uppercase tracking-widest text-muted">
+          <span className="hidden whitespace-nowrap font-mono text-[0.65rem] uppercase tracking-widest text-muted sm:inline">
             lumo · cast a sky
           </span>
         </span>
@@ -138,7 +138,7 @@ export function LumoStudio() {
           size="sm"
           aria-expanded={railOpen}
           onClick={() => setRailOpen((open) => !open)}
-          className="ml-auto font-mono uppercase tracking-[0.14em] text-muted hover:text-ink"
+          className="ml-auto shrink-0 font-mono uppercase tracking-[0.14em] text-muted hover:text-ink"
         >
           {railOpen ? (
             <PanelLeftClose

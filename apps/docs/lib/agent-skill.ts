@@ -121,6 +121,7 @@ const fastestPath = (): string =>
     "```css",
     "/* globals.css */",
     '@import "tailwindcss";',
+    "/* anything shadcn init wrote goes here, above the usva imports */",
     `@import "${TOKENS_PACKAGE}/theme.css";`,
     `@import "${TOKENS_PACKAGE}/themes/kajo.css";`,
     "```",
@@ -131,7 +132,7 @@ const fastestPath = (): string =>
       : `import { Button } from "${PACKAGE_NAME}/primitives/button";`,
     "",
     "export function Save() {",
-    '  return <Button variant="primary">save</Button>;',
+    '  return <Button variant="solid">save</Button>;',
     "}",
     "```",
     "",
@@ -250,6 +251,7 @@ const gotchas = (): string =>
     "| scaling a `SulaField` | the simulation runs in field units. a css `transform: scale` makes the pool spill outside its bounds | size the container, never scale the component |",
     "| `vw` sizing | reads correctly at full width and breaks the moment the component is nested in a narrower column | `cqi` inside a `@container` |",
     "| dark-only atmospheres | four of them render wrong on a light theme | `hiddenOnGround`, or choose another |",
+    "| usva css imported above shadcn's | `shadcn init` appends an `@theme inline` block, and `border`, `accent`, `muted` and `ring` are role names in both. the later block wins, so those four resolve to shadcn's neutrals while the other twenty-one stay ours. the component reads as deliberate; an outline `Button` with a near-white border is the tell | import the usva css last |",
   ].join("\n");
 
 const dependencies = (): string =>
