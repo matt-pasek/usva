@@ -10,7 +10,7 @@ export const metadata: Metadata = pageMetadata("/studio", {
 
 export default function StudioPage() {
   return (
-    <main className="flex flex-col px-4 pb-4 sm:px-6 lg:h-[calc(100svh-6rem)] lg:overflow-hidden">
+    <main className="flex flex-col px-4 pt-4 pb-4 sm:px-6 lg:h-[calc(100svh-7rem)] lg:overflow-hidden">
       <LumoStudio />
     </main>
   );
