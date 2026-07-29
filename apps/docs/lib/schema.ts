@@ -1,4 +1,4 @@
-import { canonicalUrl, SITE_ORIGIN } from "@/lib/site";
+import { canonicalUrl, SITE_DESCRIPTION, SITE_ORIGIN } from "@/lib/site";
 
 const REPO = "https://github.com/matt-pasek/usva";
 const NPM = "https://www.npmjs.com/package/usva";
@@ -25,8 +25,7 @@ export function rootGraph() {
         "@id": WEBSITE_ID,
         url: SITE_ORIGIN,
         name: "usva.",
-        description:
-          "An open-source React design system, dual-distributed as an npm package and a shadcn-compatible registry.",
+        description: SITE_DESCRIPTION,
         publisher: { "@id": PERSON_ID },
         inLanguage: "en",
       },
