@@ -9,7 +9,12 @@ import {
   subExportsOf,
   THEMES,
 } from "@/lib/catalog";
-import { PACKAGE_NAME, registryUrl, SITE_ORIGIN } from "@/lib/site";
+import {
+  NPM_PENDING,
+  PACKAGE_NAME,
+  registryUrl,
+  SITE_ORIGIN,
+} from "@/lib/site";
 
 export const dynamic = "force-static";
 
@@ -63,9 +68,11 @@ const body = (): string =>
     "",
     "## Install",
     "",
-    `- Package: bun add ${PACKAGE_NAME}`,
     `- Registry: npx shadcn add ${registryUrl("button")}`,
     `- Tokens: bun add ${PACKAGE_NAME}-tokens`,
+    NPM_PENDING
+      ? `- Package: ${PACKAGE_NAME} is not on npm yet. Use the registry; bun add ${PACKAGE_NAME} fails today.`
+      : `- Package: bun add ${PACKAGE_NAME}`,
     "",
     "## The one rule",
     "",
