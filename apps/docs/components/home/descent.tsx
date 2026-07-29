@@ -424,7 +424,7 @@ function AssertsScene() {
       className="relative h-[420svh] [--kuohu-lift:-50%] [--kuohu-reach:0rem] md:[--kuohu-lift:0px] md:[--kuohu-reach:max(-19rem,-24vw)]"
     >
       <SeamRow index={3} label="sula" bleed />
-      <div className="sticky top-0 flex h-svh items-center overflow-hidden">
+      <div className="sticky top-0 flex h-dvh items-center overflow-hidden md:h-svh">
         <div
           className={`grid w-full items-center gap-8 md:grid-cols-2 md:gap-16 ${STRATUM}`}
         >
@@ -493,7 +493,7 @@ function AssertsScene() {
                     "--kuohu-glide": glide,
                   } as MotionStyle)
             }
-            className="-z-10 absolute inset-x-0 top-1/2 order-1 flex flex-col items-center gap-4 [opacity:calc(0.26+0.74*var(--kuohu-glide,1))] max-md:-translate-y-1/2 md:relative md:top-auto md:z-0 md:order-2 md:translate-y-0 md:opacity-100"
+            className="-z-10 absolute inset-x-0 top-2/3 order-1 flex flex-col items-center gap-4 [opacity:calc(0.26+0.74*var(--kuohu-glide,1))] max-md:-translate-y-1/2 md:relative md:top-auto md:z-0 md:order-2 md:translate-y-0 md:opacity-100"
           >
             <NameBehindGlass progress={scene} still={!!reduced} />
             <Kuohu />
@@ -543,7 +543,7 @@ function Star({
           <span className="text-xl font-extrabold tracking-[-0.03em] text-ink/65 transition-tint group-hover:text-ink sm:text-2xl">
             {entry.word}
           </span>
-          <span className="font-mono text-[0.6875rem] uppercase tracking-[0.18em] text-muted transition-tint group-hover:text-ink">
+          <span className="hidden font-mono text-[0.6875rem] uppercase tracking-[0.18em] text-muted transition-tint group-hover:text-ink sm:inline">
             {entry.descriptor}
           </span>
         </Link>
