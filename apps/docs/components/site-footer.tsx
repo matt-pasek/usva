@@ -30,6 +30,11 @@ const GROUPS: { heading: string; links: FooterLink[] }[] = [
       { href: "/docs/components", label: "components" },
       { href: "/themes", label: "themes" },
       { href: "/studio", label: "studio" },
+      {
+        href: "https://storybook.usva.build",
+        label: "storybook",
+        external: true,
+      },
     ],
   },
   {

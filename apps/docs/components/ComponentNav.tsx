@@ -12,7 +12,13 @@ import {
 
 type Props = { orientation?: "vertical" | "horizontal" };
 
-type Item = { href: string; label: string; child?: boolean };
+type Item = {
+  href: string;
+  label: string;
+  child?: boolean;
+  /** Leaves the site, so it renders as an anchor and carries the arrow. */
+  external?: boolean;
+};
 
 type Group = {
   key: string;
@@ -30,6 +36,12 @@ const GET_STARTED: Item[] = [
   { href: "/docs/get-started/installation", label: "installation" },
   { href: "/docs/get-started/theming", label: "theming" },
   { href: "/docs/get-started/for-agents", label: "for agents" },
+  { href: "/docs/components", label: "the index" },
+  {
+    href: "https://storybook.usva.build",
+    label: "storybook",
+    external: true,
+  },
 ];
 
 const SUB_EXPORTS: Record<string, Item[]> = {
@@ -127,20 +139,40 @@ function GroupHeader({ group }: { group: Group }) {
 }
 
 function Row({ item, active }: { item: Item; active: boolean }) {
+  const className = cn(
+    "flex items-center gap-1.5 border-l border-border py-1.5 pr-3 text-sm",
+    "transition-[color,background-color,border-color] duration-150 ease-soft",
+    "outline-none focus-visible:ring-focus",
+    item.child ? "pl-6" : "pl-3",
+    active
+      ? "border-accent bg-surface-2 text-ink"
+      : "text-muted hover:border-muted hover:bg-surface hover:text-ink",
+  );
+
+  if (item.external) {
+    return (
+      <li>
+        <a
+          href={item.href}
+          target="_blank"
+          rel="noreferrer"
+          className={className}
+        >
+          {item.label}
+          <span aria-hidden="true" className="text-faint">
+            ↗
+          </span>
+        </a>
+      </li>
+    );
+  }
+
   return (
     <li>
       <Link
         href={item.href}
         aria-current={active ? "page" : undefined}
-        className={cn(
-          "flex items-center gap-1.5 border-l border-border py-1.5 pr-3 text-sm",
-          "transition-[color,background-color,border-color] duration-150 ease-soft",
-          "outline-none focus-visible:ring-focus",
-          item.child ? "pl-6" : "pl-3",
-          active
-            ? "border-accent bg-surface-2 text-ink"
-            : "text-muted hover:border-muted hover:bg-surface hover:text-ink",
-        )}
+        className={className}
       >
         {item.child && (
           <span aria-hidden="true" className="font-mono text-xs text-faint">
@@ -164,22 +196,35 @@ export function ComponentNav({ orientation = "vertical" }: Props) {
         aria-label="Documentation"
         className="flex gap-2 overflow-x-auto pb-1"
       >
-        {items.map((item) => (
-          <Link
-            key={item.href}
-            href={item.href}
-            aria-current={pathname === item.href ? "page" : undefined}
-            className={cn(
-              "shrink-0 whitespace-nowrap rounded-lg px-3 py-1.5 text-sm",
-              "outline-none transition-colors duration-150 ease-soft focus-visible:ring-focus",
-              pathname === item.href
-                ? "bg-surface-2 text-ink glow-accent"
-                : "text-muted hover:bg-surface hover:text-ink",
-            )}
-          >
-            {item.label}
-          </Link>
-        ))}
+        {items.map((item) => {
+          const chipClass = cn(
+            "shrink-0 whitespace-nowrap rounded-lg px-3 py-1.5 text-sm",
+            "outline-none transition-colors duration-150 ease-soft focus-visible:ring-focus",
+            pathname === item.href
+              ? "bg-surface-2 text-ink glow-accent"
+              : "text-muted hover:bg-surface hover:text-ink",
+          );
+          return item.external ? (
+            <a
+              key={item.href}
+              href={item.href}
+              target="_blank"
+              rel="noreferrer"
+              className={chipClass}
+            >
+              {item.label} <span aria-hidden="true">↗</span>
+            </a>
+          ) : (
+            <Link
+              key={item.href}
+              href={item.href}
+              aria-current={pathname === item.href ? "page" : undefined}
+              className={chipClass}
+            >
+              {item.label}
+            </Link>
+          );
+        })}
       </nav>
     );
   }

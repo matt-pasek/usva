@@ -26,7 +26,7 @@ const next = [
   {
     href: "/docs/get-started/for-agents",
     title: "for agents",
-    body: "what a coding agent gets: llms.txt, the whole library as plain text.",
+    body: "what a coding agent gets: an installable skill file, and llms.txt as the whole library in plain text.",
   },
 ];
 
