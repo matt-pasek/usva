@@ -1,120 +1,113 @@
-import { Card, CardBody, CardHeader } from "@matt-pasek/usva";
 import type { Metadata } from "next";
-import { InstallBlock } from "@/components/install-block";
-import { SourceView } from "@/components/source-view";
+import { AcquireSection } from "@/components/docs/acquire-section";
+import { ComponentDoc } from "@/components/docs/component-doc";
+import { PropsTable } from "@/components/docs/props-table";
+import { pageMetadata } from "@/lib/site";
 import { CheckboxDemo } from "./checkbox-demo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata("/docs/components/checkbox", {
   title: "Checkbox",
   description:
-    "An accessible checkbox primitive with label and description support, built on Base UI Checkbox + Field.",
-};
+    "An independent yes or no, for options that do not exclude each other. Label and description support, on Base UI Checkbox and Field.",
+});
 
 const props = [
-  { name: "checked", type: "boolean", desc: "Controlled checked state." },
+  {
+    name: "checked",
+    type: "boolean",
+    desc: "controlled checked state.",
+  },
   {
     name: "defaultChecked",
     type: "boolean",
-    desc: "Initial checked state (uncontrolled).",
+    defaultValue: "false",
+    desc: "initial checked state when uncontrolled.",
   },
   {
     name: "onCheckedChange",
     type: "(checked: boolean) => void",
-    desc: "Fires when the checked state changes.",
+    desc: "fires with the next checked state.",
   },
   {
     name: "indeterminate",
     type: "boolean",
-    desc: "Renders a mixed (neither checked nor unchecked) state.",
+    defaultValue: "false",
+    desc: "the mixed state, for a parent whose children disagree.",
   },
-  { name: "disabled", type: "boolean", desc: "Disables the checkbox." },
-  { name: "label", type: "ReactNode", desc: "Field label text." },
+  {
+    name: "disabled",
+    type: "boolean",
+    defaultValue: "false",
+    desc: "disables the whole field, label included.",
+  },
+  {
+    name: "label",
+    type: "ReactNode",
+    desc: "the field label, wired to the control by id.",
+  },
   {
     name: "description",
     type: "ReactNode",
-    desc: "Helper text shown below the control.",
+    desc: "helper text under the control.",
   },
-  { name: "size", type: '"sm" | "md"', desc: "Visual size. Defaults to md." },
+  {
+    name: "size",
+    type: '"sm" | "md"',
+    defaultValue: '"md"',
+    desc: "sm for dense rows. the hidden hit area grows to compensate.",
+  },
 ];
 
-const usageSnippet = `import { Checkbox } from "@matt-pasek/usva";
+export default function CheckboxPage() {
+  return (
+    <ComponentDoc
+      slug="checkbox"
+      client
+      description={
+        <>
+          the collecting control. it gathers choices and waits for a submit,
+          ticking one commits nothing until you send the form. that deferral is
+          the whole line between it and Switch.
+        </>
+      }
+      composition={{
+        ok: [
+          "forms, settings rows, filter groups. anywhere choices accumulate",
+          "indeterminate heads a group whose children disagree",
+        ],
+        no: [
+          "not for actions that apply immediately. that is a switch, not a checkbox",
+          "never unlabelled. the label is the click target and the accessible name",
+        ],
+      }}
+      a11y={
+        <>
+          <code className="font-mono text-xs">role="checkbox"</code> named by
+          its label · disabled sets{" "}
+          <code className="font-mono text-xs">aria-disabled</code> · the check
+          icon is <code className="font-mono text-xs">aria-hidden</code>
+        </>
+      }
+      dependencies={
+        <>
+          <code className="font-mono text-xs">@base-ui/react</code> ·{" "}
+          <code className="font-mono text-xs">class-variance-authority</code>
+        </>
+      }
+    >
+      <CheckboxDemo />
+
+      <PropsTable rows={props} />
+
+      <AcquireSection
+        registryName="checkbox"
+        usage={`import { Checkbox } from "usva/primitives/checkbox";
 
 <Checkbox
   label="Accept terms"
   description="You agree to our terms of service."
-  onCheckedChange={(checked) => console.log(checked)}
-/>`;
-
-export default function CheckboxPage() {
-  return (
-    <main className="mx-auto flex max-w-2xl flex-col gap-8 p-10">
-      <div className="flex flex-col gap-2">
-        <h1 className="text-3xl font-semibold text-ink">Checkbox</h1>
-        <p className="text-muted">
-          Built on Base UI <code>Checkbox</code> + <code>Field</code>, wired for
-          label and description composition.
-        </p>
-      </div>
-
-      <Card>
-        <CardHeader>Demo</CardHeader>
-        <CardBody>
-          <CheckboxDemo />
-        </CardBody>
-      </Card>
-
-      <Card>
-        <CardHeader>Install</CardHeader>
-        <CardBody>
-          <InstallBlock registryName="checkbox" />
-        </CardBody>
-      </Card>
-
-      <Card>
-        <CardHeader>Usage</CardHeader>
-        <CardBody>
-          <pre className="overflow-x-auto rounded-md border border-border bg-surface-2 p-3 text-xs text-ink">
-            <code>{usageSnippet}</code>
-          </pre>
-        </CardBody>
-      </Card>
-
-      <Card>
-        <CardHeader>Source</CardHeader>
-        <CardBody>
-          <SourceView filePath="packages/usva/src/primitives/checkbox/checkbox.tsx" />
-        </CardBody>
-      </Card>
-
-      <Card>
-        <CardHeader>Props</CardHeader>
-        <CardBody>
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-sm">
-              <thead>
-                <tr className="border-b border-border text-muted">
-                  <th className="py-2 pr-4 font-medium">Prop</th>
-                  <th className="py-2 pr-4 font-medium">Type</th>
-                  <th className="py-2 font-medium">Description</th>
-                </tr>
-              </thead>
-              <tbody>
-                {props.map((p) => (
-                  <tr key={p.name} className="border-b border-border/50">
-                    <td className="py-2 pr-4 font-mono text-xs text-ink">
-                      {p.name}
-                    </td>
-                    <td className="py-2 pr-4 font-mono text-xs text-muted">
-                      {p.type}
-                    </td>
-                    <td className="py-2 text-muted">{p.desc}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </CardBody>
-      </Card>
-    </main>
+/>`}
+      />
+    </ComponentDoc>
   );
 }

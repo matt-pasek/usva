@@ -1,27 +1,46 @@
 {
-  "name": "@matt-pasek/usva-tokens",
+  "name": "usva-tokens",
   "version": "0.0.0",
   "type": "module",
-  "license": "MIT",
+  "license": "SEE LICENSE IN LICENSE.md",
+  "homepage": "https://usva.build",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/matt-pasek/usva.git",
+    "directory": "packages/tokens"
+  },
+  "bugs": "https://github.com/matt-pasek/usva/issues",
+  "publishConfig": {
+    "access": "public"
+  },
   "sideEffects": [
     "*.css"
   ],
+  "files": [
+    "dist",
+    "theme.css",
+    "themes",
+    "README.md",
+    "LICENSE.md"
+  ],
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
-    "./preset": {
-      "types": "./dist/preset.d.ts",
-      "import": "./dist/preset.js"
-    },
     "./theme.css": "./theme.css",
     "./themes/kajo.css": "./themes/kajo.css",
     "./themes/sisu.css": "./themes/sisu.css",
-    "./tokens.dtcg.json": "./dist/tokens.dtcg.json"
+    "./themes/savi.css": "./themes/savi.css",
+    "./tokens.dtcg.json": "./dist/tokens.dtcg.json",
+    "./tokens.studio.json": "./dist/tokens.studio.json",
+    "./roles-safelist.css": "./dist/roles-safelist.css",
+    "./package.json": "./package.json"
   },
   "scripts": {
-    "build": "tsup && bun run src/emit-dtcg.ts",
+    "build": "tsup && bun run src/emit-dtcg.ts && bun run src/emit-safelist.ts",
     "typecheck": "tsc --noEmit",
     "lint": "biome check .",
     "test": "vitest run"

@@ -1,7 +1,8 @@
 export type {
+  NotifyOptions,
   ToastActionOptions,
+  ToasterProps,
   ToastOptions,
-  ToastProviderProps,
   ToastType,
 } from "./toast.js";
-export { ToastProvider, toast, toastManager } from "./toast.js";
+export { notify, Toaster, toast, toastManager } from "./toast.js";

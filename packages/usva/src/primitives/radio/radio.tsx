@@ -37,19 +37,19 @@ export const RadioGroup = React.forwardRef(RadioGroupImpl) as <Value = string>(
 (RadioGroup as { displayName?: string }).displayName = "RadioGroup";
 
 const rootVariants = cva(
-  "flex shrink-0 items-center justify-center rounded-full border border-border bg-surface outline-none transition-colors data-[checked]:border-accent focus-visible:ring-2 focus-visible:ring-ring aria-invalid:border-danger disabled:cursor-not-allowed disabled:opacity-50",
+  "relative flex shrink-0 items-center justify-center rounded-full border border-border bg-surface outline-none transition-control duration-base ease-soft before:absolute before:content-[''] data-[unchecked]:hover:border-border-strong data-[checked]:border-accent data-[checked]:glow-ring active:scale-[0.98] motion-reduce:transition-none motion-reduce:transform-none focus-visible:border-transparent focus-visible:ring-focus aria-invalid:border-danger data-[disabled]:cursor-not-allowed data-[disabled]:opacity-50",
   {
     variants: {
       size: {
-        sm: "h-4 w-4",
-        md: "h-5 w-5",
+        sm: "h-4 w-4 before:-inset-3.5",
+        md: "h-5 w-5 before:-inset-3",
       },
     },
     defaultVariants: { size: "md" },
   },
 );
 
-const indicatorVariants = cva("rounded-full bg-accent", {
+const indicatorVariants = cva("rounded-full bg-accent bg-gradient-accent", {
   variants: {
     size: {
       sm: "h-2 w-2",
@@ -58,6 +58,12 @@ const indicatorVariants = cva("rounded-full bg-accent", {
   },
   defaultVariants: { size: "md" },
 });
+
+// Indent the description to line up under the label: control width + the gap-2.
+const descIndent: Record<NonNullable<RadioProps["size"]>, string> = {
+  sm: "pl-6",
+  md: "pl-7",
+};
 
 export interface RadioProps
   extends Omit<
@@ -86,8 +92,9 @@ export const Radio = React.forwardRef<HTMLButtonElement, RadioProps>(
             {...props}
           >
             <Base.Indicator
+              keepMounted
               className={cn(
-                "flex items-center justify-center data-[unchecked]:hidden",
+                "flex items-center justify-center transition-control duration-base ease-spring motion-reduce:transition-none motion-reduce:transform-none data-[unchecked]:scale-0 data-[checked]:scale-100",
               )}
             >
               <span className={indicatorVariants({ size })} />
@@ -96,14 +103,16 @@ export const Radio = React.forwardRef<HTMLButtonElement, RadioProps>(
           {label ? (
             <Field.Label
               htmlFor={radioId}
-              className="text-sm text-ink select-none"
+              className="text-sm text-ink select-none data-[disabled]:opacity-50"
             >
               {label}
             </Field.Label>
           ) : null}
         </div>
         {description ? (
-          <Field.Description className="pl-6 text-xs text-muted">
+          <Field.Description
+            className={cn("text-xs text-muted", descIndent[size ?? "md"])}
+          >
             {description}
           </Field.Description>
         ) : null}

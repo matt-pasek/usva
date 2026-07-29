@@ -4,6 +4,12 @@ import { Popover } from "./popover.js";
 const meta: Meta<typeof Popover> = {
   title: "Primitives/Popover",
   component: Popover,
+  tags: ["autodocs"],
+  argTypes: {
+    defaultOpen: { control: { type: "boolean" } },
+    modal: { control: { type: "boolean" } },
+  },
+  args: { defaultOpen: true, modal: false },
 };
 export default meta;
 
@@ -88,19 +94,20 @@ export const OpenSideLeft: Story = {
   ),
 };
 
-export const WithArrow: Story = {
+export const Sides: Story = {
   render: () => (
-    <Popover defaultOpen>
-      <Popover.Trigger className={triggerClassName}>
-        Open popover
-      </Popover.Trigger>
-      <Popover.Content side="bottom">
-        <Popover.Arrow />
-        <Popover.Title>With arrow</Popover.Title>
-        <Popover.Description>
-          The arrow points back at the trigger.
-        </Popover.Description>
-      </Popover.Content>
-    </Popover>
+    <div className="flex flex-wrap gap-40 p-40">
+      {(["top", "right", "bottom", "left"] as const).map((side) => (
+        <Popover key={side} defaultOpen>
+          <Popover.Trigger className={triggerClassName}>{side}</Popover.Trigger>
+          <Popover.Content side={side}>
+            <Popover.Title>{side}</Popover.Title>
+            <Popover.Description>
+              Positioned on the {side} side.
+            </Popover.Description>
+          </Popover.Content>
+        </Popover>
+      ))}
+    </div>
   ),
 };

@@ -1,6 +1,14 @@
-import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
-import { dirname, resolve } from "node:path";
+import {
+  existsSync,
+  mkdirSync,
+  readdirSync,
+  readFileSync,
+  writeFileSync,
+} from "node:fs";
+import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { SITE_ORIGIN } from "./config.js";
+import { rewriteImports } from "./rewrite-imports.js";
 
 export interface RegistryFile {
   path: string;
@@ -16,45 +24,86 @@ export interface RegistryItem {
 }
 
 const here = dirname(fileURLToPath(import.meta.url));
-const PRIMITIVES = resolve(here, "../../usva/src/primitives");
+export const PRIMITIVES = resolve(here, "../../usva/src/primitives");
+export const PATTERNS = resolve(here, "../../usva/src/patterns");
+export const SULA = resolve(here, "../../usva/src/sula");
+export const MOTION = resolve(here, "../../usva/src/motion");
+export const ATMOSPHERES = resolve(here, "../../usva/src/atmospheres");
 const OUT = resolve(here, "../../../registry/r");
-export const NAMES = [
-  "avatar",
-  "button",
-  "badge",
-  "card",
-  "checkbox",
-  "dialog",
-  "dropdown-menu",
-  "input",
-  "popover",
-  "radio",
-  "select",
-  "skeleton",
-  "switch",
-  "tabs",
-  "toast",
-  "tooltip",
-] as const;
+
+/**
+ * A component ships through the registry by having a `registry.ts` next to its
+ * source. Nothing lists the names, so adding a component cannot forget to.
+ */
+export const discover = (root: string): string[] =>
+  readdirSync(root, { withFileTypes: true })
+    .filter(
+      (entry) =>
+        entry.isDirectory() &&
+        existsSync(join(root, entry.name, "registry.ts")),
+    )
+    .map((entry) => entry.name)
+    .sort();
+
+export const NAMES = discover(PRIMITIVES);
+export const PATTERN_NAMES = discover(PATTERNS);
+export const SULA_NAMES = discover(SULA);
+export const MOTION_NAMES = discover(MOTION);
+export const ATMOSPHERE_NAMES = discover(ATMOSPHERES);
+
+async function emit(dir: string, name: string): Promise<RegistryItem> {
+  const mod = (await import(`${dir}/${name}/registry.ts`)) as Record<
+    string,
+    RegistryItem
+  >;
+  const item = mod[`${name}Registry`] ?? Object.values(mod)[0];
+  if (!item) throw new Error(`no registry export found for ${name}`);
+  const files = item.files.map((f) => ({
+    ...f,
+    content: rewriteImports(readFileSync(`${dir}/${name}/${f.path}`, "utf8")),
+  }));
+  writeFileSync(
+    `${OUT}/${name}.json`,
+    JSON.stringify({ ...item, files }, null, 2),
+  );
+  return item;
+}
+
+function emitIndex(items: RegistryItem[]): void {
+  writeFileSync(
+    `${OUT}/registry.json`,
+    JSON.stringify(
+      {
+        $schema: "https://ui.shadcn.com/schema/registry.json",
+        name: "usva",
+        homepage: SITE_ORIGIN,
+        items: items.map((item) => ({
+          name: item.name,
+          type: item.type,
+          dependencies: item.dependencies,
+          registryDependencies: item.registryDependencies,
+          files: item.files.map(({ path, target }) => ({ path, target })),
+        })),
+      },
+      null,
+      2,
+    ),
+  );
+}
 
 export async function buildRegistry(): Promise<void> {
   mkdirSync(OUT, { recursive: true });
-  for (const name of NAMES) {
-    const mod = (await import(`${PRIMITIVES}/${name}/registry.ts`)) as Record<
-      string,
-      RegistryItem
-    >;
-    const item = mod[`${name}Registry`] ?? Object.values(mod)[0];
-    if (!item) throw new Error(`no registry export found for ${name}`);
-    const files = item.files.map((f) => ({
-      ...f,
-      content: readFileSync(`${PRIMITIVES}/${name}/${f.path}`, "utf8"),
-    }));
-    writeFileSync(
-      `${OUT}/${name}.json`,
-      JSON.stringify({ ...item, files }, null, 2),
-    );
-  }
+  const items: RegistryItem[] = [];
+  const layers: [string, string[]][] = [
+    [PRIMITIVES, NAMES],
+    [PATTERNS, PATTERN_NAMES],
+    [SULA, SULA_NAMES],
+    [MOTION, MOTION_NAMES],
+    [ATMOSPHERES, ATMOSPHERE_NAMES],
+  ];
+  for (const [dir, names] of layers)
+    for (const name of names) items.push(await emit(dir, name));
+  emitIndex(items);
 }
 
 if (import.meta.main) await buildRegistry();

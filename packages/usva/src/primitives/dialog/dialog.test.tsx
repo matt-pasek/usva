@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { axe } from "jest-axe";
 import { describe, expect, it, vi } from "vitest";
@@ -15,12 +15,16 @@ describe("Dialog", () => {
         </Dialog.Content>
       </Dialog>,
     );
-    await userEvent.click(screen.getByText("Open"));
+    const trigger = screen.getByText("Open");
+    await userEvent.click(trigger);
     const dialog = screen.getByRole("dialog");
     expect(dialog).toBeInTheDocument();
-    expect(dialog.contains(document.activeElement)).toBe(true);
+    await waitFor(() =>
+      expect(dialog.contains(document.activeElement)).toBe(true),
+    );
     await userEvent.keyboard("{Escape}");
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+    await waitFor(() => expect(trigger).toHaveFocus());
   });
 
   it("fires onOpenChange with the boolean open state", async () => {
@@ -57,7 +61,7 @@ describe("Dialog", () => {
   });
 
   it("no a11y violations on the open dialog with a title", async () => {
-    const { container } = render(
+    const { baseElement } = render(
       <Dialog defaultOpen>
         <Dialog.Trigger>Open</Dialog.Trigger>
         <Dialog.Content>
@@ -68,11 +72,11 @@ describe("Dialog", () => {
       </Dialog>,
     );
     expect(screen.getByRole("dialog")).toBeInTheDocument();
-    expect(await axe(container)).toHaveNoViolations();
+    expect(await axe(baseElement)).toHaveNoViolations();
   });
 
   it("no a11y violations on an open dialog labelled via aria-label (no title)", async () => {
-    const { container } = render(
+    const { baseElement } = render(
       <Dialog defaultOpen>
         <Dialog.Trigger>Open</Dialog.Trigger>
         <Dialog.Content aria-label="Quick actions">
@@ -81,6 +85,6 @@ describe("Dialog", () => {
       </Dialog>,
     );
     expect(screen.getByRole("dialog")).toBeInTheDocument();
-    expect(await axe(container)).toHaveNoViolations();
+    expect(await axe(baseElement)).toHaveNoViolations();
   });
 });

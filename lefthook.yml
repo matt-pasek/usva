@@ -1,0 +1,6 @@
+pre-commit:
+  jobs:
+    - name: biome
+      glob: "*.{js,jsx,ts,tsx,json,jsonc}"
+      run: bunx biome check --write --no-errors-on-unmatched --files-ignore-unknown=true {staged_files}
+      stage_fixed: true

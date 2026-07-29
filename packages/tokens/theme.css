@@ -2,6 +2,7 @@
   --font-sans: var(--usva-font-sans);
   --font-mono: var(--usva-font-mono);
   --color-bg: var(--usva-bg);
+  --color-sunken: var(--usva-sunken);
   --color-surface: var(--usva-surface);
   --color-surface-2: var(--usva-surface-2);
   --color-overlay: var(--usva-overlay);
@@ -10,9 +11,12 @@
   --color-muted: var(--usva-muted);
   --color-faint: var(--usva-faint);
   --color-on-accent: var(--usva-on-accent);
+  --color-on-sunken: var(--usva-on-sunken, var(--usva-ink));
+  --color-on-tint: var(--usva-on-tint, var(--usva-accent));
   --color-accent: var(--usva-accent);
   --color-accent-2: var(--usva-accent-2);
   --color-accent-alt: var(--usva-accent-alt);
+  --color-accent-tint: var(--usva-accent-tint);
   --color-accent-ink: var(--usva-accent-ink);
   --color-success: var(--usva-success);
   --color-warning: var(--usva-warning);
@@ -21,13 +25,303 @@
   --color-border: var(--usva-border);
   --color-border-strong: var(--usva-border-strong);
   --color-ring: var(--usva-ring);
+  --color-live: var(--usva-live, var(--usva-accent));
   --radius-sm: 0.25rem; --radius-md: 0.5rem; --radius-lg: 0.75rem; --radius-xl: 1rem;
+  --radius-2xl: 1.25rem; --radius-3xl: 1.5rem;
+  --ease-soft: var(--usva-ease-soft, cubic-bezier(0.22, 1, 0.36, 1));
+  --ease-emphasis: var(--usva-ease-emphasis, cubic-bezier(0.25, 0, 0, 1));
+  --ease-spring: var(--usva-ease-spring, cubic-bezier(0.22, 1, 0.36, 1));
+}
+
+/* ── Themed subtrees ────────────────────────────────────── */
+[data-theme] {
+  --color-bg: var(--usva-bg);
+  --color-sunken: var(--usva-sunken);
+  --color-surface: var(--usva-surface);
+  --color-surface-2: var(--usva-surface-2);
+  --color-overlay: var(--usva-overlay);
+  --color-scrim: var(--usva-scrim);
+  --color-ink: var(--usva-ink);
+  --color-muted: var(--usva-muted);
+  --color-faint: var(--usva-faint);
+  --color-on-accent: var(--usva-on-accent);
+  --color-on-sunken: var(--usva-on-sunken, var(--usva-ink));
+  --color-on-tint: var(--usva-on-tint, var(--usva-accent));
+  --color-accent: var(--usva-accent);
+  --color-accent-2: var(--usva-accent-2);
+  --color-accent-alt: var(--usva-accent-alt);
+  --color-accent-tint: var(--usva-accent-tint);
+  --color-accent-ink: var(--usva-accent-ink);
+  --color-success: var(--usva-success);
+  --color-warning: var(--usva-warning);
+  --color-danger: var(--usva-danger);
+  --color-info: var(--usva-info);
+  --color-border: var(--usva-border);
+  --color-border-strong: var(--usva-border-strong);
+  --color-ring: var(--usva-ring);
+  --color-live: var(--usva-live, var(--usva-accent));
+}
+
+/* ── Motion scale ─────────────────────────────────────────
+   Tailwind v4 has an --ease-* theme namespace but no --duration-* one, so the
+   duration tiers are explicit utilities rather than @theme keys. Assign by what
+   moves, never by taste. Each theme skins the values: kajo languid, sisu snappy,
+   savi the neutral baseline. */
+@utility duration-fast    { transition-duration: var(--usva-duration-fast, 150ms); }
+@utility duration-base    { transition-duration: var(--usva-duration-base, 200ms); }
+@utility duration-slow    { transition-duration: var(--usva-duration-slow, 300ms); }
+@utility duration-ambient { transition-duration: var(--usva-duration-ambient, 500ms); }
+
+/* ── Transition vocabulary ────────────────────────────────
+   Four named property sets instead of a hand-written list per call site.
+   Each carries the duration tier it usually wants, so a bare `transition-tint`
+   is never a 0s no-op; a later duration or ease class still overrides, since
+   those utilities are emitted after these. Assign by what is moving:
+     tint     colour only            : hover/focus recolour
+     control  colour + depth + scale : interactive feedback
+     layout   size and position      : travelling indicators
+     enter    popup enter/exit       : opacity + lift + blur
+   Each self-guards reduced motion, so no call site has to remember
+   `motion-reduce:transition-none`. */
+@utility transition-tint {
+  transition-property: color, background-color, border-color;
+  transition-duration: var(--usva-duration-fast, 150ms);
+  transition-timing-function: var(--usva-ease-soft, cubic-bezier(0.22, 1, 0.36, 1));
+  @media (prefers-reduced-motion: reduce) { transition: none; }
+}
+@utility transition-control {
+  transition-property: color, background-color, border-color, box-shadow,
+    transform, translate, scale, filter;
+  transition-duration: var(--usva-duration-base, 200ms);
+  transition-timing-function: var(--usva-ease-soft, cubic-bezier(0.22, 1, 0.36, 1));
+  @media (prefers-reduced-motion: reduce) { transition: none; }
+}
+@utility transition-layout {
+  transition-property: translate, transform, width, height, gap;
+  transition-duration: var(--usva-duration-slow, 300ms);
+  transition-timing-function: var(--usva-ease-soft, cubic-bezier(0.22, 1, 0.36, 1));
+  @media (prefers-reduced-motion: reduce) { transition: none; }
+}
+@utility transition-enter {
+  transition-property: opacity, translate, scale, filter;
+  transition-duration: var(--usva-duration-base, 200ms);
+  transition-timing-function: var(--usva-ease-soft, cubic-bezier(0.22, 1, 0.36, 1));
+  @media (prefers-reduced-motion: reduce) { transition: none; }
 }
 
 @utility z-base { z-index: var(--usva-z-base); }
 @utility z-dropdown { z-index: var(--usva-z-dropdown); }
 @utility z-overlay { z-index: var(--usva-z-overlay); }
 @utility z-toast { z-index: var(--usva-z-toast); }
+
+/* ── Elevation recipe ─────────────────────────────────────
+   Single box-shadow vocabulary; kajo skins it bold, sisu quiet.
+   Each level bundles the inset top-highlight so surfaces read
+   as lit from above. State transitions swap one level for
+   another (never stack), so there is no box-shadow conflict. */
+@utility shadow-raised   { box-shadow: var(--usva-inset-hairline), var(--usva-shadow-raised); }
+@utility shadow-floating { box-shadow: var(--usva-inset-hairline), var(--usva-shadow-floating); }
+@utility shadow-overlay  { box-shadow: var(--usva-inset-hairline), var(--usva-shadow-overlay); }
+
+/* Colored accent bloom: the signature "faint glow" on interactive/live parts */
+@utility glow-accent        { box-shadow: var(--usva-glow-accent); }
+@utility glow-accent-strong { box-shadow: var(--usva-glow-accent-strong); }
+
+/* Glow ring, the shared selection/energy idiom: crisp accent ring hugging the
+   edge, plus (in bold skins) an outer bloom. One shadow, swaps cleanly with the
+   elevation levels above. */
+@utility glow-ring { box-shadow: var(--usva-glow-ring); }
+
+/* Rim light: a 1px gradient catching the top edge of a raised surface, as if
+   lit from above. Skins tint it: bold themes tint toward the accent, quiet
+   themes keep it near-white and faint. */
+@utility rim-light {
+  position: relative;
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 10%;
+    right: 10%;
+    height: 1px;
+    pointer-events: none;
+    background-image: linear-gradient(
+      to right,
+      transparent,
+      var(--usva-rim-light, rgb(255 255 255 / 0.08)),
+      transparent
+    );
+  }
+}
+
+/* Radial accent wash: atmosphere instead of flat fills. Themes define the
+   full gradient stack (bold skins run a dual accent/accent-alt wash). */
+@utility wash-accent {
+  background-image: var(--usva-wash-accent);
+  background-repeat: no-repeat;
+}
+
+/* Inner-lit accent fill: solid surfaces (primary buttons) read as a material
+   catching light, not a flat swatch. */
+@utility bg-gradient-accent { background-image: var(--usva-gradient-accent); }
+
+/* Focus recipe: one utility, applied via focus-visible */
+@utility ring-focus { box-shadow: var(--usva-focus); }
+
+/* Gradient hairline, the SectionLabel motif; put on a 1px-tall element.
+   Strength is a theme dial: bold skins glow, quiet skins whisper. */
+@utility hairline-accent {
+  background-image: linear-gradient(
+    to right,
+    color-mix(in srgb, var(--usva-accent) var(--usva-hairline-strength, 45%), transparent),
+    var(--usva-hairline-end, transparent)
+  );
+}
+
+/* Shared edge glow: one light source lighting the borders it passes near.
+   The host writes the pointer position in each element's own pixels
+   (--edge-x/--edge-y) plus an on/off intensity (--edge-o, inherited so a grid
+   can fade the whole set at once). A fixed-radius radial centered on the
+   pointer paints the border via a border-only mask (padding-box exclude). The
+   radius is the same for every element, so brightness on any point of any
+   border depends ONLY on its distance to the pointer: two cards meeting at a
+   shared edge light identically there and read as one continuous line, with no
+   per-card unevenness. Gradient runs accent → live: violet→green in kajo,
+   green→green (solid green) in sisu, so the skin picks the hue, no branching. */
+@utility edge-glow {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  pointer-events: none;
+  opacity: var(--edge-o, 0);
+  background: radial-gradient(
+    13rem circle at var(--edge-x, -999px) var(--edge-y, -999px),
+    var(--usva-live, var(--usva-accent)) 0%,
+    var(--usva-accent) 35%,
+    transparent 70%
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  transition: opacity 220ms var(--usva-ease-soft, ease);
+}
+@media (prefers-reduced-motion: reduce) {
+  .edge-glow { display: none; }
+}
+
+/* The soft ambient fill that travels with the pointer under the cards, so the
+   shared surface itself brightens where the cursor is, not just the borders. */
+@utility bento-spotlight {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: var(--bento-fill-o, 0);
+  background: radial-gradient(
+    24rem circle at var(--bento-x, 50%) var(--bento-y, 50%),
+    color-mix(in srgb, var(--usva-accent) 12%, transparent),
+    transparent 60%
+  );
+  transition: opacity 300ms var(--usva-ease-soft, ease);
+}
+@media (prefers-reduced-motion: reduce) {
+  .bento-spotlight { display: none; }
+}
+
+/* Signature enter animation: fade up with a short blur-in */
+@keyframes usva-reveal-up {
+  from { opacity: 0; transform: translateY(12px); filter: blur(4px); }
+  to   { opacity: 1; transform: none; filter: blur(0); }
+}
+@utility animate-reveal {
+  animation: usva-reveal-up 0.45s var(--usva-ease-emphasis, cubic-bezier(0.25, 0, 0, 1)) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .animate-reveal { animation: none; }
+}
+
+/* Live pulse, the green heartbeat. Reserved for things that are actually
+   alive right now (live status, current step); never decorative.
+   The halo is a scaled-and-faded pseudo behind the dot rather than an animated
+   box-shadow spread: same ring, but transform/opacity only, so a list of live
+   dots does not repaint every frame. The negative z-index keeps it under the
+   dot's own fill, which is what made the box-shadow read as a ring. */
+@keyframes usva-live-pulse {
+  0% { transform: scale(1); opacity: 1; }
+  70%, 100% { transform: scale(2.2); opacity: 0; }
+}
+@utility animate-live-pulse {
+  position: relative;
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    pointer-events: none;
+    background: color-mix(in srgb, var(--usva-live, var(--usva-accent)) 60%, transparent);
+    animation: usva-live-pulse 2s var(--usva-ease-soft, cubic-bezier(0.22, 1, 0.36, 1)) infinite;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .animate-live-pulse::after { animation: none; display: none; }
+}
+
+/* Toast countdown: a bar that drains over the toast's lifetime. scaleX on the
+   GPU; pauses when the toast is hovered (sync with Base UI's timer pause). */
+@keyframes usva-toast-countdown {
+  from { transform: scaleX(1); }
+  to { transform: scaleX(0); }
+}
+@utility animate-toast-countdown {
+  transform-origin: left;
+  animation: usva-toast-countdown var(--usva-toast-duration, 5s) linear forwards;
+}
+@media (prefers-reduced-motion: reduce) {
+  .animate-toast-countdown { animation: none; }
+}
+
+/* Carousel progress: a hairline that fills left→right over the step's
+   lifetime. Pure CSS so `animation-play-state: paused` freezes it exactly
+   where it is (no snap-to-end), and `animationend` advances the carousel. */
+@keyframes usva-progress-fill {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+@utility animate-progress-fill {
+  transform-origin: left;
+  animation: usva-progress-fill var(--usva-progress-duration, 4600ms) linear
+    forwards;
+}
+@media (prefers-reduced-motion: reduce) {
+  .animate-progress-fill { animation: none; }
+}
+
+/* Loader idioms, the non-ring spinners. Staggered delays on the children
+   give the traveling wave; both honor reduced motion. */
+@keyframes usva-loader-pulse {
+  0%, 100% { opacity: 0.3; transform: scale(0.7); }
+  50% { opacity: 1; transform: scale(1); }
+}
+@utility animate-loader-pulse {
+  animation: usva-loader-pulse 1.1s var(--usva-ease-soft, ease-in-out) infinite;
+}
+@keyframes usva-loader-bar {
+  0%, 100% { transform: scaleY(0.35); opacity: 0.55; }
+  50% { transform: scaleY(1); opacity: 1; }
+}
+@utility animate-loader-bar {
+  animation: usva-loader-bar 1s var(--usva-ease-soft, ease-in-out) infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .animate-loader-pulse, .animate-loader-bar { animation: none; }
+}
 
 @keyframes shimmer {
   from { background-position: 150% 0; }
@@ -43,4 +337,170 @@
   );
   background-size: 200% 100%;
   animation: shimmer 1.6s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .animate-shimmer { animation: none; }
+}
+
+/* Skeleton mask: greys every leaf element (no element children: text runs,
+   buttons, images, icons) into a shaped block while containers keep their
+   layout, so a SkeletonMirror placeholder mirrors the real markup. One class
+   (not a stack of Tailwind arbitrary variants) so `cn`/tailwind-merge can't
+   dedupe the competing background utilities apart. */
+@utility skeleton-mask {
+  & *:not(:has(*)) {
+    border-radius: 0.375rem !important;
+    color: transparent !important;
+    background-color: var(--usva-sunken) !important;
+    background-image: none !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+  }
+  & img,
+  & svg,
+  & video,
+  & canvas {
+    opacity: 0 !important;
+  }
+  & * {
+    animation: none !important;
+  }
+}
+
+/* Skeleton sheen: standalone blocks spin one local arc. SkeletonGroup moves
+   one shared band across every block, still clipped to each 1px outer edge. */
+@property --usva-sheen-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: true;
+}
+@keyframes usva-sheen-spin {
+  to { --usva-sheen-angle: 360deg; }
+}
+@property --usva-sheen-position {
+  syntax: "<percentage>";
+  initial-value: -20%;
+  inherits: true;
+}
+@keyframes usva-sheen-travel {
+  to { --usva-sheen-position: 120%; }
+}
+@utility skeleton-group {
+  animation: usva-sheen-travel 2.2s linear infinite;
+}
+@utility skeleton-sheen {
+  position: relative;
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    pointer-events: none;
+    background: conic-gradient(
+      from var(--usva-sheen-angle),
+      transparent 0%,
+      color-mix(in srgb, var(--usva-accent) 75%, transparent) 8%,
+      color-mix(in srgb, var(--usva-accent-alt, var(--usva-accent)) 60%, transparent) 14%,
+      transparent 24%,
+      transparent 100%
+    );
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    mask-composite: exclude;
+    animation: usva-sheen-spin 1.5s linear infinite;
+  }
+  &[data-skeleton-grouped]::after {
+    background-image: linear-gradient(
+      105deg,
+      transparent calc(var(--usva-sheen-position) - 11%),
+      color-mix(in srgb, var(--usva-accent) 75%, transparent)
+        calc(var(--usva-sheen-position) - 3%),
+      color-mix(in srgb, var(--usva-accent-alt, var(--usva-accent)) 60%, transparent)
+        var(--usva-sheen-position),
+      transparent calc(var(--usva-sheen-position) + 11%)
+    );
+    background-size:
+      var(--usva-skeleton-group-width)
+      var(--usva-skeleton-group-height);
+    background-position:
+      calc(0px - var(--usva-skeleton-offset-x))
+      calc(0px - var(--usva-skeleton-offset-y));
+    background-repeat: no-repeat;
+    opacity: 1;
+    animation: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .skeleton-group { animation: none; }
+  .skeleton-sheen::after { animation: none; opacity: 0; }
+}
+
+/* ---------------------------------------------------------------- *\
+   code: a highlight.js theme painted with the role tokens, so syntax
+   colour reskins with the theme. used by CodeSnippet; any highlight.js
+   output picks it up.
+\* ---------------------------------------------------------------- */
+.hljs {
+  color: var(--usva-on-sunken);
+  background: transparent;
+}
+
+.hljs-comment,
+.hljs-quote {
+  color: var(--usva-code-comment, var(--usva-muted));
+  font-style: italic;
+}
+
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-meta,
+.hljs-built_in,
+.hljs-type {
+  color: var(--usva-accent);
+}
+
+.hljs-string,
+.hljs-regexp,
+.hljs-number,
+.hljs-literal,
+.hljs-symbol,
+.hljs-addition {
+  color: var(--usva-accent-alt);
+}
+
+.hljs-title,
+.hljs-title.function_,
+.hljs-title.class_,
+.hljs-section {
+  color: var(--usva-ink);
+  font-weight: 500;
+}
+
+.hljs-attr,
+.hljs-attribute,
+.hljs-property,
+.hljs-variable,
+.hljs-template-variable,
+.hljs-name,
+.hljs-selector-class,
+.hljs-selector-id {
+  color: var(--usva-muted);
+}
+
+.hljs-deletion {
+  color: var(--usva-danger);
+}
+
+.hljs-emphasis {
+  font-style: italic;
+}
+
+.hljs-strong {
+  font-weight: 700;
 }

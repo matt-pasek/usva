@@ -14,13 +14,18 @@
     "test": "turbo run test",
     "registry": "turbo run registry",
     "changeset": "changeset",
-    "release": "turbo run build --filter='./packages/*' && changeset publish"
+    "version-packages": "changeset version && bun install --lockfile-only",
+    "release": "node scripts/release-preflight.mjs && turbo run build --filter='./packages/*' && node scripts/verify-packages.mjs && changeset publish"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.3.0",
-    "@changesets/cli": "^2.29.0",
+    "@changesets/cli": "^2.31.1",
     "@types/node": "^20",
+    "lefthook": "^2.1.10",
     "turbo": "^2.5.0",
     "typescript": "^5.7.2"
-  }
+  },
+  "trustedDependencies": [
+    "lefthook"
+  ]
 }

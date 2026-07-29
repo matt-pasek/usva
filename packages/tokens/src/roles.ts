@@ -1,5 +1,14 @@
+/**
+ * Text-tier contract:
+ *   ink    primary text
+ *   muted  secondary text, plus anything information-bearing (stat units,
+ *          placeholders, group labels). Clears 4.5:1 on every surface role.
+ *   faint  decorative glyphs only. Sits near 2:1 by design, so it must never
+ *          be the sole carrier of information.
+ */
 export const ROLE_NAMES = [
   "bg",
+  "sunken",
   "surface",
   "surface-2",
   "overlay",
@@ -8,9 +17,12 @@ export const ROLE_NAMES = [
   "muted",
   "faint",
   "on-accent",
+  "on-sunken",
+  "on-tint",
   "accent",
   "accent-2",
   "accent-alt",
+  "accent-tint",
   "accent-ink",
   "success",
   "warning",

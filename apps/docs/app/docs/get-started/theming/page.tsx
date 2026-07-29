@@ -1,0 +1,156 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+import { CodeSnippet } from "usva/primitives/code-snippet";
+import { DARK_ONLY, THEMES } from "@/lib/catalog";
+import { pageMetadata } from "@/lib/site";
+
+export const metadata: Metadata = pageMetadata("/docs/get-started/theming", {
+  title: "Theming",
+  description:
+    "Retheme usva. by moving role tokens. Forking a component to change a colour is the failure mode this design prevents.",
+});
+
+const brandTheme = `[data-theme="brand"] {
+  --usva-bg: #07110f;
+  --usva-surface: #0d1a17;
+  --usva-ink: #e8f2ef;
+  --usva-muted: #9db3ac;   /* must still clear 4.5:1 on bg and surface */
+  --usva-faint: #35514a;   /* decoration only, so 2:1 is fine here */
+  --usva-accent: #35e3a4;
+  --usva-accent-alt: #ffb454;
+  --usva-border: #1c2a26;
+}`;
+
+const apply = `<html data-theme="brand">`;
+
+const scope = `<section data-theme="sisu">
+  {/* this region is sisu, whatever the rest of the page is */}
+  <Panel title="requests" />
+</section>`;
+
+export default function ThemingPage() {
+  return (
+    <main className="@container flex flex-col gap-8">
+      <header className="flex flex-col gap-3">
+        <span className="font-mono text-xs uppercase tracking-widest text-muted">
+          get started · theming
+        </span>
+        <h1 className="font-extrabold text-[clamp(2rem,5cqi,3rem)] text-ink leading-[1.04] tracking-[-0.03em]">
+          reskin it, do not fork it
+        </h1>
+        <p className="max-w-2xl text-lg text-muted">
+          no component in usva. contains a colour. every one of them consumes a
+          role: <code className="font-mono text-ink">surface</code>,{" "}
+          <code className="font-mono text-ink">accent</code>,{" "}
+          <code className="font-mono text-ink">danger</code>. a theme is nothing
+          but a block of variables that says what those roles mean. that is the
+          whole mechanism, and it is why {THEMES.length} very different looking
+          themes run the same components with zero component changes.
+        </p>
+      </header>
+
+      <section className="flex flex-col gap-4">
+        <h2 className="font-bold text-ink text-xl tracking-tight">
+          use a theme that ships
+        </h2>
+        <p className="text-muted">
+          import the theme CSS and put its name on any element. it cascades, so{" "}
+          <code className="font-mono text-ink">&lt;html&gt;</code> themes the
+          app and a <code className="font-mono text-ink">&lt;section&gt;</code>{" "}
+          themes one region.
+        </p>
+        <CodeSnippet language="xml" code={scope} />
+        <p className="text-sm text-muted">
+          the three:{" "}
+          {THEMES.map((theme, i) => (
+            <span key={theme}>
+              {i > 0 ? " · " : ""}
+              <Link className="text-accent underline" href={`/themes/${theme}`}>
+                {theme}
+              </Link>
+            </span>
+          ))}
+        </p>
+      </section>
+
+      <section className="flex flex-col gap-4">
+        <h2 className="font-bold text-ink text-xl tracking-tight">
+          write your own
+        </h2>
+        <p className="text-muted">
+          a theme is one selector and a list of roles. override the ones you
+          care about, inherit the rest.
+        </p>
+        <CodeSnippet label="your-theme.css" language="css" code={brandTheme} />
+        <CodeSnippet language="xml" code={apply} />
+      </section>
+
+      <section className="flex flex-col gap-4">
+        <h2 className="font-bold text-ink text-xl tracking-tight">
+          bg is not just a colour, it is the ground
+        </h2>
+        <p className="text-muted">
+          the one role that does more than paint. every atmosphere reads{" "}
+          <code className="font-mono text-ink">bg</code> to decide what material
+          it is: on a dark ground it emits light, on a light one it stains like
+          pigment soaking into clay. the same component, two materials, decided
+          by one variable you set.
+        </p>
+        <p className="text-muted">
+          and some of them have no light-ground form at all.{" "}
+          {DARK_ONLY.map((name, i) => (
+            <span key={name}>
+              {i > 0 ? ", " : ""}
+              <Link
+                className="text-accent underline"
+                href={`/docs/components/${name}`}
+              >
+                {name}
+              </Link>
+            </span>
+          ))}{" "}
+          are light thrown into a void, and a void is what they need. give them
+          a pale <code className="font-mono text-ink">bg</code> and they render
+          nothing rather than render badly. that is deliberate, and it is worth
+          knowing before you wonder where your hero went.
+        </p>
+        <p className="text-sm text-muted">
+          you can always say which you meant with{" "}
+          <code className="font-mono text-ink">mode</code>, but the default
+          reads the ground, and the default is usually right.
+        </p>
+      </section>
+
+      <section className="flex flex-col gap-3 rounded-lg border border-border bg-surface p-5">
+        <h2 className="font-semibold text-ink">the two constraints</h2>
+        <p className="text-sm text-muted">
+          keep <code className="font-mono text-ink">ink</code> and{" "}
+          <code className="font-mono text-ink">muted</code> above 4.5:1 against{" "}
+          <code className="font-mono text-ink">bg</code>,{" "}
+          <code className="font-mono text-ink">sunken</code>,{" "}
+          <code className="font-mono text-ink">surface</code> and{" "}
+          <code className="font-mono text-ink">surface-2</code>. every component
+          assumes it. and keep <code className="font-mono text-ink">faint</code>{" "}
+          decorative: it is allowed to be quiet precisely because nothing
+          depends on it being read. the full table is in{" "}
+          <Link className="text-accent underline" href="/design-language/color">
+            the color chapter
+          </Link>
+          .
+        </p>
+      </section>
+
+      <section className="flex flex-col gap-3">
+        <h2 className="font-bold text-ink text-xl tracking-tight">
+          when forking is the right call
+        </h2>
+        <p className="text-muted">
+          if what you want is a different DOM or a different behaviour, tokens
+          will not get you there and you should not try. copy the source in from
+          the registry and own it. that is the second distribution, and it
+          exists for exactly this.
+        </p>
+      </section>
+    </main>
+  );
+}

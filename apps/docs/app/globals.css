@@ -1,16 +1,187 @@
-@import url("https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Fira+Sans:wght@300;400;500;600;700&display=swap");
 @import "tailwindcss";
-@import "@matt-pasek/usva-tokens/theme.css";
-@import "@matt-pasek/usva-tokens/themes/kajo.css";
-@import "@matt-pasek/usva-tokens/themes/sisu.css";
+@import "usva-tokens/theme.css";
+@import "usva-tokens/themes/kajo.css";
+@import "usva-tokens/themes/sisu.css";
+@import "usva-tokens/themes/savi.css";
+@import "usva-tokens/roles-safelist.css";
 @source '../../../packages/usva/dist/**/*.js';
-/* the /design-language token reference builds `bg-<role>` class names at
-   runtime from ROLE_NAMES, which Tailwind's static scanner can't see —
-   safelist the same role vocabulary so the utilities still get generated */
-@source inline("bg-{bg,surface,surface-2,overlay,scrim,ink,muted,faint,on-accent,accent,accent-2,accent-alt,accent-ink,success,warning,danger,info,border,border-strong,ring}");
+
+/* Fira ships self-hosted through next/font (see app/layout.tsx). Point the token
+   font roles at those variables so nothing reaches fonts.googleapis.com. */
+:root {
+  --font-sans: var(--font-fira-sans), system-ui, sans-serif;
+  --font-mono: var(--font-fira-code), ui-monospace, SFMono-Regular, Menlo,
+    monospace;
+}
 
 body {
   background: var(--usva-bg);
   color: var(--usva-ink);
   font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+html:has([data-home]),
+body:has([data-home]) {
+  overflow-x: clip;
+}
+
+#grain {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.5;
+  mix-blend-mode: overlay;
+  background-image: radial-gradient(
+    circle at 1px 1px,
+    rgb(255 255 255 / 0.16) 1px,
+    transparent 0
+  );
+  background-size: 3px 3px;
+}
+
+html[data-theme="savi"] #grain {
+  opacity: 0.22;
+  mix-blend-mode: multiply;
+  background-image: radial-gradient(
+    circle at 1px 1px,
+    rgb(90 72 50 / 0.3) 1px,
+    transparent 0
+  );
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  #grain {
+    display: none;
+  }
+}
+
+/* railo. The fields arrive from opposite sides and the mark is what is left
+   between them. Lengths are user units inside a 100 viewBox, not screen px,
+   because the animated groups carry transform-box: view-box. */
+@keyframes railo-in-l {
+  0% {
+    transform: translateX(-56px) scale(0.88);
+    opacity: 0;
+  }
+  45% {
+    opacity: 1;
+  }
+  72% {
+    transform: translateX(5px) scale(1.02);
+  }
+  100% {
+    transform: translateX(0) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes railo-in-r {
+  0% {
+    transform: translateX(56px) scale(0.88);
+    opacity: 0;
+  }
+  45% {
+    opacity: 1;
+  }
+  72% {
+    transform: translateX(-5px) scale(1.02);
+  }
+  100% {
+    transform: translateX(0) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes railo-drift-l {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(-7px);
+  }
+}
+
+@keyframes railo-drift-r {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(7px);
+  }
+}
+
+@keyframes railo-aperture {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(var(--railo-open, 40));
+  }
+}
+
+@keyframes railo-clear {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes railo-settle {
+  from {
+    opacity: 0;
+  }
+}
+
+#railo-splash {
+  display: none;
+}
+
+[data-splash="1"] #railo-splash {
+  display: block;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [style*="railo-"] {
+    animation: none !important;
+  }
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--usva-border) transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  border: 3px solid transparent;
+  border-radius: 999px;
+  background: var(--usva-border);
+  background-clip: content-box;
+  transition: background-color var(--usva-duration-base, 200ms)
+    var(--usva-ease-soft, ease);
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in oklab, var(--usva-accent) 55%, var(--usva-border));
+  background-clip: content-box;
+}
+
+*::-webkit-scrollbar-thumb:active {
+  background: var(--usva-accent);
+  background-clip: content-box;
+}
+
+*::-webkit-scrollbar-corner {
+  background: transparent;
 }

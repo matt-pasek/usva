@@ -8,22 +8,37 @@
     "start": "next start",
     "lint": "biome check .",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run"
+    "test": "vitest run",
+    "og:plate": "bun scripts/generate-og-plate.ts",
+    "og:fonts": "bun scripts/sync-og-fonts.ts",
+    "hero": "bun scripts/generate-hero.ts"
   },
   "dependencies": {
-    "@matt-pasek/usva": "workspace:*",
-    "@matt-pasek/usva-tokens": "workspace:*",
+    "usva": "workspace:*",
+    "usva-tokens": "workspace:*",
+    "@upstash/redis": "^1.38.0",
+    "@vercel/analytics": "^2.0.1",
+    "@vercel/speed-insights": "^2.0.0",
+    "highlight.js": "^11.11.1",
+    "lucide-react": "^1.25.0",
+    "motion": "^12.38.0",
     "next": "16.2.6",
     "react": "19.2.0",
     "react-dom": "19.2.0"
   },
   "devDependencies": {
+    "@fontsource/fira-code": "^5.3.0",
+    "@fontsource/fira-sans": "^5.2.5",
     "@tailwindcss/postcss": "^4",
+    "@tailwindcss/vite": "^4.3.2",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "playwright": "^1.49.0",
+    "sharp": "^0.34.5",
     "tailwindcss": "^4",
     "typescript": "^5.7.2",
+    "vite": "^5.4.21",
     "vitest": "^2.1.0"
   }
 }

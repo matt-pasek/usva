@@ -1,35 +1,94 @@
-import { Card, CardBody, CardHeader } from "@matt-pasek/usva";
 import type { Metadata } from "next";
-import { InstallBlock } from "@/components/install-block";
-import { SourceView } from "@/components/source-view";
+import { AcquireSection } from "@/components/docs/acquire-section";
+import { ComponentDoc } from "@/components/docs/component-doc";
+import { PropsTable } from "@/components/docs/props-table";
+import { pageMetadata } from "@/lib/site";
 import { TabsDemo } from "./tabs-demo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata("/docs/components/tabs", {
   title: "Tabs",
   description:
-    "An accessible tabs primitive with roving focus and an animated active-tab indicator, built on Base UI Tabs.",
-};
+    "Peer views in one region, one panel at a time. Not steps, and never a way to hide required fields.",
+});
 
-const props = [
-  { name: "value", type: "Value | null", desc: "Controlled active tab value." },
+const rootProps = [
+  {
+    name: "value",
+    type: "Value | null",
+    desc: "controlled active tab.",
+  },
   {
     name: "defaultValue",
     type: "Value | null",
-    desc: "Initial active tab value (uncontrolled).",
+    desc: "initial active tab when uncontrolled.",
   },
   {
     name: "onValueChange",
     type: "(value, eventDetails) => void",
-    desc: "Fires when the active tab changes.",
+    desc: "fires when the active tab changes.",
   },
   {
     name: "orientation",
     type: '"horizontal" | "vertical"',
-    desc: "Layout flow direction.",
+    defaultValue: '"horizontal"',
+    desc: "vertical stacks the list and moves the indicator to its edge.",
   },
 ];
 
-const usageSnippet = `import { Tabs } from "@matt-pasek/usva";
+const listProps = [
+  {
+    name: "variant",
+    type: '"pill" | "underline"',
+    defaultValue: '"pill"',
+    desc: "pill slides a raised surface behind the tab; underline slides a hairline along the list edge.",
+  },
+  {
+    name: "activateOnFocus",
+    type: "boolean",
+    defaultValue: "true",
+    desc: "arrow keys switch panels as focus moves, not on a second Enter.",
+  },
+];
+
+export default function TabsPage() {
+  return (
+    <ComponentDoc
+      slug="tabs"
+      client
+      description={
+        <>
+          one panel at a time, picked from a row of peer tabs. the active tab
+          takes a single indicator, a pill or a hairline, never both.
+        </>
+      }
+      composition={{
+        ok: [
+          "settings and detail views where sections are true peers",
+          "vertical orientation for a settings rail beside its panels",
+        ],
+        no: [
+          "not navigation between pages. tabs never change the url",
+          "not for sequential steps. a wizard has order, tabs do not",
+        ],
+      }}
+      a11y={
+        <>
+          real <code className="font-mono text-xs">tab</code> /{" "}
+          <code className="font-mono text-xs">tabpanel</code> roles · one tab
+          stop into the list, arrows rove and activate · disabled tabs stay
+          visible at 50%
+        </>
+      }
+      dependencies={<code className="font-mono text-xs">@base-ui/react</code>}
+    >
+      <TabsDemo />
+
+      <PropsTable title="Tabs" rows={rootProps} />
+      <PropsTable title="Tabs.List" rows={listProps} />
+
+      <AcquireSection
+        registryName="tabs"
+        usage={`import { Tabs } from "usva/primitives/tabs";
 
 <Tabs defaultValue="account">
   <Tabs.List>
@@ -38,80 +97,8 @@ const usageSnippet = `import { Tabs } from "@matt-pasek/usva";
   </Tabs.List>
   <Tabs.Panel value="account">Manage your account details.</Tabs.Panel>
   <Tabs.Panel value="password">Change your password.</Tabs.Panel>
-</Tabs>`;
-
-export default function TabsPage() {
-  return (
-    <main className="mx-auto flex max-w-2xl flex-col gap-8 p-10">
-      <div className="flex flex-col gap-2">
-        <h1 className="text-3xl font-semibold text-ink">Tabs</h1>
-        <p className="text-muted">
-          Built on Base UI <code>Tabs</code>, with roving keyboard focus and
-          dotted compound composition (<code>Tabs.List</code>,{" "}
-          <code>Tabs.Tab</code>, <code>Tabs.Panel</code>). The active tab is
-          tracked by an animated underline indicator.
-        </p>
-      </div>
-
-      <Card>
-        <CardHeader>Demo</CardHeader>
-        <CardBody>
-          <TabsDemo />
-        </CardBody>
-      </Card>
-
-      <Card>
-        <CardHeader>Install</CardHeader>
-        <CardBody>
-          <InstallBlock registryName="tabs" />
-        </CardBody>
-      </Card>
-
-      <Card>
-        <CardHeader>Usage</CardHeader>
-        <CardBody>
-          <pre className="overflow-x-auto rounded-md border border-border bg-surface-2 p-3 text-xs text-ink">
-            <code>{usageSnippet}</code>
-          </pre>
-        </CardBody>
-      </Card>
-
-      <Card>
-        <CardHeader>Source</CardHeader>
-        <CardBody>
-          <SourceView filePath="packages/usva/src/primitives/tabs/tabs.tsx" />
-        </CardBody>
-      </Card>
-
-      <Card>
-        <CardHeader>Props</CardHeader>
-        <CardBody>
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-sm">
-              <thead>
-                <tr className="border-b border-border text-muted">
-                  <th className="py-2 pr-4 font-medium">Prop</th>
-                  <th className="py-2 pr-4 font-medium">Type</th>
-                  <th className="py-2 font-medium">Description</th>
-                </tr>
-              </thead>
-              <tbody>
-                {props.map((p) => (
-                  <tr key={p.name} className="border-b border-border/50">
-                    <td className="py-2 pr-4 font-mono text-xs text-ink">
-                      {p.name}
-                    </td>
-                    <td className="py-2 pr-4 font-mono text-xs text-muted">
-                      {p.type}
-                    </td>
-                    <td className="py-2 text-muted">{p.desc}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </CardBody>
-      </Card>
-    </main>
+</Tabs>`}
+      />
+    </ComponentDoc>
   );
 }

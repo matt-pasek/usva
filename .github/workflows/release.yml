@@ -1,0 +1,55 @@
+name: Release
+
+on:
+  push:
+    branches: [main]
+
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+
+permissions:
+  contents: write
+  pull-requests: write
+  # npm trusted publishing authenticates over OIDC, and without this the
+  # publish falls back to a token or fails outright.
+  id-token: write
+
+jobs:
+  release:
+    name: gate and publish
+    runs-on: ubuntu-latest
+    env:
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.3.13
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+
+      - run: bun install --frozen-lockfile
+
+      - run: bun run build
+      - run: bun run lint
+      - run: bun run typecheck
+      - run: bun run test
+      - run: bun run registry
+      - run: node scripts/verify-packages.mjs
+
+      - name: bootstrap npm auth
+        if: env.NPM_TOKEN != ''
+        run: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
+
+      - uses: changesets/action@v1
+        with:
+          version: bun run version-packages
+          publish: bun run release
+          commit: "chore: version packages"
+          title: "chore: version packages"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

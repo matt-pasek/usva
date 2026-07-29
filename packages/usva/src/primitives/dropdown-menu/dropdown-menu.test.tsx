@@ -49,7 +49,7 @@ describe("DropdownMenu", () => {
   });
 
   it("no a11y violations on the open menu", async () => {
-    const { container } = render(
+    const { baseElement } = render(
       <DropdownMenu defaultOpen>
         <DropdownMenu.Trigger>Open</DropdownMenu.Trigger>
         <DropdownMenu.Content>
@@ -61,6 +61,8 @@ describe("DropdownMenu", () => {
       </DropdownMenu>,
     );
     expect(await screen.findByRole("menu")).toBeInTheDocument();
-    expect(await axe(container)).toHaveNoViolations();
+    expect(
+      await axe(baseElement, { rules: { region: { enabled: false } } }),
+    ).toHaveNoViolations();
   });
 });

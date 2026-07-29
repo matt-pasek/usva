@@ -18,7 +18,7 @@ export function SourceView({ filePath }: SourceViewProps) {
   );
 
   return (
-    <pre className="max-h-[32rem] overflow-auto rounded-md border border-border bg-surface-2 p-3 text-xs text-ink">
+    <pre className="max-h-[32rem] overflow-auto rounded-md border border-border bg-sunken p-3 text-xs text-on-sunken">
       <code>{source}</code>
     </pre>
   );

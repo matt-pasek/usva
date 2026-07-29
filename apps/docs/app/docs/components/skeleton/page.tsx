@@ -1,124 +1,97 @@
-import { Card, CardBody, CardHeader, Skeleton } from "@matt-pasek/usva";
 import type { Metadata } from "next";
-import { InstallBlock } from "@/components/install-block";
-import { SourceView } from "@/components/source-view";
+import { Skeleton, SkeletonGroup } from "usva/primitives/skeleton";
+import { AcquireSection } from "@/components/docs/acquire-section";
+import { ComponentDoc } from "@/components/docs/component-doc";
+import { DemoPanel } from "@/components/docs/demo-panel";
+import { PropsTable } from "@/components/docs/props-table";
+import { pageMetadata } from "@/lib/site";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata("/docs/components/skeleton", {
   title: "Skeleton",
   description:
-    "A styled-only loading placeholder with shimmer animation, no Base UI dependency.",
-};
+    "The shape of the content before it arrives, as a grey block sized to what is loading.",
+});
 
 const props = [
   {
     name: "variant",
     type: '"text" | "circle" | "rect"',
-    desc: 'Shape of the placeholder. Defaults to "text".',
+    defaultValue: '"text"',
+    desc: "the placeholder shape. text is a line, circle an avatar, rect a media block.",
   },
   {
-    name: "width",
+    name: "width / height",
     type: "string | number",
-    desc: "Explicit width, applied via inline style.",
-  },
-  {
-    name: "height",
-    type: "string | number",
-    desc: "Explicit height, applied via inline style.",
+    desc: "explicit dimensions, applied via inline style.",
   },
   {
     name: "radius",
     type: "string | number",
-    desc: "Explicit border radius override, applied via inline style.",
+    desc: "border radius override, applied via inline style.",
   },
 ];
 
-const usageSnippet = `import { Skeleton } from "@matt-pasek/usva";
-
-<Skeleton variant="circle" width={40} height={40} />
-<Skeleton variant="text" />
-<Skeleton variant="rect" height={120} />`;
-
 export default function SkeletonPage() {
   return (
-    <main className="mx-auto flex max-w-2xl flex-col gap-8 p-10">
-      <div className="flex flex-col gap-2">
-        <h1 className="text-3xl font-semibold text-ink">Skeleton</h1>
-        <p className="text-muted">
-          A pure styled loading placeholder — no Base UI dependency, no
-          interactivity, server-safe.
-        </p>
-      </div>
-
-      <Card>
-        <CardHeader>Demo</CardHeader>
-        <CardBody>
-          <div className="flex w-72 flex-col gap-3 rounded-lg border border-border p-4">
-            <div className="flex items-center gap-3">
-              <Skeleton variant="circle" width={40} height={40} />
-              <div className="flex flex-1 flex-col gap-2">
-                <Skeleton variant="text" width="60%" />
-                <Skeleton variant="text" width="40%" />
-              </div>
+    <ComponentDoc
+      slug="skeleton"
+      description={
+        <>
+          a grey block in the shape of a piece of content, shown while that
+          content loads. hand these into the layout you are waiting on; to grey
+          a whole component at once, reach for SkeletonMirror. wrap a composed
+          placeholder in SkeletonGroup so one sheen crosses every block.
+        </>
+      }
+      composition={{
+        ok: [
+          "hand-built blocks that mimic the loading card, list row or avatar",
+          "text, circle and rect cover a line, an avatar and a media block",
+          "SkeletonGroup gives a composed placeholder one continuous border sheen",
+        ],
+        no: [
+          "not a spinner. a skeleton promises the shape of what is coming",
+          "greying a whole component you already have is SkeletonMirror",
+        ],
+      }}
+      a11y={
+        <>
+          decorative, <code className="font-mono text-xs">aria-hidden</code> ·
+          own the loading announcement on the region around it · the sheen stops
+          under reduced motion
+        </>
+      }
+      dependencies={
+        <code className="font-mono text-xs">class-variance-authority</code>
+      }
+    >
+      <DemoPanel label="blocks">
+        <SkeletonGroup className="mx-auto flex w-72 flex-col gap-3 rounded-lg border border-border p-4">
+          <div className="flex items-center gap-3">
+            <Skeleton variant="circle" width={40} height={40} />
+            <div className="flex flex-1 flex-col gap-2">
+              <Skeleton variant="text" width="60%" />
+              <Skeleton variant="text" width="40%" />
             </div>
-            <Skeleton variant="rect" height={120} />
-            <Skeleton variant="text" />
-            <Skeleton variant="text" width="80%" />
           </div>
-        </CardBody>
-      </Card>
+          <Skeleton variant="rect" height={120} />
+          <Skeleton variant="text" />
+          <Skeleton variant="text" width="80%" />
+        </SkeletonGroup>
+      </DemoPanel>
 
-      <Card>
-        <CardHeader>Install</CardHeader>
-        <CardBody>
-          <InstallBlock registryName="skeleton" />
-        </CardBody>
-      </Card>
+      <PropsTable rows={props} />
 
-      <Card>
-        <CardHeader>Usage</CardHeader>
-        <CardBody>
-          <pre className="overflow-x-auto rounded-md border border-border bg-surface-2 p-3 text-xs text-ink">
-            <code>{usageSnippet}</code>
-          </pre>
-        </CardBody>
-      </Card>
+      <AcquireSection
+        registryName="skeleton"
+        usage={`import { Skeleton, SkeletonGroup } from "usva/primitives/skeleton";
 
-      <Card>
-        <CardHeader>Source</CardHeader>
-        <CardBody>
-          <SourceView filePath="packages/usva/src/primitives/skeleton/skeleton.tsx" />
-        </CardBody>
-      </Card>
-
-      <Card>
-        <CardHeader>Props</CardHeader>
-        <CardBody>
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-sm">
-              <thead>
-                <tr className="border-b border-border text-muted">
-                  <th className="py-2 pr-4 font-medium">Prop</th>
-                  <th className="py-2 pr-4 font-medium">Type</th>
-                  <th className="py-2 font-medium">Description</th>
-                </tr>
-              </thead>
-              <tbody>
-                {props.map((p) => (
-                  <tr key={p.name} className="border-b border-border/50">
-                    <td className="py-2 pr-4 font-mono text-xs text-ink">
-                      {p.name}
-                    </td>
-                    <td className="py-2 pr-4 font-mono text-xs text-muted">
-                      {p.type}
-                    </td>
-                    <td className="py-2 text-muted">{p.desc}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </CardBody>
-      </Card>
-    </main>
+<SkeletonGroup className="flex flex-col gap-3">
+  <Skeleton variant="circle" width={40} height={40} />
+  <Skeleton variant="text" width="60%" />
+  <Skeleton variant="rect" height={120} />
+</SkeletonGroup>`}
+      />
+    </ComponentDoc>
   );
 }

@@ -4,6 +4,14 @@ import { Tabs } from "./tabs.js";
 const meta: Meta<typeof Tabs> = {
   title: "Primitives/Tabs",
   component: Tabs,
+  tags: ["autodocs"],
+  argTypes: {
+    orientation: {
+      control: { type: "select" },
+      options: ["horizontal", "vertical"],
+    },
+  },
+  args: { orientation: "horizontal", defaultValue: "account" },
 };
 export default meta;
 
@@ -59,6 +67,23 @@ export const Vertical: Story = {
         <Tabs.Panel value="notifications">Notification settings.</Tabs.Panel>
       </div>
     </Tabs>
+  ),
+};
+
+export const Variants: Story = {
+  render: () => (
+    <div className="flex flex-wrap gap-10">
+      {(["pill", "underline"] as const).map((variant) => (
+        <Tabs key={variant} defaultValue="account" className="w-80">
+          <Tabs.List variant={variant}>
+            <Tabs.Tab value="account">Account</Tabs.Tab>
+            <Tabs.Tab value="password">Password</Tabs.Tab>
+          </Tabs.List>
+          <Tabs.Panel value="account">{variant}</Tabs.Panel>
+          <Tabs.Panel value="password">{variant}</Tabs.Panel>
+        </Tabs>
+      ))}
+    </div>
   ),
 };
 

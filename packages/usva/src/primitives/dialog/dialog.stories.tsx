@@ -4,10 +4,26 @@ import { Dialog } from "./dialog.js";
 const meta: Meta<typeof Dialog> = {
   title: "Primitives/Dialog",
   component: Dialog,
+  tags: ["autodocs"],
+  argTypes: {
+    defaultOpen: { control: { type: "boolean" } },
+    modal: { control: { type: "boolean" } },
+  },
+  args: {
+    defaultOpen: true,
+    modal: true,
+  },
 };
 export default meta;
 
 type Story = StoryObj<typeof Dialog>;
+
+const surfaceLane: Record<string, string> = {
+  elevated: "left-[13%]",
+  flat: "left-[38%]",
+  glass: "left-[63%]",
+  outline: "left-[88%]",
+};
 
 export const Closed: Story = {
   render: () => (
@@ -66,6 +82,27 @@ export const LongContentScroll: Story = {
         </Dialog.Close>
       </Dialog.Content>
     </Dialog>
+  ),
+};
+
+export const Surfaces: Story = {
+  render: () => (
+    <div className="min-h-96">
+      {(["elevated", "flat", "glass", "outline"] as const).map((surface) => (
+        <Dialog key={surface} defaultOpen modal={false}>
+          <Dialog.Content
+            surface={surface}
+            backdropClassName="hidden"
+            className={`w-56 max-w-[22%] ${surfaceLane[surface]}`}
+          >
+            <Dialog.Title>{surface}</Dialog.Title>
+            <Dialog.Description>
+              The modal skin above the scrim.
+            </Dialog.Description>
+          </Dialog.Content>
+        </Dialog>
+      ))}
+    </div>
   ),
 };
 

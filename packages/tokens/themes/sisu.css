@@ -2,17 +2,19 @@
   --usva-font-sans: "Fira Sans", system-ui, sans-serif;
   --usva-font-mono: "Fira Code", ui-monospace, SFMono-Regular, Menlo, monospace;
   --usva-bg: #0d0d11;
+  --usva-sunken: #111117;
   --usva-surface: #15151c;
   --usva-surface-2: #1d1d28;
   --usva-overlay: #14141b;
   --usva-scrim: rgba(13, 13, 17, 0.6);
   --usva-ink: #ddddf0;
-  --usva-muted: #7878a0;
+  --usva-muted: #8282ab;
   --usva-faint: #454565;
   --usva-on-accent: #06140b;
   --usva-accent: #52c989;
   --usva-accent-2: #419648;
-  --usva-accent-alt: #a78bfa;
+  --usva-accent-alt: #74e3ad;
+  --usva-accent-tint: #203530;
   --usva-accent-ink: #ddddf0;
   --usva-success: #4ad991;
   --usva-warning: #f0a84d;
@@ -21,6 +23,63 @@
   --usva-border: #222228;
   --usva-border-strong: #34343d;
   --usva-ring: #52c989;
+  --usva-code-comment: #7d8a84;
+
+  /* Elevation, the dashboard 3-layer recipe: tight contact + hairline rim
+     ring + soft ambient falloff. Quiet skin. */
+  --usva-inset-hairline: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  --usva-shadow-raised: 0 1px 2px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(255, 255, 255, 0.04);
+  --usva-shadow-floating: 0 1px 3px rgba(0, 0, 0, 0.45),
+    0 0 0 1px rgba(255, 255, 255, 0.045), 0 18px 38px -22px rgba(0, 0, 0, 0.8);
+  --usva-shadow-overlay: 0 28px 80px rgba(0, 0, 0, 0.6),
+    0 0 0 1px rgba(255, 255, 255, 0.1);
+
+  /* Accent glow: held back for the dashboard; near-silent */
+  --usva-glow-accent: 0 0 0 0 transparent;
+  --usva-glow-accent-strong: 0 0 12px -4px color-mix(in srgb, var(--usva-accent) 40%, transparent);
+
+  /* Glow ring: inset accent ring only, no bloom (the selection idiom) */
+  --usva-glow-ring: inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    0 0 0 1px color-mix(in srgb, var(--usva-accent) 40%, transparent);
+
+  /* Rim light: faint near-white top edge */
+  --usva-rim-light: rgba(255, 255, 255, 0.08);
+
+  /* Radial wash: single, quiet green breath from the top edge */
+  --usva-wash-accent: radial-gradient(
+    120% 90% at 80% -10%,
+    color-mix(in srgb, var(--usva-accent) 7%, transparent),
+    transparent 55%
+  );
+
+  /* Inner-lit accent fill: barely-there sheen */
+  --usva-gradient-accent: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--usva-accent) 93%, #fff),
+    var(--usva-accent)
+  );
+
+  /* Hairline gradient strength + the live heartbeat color */
+  --usva-hairline-strength: 24%;
+  --usva-live: var(--usva-accent);
+
+  /* Focus: clean ring, no bloom */
+  --usva-focus: 0 0 0 1px var(--usva-ring),
+    0 0 0 3px color-mix(in srgb, var(--usva-ring) 25%, transparent);
+
+  /* Motion: critically damped, no overshoot (precise, controlled) */
+  --usva-ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  --usva-ease-emphasis: cubic-bezier(0.25, 0, 0, 1);
+  --usva-ease-spring: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* Motion: snappy; the dashboard pole. Compressed so direct manipulation
+     feels immediate, matching the quiet elevation and near-silent glow. */
+  --usva-duration-fast: 120ms;
+  --usva-duration-base: 160ms;
+  --usva-duration-slow: 240ms;
+  --usva-duration-ambient: 400ms;
+
   --usva-z-base: 0;
   --usva-z-dropdown: 20;
   --usva-z-overlay: 40;

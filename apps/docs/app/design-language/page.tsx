@@ -1,207 +1,157 @@
-import { Badge, Card, CardBody, CardHeader } from "@matt-pasek/usva";
 import type { Metadata } from "next";
-import { buildTokenReference } from "@/lib/token-reference";
+import Link from "next/link";
+import { DesignLanguageHero } from "@/components/design-language/dl-hero";
+import { INTENSITY_BY_LAYER, LAYER_LABEL, type Layer } from "@/lib/catalog";
+import { DL_CHAPTERS, dlHref } from "@/lib/design-language";
+import { pageMetadata } from "@/lib/site";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata("/design-language", {
   title: "Design language",
   description:
-    "usva.'s principles, voice, and an auto-generated reference of every token — beauty that stays usable.",
-};
+    "The rules behind usva.: one grammar in three registers, plus the role tokens, the type, the motion, and a dial for how much attention a screen may ask.",
+});
 
-const principles = [
+const PRINCIPLES = [
   {
-    title: "Beauty that stays usable",
-    body: "The thesis. Both consumer apps — the presentational kajo pole and the usable sisu pole — map onto one token vocabulary. Neither wins at the other's expense.",
+    title: "authored, not assembled",
+    body: "this is not a bag of components someone scraped together. it has a point of view, and the point of view is what you are taking on. if a choice here annoys you, it was still a choice.",
   },
   {
-    title: "Role-based tokens, never raw values",
-    body: "Every color, space, radius, and duration is consumed by semantic role — accent, surface, danger — never as a hardcoded hex or pixel. Themes swap; call sites don't change.",
+    title: "one grammar, three registers",
+    body: "kajo is loud, sisu is working, savi is quiet. they are not three design systems. they are one vocabulary spoken at three volumes, and every component speaks all three without knowing which one it is in.",
   },
   {
-    title: "Two accents, paired",
-    body: "usva pairs a design accent and a dev accent everywhere the language shows its own construction — never one alone.",
-    accentPair: true,
+    title: "reusable before impressive",
+    body: "a thing that only works in the demo is not a component, it is a screenshot. if it cannot survive a long label, a narrow column and a screen reader, it does not ship, however good it looked in the tweet.",
   },
   {
-    title: "A11y-first",
-    body: "Contrast, focus rings, and reduced-motion fallbacks are load-bearing, not polish passed at the end.",
-  },
-  {
-    title: "Restrained spring motion",
-    body: "Motion earns its keep: soft entrances, snappy feedback, nothing bouncy enough to distract from the task underneath.",
+    title: "coherence beats proliferation",
+    body: "I would rather have fifteen components you can predict than three hundred you have to check. every new one has to earn its place against the ones already here, and most candidates lose.",
   },
 ];
 
-const voicePoints = [
-  "first-person, lowercase-leaning — usva. speaks as itself, not as marketing copy",
-  "confident but unshowy: a belief stated plainly, then earned with the work that follows",
-  "keywords get an accent tint, not bold — color carries weight the way tokens do",
-  "no emoji — the accent system already does the emphasis emoji would fake",
-  "→ over arrow words, when an affordance genuinely needs pointing at",
-  "numbers are honest: no invented precision, no rounding up",
+const LADDER: { layer: Layer; blurb: string }[] = [
+  {
+    layer: "primitive",
+    blurb: "the button, the input, the badge. they do the least, on purpose.",
+  },
+  {
+    layer: "pattern",
+    blurb: "cards, headers, lists. they organise what the primitives hold.",
+  },
+  {
+    layer: "motion",
+    blurb: "reveals and transitions. they lead the eye; they do not perform.",
+  },
+  {
+    layer: "sula",
+    blurb: "the fluid material. it takes the focus, and only one per region.",
+  },
+  {
+    layer: "atmosphere",
+    blurb: "the environment behind everything. the room, not an object.",
+  },
 ];
 
-export default function DesignLanguagePage() {
-  const tokens = buildTokenReference();
-
+export default function DesignLanguageHub() {
   return (
-    <main className="mx-auto flex max-w-3xl flex-col gap-12 p-10">
-      <header className="flex flex-col gap-3">
-        <Badge tone="accent">design language</Badge>
-        <h1 className="text-3xl font-semibold text-ink">
-          beauty that stays usable
-        </h1>
-        <p className="max-w-xl text-muted">
-          usva. is a design <em>language</em> before it's a component library —
-          principles and voice, then tokens, then the primitives that carry
-          them. This page is the first written slice of it: the principles
-          below, a voice summary, and a token reference generated straight from
-          the tokens package, so it can never drift.
-        </p>
-      </header>
+    <main className="@container flex flex-col gap-10">
+      <DesignLanguageHero />
 
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold text-ink">Principles</h2>
+      <section className="flex flex-col gap-6">
+        <h2 className="font-bold text-2xl text-ink tracking-tight">
+          principles
+        </h2>
         <div className="grid gap-4 sm:grid-cols-2">
-          {principles.map((p) => (
-            <Card key={p.title}>
-              <CardHeader>
-                {p.accentPair ? (
-                  <span>
-                    <span className="text-accent">Two</span> accents,{" "}
-                    <span className="text-accent-alt">paired</span>
-                  </span>
-                ) : (
-                  p.title
-                )}
-              </CardHeader>
-              <CardBody className="text-sm text-muted">{p.body}</CardBody>
-            </Card>
+          {PRINCIPLES.map((principle) => (
+            <article
+              key={principle.title}
+              className="flex flex-col gap-2 rounded-lg border border-border bg-surface p-5"
+            >
+              <h3 className="font-semibold text-ink">{principle.title}</h3>
+              <p className="text-muted text-sm">{principle.body}</p>
+            </article>
           ))}
         </div>
       </section>
 
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold text-ink">Voice summary</h2>
-        <Card>
-          <CardBody>
-            <ul className="flex flex-col gap-2 text-sm text-muted">
-              {voicePoints.map((point) => (
-                <li key={point} className="flex gap-2">
-                  <span className="text-accent">→</span>
-                  <span>{point}</span>
-                </li>
-              ))}
-            </ul>
-            <p className="mt-4 text-xs text-faint">
-              Full Voice &amp; Tone reference lands in Phase 4.
-            </p>
-          </CardBody>
-        </Card>
+      <section className="flex flex-col gap-6">
+        <div className="flex max-w-2xl flex-col gap-3">
+          <h2 className="font-bold text-2xl text-ink tracking-tight">
+            the five degrees
+          </h2>
+          <p className="text-muted">
+            everything usva ships sits at one of five volumes, from the
+            primitive that recedes to the atmosphere that is the whole room. a
+            screen is tuned by choosing how high up this ladder it is allowed to
+            climb. that choice has a page of its own.
+          </p>
+        </div>
+        <Link
+          href={dlHref("intensity")}
+          className="flex flex-col divide-y divide-border overflow-hidden rounded-lg border border-border bg-surface transition-colors duration-150 ease-soft hover:border-border-strong"
+        >
+          {LADDER.map(({ layer, blurb }, index) => (
+            <div key={layer} className="flex items-center gap-4 p-4">
+              <span className="font-mono text-sm text-muted tabular-nums">
+                {index + 1}
+              </span>
+              <span className="w-28 shrink-0 font-mono text-[0.7rem] uppercase tracking-[0.14em] text-accent/80">
+                {INTENSITY_BY_LAYER[layer]}
+              </span>
+              <span className="flex min-w-0 flex-col">
+                <span className="text-sm font-semibold text-ink">
+                  {LAYER_LABEL[layer]}
+                </span>
+                <span className="text-sm text-muted">{blurb}</span>
+              </span>
+            </div>
+          ))}
+        </Link>
       </section>
 
       <section className="flex flex-col gap-6">
-        <div className="flex flex-col gap-2">
-          <h2 className="text-xl font-semibold text-ink">Token reference</h2>
-          <p className="text-sm text-muted">
-            Generated by <code>buildTokenReference()</code> from the tokens
-            package's own exports — nothing here is hand-transcribed.
-          </p>
-        </div>
-
-        <Card>
-          <CardHeader>Color roles</CardHeader>
-          <CardBody>
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-              {tokens.color.map(({ name }) => (
-                <div key={name} className="flex items-center gap-2">
-                  <div
-                    className={`h-8 w-8 shrink-0 rounded-md border border-border bg-${name}`}
-                  />
-                  <span className="font-mono text-xs text-muted">{name}</span>
-                </div>
-              ))}
-            </div>
-          </CardBody>
-        </Card>
-
-        <Card>
-          <CardHeader>Spacing scale</CardHeader>
-          <CardBody>
-            <div className="flex flex-col gap-1.5">
-              {tokens.spacing.map(({ name, value }) => (
-                <div key={name} className="flex items-center gap-3">
-                  <span className="w-10 shrink-0 font-mono text-xs text-muted">
-                    {name}
-                  </span>
-                  <div
-                    className="h-2 rounded-full bg-accent"
-                    style={{ width: value }}
-                  />
-                  <span className="font-mono text-xs text-faint">{value}</span>
-                </div>
-              ))}
-            </div>
-          </CardBody>
-        </Card>
-
+        <h2 className="font-bold text-2xl text-ink tracking-tight">
+          the chapters
+        </h2>
         <div className="grid gap-4 sm:grid-cols-2">
-          <Card>
-            <CardHeader>Radius</CardHeader>
-            <CardBody>
-              <div className="flex flex-col gap-3">
-                {tokens.radius.map(({ name, value }) => (
-                  <div key={name} className="flex items-center gap-3">
-                    <div
-                      className="h-8 w-8 shrink-0 border border-border-strong bg-surface-2"
-                      style={{ borderRadius: value }}
-                    />
-                    <span className="font-mono text-xs text-muted">{name}</span>
-                    <span className="font-mono text-xs text-faint">
-                      {value}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </CardBody>
-          </Card>
-
-          <Card>
-            <CardHeader>Motion durations</CardHeader>
-            <CardBody>
-              <div className="flex flex-col gap-2">
-                {tokens.motion.map(({ name, value }) => (
-                  <div
-                    key={name}
-                    className="flex items-center justify-between font-mono text-xs"
-                  >
-                    <span className="text-muted">{name}</span>
-                    <span className="text-faint">{value}</span>
-                  </div>
-                ))}
-              </div>
-            </CardBody>
-          </Card>
+          {DL_CHAPTERS.map((chapter) => (
+            <Link
+              key={chapter.slug}
+              href={dlHref(chapter.slug)}
+              className="group flex flex-col gap-2 rounded-lg border border-border bg-surface p-5 transition-colors duration-150 ease-soft hover:border-border-strong"
+            >
+              <span className="flex items-baseline gap-2">
+                <span className="font-mono text-xs text-muted tabular-nums">
+                  {chapter.number}
+                </span>
+                <span className="font-semibold text-ink group-hover:text-accent">
+                  {chapter.title}
+                </span>
+              </span>
+              <span className="text-sm text-muted">{chapter.blurb}</span>
+            </Link>
+          ))}
+          <Link
+            href="/themes"
+            className="group flex flex-col gap-2 rounded-lg border border-border bg-surface p-5 transition-colors duration-150 ease-soft hover:border-border-strong"
+          >
+            <span className="flex items-baseline gap-2">
+              <span
+                aria-hidden="true"
+                className="font-mono text-xs text-faint tabular-nums"
+              >
+                ↗
+              </span>
+              <span className="font-semibold text-ink group-hover:text-accent">
+                themes
+              </span>
+            </span>
+            <span className="text-sm text-muted">
+              kajo, sisu, savi. the three registers, each on its own page.
+            </span>
+          </Link>
         </div>
-
-        <Card>
-          <CardHeader>Type ramp</CardHeader>
-          <CardBody>
-            <div className="flex flex-col gap-3">
-              {tokens.type.map(({ name, value }) => (
-                <div key={name} className="flex items-baseline gap-4">
-                  <span className="w-10 shrink-0 font-mono text-xs text-muted">
-                    {name}
-                  </span>
-                  <span className="text-ink" style={{ fontSize: value }}>
-                    usva.
-                  </span>
-                  <span className="font-mono text-xs text-faint">{value}</span>
-                </div>
-              ))}
-            </div>
-          </CardBody>
-        </Card>
       </section>
     </main>
   );

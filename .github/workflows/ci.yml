@@ -17,19 +17,63 @@ jobs:
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: 1.3.13
-      - run: bun install
+      - run: bun install --frozen-lockfile
 
-      # default install resolves react/react-dom@19 (peerDependencies: react >=18);
-      # for the 18 leg, swap the resolved version in packages/usva before running tests
+      # default install resolves react/react-dom@19 (peerDependencies: react >=18).
+      # The 18 leg has to override at the workspace root, not add to packages/usva:
+      # the hoisted linker keeps react@19 at the root and nests react@18 beside the
+      # package, so testing-library renders with 19 what the source built with 18 and
+      # every render dies on a version mismatch rather than testing anything.
       - if: matrix.react == 18
-        name: pin react@18 for this leg
-        run: bun add -D react@18 react-dom@18 --exact
-        working-directory: packages/usva
+        name: pin react@18 across the workspace
+        run: |
+          node -e '
+            const fs = require("node:fs");
+            const pkg = JSON.parse(fs.readFileSync("package.json", "utf8"));
+            pkg.overrides = { ...pkg.overrides, react: "18.3.1", "react-dom": "18.3.1" };
+            fs.writeFileSync("package.json", `${JSON.stringify(pkg, null, 2)}\n`);
+          '
+          bun install --no-frozen-lockfile
+      - if: matrix.react == 18
+        name: assert a single react
+        run: |
+          test "$(node -p 'require("react/package.json").version')" = "18.3.1"
+          test ! -e packages/usva/node_modules/react
 
       - run: bun run build
       - run: bun run lint
       - run: bun run typecheck
       - run: bun run test
+
+  clean-build:
+    name: clean checkout build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.3.13
+
+      # the docs app statically discovers routes from generated registry JSON that
+      # is gitignored, so a tree that already has it on disk can hide a broken build
+      - name: export tracked files
+        run: git archive HEAD | (mkdir -p ../clean && tar -x -C ../clean)
+      - run: bun install --frozen-lockfile
+        working-directory: ../clean
+      - run: bun run build
+        working-directory: ../clean
+
+  package:
+    name: package contents
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.3.13
+      - run: bun install --frozen-lockfile
+      - run: bun run build
+      - run: node scripts/verify-packages.mjs
 
   chromatic:
     name: chromatic
@@ -42,11 +86,16 @@ jobs:
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: 1.3.13
-      - run: bun install
-      - uses: chromaui/action@latest
+      - run: bun install --frozen-lockfile
+
+      # presets.ts imports the token values from usva-tokens, whose "." export
+      # points into dist. A clean checkout has no dist, so storybook's vite build
+      # cannot resolve the package and dies before it renders a single story.
+      - run: bunx turbo run build --filter=usva
+
+      - uses: chromaui/action@v18
         with:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
           workingDir: packages/usva
           buildScriptName: build-storybook
           onlyChanged: true
-          exitZeroOnChanges: true

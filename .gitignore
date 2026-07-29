@@ -4,12 +4,21 @@ dist/
 registry/r/
 .next/
 storybook-static/
+captures/
 *.log
+
+# WebStorm's TypeScript "recompile on changes" writes a .js beside any .ts it
+# touches, ignoring every tsconfig. Turning that setting off is the real fix;
+# this only stops a stray twin reaching a commit.
+packages/*/scripts/**/*.js
+packages/*/.storybook/*.js
+packages/*/src/**/*.js
 .DS_Store
 *.tsbuildinfo
 
 # planning/specs
 docs/superpowers/
+.superpowers/
 .idea/
 
 # case-study working notes (kept local)
@@ -17,3 +26,13 @@ USVA_CASE_STUDY.md
 
 # local agent context (kept out of public history)
 CLAUDE.md
+
+# impeccable tool state (live-mode config + generated design sidecar)
+.impeccable/
+
+# design-sync
+.design-sync
+.ds-sync/
+ds-bundle/
+
+brag-output

@@ -4,6 +4,16 @@ import { DropdownMenu } from "./dropdown-menu.js";
 const meta: Meta<typeof DropdownMenu> = {
   title: "Primitives/DropdownMenu",
   component: DropdownMenu,
+  tags: ["autodocs"],
+  argTypes: {
+    defaultOpen: { control: { type: "boolean" } },
+    modal: { control: { type: "boolean" } },
+    disabled: { control: { type: "boolean" } },
+  },
+  args: {
+    defaultOpen: true,
+    modal: false,
+  },
 };
 export default meta;
 

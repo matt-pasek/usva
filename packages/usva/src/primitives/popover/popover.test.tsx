@@ -37,7 +37,7 @@ describe("Popover", () => {
   });
 
   it("no a11y violations on the open popover", async () => {
-    const { container } = render(
+    const { baseElement } = render(
       <Popover defaultOpen>
         <Popover.Trigger>Open</Popover.Trigger>
         <Popover.Content>
@@ -47,6 +47,6 @@ describe("Popover", () => {
       </Popover>,
     );
     expect(await screen.findByText("Details")).toBeInTheDocument();
-    expect(await axe(container)).toHaveNoViolations();
+    expect(await axe(baseElement)).toHaveNoViolations();
   });
 });
