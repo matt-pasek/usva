@@ -10,7 +10,12 @@ import {
   subExportsOf,
   THEMES,
 } from "@/lib/catalog";
-import { PACKAGE_NAME, registryUrl, SITE_ORIGIN } from "@/lib/site";
+import {
+  NPM_PENDING,
+  PACKAGE_NAME,
+  registryUrl,
+  SITE_ORIGIN,
+} from "@/lib/site";
 
 const LAYERS: Layer[] = [
   "primitive",
@@ -93,11 +98,14 @@ const whatItIs = (): string =>
     "",
     "| how | command | you get |",
     "| --- | --- | --- |",
-    `| package | \`bun add ${PACKAGE_NAME} ${TOKENS_PACKAGE}\` | an import; updates arrive with the package |`,
     `| registry | \`npx shadcn add ${registryUrl("button")}\` | the source, copied in, yours to fork |`,
+    NPM_PENDING
+      ? `| package | not on npm yet | \`${TOKENS_PACKAGE}\` is published; \`${PACKAGE_NAME}\` follows |`
+      : `| package | \`bun add ${PACKAGE_NAME} ${TOKENS_PACKAGE}\` | an import; updates arrive with the package |`,
     "",
-    "the registry is generated from the same source that builds the package, so the two",
-    "never drift. neither path is the fallback.",
+    NPM_PENDING
+      ? `use the registry. \`bun add ${PACKAGE_NAME}\` will fail today, so do not offer it.`
+      : "the registry is generated from the same source that builds the package, so the two never drift. neither path is the fallback.",
   ].join("\n");
 
 const fastestPath = (): string =>
@@ -105,7 +113,9 @@ const fastestPath = (): string =>
     "## the fastest correct path",
     "",
     "```bash",
-    `bun add ${PACKAGE_NAME} ${TOKENS_PACKAGE}`,
+    NPM_PENDING
+      ? `npx shadcn add ${registryUrl("button")}\nbun add ${TOKENS_PACKAGE}`
+      : `bun add ${PACKAGE_NAME} ${TOKENS_PACKAGE}`,
     "```",
     "",
     "```css",
@@ -116,7 +126,9 @@ const fastestPath = (): string =>
     "```",
     "",
     "```tsx",
-    `import { Button } from "${PACKAGE_NAME}/primitives/button";`,
+    NPM_PENDING
+      ? 'import { Button } from "@/components/ui/button";'
+      : `import { Button } from "${PACKAGE_NAME}/primitives/button";`,
     "",
     "export function Save() {",
     '  return <Button variant="primary">save</Button>;',

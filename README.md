@@ -22,18 +22,22 @@ by already working in something that shipped.
 
 every component ships both ways, and you pick per component rather than per project.
 
-install it, and the package stays the source of truth. `bun update` carries fixes to you.
+own it, and the source lands in your repo to fork as you like. it is generated from the same code
+that builds the package, never hand-maintained beside it.
+
+```sh
+npx shadcn add https://usva.build/r/button.json
+bun add usva-tokens
+```
+
+or install it, and the package stays the source of truth. `bun update` carries fixes to you.
 
 ```sh
 bun add usva usva-tokens
 ```
 
-or own it, and the source lands in your repo to fork as you like. it is generated from the same code
-that builds the package, never hand-maintained beside it.
-
-```sh
-npx shadcn add https://usva.build/r/button.json
-```
+> [!NOTE]
+> `usva-tokens` is on npm. `usva` is not there yet, so the registry is the way in today.
 
 take `dialog` from the package because you will never touch it. copy `stat-card` in because you
 always do. mixing them is the point.

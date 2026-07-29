@@ -1,4 +1,5 @@
-import { PACKAGE_NAME, registryUrl } from "@/lib/site";
+import { NPM_PENDING, PACKAGE_NAME, registryUrl } from "@/lib/site";
+import { NpmPending } from "./npm-pending";
 import { TrackedTerminal } from "./tracked-terminal";
 
 export interface InstallBlockProps {
@@ -15,22 +16,37 @@ export function InstallBlock({
     <div className="flex flex-col gap-4">
       <div className="flex flex-col gap-1.5">
         <p className="text-sm text-muted">
-          as a package dependency, and the one to reach for first:
+          {NPM_PENDING
+            ? "copy the source in, via shadcn:"
+            : "or copy the source in, via shadcn:"}
         </p>
-        <TrackedTerminal
-          command={`bun add ${packageName}`}
-          kind="install"
-          name={registryName}
-        />
-      </div>
-      <div className="flex flex-col gap-1.5">
-        <p className="text-sm text-muted">or copy the source in, via shadcn:</p>
         <TrackedTerminal
           command={`npx shadcn add ${registryUrl(registryName)}`}
           kind="registry"
           name={registryName}
         />
       </div>
+
+      {NPM_PENDING ? (
+        <NpmPending>
+          <TrackedTerminal
+            command={`bun add ${packageName}`}
+            kind="install"
+            name={registryName}
+          />
+        </NpmPending>
+      ) : (
+        <div className="flex flex-col gap-1.5">
+          <p className="text-sm text-muted">
+            as a package dependency, and the one to reach for first:
+          </p>
+          <TrackedTerminal
+            command={`bun add ${packageName}`}
+            kind="install"
+            name={registryName}
+          />
+        </div>
+      )}
     </div>
   );
 }

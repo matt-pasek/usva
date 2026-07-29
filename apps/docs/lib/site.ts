@@ -5,6 +5,8 @@ import { OG_SIZE } from "./og-plate";
 export const SITE_ORIGIN: string = config.siteOrigin;
 export const PACKAGE_NAME: string = config.packageName;
 
+export const NPM_PENDING = true;
+
 export const SITE_DESCRIPTION =
   "A source-available React design system: dual-distributed as an npm package and a shadcn-compatible registry.";
 

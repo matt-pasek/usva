@@ -6,6 +6,7 @@ import {
   useEffect,
   useState,
 } from "react";
+import { NPM_PENDING } from "@/lib/site";
 
 export type InstallMode = "install" | "copy";
 
@@ -22,9 +23,12 @@ const isMode = (value: unknown): value is InstallMode =>
   value === "install" || value === "copy";
 
 export function InstallModeProvider({ children }: { children: ReactNode }) {
-  const [mode, setModeState] = useState<InstallMode>("install");
+  const [mode, setModeState] = useState<InstallMode>(
+    NPM_PENDING ? "copy" : "install",
+  );
 
   useEffect(() => {
+    if (NPM_PENDING) return;
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
       if (isMode(stored)) setModeState(stored);

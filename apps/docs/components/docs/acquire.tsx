@@ -3,7 +3,8 @@ import { SegmentedControl } from "usva/patterns/segmented-control";
 import { CodeSnippet } from "usva/primitives/code-snippet";
 import { Terminal } from "usva/primitives/terminal";
 import { trackCopy } from "@/lib/analytics/track-copy";
-import { PACKAGE_NAME, registryUrl } from "@/lib/site";
+import { NPM_PENDING, PACKAGE_NAME, registryUrl } from "@/lib/site";
+import { NpmPending } from "../npm-pending";
 import { useInstallMode } from "./install-mode";
 import { Lab } from "./lab";
 
@@ -48,11 +49,17 @@ export function Acquire({ registryName, usage, files }: AcquireProps) {
 
       {mode === "install" ? (
         <>
-          <Terminal
-            className="mt-4"
-            command={`bun add ${PACKAGE_NAME}`}
-            onCopied={() => trackCopy("install", registryName)}
-          />
+          {NPM_PENDING ? (
+            <NpmPending className="mt-4">
+              <Terminal command={`bun add ${PACKAGE_NAME}`} />
+            </NpmPending>
+          ) : (
+            <Terminal
+              className="mt-4"
+              command={`bun add ${PACKAGE_NAME}`}
+              onCopied={() => trackCopy("install", registryName)}
+            />
+          )}
           <CodeSnippet
             className="mt-3"
             label="usage"

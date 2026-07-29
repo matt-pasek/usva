@@ -14,7 +14,8 @@ import {
   CopyIcon,
   useCopy,
 } from "@/components/copy-button";
-import { PACKAGE_NAME, registryUrl } from "@/lib/site";
+import { NPM_PENDING, PACKAGE_NAME, registryUrl } from "@/lib/site";
+import { NpmPending } from "../npm-pending";
 import { WEIGHT } from "./home-motion";
 import { Scrub } from "./tiivistyma";
 
@@ -117,7 +118,13 @@ export function Fork() {
               <span className="font-mono text-ink">bun update</span> and the
               whole surface moves. you do not intend to touch the internals.
             </p>
-            <Command command={`bun add ${PACKAGE_NAME}`} />
+            {NPM_PENDING ? (
+              <NpmPending>
+                <Command command={`bun add ${PACKAGE_NAME}`} />
+              </NpmPending>
+            ) : (
+              <Command command={`bun add ${PACKAGE_NAME}`} />
+            )}
             <ul className="flex flex-col gap-2">
               <Trait>updates propagate</Trait>
               <Trait>one version across apps</Trait>
