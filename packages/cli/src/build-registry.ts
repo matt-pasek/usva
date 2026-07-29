@@ -7,6 +7,7 @@ import {
 } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { SITE_ORIGIN } from "./config.js";
 import { rewriteImports } from "./rewrite-imports.js";
 
 export interface RegistryFile {
@@ -50,7 +51,7 @@ export const SULA_NAMES = discover(SULA);
 export const MOTION_NAMES = discover(MOTION);
 export const ATMOSPHERE_NAMES = discover(ATMOSPHERES);
 
-async function emit(dir: string, name: string): Promise<void> {
+async function emit(dir: string, name: string): Promise<RegistryItem> {
   const mod = (await import(`${dir}/${name}/registry.ts`)) as Record<
     string,
     RegistryItem
@@ -65,15 +66,44 @@ async function emit(dir: string, name: string): Promise<void> {
     `${OUT}/${name}.json`,
     JSON.stringify({ ...item, files }, null, 2),
   );
+  return item;
+}
+
+function emitIndex(items: RegistryItem[]): void {
+  writeFileSync(
+    `${OUT}/registry.json`,
+    JSON.stringify(
+      {
+        $schema: "https://ui.shadcn.com/schema/registry.json",
+        name: "usva",
+        homepage: SITE_ORIGIN,
+        items: items.map((item) => ({
+          name: item.name,
+          type: item.type,
+          dependencies: item.dependencies,
+          registryDependencies: item.registryDependencies,
+          files: item.files.map(({ path, target }) => ({ path, target })),
+        })),
+      },
+      null,
+      2,
+    ),
+  );
 }
 
 export async function buildRegistry(): Promise<void> {
   mkdirSync(OUT, { recursive: true });
-  for (const name of NAMES) await emit(PRIMITIVES, name);
-  for (const name of PATTERN_NAMES) await emit(PATTERNS, name);
-  for (const name of SULA_NAMES) await emit(SULA, name);
-  for (const name of MOTION_NAMES) await emit(MOTION, name);
-  for (const name of ATMOSPHERE_NAMES) await emit(ATMOSPHERES, name);
+  const items: RegistryItem[] = [];
+  const layers: [string, string[]][] = [
+    [PRIMITIVES, NAMES],
+    [PATTERNS, PATTERN_NAMES],
+    [SULA, SULA_NAMES],
+    [MOTION, MOTION_NAMES],
+    [ATMOSPHERES, ATMOSPHERE_NAMES],
+  ];
+  for (const [dir, names] of layers)
+    for (const name of names) items.push(await emit(dir, name));
+  emitIndex(items);
 }
 
 if (import.meta.main) await buildRegistry();
