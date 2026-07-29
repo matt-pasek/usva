@@ -25,3 +25,5 @@ export const themeAndWidthModes = {
   "sisu narrow": allModes["sisu narrow"],
   "savi narrow": allModes["savi narrow"],
 };
+
+export const noSnapshot = { disableSnapshot: true };

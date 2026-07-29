@@ -1,9 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { noSnapshot } from "../../../.storybook/modes.js";
 import { Routa } from "./routa.js";
 
 const meta: Meta<typeof Routa> = {
   title: "Atmospheres/Routa",
   component: Routa,
+  parameters: { chromatic: noSnapshot },
   tags: ["autodocs"],
   argTypes: {
     speed: { control: { type: "range", min: 0, max: 3, step: 0.1 } },

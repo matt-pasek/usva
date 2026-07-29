@@ -1,9 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { noSnapshot } from "../../../.storybook/modes.js";
 import { Kuulto } from "./kuulto.js";
 
 const meta: Meta<typeof Kuulto> = {
   title: "Atmospheres/Kuulto",
   component: Kuulto,
+  parameters: { chromatic: noSnapshot },
   tags: ["autodocs"],
   argTypes: {
     speed: { control: { type: "range", min: 0, max: 3, step: 0.1 } },

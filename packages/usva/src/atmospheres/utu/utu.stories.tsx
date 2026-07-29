@@ -1,9 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { noSnapshot } from "../../../.storybook/modes.js";
 import { Utu } from "./utu.js";
 
 const meta: Meta<typeof Utu> = {
   title: "Atmospheres/Utu",
   component: Utu,
+  parameters: { chromatic: noSnapshot },
 };
 export default meta;
 

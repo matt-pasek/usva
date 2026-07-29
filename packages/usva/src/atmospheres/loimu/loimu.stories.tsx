@@ -1,9 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { noSnapshot } from "../../../.storybook/modes.js";
 import { Loimu } from "./loimu.js";
 
 const meta: Meta<typeof Loimu> = {
   title: "Atmospheres/Loimu",
   component: Loimu,
+  parameters: { chromatic: noSnapshot },
   tags: ["autodocs"],
   argTypes: {
     speed: { control: { type: "range", min: 0, max: 3, step: 0.1 } },

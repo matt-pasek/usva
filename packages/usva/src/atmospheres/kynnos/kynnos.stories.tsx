@@ -1,9 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { noSnapshot } from "../../../.storybook/modes.js";
 import { Kynnos } from "./kynnos.js";
 
 const meta: Meta<typeof Kynnos> = {
   title: "Atmospheres/Kynnos",
   component: Kynnos,
+  parameters: { chromatic: noSnapshot },
   tags: ["autodocs"],
   argTypes: {
     speed: { control: { type: "range", min: 0, max: 3, step: 0.1 } },
