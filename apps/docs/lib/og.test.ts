@@ -131,6 +131,7 @@ describe("og metadata", () => {
         width: OG_SIZE.width,
         height: OG_SIZE.height,
         alt: "Button · usva.",
+        type: "image/png",
       },
     ]);
     expect(meta.twitter?.images).toEqual(meta.openGraph?.images);
