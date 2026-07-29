@@ -15,10 +15,8 @@ export default function DocsLayout({ children }: { children: ReactNode }) {
         </aside>
 
         <div className="min-w-0 flex-1">
-          <div className="mb-6 border-b border-border pb-4 md:hidden">
-            <div className="min-w-0 overflow-hidden">
-              <ComponentNav orientation="horizontal" />
-            </div>
+          <div className="-mx-4 mb-6 border-b border-border md:hidden">
+            <ComponentNav orientation="horizontal" />
           </div>
           {children}
         </div>

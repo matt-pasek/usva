@@ -199,7 +199,7 @@ export function ComponentNav({ orientation = "vertical" }: Props) {
       <nav
         ref={strip}
         aria-label="Documentation"
-        className="-mx-1 flex gap-2 overflow-x-auto px-1 pt-1 pb-2"
+        className="flex gap-2 overflow-x-auto scroll-px-4 px-4 py-3 scrollbar-none [&::-webkit-scrollbar]:hidden"
       >
         {items.map((item) => {
           const chipClass = cn(

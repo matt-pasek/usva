@@ -78,7 +78,7 @@ export function DesignLanguageNav({
     return (
       <nav
         ref={strip}
-        className="-mx-1 flex gap-2 overflow-x-auto px-1 pt-1 pb-2"
+        className="flex gap-2 overflow-x-auto scroll-px-4 px-4 py-3 scrollbar-none [&::-webkit-scrollbar]:hidden"
       >
         {all.map((item) => (
           <Link
