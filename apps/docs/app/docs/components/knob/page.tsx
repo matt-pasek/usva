@@ -99,9 +99,7 @@ export default function KnobPage() {
         </>
       }
       dependencies={
-        <>
-          <code className="font-mono text-xs">class-variance-authority</code>
-        </>
+        <code className="font-mono text-xs">class-variance-authority</code>
       }
     >
       <KnobDemo />
