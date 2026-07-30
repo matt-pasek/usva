@@ -1,6 +1,6 @@
 {
   "name": "@usva-ui/tokens",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "The token layer for usva: semantic role tokens, three themes, a Tailwind v4 theme.css, and W3C DTCG plus Tokens Studio exports for Figma.",
   "keywords": [
     "design-tokens",
