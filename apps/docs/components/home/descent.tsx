@@ -421,10 +421,14 @@ function AssertsScene() {
     <section
       ref={ref}
       data-stratum="asserts"
+      data-pin-track
       className="relative h-[420svh] [--kuohu-lift:-50%] [--kuohu-reach:0rem] md:[--kuohu-lift:0px] md:[--kuohu-reach:max(-19rem,-24vw)]"
     >
       <SeamRow index={3} label="sula" bleed />
-      <div className="sticky top-0 flex h-dvh items-center overflow-hidden md:h-svh">
+      <div
+        data-pin
+        className="sticky top-0 flex h-dvh items-center overflow-hidden md:h-svh"
+      >
         <div
           className={`grid w-full items-center gap-8 md:grid-cols-2 md:gap-16 ${STRATUM}`}
         >
@@ -580,8 +584,16 @@ function Room() {
   });
 
   return (
-    <div ref={ref} data-stratum="room" className="relative h-[250svh]">
-      <section className="sticky top-0 flex h-svh items-center overflow-hidden">
+    <div
+      ref={ref}
+      data-stratum="room"
+      data-pin-track
+      className="relative h-[250svh]"
+    >
+      <section
+        data-pin
+        className="sticky top-0 flex h-svh items-center overflow-hidden"
+      >
         <div
           aria-hidden="true"
           className="pointer-events-none absolute inset-0 -z-10"

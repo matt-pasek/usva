@@ -142,8 +142,11 @@ export function Proportion() {
   const verdictY = useTransform(build, [...verdict], ["115%", "0%"]);
 
   return (
-    <section ref={ref} className="relative lg:h-[220svh]">
-      <div className="relative flex min-h-svh items-center overflow-x-hidden lg:sticky lg:top-0 lg:overflow-hidden">
+    <section ref={ref} data-pin-track className="relative lg:h-[220svh]">
+      <div
+        data-pin="self-padded"
+        className="relative flex min-h-svh items-center overflow-x-hidden lg:sticky lg:top-0 lg:overflow-hidden"
+      >
         <div className="mx-auto w-full max-w-[100rem] px-6 py-12 sm:px-10 sm:py-16 lg:py-20">
           <div className="grid lg:grid-cols-[minmax(17rem,0.72fr)_minmax(0,1.65fr)] lg:grid-rows-[auto_1fr] lg:items-start lg:gap-x-[clamp(3rem,7vw,8rem)]">
             <div className="lg:col-start-1 lg:row-start-1">

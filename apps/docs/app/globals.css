@@ -6,8 +6,6 @@
 @import "usva-tokens/roles-safelist.css";
 @source '../../../packages/usva/dist/**/*.js';
 
-/* Fira ships self-hosted through next/font (see app/layout.tsx). Point the token
-   font roles at those variables so nothing reaches fonts.googleapis.com. */
 :root {
   --font-sans: var(--font-fira-sans), system-ui, sans-serif;
   --font-mono: var(--font-fira-code), ui-monospace, SFMono-Regular, Menlo,
@@ -146,6 +144,30 @@ html[data-theme="savi"] #grain {
 @media (prefers-reduced-motion: reduce) {
   [style*="railo-"] {
     animation: none !important;
+  }
+
+  [data-pin-track] {
+    height: auto !important;
+    padding-block: clamp(2.5rem, 5vh, 4rem) !important;
+  }
+
+  [data-pin] {
+    position: static !important;
+    height: auto !important;
+    min-height: 0 !important;
+    padding-block: clamp(5rem, 11vh, 8rem) !important;
+  }
+
+  [data-pin="self-padded"] {
+    padding-block: 0 !important;
+  }
+
+  [data-crest-pull] {
+    margin-top: 0 !important;
+  }
+
+  [data-crest] {
+    display: none !important;
   }
 }
 
