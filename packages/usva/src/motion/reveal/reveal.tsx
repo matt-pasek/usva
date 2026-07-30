@@ -1,7 +1,12 @@
 "use client";
-import { motion, useReducedMotion } from "motion/react";
+import {
+  motion,
+  useReducedMotion,
+  useScroll,
+  useTransform,
+} from "motion/react";
 import * as React from "react";
-import { buildReveal, type RevealVariant } from "./presets.js";
+import { buildReveal, type RevealVariant, scrubRanges } from "./presets.js";
 import { useRevealIntensity } from "./reveal-config.js";
 
 const MOTION_TAGS = {
@@ -18,6 +23,8 @@ const MOTION_TAGS = {
 } as const;
 
 export type RevealTag = keyof typeof MOTION_TAGS;
+
+const SCRUB_OFFSET: [string, string] = ["start 0.88", "start 0.45"];
 
 const useIsoLayoutEffect =
   typeof window !== "undefined" ? React.useLayoutEffect : React.useEffect;
@@ -54,6 +61,20 @@ export interface RevealProps extends React.HTMLAttributes<HTMLElement> {
   amount?: number;
   /** Reveal even when already in view at mount (e.g. demos, explicit entrances). */
   force?: boolean;
+  /**
+   * Drive the variant from scroll progress instead of a threshold crossing. The
+   * reveal becomes a continuous function of position: it plays backwards on
+   * scroll-up and holds mid-state when the reader stops. Opt-in, because a
+   * threshold reveal is still the right answer for anything that encodes a
+   * value (a bar animating to 71% must reach 71%, not to wherever the scroll is).
+   */
+  scrub?: boolean;
+  /**
+   * Scroll window the scrub spans, as `motion`'s `useScroll` offset. Defaults to
+   * starting when the element's top reaches 88% of the viewport and completing
+   * at 45%, so it resolves on approach and settles before the reader arrives.
+   */
+  scrubOffset?: [string, string];
   as?: RevealTag;
 }
 
@@ -65,6 +86,8 @@ export const Reveal = React.forwardRef<HTMLElement, RevealProps>(
       intensity,
       amount = 0.35,
       force = false,
+      scrub = false,
+      scrubOffset = SCRUB_OFFSET,
       as = "div",
       children,
       ...rest
@@ -84,6 +107,40 @@ export const Reveal = React.forwardRef<HTMLElement, RevealProps>(
     );
 
     const Comp = MOTION_TAGS[as] as React.ElementType;
+
+    const scrubbing = scrub && !reduced && k > 0;
+    const ranges = scrubRanges(buildReveal(variant, k, reduced));
+    const { scrollYProgress } = useScroll({
+      target: ref as React.RefObject<HTMLElement>,
+      offset: scrubOffset as never,
+    });
+    const scrubOpacity = useTransform(scrollYProgress, [0, 1], ranges.opacity);
+    const scrubX = useTransform(scrollYProgress, [0, 1], ranges.x);
+    const scrubY = useTransform(scrollYProgress, [0, 1], ranges.y);
+    const scrubScale = useTransform(scrollYProgress, [0, 1], ranges.scale);
+    const scrubBlur = useTransform(scrollYProgress, (v: number) => {
+      const [from, to] = ranges.blur;
+      return `blur(${(from + (to - from) * v).toFixed(2)}px)`;
+    });
+
+    if (scrubbing) {
+      const { present } = ranges;
+      return (
+        <Comp
+          ref={setRefs}
+          style={{
+            opacity: scrubOpacity,
+            ...(present.x ? { x: scrubX } : {}),
+            ...(present.y ? { y: scrubY } : {}),
+            ...(present.scale ? { scale: scrubScale } : {}),
+            ...(present.blur ? { filter: scrubBlur } : {}),
+          }}
+          {...rest}
+        >
+          {children}
+        </Comp>
+      );
+    }
 
     if (!armed) {
       return (
