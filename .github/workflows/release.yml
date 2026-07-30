@@ -33,6 +33,17 @@ jobs:
           node-version: 24
           registry-url: https://registry.npmjs.org
 
+      - name: pin an npm that can publish over OIDC
+        run: |
+          npm install -g npm@latest
+          version="$(npm --version)"
+          required=11.5.1
+          echo "npm $version"
+          if [ "$(printf '%s\n%s\n' "$required" "$version" | sort -V | head -1)" != "$required" ]; then
+            echo "npm $version cannot use trusted publishing, need >= $required" >&2
+            exit 1
+          fi
+
       - run: bun install --frozen-lockfile
 
       - run: bun run build
