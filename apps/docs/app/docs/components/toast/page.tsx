@@ -98,7 +98,7 @@ export default function ToastPage() {
 
       <AcquireSection
         registryName="toast"
-        usage={`import { notify, toast, Toaster } from "usva/primitives/toast";
+        usage={`import { notify, toast, Toaster } from "@usva-ui/react/primitives/toast";
 
 <Toaster />
 

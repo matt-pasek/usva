@@ -1,5 +1,5 @@
+import { StatChip } from "@usva-ui/react/primitives/stat-chip";
 import type { Metadata } from "next";
-import { StatChip } from "usva/primitives/stat-chip";
 import { AcquireSection } from "@/components/docs/acquire-section";
 import { ComponentDoc } from "@/components/docs/component-doc";
 import { DemoPanel } from "@/components/docs/demo-panel";
@@ -96,7 +96,7 @@ export default function StatChipPage() {
 
       <AcquireSection
         registryName="stat-chip"
-        usage={`import { StatChip } from "usva/primitives/stat-chip";
+        usage={`import { StatChip } from "@usva-ui/react/primitives/stat-chip";
 
 <StatChip label="credits" value="142" unit="cr" />
 <StatChip tone="accent-alt" label="done" value="99" unit="%" />`}

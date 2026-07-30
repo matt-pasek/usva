@@ -188,7 +188,7 @@ export default function PageHeaderPage() {
 
       <AcquireSection
         registryName="page-header"
-        usage={`import { PageHeader, PageHeaderMetric, PageHeaderStat, PageHeaderStats } from "usva/patterns/page-header";
+        usage={`import { PageHeader, PageHeaderMetric, PageHeaderStat, PageHeaderStats } from "@usva-ui/react/patterns/page-header";
 
 <PageHeader
   eyebrow="Lut University · Summer 2026"

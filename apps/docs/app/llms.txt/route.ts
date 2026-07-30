@@ -1,4 +1,4 @@
-import { ROLE_NAMES } from "usva-tokens";
+import { ROLE_NAMES } from "@usva-ui/tokens";
 import {
   byLayer,
   type CatalogEntry,
@@ -14,6 +14,7 @@ import {
   PACKAGE_NAME,
   registryUrl,
   SITE_ORIGIN,
+  TOKENS_PACKAGE,
 } from "@/lib/site";
 
 export const dynamic = "force-static";
@@ -69,7 +70,7 @@ const body = (): string =>
     "## Install",
     "",
     `- Registry: npx shadcn add ${registryUrl("button")}`,
-    `- Tokens: bun add ${PACKAGE_NAME}-tokens`,
+    `- Tokens: bun add ${TOKENS_PACKAGE}`,
     NPM_PENDING
       ? `- Package: ${PACKAGE_NAME} is not on npm yet. Use the registry; bun add ${PACKAGE_NAME} fails today.`
       : `- Package: bun add ${PACKAGE_NAME}`,

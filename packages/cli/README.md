@@ -1,4 +1,4 @@
-# usva-cli
+# @usva-ui/cli
 
 Private, and not published. This is the build tool that produces usva's registry, plus one shelved
 command described at the bottom.

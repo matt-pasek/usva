@@ -22,7 +22,7 @@ export const HERO_PANEL_PAD = 16;
 export const HERO_STAT_COLUMN = 188;
 export const HERO_ROW_COLUMN = 340;
 export const HERO_SNIPPET_LINES = [
-  "bun add usva",
+  "bun add @usva-ui/react",
   "npx shadcn add usva.build/r/knob.json",
 ] as const;
 

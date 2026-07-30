@@ -1,15 +1,18 @@
 "use client";
-import { Check, Pencil } from "lucide-react";
-import { useState } from "react";
 import {
   PageHeader,
   PageHeaderMetric,
   PageHeaderStat,
   PageHeaderStats,
-} from "usva/patterns/page-header";
-import { Button } from "usva/primitives/button";
-import { Progress } from "usva/primitives/progress";
-import { ToggleChip, ToggleChipGroup } from "usva/primitives/toggle-chip";
+} from "@usva-ui/react/patterns/page-header";
+import { Button } from "@usva-ui/react/primitives/button";
+import { Progress } from "@usva-ui/react/primitives/progress";
+import {
+  ToggleChip,
+  ToggleChipGroup,
+} from "@usva-ui/react/primitives/toggle-chip";
+import { Check, Pencil } from "lucide-react";
+import { useState } from "react";
 
 const ALL_STATS = [
   ["grade-avg", "Grade avg.", "4.1", "4 graded"],

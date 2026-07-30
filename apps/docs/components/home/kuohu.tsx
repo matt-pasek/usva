@@ -1,5 +1,5 @@
 "use client";
-import { SulaField } from "usva/sula/sula-field";
+import { SulaField } from "@usva-ui/react/sula/sula-field";
 import { convection } from "./convection";
 
 const HALO =

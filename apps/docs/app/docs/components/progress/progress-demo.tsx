@@ -1,5 +1,5 @@
 "use client";
-import { Progress } from "usva/primitives/progress";
+import { Progress } from "@usva-ui/react/primitives/progress";
 import { Playground } from "@/components/docs/playground";
 
 const SIZES = ["sm", "md", "lg"] as const;
@@ -34,7 +34,7 @@ const snippetFor = (c: Config): string => {
   ]
     .filter(Boolean)
     .join(" ");
-  return `import { Progress } from "usva/primitives/progress";
+  return `import { Progress } from "@usva-ui/react/primitives/progress";
 
 <Progress ${attrs} />`;
 };

@@ -1,5 +1,5 @@
 "use client";
-import { Switch } from "usva/primitives/switch";
+import { Switch } from "@usva-ui/react/primitives/switch";
 import { Playground } from "@/components/docs/playground";
 
 const SIZES = ["sm", "md"] as const;
@@ -50,7 +50,7 @@ const snippetFor = (c: Config): string => {
     c.defaultChecked && "defaultChecked",
     c.disabled && "disabled",
   ].filter(Boolean);
-  return `import { Switch } from "usva/primitives/switch";
+  return `import { Switch } from "@usva-ui/react/primitives/switch";
 
 <Switch
   ${attrs.join("\n  ")}

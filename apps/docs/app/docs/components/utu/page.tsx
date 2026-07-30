@@ -101,7 +101,7 @@ export default function UtuPage() {
 
       <AcquireSection
         registryName="utu"
-        usage={`import { Utu } from "usva/atmospheres/utu";
+        usage={`import { Utu } from "@usva-ui/react/atmospheres/utu";
 
 <Utu className="min-h-svh">
   <Hero />

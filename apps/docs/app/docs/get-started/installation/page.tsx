@@ -1,7 +1,7 @@
+import { Button } from "@usva-ui/react/primitives/button";
+import { CodeSnippet } from "@usva-ui/react/primitives/code-snippet";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Button } from "usva/primitives/button";
-import { CodeSnippet } from "usva/primitives/code-snippet";
 import { DemoPanel } from "@/components/docs/demo-panel";
 import { InstallBlock } from "@/components/install-block";
 import { counts } from "@/lib/catalog";
@@ -36,11 +36,11 @@ export function cn(...inputs: ClassValue[]) {
 }`;
 
 const setup = `@import "tailwindcss";
-@import "usva-tokens/theme.css";
-@import "usva-tokens/themes/kajo.css";
+@import "@usva-ui/tokens/theme.css";
+@import "@usva-ui/tokens/themes/kajo.css";
 
 /* the utilities live in the built package, so tailwind has to see it */
-@source "../node_modules/usva/dist/**/*.js";`;
+@source "../node_modules/@usva-ui/react/dist/**/*.js";`;
 
 const registrySetup = `@import "tailwindcss";
 
@@ -110,8 +110,8 @@ export default function InstallationPage() {
         <p className="text-sm text-muted">
           the tokens package comes along with the npm install. if you copy
           source in instead, install{" "}
-          <code className="font-mono text-ink">usva-tokens</code> yourself: the
-          source consumes role tokens and will render unstyled without it.
+          <code className="font-mono text-ink">@usva-ui/tokens</code> yourself:
+          the source consumes role tokens and will render unstyled without it.
         </p>
       </section>
 

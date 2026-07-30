@@ -1,6 +1,5 @@
 "use client";
-import * as React from "react";
-import { SegmentedControl } from "usva/patterns/segmented-control";
+import { SegmentedControl } from "@usva-ui/react/patterns/segmented-control";
 import {
   Card,
   CardBody,
@@ -8,7 +7,8 @@ import {
   CardHeader,
   type CardSurface,
   CardTitle,
-} from "usva/primitives/card";
+} from "@usva-ui/react/primitives/card";
+import * as React from "react";
 
 const options: { value: CardSurface; label: string }[] = [
   { value: "elevated", label: "elevated" },

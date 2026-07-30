@@ -69,7 +69,7 @@ export default function BadgePage() {
 
       <AcquireSection
         registryName="badge"
-        usage={`import { Badge } from "usva/primitives/badge";
+        usage={`import { Badge } from "@usva-ui/react/primitives/badge";
 
 <Badge tone="accent">New</Badge>
 <Badge tone="success">Passing</Badge>

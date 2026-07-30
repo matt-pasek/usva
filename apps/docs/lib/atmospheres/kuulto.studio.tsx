@@ -1,4 +1,4 @@
-import { Kuulto } from "usva/atmospheres/kuulto";
+import { Kuulto } from "@usva-ui/react/atmospheres/kuulto";
 import { DarkStage } from "@/components/dark-stage";
 import { defineStudio } from "./types";
 
@@ -152,7 +152,7 @@ const snippet = (c: KuultoConfig): string => {
   if (c.tilt !== silk.tilt) p.push(`tilt: ${c.tilt}`);
   if (c.gain !== silk.gain) p.push(`gain: ${c.gain}`);
   if (p.length) lines.push(`  params={{ ${p.join(", ")} }}`);
-  return `import { Kuulto } from "usva/atmospheres/kuulto";
+  return `import { Kuulto } from "@usva-ui/react/atmospheres/kuulto";
 
 <Kuulto
 ${lines.join("\n")}

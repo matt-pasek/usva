@@ -1,20 +1,20 @@
-# usva-tokens
+# @usva-ui/tokens
 
 The token layer: semantic roles, the three themes, and the exports that carry the same values into
 Figma. Installed on its own if you want usva's vocabulary without its components, and required
 alongside [`usva`](https://www.npmjs.com/package/usva) if you want both.
 
 ```sh
-bun add usva-tokens
+bun add @usva-ui/tokens
 ```
 
 Tailwind v4, which needs no plugin or preset. Import the CSS and the roles become utilities:
 
 ```css
 @import "tailwindcss";
-@import "usva-tokens/theme.css";
-@import "usva-tokens/themes/kajo.css";
-@import "usva-tokens/roles-safelist.css";
+@import "@usva-ui/tokens/theme.css";
+@import "@usva-ui/tokens/themes/kajo.css";
+@import "@usva-ui/tokens/roles-safelist.css";
 ```
 
 `theme.css` maps the roles onto Tailwind's `@theme` layer. Each theme file supplies the values, and

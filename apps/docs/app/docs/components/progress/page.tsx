@@ -77,7 +77,7 @@ export default function ProgressPage() {
 
       <AcquireSection
         registryName="progress"
-        usage={`import { Progress } from "usva/primitives/progress";
+        usage={`import { Progress } from "@usva-ui/react/primitives/progress";
 
 <Progress value={40} aria-label="Upload" />
 <Progress value={80} glow aria-label="Sync" />

@@ -1,8 +1,8 @@
 "use client";
+import { cn } from "@usva-ui/react/cn";
+import { ColorField } from "@usva-ui/react/primitives/color-field";
+import { Knob } from "@usva-ui/react/primitives/knob";
 import type { ReactNode } from "react";
-import { cn } from "usva/cn";
-import { ColorField } from "usva/primitives/color-field";
-import { Knob } from "usva/primitives/knob";
 import { Lab } from "./lab";
 
 export function ControlsHead({ note }: { note?: ReactNode }) {

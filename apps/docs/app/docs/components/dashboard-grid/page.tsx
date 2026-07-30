@@ -154,7 +154,7 @@ export default function DashboardGridPage() {
 
       <AcquireSection
         registryName="dashboard-grid"
-        usage={`import { DashboardGrid, DashboardGridItem, type GridItem } from "usva/patterns/dashboard-grid";
+        usage={`import { DashboardGrid, DashboardGridItem, type GridItem } from "@usva-ui/react/patterns/dashboard-grid";
 
 const [layout, setLayout] = useState<GridItem[]>([
   { id: "trajectory", x: 0, y: 0, w: 4, h: 3, minW: 3 },

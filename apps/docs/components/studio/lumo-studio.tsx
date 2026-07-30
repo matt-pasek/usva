@@ -1,9 +1,9 @@
 "use client";
+// biome-ignore lint/style/noRestrictedImports: atmospheres-core ships no subpath
+import { type AtmosphereName, hiddenOnGround } from "@usva-ui/react";
+import { Button } from "@usva-ui/react/primitives/button";
 import { PanelLeftClose, PanelLeftOpen } from "lucide-react";
 import * as React from "react";
-// biome-ignore lint/style/noRestrictedImports: atmospheres-core ships no subpath
-import { type AtmosphereName, hiddenOnGround } from "usva";
-import { Button } from "usva/primitives/button";
 import type { Config } from "@/components/docs/playground";
 import { useTheme } from "@/components/theme-provider";
 import { type ErasedStudio, studioByName, studios } from "@/lib/atmospheres";

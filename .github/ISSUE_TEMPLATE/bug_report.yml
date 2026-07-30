@@ -15,7 +15,7 @@ body:
       label: Which package
       options:
         - "usva"
-        - "usva-tokens"
+        - "@usva-ui/tokens"
         - registry (copied source via shadcn add)
         - the docs site
         - not sure

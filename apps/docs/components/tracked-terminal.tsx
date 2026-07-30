@@ -1,6 +1,6 @@
 "use client";
+import { Terminal } from "@usva-ui/react/primitives/terminal";
 import type { ComponentProps } from "react";
-import { Terminal } from "usva/primitives/terminal";
 import type { CopyKind } from "@/lib/analytics/kinds";
 import { trackCopy } from "@/lib/analytics/track-copy";
 

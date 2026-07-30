@@ -1,5 +1,5 @@
 "use client";
-import { Popover } from "usva/primitives/popover";
+import { Popover } from "@usva-ui/react/primitives/popover";
 import { Playground } from "@/components/docs/playground";
 
 const SIDES = ["top", "right", "bottom", "left"] as const;
@@ -41,7 +41,7 @@ const snippetFor = (c: Config): string => {
   ]
     .filter(Boolean)
     .join(" ");
-  return `import { Popover } from "usva/primitives/popover";
+  return `import { Popover } from "@usva-ui/react/primitives/popover";
 
 <Popover>
   <Popover.Trigger>Open</Popover.Trigger>

@@ -87,7 +87,7 @@ export default function DropdownMenuPage() {
 
       <AcquireSection
         registryName="dropdown-menu"
-        usage={`import { DropdownMenu } from "usva/primitives/dropdown-menu";
+        usage={`import { DropdownMenu } from "@usva-ui/react/primitives/dropdown-menu";
 
 <DropdownMenu>
   <DropdownMenu.Trigger>Open menu</DropdownMenu.Trigger>

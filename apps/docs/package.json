@@ -14,8 +14,8 @@
     "hero": "bun scripts/generate-hero.ts"
   },
   "dependencies": {
-    "usva": "workspace:*",
-    "usva-tokens": "workspace:*",
+    "@usva-ui/react": "workspace:*",
+    "@usva-ui/tokens": "workspace:*",
     "@upstash/redis": "^1.38.0",
     "@vercel/analytics": "^2.0.1",
     "@vercel/speed-insights": "^2.0.0",

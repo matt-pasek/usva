@@ -1,11 +1,11 @@
-import { MockupShowcase } from "usva/patterns/mockup-showcase";
-import { ProgressRow } from "usva/patterns/progress-row";
-import { Pullquote } from "usva/patterns/pullquote";
-import { StatCard } from "usva/patterns/stat-card";
-import { Avatar } from "usva/primitives/avatar";
-import { Badge } from "usva/primitives/badge";
-import { Button } from "usva/primitives/button";
-import { Chip } from "usva/primitives/chip";
+import { MockupShowcase } from "@usva-ui/react/patterns/mockup-showcase";
+import { ProgressRow } from "@usva-ui/react/patterns/progress-row";
+import { Pullquote } from "@usva-ui/react/patterns/pullquote";
+import { StatCard } from "@usva-ui/react/patterns/stat-card";
+import { Avatar } from "@usva-ui/react/primitives/avatar";
+import { Badge } from "@usva-ui/react/primitives/badge";
+import { Button } from "@usva-ui/react/primitives/button";
+import { Chip } from "@usva-ui/react/primitives/chip";
 import { ChapterHeading } from "@/components/chapter-heading";
 import type { SpecimenScene, ThemeDoc } from "@/lib/themes";
 

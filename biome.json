@@ -27,7 +27,7 @@
               "level": "error",
               "options": {
                 "paths": {
-                  "usva": "Import from the subpath instead, e.g. usva/primitives/button. The barrel re-exports every atmosphere, all of sula and all of motion into whichever route touches it. The internal cores (atmospheres-core, sula-core, sula-motion) are the documented exception and have no subpath."
+                  "@usva-ui/react": "Import from the subpath instead, e.g. @usva-ui/react/primitives/button. The barrel re-exports every atmosphere, all of sula and all of motion into whichever route touches it. The internal cores (atmospheres-core, sula-core, sula-motion) are the documented exception and have no subpath."
                 }
               }
             }

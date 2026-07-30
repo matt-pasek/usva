@@ -1,7 +1,7 @@
 export const revealRegistry = {
   name: "reveal",
   type: "registry:ui",
-  dependencies: ["motion", "usva-tokens"],
+  dependencies: ["motion", "@usva-ui/tokens"],
   registryDependencies: [],
   files: [
     { path: "reveal.tsx", target: "components/ui/reveal.tsx" },

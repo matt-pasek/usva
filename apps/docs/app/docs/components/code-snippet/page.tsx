@@ -99,7 +99,7 @@ export default function CodeSnippetPage() {
 
       <AcquireSection
         registryName="code-snippet"
-        usage={`import { CodeSnippet } from "usva/primitives/code-snippet";
+        usage={`import { CodeSnippet } from "@usva-ui/react/primitives/code-snippet";
 
 <CodeSnippet
   label="lib/utils.ts"

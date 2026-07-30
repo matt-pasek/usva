@@ -4,7 +4,7 @@ import {
   BentoGrid,
   BentoMetric,
   BentoText,
-} from "usva/patterns/bento-grid";
+} from "@usva-ui/react/patterns/bento-grid";
 import { Playground } from "@/components/docs/playground";
 
 const HIGHLIGHTS = ["none", "wash", "edge", "ring"] as const;
@@ -32,7 +32,7 @@ const snippetFor = (c: Config): string => {
   ]
     .filter(Boolean)
     .join(" ");
-  return `import { BentoCard, BentoGrid } from "usva/patterns/bento-grid";
+  return `import { BentoCard, BentoGrid } from "@usva-ui/react/patterns/bento-grid";
 
 <BentoGrid columns={3}>
   <BentoCard ${attrs}>...</BentoCard>

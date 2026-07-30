@@ -96,7 +96,7 @@ export default function RoutaPage() {
 
       <AcquireSection
         registryName="routa"
-        usage={`import { Routa } from "usva/atmospheres/routa";
+        usage={`import { Routa } from "@usva-ui/react/atmospheres/routa";
 
 <Routa className="min-h-svh">
   <Article />

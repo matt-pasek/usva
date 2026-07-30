@@ -1,6 +1,6 @@
 "use client";
+import { Radio, RadioGroup } from "@usva-ui/react/primitives/radio";
 import * as React from "react";
-import { Radio, RadioGroup } from "usva/primitives/radio";
 import { Playground } from "@/components/docs/playground";
 
 const ORIENTATIONS = ["vertical", "horizontal"] as const;
@@ -23,7 +23,7 @@ const OPTIONS = [
 ];
 
 const snippetFor = (c: Config): string =>
-  `import { Radio, RadioGroup } from "usva/primitives/radio";
+  `import { Radio, RadioGroup } from "@usva-ui/react/primitives/radio";
 
 <RadioGroup
   value={theme}

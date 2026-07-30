@@ -1,5 +1,5 @@
 "use client";
-import { notify, Toaster, toast } from "usva/primitives/toast";
+import { notify, Toaster, toast } from "@usva-ui/react/primitives/toast";
 
 function TriggerButton({
   children,

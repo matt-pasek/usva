@@ -1,5 +1,6 @@
 "use client";
 
+import { Button } from "@usva-ui/react/primitives/button";
 import { RotateCcw } from "lucide-react";
 import {
   type MotionValue,
@@ -11,7 +12,6 @@ import {
   useTransform,
 } from "motion/react";
 import * as React from "react";
-import { Button } from "usva/primitives/button";
 
 const MASK = "overflow-hidden [clip-path:inset(0)] [transform:translateZ(0)]";
 const LAYER = "[backface-visibility:hidden] will-change-transform";

@@ -1,13 +1,13 @@
 "use client";
-import { BookOpen, Contrast, Shapes, Sparkles, Type } from "lucide-react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useCallback, useEffect, useState } from "react";
 import {
   SulaNav,
   type SulaNavItem,
   type SulaNavView,
-} from "usva/sula/sula-nav";
+} from "@usva-ui/react/sula/sula-nav";
+import { BookOpen, Contrast, Shapes, Sparkles, Type } from "lucide-react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useCallback, useEffect, useState } from "react";
 import { useSplashLead } from "@/lib/splash";
 import { CommandPalette } from "./command-palette";
 import { RailoBrand } from "./railo-motion";

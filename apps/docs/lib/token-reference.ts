@@ -1,6 +1,6 @@
-import { ROLE_NAMES } from "usva-tokens";
-import dtcg from "usva-tokens/tokens.dtcg.json";
-import studio from "usva-tokens/tokens.studio.json";
+import { ROLE_NAMES } from "@usva-ui/tokens";
+import dtcg from "@usva-ui/tokens/tokens.dtcg.json";
+import studio from "@usva-ui/tokens/tokens.studio.json";
 
 const THEME_NAMES = ["kajo", "sisu", "savi"] as const;
 type ThemeName = (typeof THEME_NAMES)[number];

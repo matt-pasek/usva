@@ -1,6 +1,6 @@
 "use client";
-import { RevealGroup, type RevealVariant } from "usva/motion/reveal";
-import { Card, CardBody } from "usva/primitives/card";
+import { RevealGroup, type RevealVariant } from "@usva-ui/react/motion/reveal";
+import { Card, CardBody } from "@usva-ui/react/primitives/card";
 import { Playground } from "@/components/docs/playground";
 
 const VARIANTS = ["tick", "veil", "cast", "surface", "focus", "lean"] as const;
@@ -28,8 +28,8 @@ const templates: Record<string, Config> = {
 };
 
 const snippetFor = (c: Config): string =>
-  `import { RevealGroup } from "usva/motion/reveal";
-import { Card } from "usva/primitives/card";
+  `import { RevealGroup } from "@usva-ui/react/motion/reveal";
+import { Card } from "@usva-ui/react/primitives/card";
 
 <RevealGroup
   variant="${c.variant}"

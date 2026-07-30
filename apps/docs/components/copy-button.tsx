@@ -1,7 +1,7 @@
 "use client";
+import { Button } from "@usva-ui/react/primitives/button";
 import { Check, Copy } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import { Button } from "usva/primitives/button";
 
 const CopyIcon = () => (
   <Copy className="size-3.5" strokeWidth={1.6} aria-hidden />

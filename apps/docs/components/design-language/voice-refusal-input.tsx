@@ -1,7 +1,7 @@
 "use client";
 
+import { Input } from "@usva-ui/react/primitives/input";
 import * as React from "react";
-import { Input } from "usva/primitives/input";
 import {
   motion,
   RefusalChip,

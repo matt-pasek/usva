@@ -1,4 +1,17 @@
 "use client";
+import { Kajastus } from "@usva-ui/react/atmospheres/kajastus";
+import { Kynnos } from "@usva-ui/react/atmospheres/kynnos";
+import { Loimu } from "@usva-ui/react/atmospheres/loimu";
+import {
+  BentoCard,
+  BentoGrid,
+  BentoMetric,
+  BentoText,
+} from "@usva-ui/react/patterns/bento-grid";
+import { Panel } from "@usva-ui/react/patterns/panel";
+import { ProgressRow } from "@usva-ui/react/patterns/progress-row";
+import { Badge } from "@usva-ui/react/primitives/badge";
+import { Button } from "@usva-ui/react/primitives/button";
 import {
   type MotionStyle,
   type MotionValue,
@@ -11,19 +24,6 @@ import {
 } from "motion/react";
 import Link from "next/link";
 import { type ReactNode, useEffect, useRef, useState } from "react";
-import { Kajastus } from "usva/atmospheres/kajastus";
-import { Kynnos } from "usva/atmospheres/kynnos";
-import { Loimu } from "usva/atmospheres/loimu";
-import {
-  BentoCard,
-  BentoGrid,
-  BentoMetric,
-  BentoText,
-} from "usva/patterns/bento-grid";
-import { Panel } from "usva/patterns/panel";
-import { ProgressRow } from "usva/patterns/progress-row";
-import { Badge } from "usva/primitives/badge";
-import { Button } from "usva/primitives/button";
 import { useTheme } from "@/components/theme-provider";
 import { counts, type Intensity } from "@/lib/catalog";
 import { ATMOSPHERE_LINKS } from "./descent-layout";

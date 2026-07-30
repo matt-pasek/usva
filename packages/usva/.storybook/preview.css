@@ -1,8 +1,8 @@
 @import "tailwindcss";
-@import "usva-tokens/theme.css";
-@import "usva-tokens/themes/kajo.css";
-@import "usva-tokens/themes/sisu.css";
-@import "usva-tokens/themes/savi.css";
+@import "@usva-ui/tokens/theme.css";
+@import "@usva-ui/tokens/themes/kajo.css";
+@import "@usva-ui/tokens/themes/sisu.css";
+@import "@usva-ui/tokens/themes/savi.css";
 @source "../src";
 
 body {

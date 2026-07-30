@@ -104,9 +104,9 @@ export default function HeroSplitPage() {
 
       <AcquireSection
         registryName="hero-split"
-        usage={`import { HeroSplit } from "usva/patterns/hero-split";
-import { MockupShowcase } from "usva/patterns/mockup-showcase";
-import { Button } from "usva/primitives/button";
+        usage={`import { HeroSplit } from "@usva-ui/react/patterns/hero-split";
+import { MockupShowcase } from "@usva-ui/react/patterns/mockup-showcase";
+import { Button } from "@usva-ui/react/primitives/button";
 
 <HeroSplit
   title="Your whole degree,"

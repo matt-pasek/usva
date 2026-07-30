@@ -12,7 +12,7 @@ different system.
 shaped by two live apps, which is the only reason anything is in here. a component earns its place
 by already working in something that shipped.
 
-[![npm](https://img.shields.io/npm/v/usva?color=%23111&label=%40matt-pasek%2Fusva)](https://www.npmjs.com/package/usva)
+[![npm](https://img.shields.io/npm/v/%40usva-ui%2Freact?color=%23111&label=%40usva-ui%2Freact)](https://www.npmjs.com/package/@usva-ui/react)
 [![license](https://img.shields.io/badge/license-MIT%20%2B%20Commons%20Clause-111)](LICENSE.md)
 [![CI](https://github.com/matt-pasek/usva/actions/workflows/ci.yml/badge.svg)](https://github.com/matt-pasek/usva/actions/workflows/ci.yml)
 
@@ -27,17 +27,14 @@ that builds the package, never hand-maintained beside it.
 
 ```sh
 npx shadcn add https://usva.build/r/button.json
-bun add usva-tokens
+bun add @usva-ui/tokens
 ```
 
 or install it, and the package stays the source of truth. `bun update` carries fixes to you.
 
 ```sh
-bun add usva usva-tokens
+bun add @usva-ui/react @usva-ui/tokens
 ```
-
-> [!NOTE]
-> `usva-tokens` is on npm. `usva` is not there yet, so the registry is the way in today.
 
 take `dialog` from the package because you will never touch it. copy `stat-card` in because you
 always do. mixing them is the point.
@@ -48,10 +45,10 @@ Tailwind v4. in your global stylesheet:
 
 ```css
 @import "tailwindcss";
-@import "usva-tokens/theme.css";
-@import "usva-tokens/themes/kajo.css";
-@import "usva-tokens/roles-safelist.css";
-@source "../node_modules/usva/dist/**/*.js";
+@import "@usva-ui/tokens/theme.css";
+@import "@usva-ui/tokens/themes/kajo.css";
+@import "@usva-ui/tokens/roles-safelist.css";
+@source "../node_modules/@usva-ui/react/dist/**/*.js";
 ```
 
 that last line is not optional. without it Tailwind never sees the classes that live only inside
@@ -61,7 +58,7 @@ happens, because a missing class is not a compile error.
 then import from the component's own path, never the package root:
 
 ```tsx
-import { Button } from "usva/primitives/button";
+import { Button } from "@usva-ui/react/primitives/button";
 ```
 
 full setup, including the theme switch, is at

@@ -15,7 +15,7 @@ export interface TerminalProps
 
 /* Scoped packages and URLs are what the eye scans a command for. Unscoped
    package names have no such marker, so an install verb makes the words after
-   it hot too, which is the only way `bun add usva` reads like `bun add @scope/x`. */
+   it hot too, which is the only way `bun add react` reads like `bun add @scope/x`. */
 const INSTALL_VERBS = new Set(["add", "install", "i"]);
 const isHot = (word: string) => word.startsWith("@") || /^https?:/.test(word);
 

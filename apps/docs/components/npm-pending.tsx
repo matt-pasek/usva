@@ -1,5 +1,5 @@
+import { cn } from "@usva-ui/react/cn";
 import type { ReactNode } from "react";
-import { cn } from "usva/cn";
 
 export function NpmPending({
   children,

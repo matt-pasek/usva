@@ -14,7 +14,7 @@ const securityHeaders = [
 ];
 
 const config: NextConfig = {
-  transpilePackages: ["usva", "usva-tokens"],
+  transpilePackages: ["@usva-ui/react", "@usva-ui/tokens"],
   async redirects() {
     return [
       {

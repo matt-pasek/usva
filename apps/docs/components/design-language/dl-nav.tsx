@@ -1,8 +1,8 @@
 "use client";
+import { cn } from "@usva-ui/react/cn";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useRef } from "react";
-import { cn } from "usva/cn";
 import { DL_CHAPTERS, DL_GROUPS, dlHref } from "@/lib/design-language";
 import { useCenteredChip } from "@/lib/use-centered-chip";
 

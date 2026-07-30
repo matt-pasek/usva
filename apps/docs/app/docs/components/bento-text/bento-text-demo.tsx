@@ -1,5 +1,9 @@
 "use client";
-import { BentoCard, BentoGrid, BentoText } from "usva/patterns/bento-grid";
+import {
+  BentoCard,
+  BentoGrid,
+  BentoText,
+} from "@usva-ui/react/patterns/bento-grid";
 import { Playground } from "@/components/docs/playground";
 
 type Config = {
@@ -33,7 +37,7 @@ const snippetFor = (c: Config): string => {
   ]
     .filter(Boolean)
     .join("");
-  return `import { BentoText } from "usva/patterns/bento-grid";
+  return `import { BentoText } from "@usva-ui/react/patterns/bento-grid";
 
 <BentoText${attrs}\n/>`;
 };

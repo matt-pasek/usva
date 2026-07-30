@@ -1,5 +1,5 @@
 "use client";
-import { Knob } from "usva/primitives/knob";
+import { Knob } from "@usva-ui/react/primitives/knob";
 import { Playground } from "@/components/docs/playground";
 
 const SIZES = ["sm", "md", "lg"] as const;
@@ -56,7 +56,7 @@ const snippetFor = (c: Config): string => {
   ]
     .filter(Boolean)
     .join("\n  ");
-  return `import { Knob } from "usva/primitives/knob";
+  return `import { Knob } from "@usva-ui/react/primitives/knob";
 
 <Knob
   ${attrs}

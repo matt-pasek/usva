@@ -106,7 +106,7 @@ export default function KajastusPage() {
 
       <AcquireSection
         registryName="kajastus"
-        usage={`import { Kajastus } from "usva/atmospheres/kajastus";
+        usage={`import { Kajastus } from "@usva-ui/react/atmospheres/kajastus";
 
 <Kajastus className="min-h-svh">
   <Hero />

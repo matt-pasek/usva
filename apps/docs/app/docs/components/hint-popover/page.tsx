@@ -98,9 +98,9 @@ export default function HintPopoverPage() {
 
       <AcquireSection
         registryName="hint-popover"
-        usage={`import { Badge } from "usva/primitives/badge";
-import { Button } from "usva/primitives/button";
-import { HintPopover } from "usva/primitives/hint-popover";
+        usage={`import { Badge } from "@usva-ui/react/primitives/badge";
+import { Button } from "@usva-ui/react/primitives/button";
+import { HintPopover } from "@usva-ui/react/primitives/hint-popover";
 
 <HintPopover
   tone="warning"

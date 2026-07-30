@@ -102,7 +102,7 @@ export default function KynnosPage() {
 
       <AcquireSection
         registryName="kynnos"
-        usage={`import { Kynnos } from "usva/atmospheres/kynnos";
+        usage={`import { Kynnos } from "@usva-ui/react/atmospheres/kynnos";
 
 <Kynnos className="min-h-svh">
   <Hero />

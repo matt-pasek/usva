@@ -1,5 +1,5 @@
 "use client";
-import { Slider } from "usva/primitives/slider";
+import { Slider } from "@usva-ui/react/primitives/slider";
 import { Playground } from "@/components/docs/playground";
 
 const SIZES = ["sm", "md"] as const;
@@ -53,7 +53,7 @@ const snippetFor = (c: Config): string => {
   ]
     .filter(Boolean)
     .join("\n  ");
-  return `import { Slider } from "usva/primitives/slider";
+  return `import { Slider } from "@usva-ui/react/primitives/slider";
 
 <Slider
   ${attrs}

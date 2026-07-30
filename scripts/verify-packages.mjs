@@ -68,7 +68,7 @@ const require = createRequire(import.meta.url);
 let bad = 0;
 const fail = (m) => { console.log("FAIL", m); bad++; };
 
-const usva = await import("usva");
+const usva = await import("@usva-ui/react");
 const names = Object.keys(usva);
 console.log("root exports:", names.length);
 if (names.length < 100) fail(\`root barrel only exported \${names.length} names\`);
@@ -76,31 +76,31 @@ for (const n of names) if (usva[n] === undefined) fail(\`root export \${n} is un
 for (const n of ["Button", "Card", "CodeSnippet", "registerCodeLanguage", "Reveal", "cn"])
   if (!(n in usva)) fail(\`expected root export missing: \${n}\`);
 
-const { cn } = await import("usva/cn");
+const { cn } = await import("@usva-ui/react/cn");
 if (cn("a", "b") !== "a b") fail("cn subpath broken");
 
-if (!Object.keys(await import("usva-tokens")).length) fail("tokens root empty");
+if (!Object.keys(await import("@usva-ui/tokens")).length) fail("tokens root empty");
 
 // A component subpath is the lean way in, so prove one resolves and carries the
 // component rather than trusting the exports map to be more than a promise.
-const { Badge } = await import("usva/primitives/badge");
+const { Badge } = await import("@usva-ui/react/primitives/badge");
 if (typeof Badge === "undefined") fail("primitives/badge subpath broken");
 
 for (const sub of [
-  "usva-tokens/theme.css",
-  "usva-tokens/themes/kajo.css",
-  "usva-tokens/themes/sisu.css",
-  "usva-tokens/themes/savi.css",
-  "usva-tokens/roles-safelist.css",
-  "usva-tokens/tokens.dtcg.json",
-  "usva-tokens/tokens.studio.json",
+  "@usva-ui/tokens/theme.css",
+  "@usva-ui/tokens/themes/kajo.css",
+  "@usva-ui/tokens/themes/sisu.css",
+  "@usva-ui/tokens/themes/savi.css",
+  "@usva-ui/tokens/roles-safelist.css",
+  "@usva-ui/tokens/tokens.dtcg.json",
+  "@usva-ui/tokens/tokens.studio.json",
 ]) {
   try {
     if (!existsSync(require.resolve(sub))) fail(\`\${sub} resolves to a missing file\`);
   } catch (e) { fail(\`\${sub} does not resolve: \${e.code ?? e.message}\`); }
 }
 
-const root = new URL("./node_modules/usva/", import.meta.url);
+const root = new URL("./node_modules/@usva-ui/react/", import.meta.url);
 for (const t of ["dist/index.d.ts", "dist/cn.d.ts"])
   if (!existsSync(new URL(t, root))) fail(\`missing types: \${t}\`);
 
@@ -109,9 +109,9 @@ process.exit(bad ? 1 : 0);
 `;
 
 const REACT_18_APP = `import * as React from "react";
-import * as usva from "usva";
-import { Button, CodeSnippet } from "usva";
-import { cn } from "usva/cn";
+import * as usva from "@usva-ui/react";
+import { Button, CodeSnippet } from "@usva-ui/react";
+import { cn } from "@usva-ui/react/cn";
 
 // naming the namespace keeps the whole declaration graph in the program
 export const surface: keyof typeof usva = "Button";
@@ -175,12 +175,12 @@ try {
         private: true,
         type: "module",
         dependencies: {
-          usva: `file:${join(work, PACKAGES[0].tarball)}`,
-          "usva-tokens": tokensTarball,
+          "@usva-ui/react": `file:${join(work, PACKAGES[0].tarball)}`,
+          "@usva-ui/tokens": tokensTarball,
           react: "^19",
           "react-dom": "^19",
         },
-        overrides: { "usva-tokens": tokensTarball },
+        overrides: { "@usva-ui/tokens": tokensTarball },
       },
       null,
       2,
@@ -205,8 +205,8 @@ try {
         name: "usva-react18-fixture",
         private: true,
         dependencies: {
-          usva: `file:${join(work, PACKAGES[0].tarball)}`,
-          "usva-tokens": tokensTarball,
+          "@usva-ui/react": `file:${join(work, PACKAGES[0].tarball)}`,
+          "@usva-ui/tokens": tokensTarball,
           react: "^18",
           "react-dom": "^18",
         },
@@ -215,7 +215,7 @@ try {
           "@types/react-dom": "^18",
           typescript: "^5.7.2",
         },
-        overrides: { "usva-tokens": tokensTarball },
+        overrides: { "@usva-ui/tokens": tokensTarball },
       },
       null,
       2,

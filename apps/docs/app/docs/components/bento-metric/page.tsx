@@ -92,7 +92,7 @@ export default function BentoMetricPage() {
 
       <AcquireSection
         registryName="bento-grid"
-        usage={`import { BentoMetric } from "usva/patterns/bento-grid";
+        usage={`import { BentoMetric } from "@usva-ui/react/patterns/bento-grid";
 
 <BentoMetric
   animate

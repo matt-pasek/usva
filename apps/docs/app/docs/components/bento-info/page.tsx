@@ -67,8 +67,8 @@ export default function BentoInfoPage() {
 
       <AcquireSection
         registryName="bento-grid"
-        usage={`import { BentoInfo } from "usva/patterns/bento-grid";
-import { Chip } from "usva/primitives/chip";
+        usage={`import { BentoInfo } from "@usva-ui/react/patterns/bento-grid";
+import { Chip } from "@usva-ui/react/primitives/chip";
 
 <BentoInfo label="Stack">
   <Chip>React</Chip>

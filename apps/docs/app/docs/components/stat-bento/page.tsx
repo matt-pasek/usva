@@ -80,7 +80,7 @@ export default function StatBentoPage() {
 
       <AcquireSection
         registryName="stat-bento"
-        usage={`import { StatBento } from "usva/patterns/stat-bento";
+        usage={`import { StatBento } from "@usva-ui/react/patterns/stat-bento";
 
 <StatBento
   stats={[

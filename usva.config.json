@@ -1,4 +1,5 @@
 {
   "siteOrigin": "https://usva.build",
-  "packageName": "usva"
+  "packageName": "@usva-ui/react",
+  "tokensPackageName": "@usva-ui/tokens"
 }

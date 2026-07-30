@@ -1,7 +1,7 @@
 "use client";
-import { SegmentedControl } from "usva/patterns/segmented-control";
-import { CodeSnippet } from "usva/primitives/code-snippet";
-import { Terminal } from "usva/primitives/terminal";
+import { SegmentedControl } from "@usva-ui/react/patterns/segmented-control";
+import { CodeSnippet } from "@usva-ui/react/primitives/code-snippet";
+import { Terminal } from "@usva-ui/react/primitives/terminal";
 import { trackCopy } from "@/lib/analytics/track-copy";
 import { NPM_PENDING, PACKAGE_NAME, registryUrl } from "@/lib/site";
 import { NpmPending } from "../npm-pending";

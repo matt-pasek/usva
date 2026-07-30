@@ -1,5 +1,5 @@
 "use client";
-import { Chip } from "usva/primitives/chip";
+import { Chip } from "@usva-ui/react/primitives/chip";
 import { Playground } from "@/components/docs/playground";
 
 const TONES = [
@@ -60,7 +60,7 @@ const snippetFor = (c: Config): string => {
   ]
     .filter(Boolean)
     .join(" ");
-  return `import { Chip } from "usva/primitives/chip";
+  return `import { Chip } from "@usva-ui/react/primitives/chip";
 
 <Chip${attrs ? ` ${attrs}` : ""}>${c.label}</Chip>`;
 };

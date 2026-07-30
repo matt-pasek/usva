@@ -1,6 +1,6 @@
 "use client";
-import { CaseStudyHero } from "usva/patterns/case-study-hero";
-import { Chip } from "usva/primitives/chip";
+import { CaseStudyHero } from "@usva-ui/react/patterns/case-study-hero";
+import { Chip } from "@usva-ui/react/primitives/chip";
 import { Playground } from "@/components/docs/playground";
 
 const LEVELS = ["h1", "h2", "h3"] as const;
@@ -87,8 +87,8 @@ const snippetFor = (c: Config): string => {
     lines.push(`  meta={[{ label: "Role", value: "Design engineer" }]}`);
 
   const imports = [
-    `import { CaseStudyHero } from "usva/patterns/case-study-hero";`,
-    c.showTags && `import { Chip } from "usva/primitives/chip";`,
+    `import { CaseStudyHero } from "@usva-ui/react/patterns/case-study-hero";`,
+    c.showTags && `import { Chip } from "@usva-ui/react/primitives/chip";`,
   ].filter(Boolean);
 
   const open = c.showTags ? ">" : "\n/>";

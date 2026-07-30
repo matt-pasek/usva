@@ -1,6 +1,10 @@
 "use client";
-import { BentoCard, BentoGrid, BentoInfo } from "usva/patterns/bento-grid";
-import { Chip } from "usva/primitives/chip";
+import {
+  BentoCard,
+  BentoGrid,
+  BentoInfo,
+} from "@usva-ui/react/patterns/bento-grid";
+import { Chip } from "@usva-ui/react/primitives/chip";
 import { Playground } from "@/components/docs/playground";
 
 const SHAPES = ["chips", "prose", "list"] as const;
@@ -28,7 +32,7 @@ const BODIES: Record<Config["shape"], string> = {
 };
 
 const snippetFor = (c: Config): string =>
-  `import { BentoInfo } from "usva/patterns/bento-grid";
+  `import { BentoInfo } from "@usva-ui/react/patterns/bento-grid";
 
 <BentoInfo label="${c.label}">
   ${BODIES[c.shape]}

@@ -1,4 +1,6 @@
 "use client";
+import { Vare } from "@usva-ui/react/atmospheres/vare";
+import { Button } from "@usva-ui/react/primitives/button";
 import {
   motion,
   useReducedMotion,
@@ -7,8 +9,6 @@ import {
 } from "motion/react";
 import Link from "next/link";
 import { useRef } from "react";
-import { Vare } from "usva/atmospheres/vare";
-import { Button } from "usva/primitives/button";
 import { Wordmark } from "@/components/wordmark";
 import { counts } from "@/lib/catalog";
 import { useSplashLead } from "@/lib/splash";

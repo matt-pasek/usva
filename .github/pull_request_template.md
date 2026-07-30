@@ -9,8 +9,8 @@
 ## Packages touched
 
 - [ ] `usva`
-- [ ] `usva-tokens`
-- [ ] `usva-cli`
+- [ ] `@usva-ui/tokens`
+- [ ] `@usva-ui/cli`
 - [ ] `apps/docs`
 
 ## Checks

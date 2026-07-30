@@ -80,7 +80,7 @@ export default function PageLoaderPage() {
 
       <AcquireSection
         registryName="spinner"
-        usage={`import { PageLoader } from "usva/primitives/spinner";
+        usage={`import { PageLoader } from "@usva-ui/react/primitives/spinner";
 
 <PageLoader label="loading your dashboard" />`}
       />

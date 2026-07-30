@@ -1,8 +1,8 @@
 "use client";
 
+import { SegmentedControl } from "@usva-ui/react/patterns/segmented-control";
+import { Button } from "@usva-ui/react/primitives/button";
 import * as React from "react";
-import { SegmentedControl } from "usva/patterns/segmented-control";
-import { Button } from "usva/primitives/button";
 import { THEMES } from "@/lib/catalog";
 
 const STRATA = [

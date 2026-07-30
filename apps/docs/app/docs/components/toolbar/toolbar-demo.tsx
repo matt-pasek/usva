@@ -5,8 +5,8 @@ import {
   ToolbarCount,
   ToolbarLegend,
   ToolbarLegendItem,
-} from "usva/patterns/toolbar";
-import { Button } from "usva/primitives/button";
+} from "@usva-ui/react/patterns/toolbar";
+import { Button } from "@usva-ui/react/primitives/button";
 import { Playground } from "@/components/docs/playground";
 
 const TONES = ["accent", "accent-alt", "success", "warning", "danger"] as const;
@@ -51,8 +51,8 @@ const snippetFor = (c: Config): string => {
     c.count > 0
       ? `\n    <ToolbarCount${toneAttr} count={${c.count}}>${c.countLabel}</ToolbarCount>`
       : "";
-  return `import { Toolbar, ToolbarActions, ToolbarCount, ToolbarLegend, ToolbarLegendItem } from "usva/patterns/toolbar";
-import { Button } from "usva/primitives/button";
+  return `import { Toolbar, ToolbarActions, ToolbarCount, ToolbarLegend, ToolbarLegendItem } from "@usva-ui/react/patterns/toolbar";
+import { Button } from "@usva-ui/react/primitives/button";
 
 <Toolbar aria-label="timeline toolbar">
   <ToolbarLegend${legendAttr}>

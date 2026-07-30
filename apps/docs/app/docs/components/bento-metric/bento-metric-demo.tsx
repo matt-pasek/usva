@@ -1,5 +1,9 @@
 "use client";
-import { BentoCard, BentoGrid, BentoMetric } from "usva/patterns/bento-grid";
+import {
+  BentoCard,
+  BentoGrid,
+  BentoMetric,
+} from "@usva-ui/react/patterns/bento-grid";
 import { Playground } from "@/components/docs/playground";
 
 const SIZES = ["md", "lg"] as const;
@@ -58,7 +62,7 @@ const snippetFor = (c: Config): string => {
   ]
     .filter(Boolean)
     .join(" ");
-  return `import { BentoMetric } from "usva/patterns/bento-grid";
+  return `import { BentoMetric } from "@usva-ui/react/patterns/bento-grid";
 
 <BentoMetric ${attrs} />`;
 };

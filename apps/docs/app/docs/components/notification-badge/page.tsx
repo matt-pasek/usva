@@ -81,8 +81,8 @@ export default function NotificationBadgePage() {
 
       <AcquireSection
         registryName="notification-badge"
-        usage={`import { Button } from "usva/primitives/button";
-import { NotificationBadge } from "usva/primitives/notification-badge";
+        usage={`import { Button } from "@usva-ui/react/primitives/button";
+import { NotificationBadge } from "@usva-ui/react/primitives/notification-badge";
 
 <NotificationBadge count={42} max={9}>
   <Button variant="outline" iconOnly aria-label="Notifications">

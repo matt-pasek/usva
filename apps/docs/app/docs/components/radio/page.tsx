@@ -115,7 +115,7 @@ export default function RadioPage() {
 
       <AcquireSection
         registryName="radio"
-        usage={`import { Radio, RadioGroup } from "usva/primitives/radio";
+        usage={`import { Radio, RadioGroup } from "@usva-ui/react/primitives/radio";
 
 <RadioGroup name="plan" defaultValue="free">
   <Radio value="free" label="Free" description="Good for trying things out." />

@@ -1,6 +1,6 @@
+import { CodeSnippet } from "@usva-ui/react/primitives/code-snippet";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { CodeSnippet } from "usva/primitives/code-snippet";
 import { counts } from "@/lib/catalog";
 import { pageMetadata, SITE_ORIGIN } from "@/lib/site";
 

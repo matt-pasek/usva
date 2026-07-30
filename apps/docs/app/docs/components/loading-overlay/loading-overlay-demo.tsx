@@ -1,5 +1,5 @@
 "use client";
-import { LoadingOverlay } from "usva/primitives/loading-overlay";
+import { LoadingOverlay } from "@usva-ui/react/primitives/loading-overlay";
 import { Playground } from "@/components/docs/playground";
 
 const VARIANTS = ["ring", "dots", "bars", "orbit"] as const;
@@ -39,7 +39,7 @@ const snippetFor = (c: Config): string => {
   ]
     .filter(Boolean)
     .join(" ");
-  return `import { LoadingOverlay } from "usva/primitives/loading-overlay";
+  return `import { LoadingOverlay } from "@usva-ui/react/primitives/loading-overlay";
 
 <div className="relative">
   <LoadingOverlay${attrs ? ` ${attrs}` : ""} />

@@ -88,8 +88,8 @@ export default function ProgressRowPage() {
 
       <AcquireSection
         registryName="progress-row"
-        usage={`import { ProgressRow } from "usva/patterns/progress-row";
-import { Badge } from "usva/primitives/badge";
+        usage={`import { ProgressRow } from "@usva-ui/react/patterns/progress-row";
+import { Badge } from "@usva-ui/react/primitives/badge";
 
 <ProgressRow
   label="Computer Science"

@@ -14,7 +14,7 @@ When a surface is ambiguous, ask. Do not let brand energy leak into component de
 
 Three distinct consumption paths, with different needs from the same source:
 
-**The installer.** Adds `usva` and `usva-tokens` as dependencies and lets `bun update` carry fixes forward. Wants a stable prop API, honest TypeScript types, and semantic role tokens they can retheme without forking. Never reads the component source. Breaking a prop name costs them real time.
+**The installer.** Adds `usva` and `@usva-ui/tokens` as dependencies and lets `bun update` carry fixes forward. Wants a stable prop API, honest TypeScript types, and semantic role tokens they can retheme without forking. Never reads the component source. Breaking a prop name costs them real time.
 
 **The copy-forker.** Runs `npx shadcn add https://usva.dev/r/<name>.json` and owns the source from that moment. Reads every line. Wants code that explains itself, no clever indirection, no dependency on private internals. Their first act is often to change one thing; the component must survive that.
 
