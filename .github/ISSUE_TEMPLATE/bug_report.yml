@@ -14,7 +14,7 @@ body:
     attributes:
       label: Which package
       options:
-        - "usva"
+        - "@usva-ui/react"
         - "@usva-ui/tokens"
         - registry (copied source via shadcn add)
         - the docs site

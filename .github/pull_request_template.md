@@ -8,7 +8,7 @@
 
 ## Packages touched
 
-- [ ] `usva`
+- [ ] `@usva-ui/react`
 - [ ] `@usva-ui/tokens`
 - [ ] `@usva-ui/cli`
 - [ ] `apps/docs`

@@ -1,6 +1,13 @@
 {
   "name": "@usva-ui/cli",
   "version": "0.0.0",
+  "description": "Builds the shadcn-compatible registry that usva publishes from the same source as its package.",
+  "keywords": [
+    "usva",
+    "registry",
+    "shadcn",
+    "cli"
+  ],
   "type": "module",
   "private": true,
   "license": "SEE LICENSE IN LICENSE.md",
