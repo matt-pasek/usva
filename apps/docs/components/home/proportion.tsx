@@ -12,7 +12,6 @@ import { useRef, useState } from "react";
 import {
   CATALOG,
   type CatalogEntry,
-  counts,
   LAYER_LABEL,
   type Layer,
 } from "@/lib/catalog";
@@ -29,6 +28,14 @@ const CELL: Record<Layer, string> = {
 
 const LOUD_LAYERS: Layer[] = ["sula", "atmosphere"];
 const ORDER: Layer[] = ["primitive", "pattern", "motion", "sula", "atmosphere"];
+
+const REACH_FOR: Record<Layer, string> = {
+  primitive: "the daily surface",
+  pattern: "the shape of an app",
+  motion: "how the eye is led",
+  sula: "one felt moment per screen",
+  atmosphere: "the room it stands in",
+};
 
 /* Every square is a component, so the grid is the catalogue rather than a
  * picture of it: the ratio is still the argument, but you can now put your
@@ -205,25 +212,24 @@ export function Proportion() {
 
               <dl className="mt-8 grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-3 lg:grid-cols-2">
                 {ORDER.map((layer) => (
-                  <div key={layer} className="flex items-center gap-2.5">
-                    <dt className="flex items-center gap-2.5 font-mono text-xs text-muted">
-                      <span
-                        aria-hidden="true"
-                        className={`h-2.5 w-2.5 rounded-[2px] ${CELL[layer]}`}
-                      />
-                      {LAYER_LABEL[layer]}
-                    </dt>
-                    <dd className="font-mono text-sm text-ink tabular-nums">
-                      {SQUARES.filter((s) => s.layer === layer).length}
+                  <div key={layer} className="flex flex-col gap-1">
+                    <div className="flex items-center gap-2.5">
+                      <dt className="flex items-center gap-2.5 font-mono text-xs text-muted">
+                        <span
+                          aria-hidden="true"
+                          className={`h-2.5 w-2.5 rounded-[2px] ${CELL[layer]}`}
+                        />
+                        {LAYER_LABEL[layer]}
+                      </dt>
+                      <dd className="font-mono text-ink text-sm tabular-nums">
+                        {SQUARES.filter((s) => s.layer === layer).length}
+                      </dd>
+                    </div>
+                    <dd className="pl-5 text-muted text-xs leading-snug">
+                      {REACH_FOR[layer]}
                     </dd>
                   </div>
                 ))}
-                <div className="flex items-center gap-2.5">
-                  <dt className="font-mono text-xs text-muted">total</dt>
-                  <dd className="font-mono text-sm text-ink tabular-nums">
-                    {counts.total}
-                  </dd>
-                </div>
               </dl>
             </div>
           </div>

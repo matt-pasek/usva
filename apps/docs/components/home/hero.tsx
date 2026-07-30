@@ -114,7 +114,7 @@ export function Hero() {
             <Rise delay={lead + 1.24} bleed="pt-2">
               <div className="mt-5 flex flex-wrap items-center justify-center gap-4">
                 <Button asChild variant="onSurface" size="lg">
-                  <Link href="/docs/get-started">read the docs →</Link>
+                  <Link href="/docs/components">explore components →</Link>
                 </Button>
                 <Button asChild variant="outline" size="lg">
                   <Link href="/design-language">the design language</Link>
