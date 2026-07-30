@@ -96,7 +96,7 @@ export default function CardPage() {
 
       <AcquireSection
         registryName="card"
-        usage={`import { Card, CardActions, CardBadge, CardBody, CardEyebrow, CardFooter, CardHeader, CardIcon, CardTitle } from "usva/primitives/card";
+        usage={`import { Card, CardActions, CardBadge, CardBody, CardEyebrow, CardFooter, CardHeader, CardIcon, CardTitle } from "@usva-ui/react/primitives/card";
 
 <Card interactive>
   <CardHeader row>

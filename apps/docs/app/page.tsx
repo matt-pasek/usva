@@ -15,14 +15,14 @@ export default function Home() {
   return (
     <main data-home>
       <Hero />
-      <div className="-mt-[100svh] relative z-10">
+      <div data-crest-pull className="-mt-[100svh] relative z-10">
         <Crest />
         <div className="bg-bg">
           <Witnesses />
           <Descent />
         </div>
       </div>
-      <div className="-mt-[100svh] relative z-20">
+      <div data-crest-pull className="-mt-[100svh] relative z-20">
         <Crest />
         <div className="bg-bg">
           <Proportion />

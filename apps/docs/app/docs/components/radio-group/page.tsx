@@ -79,7 +79,7 @@ export default function RadioGroupPage() {
 
       <AcquireSection
         registryName="radio"
-        usage={`import { Radio, RadioGroup } from "usva/primitives/radio";
+        usage={`import { Radio, RadioGroup } from "@usva-ui/react/primitives/radio";
 
 <RadioGroup value={theme} onValueChange={setTheme} aria-label="theme">
   <Radio value="kajo">kajo</Radio>

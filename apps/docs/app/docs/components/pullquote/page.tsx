@@ -64,7 +64,7 @@ export default function PullquotePage() {
 
       <AcquireSection
         registryName="pullquote"
-        usage={`import { Pullquote } from "usva/patterns/pullquote";
+        usage={`import { Pullquote } from "@usva-ui/react/patterns/pullquote";
 
 <Pullquote attribution="usva, design principles">
   Beauty that stays usable.

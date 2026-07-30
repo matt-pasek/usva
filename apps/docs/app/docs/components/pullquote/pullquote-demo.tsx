@@ -1,5 +1,5 @@
 "use client";
-import { Pullquote } from "usva/patterns/pullquote";
+import { Pullquote } from "@usva-ui/react/patterns/pullquote";
 import { Playground } from "@/components/docs/playground";
 
 type Config = {
@@ -35,7 +35,7 @@ const snippetFor = (c: Config): string => {
   ]
     .filter(Boolean)
     .join("\n  ");
-  return `import { Pullquote } from "usva/patterns/pullquote";
+  return `import { Pullquote } from "@usva-ui/react/patterns/pullquote";
 
 <Pullquote${attrs ? `\n  ${attrs}\n` : ""}>${attrs ? "  " : ""}${c.quote}${attrs ? "\n" : ""}</Pullquote>`;
 };

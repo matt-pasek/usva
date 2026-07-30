@@ -1,6 +1,6 @@
 "use client";
-import { StripeCard } from "usva/patterns/stripe-card";
-import { Badge } from "usva/primitives/badge";
+import { StripeCard } from "@usva-ui/react/patterns/stripe-card";
+import { Badge } from "@usva-ui/react/primitives/badge";
 import { Playground } from "@/components/docs/playground";
 
 const SURFACES = ["elevated", "flat", "glass", "outline"] as const;
@@ -77,9 +77,9 @@ const snippetFor = (c: Config): string => {
   if (c.footer) lines.push(`  footer="${c.footer}"`);
   if (c.selected) lines.push(`  selected`);
   const importLine = c.badge
-    ? `import { StripeCard } from "usva/patterns/stripe-card";
-import { Badge } from "usva/primitives/badge";`
-    : `import { StripeCard } from "usva/patterns/stripe-card";`;
+    ? `import { StripeCard } from "@usva-ui/react/patterns/stripe-card";
+import { Badge } from "@usva-ui/react/primitives/badge";`
+    : `import { StripeCard } from "@usva-ui/react/patterns/stripe-card";`;
   return `${importLine}
 
 <StripeCard

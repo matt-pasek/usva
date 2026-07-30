@@ -1,6 +1,6 @@
 "use client";
+import { List, ListItem } from "@usva-ui/react/primitives/list";
 import { ArrowRight, Check } from "lucide-react";
-import { List, ListItem } from "usva/primitives/list";
 import { Playground } from "@/components/docs/playground";
 
 const AS = ["ul", "ol"] as const;
@@ -56,7 +56,7 @@ const snippetFor = (c: Config): string => {
   ]
     .filter(Boolean)
     .join(" ");
-  return `import { List, ListItem } from "usva/primitives/list";
+  return `import { List, ListItem } from "@usva-ui/react/primitives/list";
 
 <List${attrs ? ` ${attrs}` : ""}>
   <ListItem>Runs entirely on your machine</ListItem>

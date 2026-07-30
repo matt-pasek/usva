@@ -1,5 +1,5 @@
+import { SkeletonMirror } from "@usva-ui/react/primitives/skeleton";
 import type { Metadata } from "next";
-import { SkeletonMirror } from "usva/primitives/skeleton";
 import { AcquireSection } from "@/components/docs/acquire-section";
 import { ComponentDoc } from "@/components/docs/component-doc";
 import { DemoPanel } from "@/components/docs/demo-panel";
@@ -110,7 +110,7 @@ export default function SkeletonMirrorPage() {
 
       <AcquireSection
         registryName="skeleton"
-        usage={`import { SkeletonMirror } from "usva/primitives/skeleton";
+        usage={`import { SkeletonMirror } from "@usva-ui/react/primitives/skeleton";
 
 <SkeletonMirror loading={isLoading}>
   <ProfileCard user={user} />

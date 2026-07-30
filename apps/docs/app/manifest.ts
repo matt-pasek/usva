@@ -1,5 +1,5 @@
+import studio from "@usva-ui/tokens/tokens.studio.json";
 import type { MetadataRoute } from "next";
-import studio from "usva-tokens/tokens.studio.json";
 import { SITE_DESCRIPTION } from "@/lib/site";
 
 const KAJO_GROUND = (studio as unknown as StudioThemes).kajo.color.bg.value;

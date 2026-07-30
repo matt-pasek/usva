@@ -9,6 +9,7 @@ export function Crest({ className }: { className?: string }) {
   return (
     <svg
       aria-hidden="true"
+      data-crest
       viewBox="0 0 1440 96"
       preserveAspectRatio="none"
       className={`-mb-px block h-[clamp(3rem,9vh,6rem)] w-full ${className ?? ""}`}

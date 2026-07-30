@@ -72,7 +72,7 @@ export default function BentoTextPage() {
 
       <AcquireSection
         registryName="bento-grid"
-        usage={`import { BentoText } from "usva/patterns/bento-grid";
+        usage={`import { BentoText } from "@usva-ui/react/patterns/bento-grid";
 
 <BentoText
   label="Problem"

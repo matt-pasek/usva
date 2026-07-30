@@ -59,9 +59,17 @@ function MaskedLine({
   );
 }
 
-function Static({ children, className, as = "div" }: MaskProps) {
+function Static({
+  children,
+  className,
+  bleed = "pb-[0.14em]",
+  as = "div",
+}: MaskProps) {
   const Tag = as === "span" ? "span" : "div";
-  return <Tag className={className}>{children}</Tag>;
+  const block = as === "span" ? "block" : "";
+  return (
+    <Tag className={`${block} ${bleed} ${className ?? ""}`}>{children}</Tag>
+  );
 }
 
 export interface RiseProps extends MaskProps {
@@ -88,7 +96,7 @@ export function Rise({
   const reduced = useReducedMotion();
   if (reduced) {
     return (
-      <Static as={as} className={className}>
+      <Static as={as} className={className} bleed={bleed}>
         {children}
       </Static>
     );
@@ -140,7 +148,7 @@ export function Scrub({
 
   if (reduced) {
     return (
-      <Static as={as} className={className}>
+      <Static as={as} className={className} bleed={bleed}>
         {children}
       </Static>
     );
@@ -183,7 +191,7 @@ export function Staged({
 
   if (reduced || still) {
     return (
-      <Static as={as} className={className}>
+      <Static as={as} className={className} bleed={bleed}>
         {children}
       </Static>
     );

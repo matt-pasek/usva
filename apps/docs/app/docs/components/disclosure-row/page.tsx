@@ -101,8 +101,8 @@ export default function DisclosureRowPage() {
 
       <AcquireSection
         registryName="disclosure-row"
-        usage={`import { DisclosureRow } from "usva/patterns/disclosure-row";
-import { ProgressRow } from "usva/patterns/progress-row";
+        usage={`import { DisclosureRow } from "@usva-ui/react/patterns/disclosure-row";
+import { ProgressRow } from "@usva-ui/react/patterns/progress-row";
 
 <DisclosureRow
   railColor="#52c989"

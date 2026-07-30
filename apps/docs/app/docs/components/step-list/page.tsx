@@ -63,7 +63,7 @@ export default function StepListPage() {
 
       <AcquireSection
         registryName="step-list"
-        usage={`import { StepList } from "usva/patterns/step-list";
+        usage={`import { StepList } from "@usva-ui/react/patterns/step-list";
 
 <StepList
   steps={[

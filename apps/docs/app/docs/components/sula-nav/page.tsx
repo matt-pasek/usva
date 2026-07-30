@@ -178,7 +178,7 @@ export default function SulaNavPage() {
 
       <AcquireSection
         registryName="sula-nav"
-        usage={`import { SulaNav } from "usva/sula/sula-nav";
+        usage={`import { SulaNav } from "@usva-ui/react/sula/sula-nav";
 import Link from "next/link";
 
 <header className="fixed inset-x-0 top-0 z-50 flex justify-center p-4">

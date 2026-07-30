@@ -3,7 +3,7 @@ import { axe } from "jest-axe";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { CodeSnippet, registerCodeLanguage } from "./code-snippet.js";
 
-const CODE = `import { Button } from "usva";`;
+const CODE = `import { Button } from "@usva-ui/react";`;
 
 describe("CodeSnippet", () => {
   afterEach(() => {

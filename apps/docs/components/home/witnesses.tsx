@@ -1,4 +1,5 @@
 "use client";
+import { MockupShowcase } from "@usva-ui/react/patterns/mockup-showcase";
 import {
   type MotionValue,
   motion,
@@ -9,7 +10,6 @@ import {
 } from "motion/react";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { MockupShowcase } from "usva/patterns/mockup-showcase";
 import { Scrub } from "./tiivistyma";
 
 const ink = "var(--usva-ink)";
@@ -399,8 +399,11 @@ export function Witnesses() {
   const compact = useCompact();
 
   return (
-    <section ref={ref} className="relative md:h-[280svh]">
-      <div className="flex items-center overflow-hidden md:sticky md:top-0 md:min-h-svh">
+    <section ref={ref} data-pin-track className="relative md:h-[280svh]">
+      <div
+        data-pin="self-padded"
+        className="flex items-center overflow-hidden md:sticky md:top-0 md:min-h-svh"
+      >
         <div className="mx-auto w-full max-w-7xl px-6 py-20 sm:px-10">
           <Scrub>
             <h2 className="max-w-3xl text-3xl font-extrabold tracking-tight text-ink sm:text-5xl">

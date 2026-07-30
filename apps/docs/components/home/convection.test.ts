@@ -1,4 +1,8 @@
-import type { SulaBlob, SulaFieldBounds, SulaNeck } from "usva/sula/sula-field";
+import type {
+  SulaBlob,
+  SulaFieldBounds,
+  SulaNeck,
+} from "@usva-ui/react/sula/sula-field";
 import { describe, expect, test } from "vitest";
 import { convection } from "./convection";
 

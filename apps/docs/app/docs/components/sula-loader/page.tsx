@@ -1,5 +1,5 @@
+import { SulaLoader } from "@usva-ui/react/sula/sula-loader";
 import type { Metadata } from "next";
-import { SulaLoader } from "usva/sula/sula-loader";
 import { AcquireSection } from "@/components/docs/acquire-section";
 import { ComponentDoc } from "@/components/docs/component-doc";
 import { DemoPanel } from "@/components/docs/demo-panel";
@@ -120,7 +120,7 @@ export default function SulaLoaderPage() {
 
       <AcquireSection
         registryName="sula-loader"
-        usage={`import { SulaLoader } from "usva/sula/sula-loader";
+        usage={`import { SulaLoader } from "@usva-ui/react/sula/sula-loader";
 
 {isPending ? <SulaLoader label="Loading dashboard" /> : <Dashboard />}`}
       />

@@ -100,7 +100,7 @@ export default function LoadingOverlayPage() {
 
       <AcquireSection
         registryName="loading-overlay"
-        usage={`import { LoadingOverlay } from "usva/primitives/loading-overlay";
+        usage={`import { LoadingOverlay } from "@usva-ui/react/primitives/loading-overlay";
 
 <div className="relative">
   <LoadingOverlay label="Fetching courses" />

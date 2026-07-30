@@ -1,6 +1,6 @@
 "use client";
+import { Tabs } from "@usva-ui/react/primitives/tabs";
 import { useState } from "react";
-import { Tabs } from "usva/primitives/tabs";
 import { Playground } from "@/components/docs/playground";
 
 const VARIANTS = ["pill", "underline"] as const;
@@ -40,7 +40,7 @@ const snippetFor = (c: Config): string => {
   ]
     .filter(Boolean)
     .join(" ");
-  return `import { Tabs } from "usva/primitives/tabs";
+  return `import { Tabs } from "@usva-ui/react/primitives/tabs";
 
 <Tabs ${rootAttrs}>
   <Tabs.List${listAttrs ? ` ${listAttrs}` : ""}>

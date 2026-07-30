@@ -1,5 +1,5 @@
 "use client";
-import { PageLoader } from "usva/primitives/spinner";
+import { PageLoader } from "@usva-ui/react/primitives/spinner";
 import { Playground } from "@/components/docs/playground";
 
 const VARIANTS = ["ring", "dots", "bars", "orbit"] as const;
@@ -36,7 +36,7 @@ const snippetFor = (c: Config): string => {
   ]
     .filter(Boolean)
     .join(" ");
-  return `import { PageLoader } from "usva/primitives/spinner";
+  return `import { PageLoader } from "@usva-ui/react/primitives/spinner";
 
 <PageLoader${attrs ? ` ${attrs}` : ""} />`;
 };

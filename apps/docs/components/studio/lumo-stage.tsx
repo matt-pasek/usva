@@ -1,9 +1,9 @@
 "use client";
+// biome-ignore lint/style/noRestrictedImports: atmospheres-core ships no subpath.
+import { captureAtmosphere } from "@usva-ui/react";
+import { Button } from "@usva-ui/react/primitives/button";
 import { Download } from "lucide-react";
 import * as React from "react";
-// biome-ignore lint/style/noRestrictedImports: atmospheres-core ships no subpath.
-import { captureAtmosphere } from "usva";
-import { Button } from "usva/primitives/button";
 import type { Config } from "@/components/docs/playground";
 import type { ErasedStudio } from "@/lib/atmospheres";
 

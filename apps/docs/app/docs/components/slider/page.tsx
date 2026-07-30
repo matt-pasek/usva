@@ -101,7 +101,7 @@ export default function SliderPage() {
 
       <AcquireSection
         registryName="slider"
-        usage={`import { Slider } from "usva/primitives/slider";
+        usage={`import { Slider } from "@usva-ui/react/primitives/slider";
 
 <Slider label="Speed" defaultValue={40} step={5} showValue />`}
       />

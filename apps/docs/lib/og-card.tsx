@@ -54,7 +54,9 @@ export function ogCard(card: OgCard): ImageResponse {
         backgroundColor: KAJO.bg,
       }}
     >
-      {/* eslint-disable-next-line @next/next/no-img-element */}
+      {/* biome-ignore lint/performance/noImgElement: this tree is rendered by
+         Satori into a static PNG, never by a browser, so next/image has
+         nothing to optimise and its runtime is not available here. */}
       <img
         src={PLATE}
         width={OG_SIZE.width}

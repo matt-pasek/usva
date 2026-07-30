@@ -1,7 +1,7 @@
+import { Reveal } from "@usva-ui/react/motion/reveal";
+import { Card } from "@usva-ui/react/primitives/card";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Reveal } from "usva/motion/reveal";
-import { Card } from "usva/primitives/card";
 import { counts } from "@/lib/catalog";
 import { pageMetadata } from "@/lib/site";
 

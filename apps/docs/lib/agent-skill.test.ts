@@ -1,10 +1,10 @@
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
-import { ROLE_NAMES } from "usva-tokens";
+import { ROLE_NAMES } from "@usva-ui/tokens";
 import { describe, expect, test } from "vitest";
 import { agentSkill, importPath } from "./agent-skill";
 import { CATALOG, counts, DARK_ONLY, SUB_EXPORTS, THEMES } from "./catalog";
-import { PACKAGE_NAME } from "./site";
+import { PACKAGE_NAME, TOKENS_PACKAGE } from "./site";
 
 const body = agentSkill();
 
@@ -16,7 +16,19 @@ const packageExports = (): Set<string> => {
   return new Set(Object.keys(parsed.exports));
 };
 
+const manifestName = (dir: string): string => {
+  const manifest = resolve(process.cwd(), `../../packages/${dir}/package.json`);
+  return (JSON.parse(readFileSync(manifest, "utf8")) as { name: string }).name;
+};
+
 describe("agent skill", () => {
+  test("names both packages exactly as their manifests do", () => {
+    expect(PACKAGE_NAME).toBe(manifestName("usva"));
+    expect(TOKENS_PACKAGE).toBe(manifestName("tokens"));
+    expect(body).toContain(`bun add ${PACKAGE_NAME} ${TOKENS_PACKAGE}`);
+    expect(body).not.toContain(`${PACKAGE_NAME}-tokens`);
+  });
+
   /**
    * The load-bearing test. The layer-to-directory mapping in agent-skill.ts is
    * the one thing that can emit an import path which looks right and resolves

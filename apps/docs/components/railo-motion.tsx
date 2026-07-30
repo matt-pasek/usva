@@ -1,7 +1,7 @@
 "use client";
 
+import { cn } from "@usva-ui/react/cn";
 import { useId } from "react";
-import { cn } from "usva/cn";
 import { Railo, type RailoProps } from "@/components/railo";
 import { RAILO_BOX, RAILO_CUTS, RAILO_VIEW_BOX } from "@/lib/railo-geometry";
 

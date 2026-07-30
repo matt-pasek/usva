@@ -1,6 +1,6 @@
+import { Utu } from "@usva-ui/react/atmospheres/utu";
+import { Button } from "@usva-ui/react/primitives/button";
 import Link from "next/link";
-import { Utu } from "usva/atmospheres/utu";
-import { Button } from "usva/primitives/button";
 
 export default function NotFound() {
   return (

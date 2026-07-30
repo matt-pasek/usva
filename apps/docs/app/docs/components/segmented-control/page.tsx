@@ -90,7 +90,7 @@ export default function SegmentedControlPage() {
 
       <AcquireSection
         registryName="segmented-control"
-        usage={`import { SegmentedControl } from "usva/patterns/segmented-control";
+        usage={`import { SegmentedControl } from "@usva-ui/react/patterns/segmented-control";
 
 <SegmentedControl
   items={[

@@ -30,6 +30,35 @@ describe("Reveal", () => {
     expect(screen.getByTestId("r")).toHaveClass("x");
   });
 
+  it("renders children and keeps attributes when scrubbing", () => {
+    render(
+      <Reveal scrub className="s" data-testid="scrubbed">
+        scrubbed content
+      </Reveal>,
+    );
+    const el = screen.getByTestId("scrubbed");
+    expect(el).toHaveTextContent("scrubbed content");
+    expect(el).toHaveClass("s");
+  });
+
+  it("emits no filter when scrubbing a variant that never blurs", () => {
+    render(
+      <Reveal scrub variant="tick" data-testid="ticked">
+        t
+      </Reveal>,
+    );
+    expect(screen.getByTestId("ticked").style.filter).toBe("");
+  });
+
+  it("accepts a custom scrub window", () => {
+    render(
+      <Reveal scrub scrubOffset={["start 1", "end 0.5"]} data-testid="win">
+        w
+      </Reveal>,
+    );
+    expect(screen.getByTestId("win")).toBeInTheDocument();
+  });
+
   it("has no a11y violations", async () => {
     const { container } = render(
       <Reveal as="section" aria-label="intro">

@@ -1,5 +1,5 @@
+import { cn } from "@usva-ui/react/cn";
 import type * as React from "react";
-import { cn } from "usva/cn";
 
 /**
  * The section heading register for long-form pages: design-language chapters

@@ -12,7 +12,7 @@
   only its own palette.
 
   `usva` ships 79 components across five layers, every one of them a subpath export so
-  importing a badge does not drag the motion library in behind it. `usva-tokens` ships the
+  importing a badge does not drag the motion library in behind it. `@usva-ui/tokens` ships the
   roles, the three themes, and the DTCG and Tokens Studio exports that carry the same values into
   Figma.
 
@@ -23,4 +23,4 @@
 ### Patch Changes
 
 - Updated dependencies [69954aa]
-  - usva-tokens@1.0.0
+  - @usva-ui/tokens@1.0.0

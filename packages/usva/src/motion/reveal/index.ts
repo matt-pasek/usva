@@ -3,6 +3,8 @@ export {
   buildReveal,
   press,
   type RevealVariant,
+  type ScrubRanges,
+  scrubRanges,
   springs,
   variants,
 } from "./presets.js";

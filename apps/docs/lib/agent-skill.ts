@@ -1,4 +1,4 @@
-import { ROLE_NAMES } from "usva-tokens";
+import { ROLE_NAMES } from "@usva-ui/tokens";
 import {
   byLayer,
   type CatalogEntry,
@@ -15,6 +15,7 @@ import {
   PACKAGE_NAME,
   registryUrl,
   SITE_ORIGIN,
+  TOKENS_PACKAGE,
 } from "@/lib/site";
 
 const LAYERS: Layer[] = [
@@ -43,8 +44,6 @@ const LAYER_DIR: Record<Layer, string> = {
 export const importPath = (
   entry: Pick<CatalogEntry, "layer" | "slug">,
 ): string => `${PACKAGE_NAME}/${LAYER_DIR[entry.layer]}/${entry.slug}`;
-
-const TOKENS_PACKAGE = `${PACKAGE_NAME}-tokens`;
 
 const frontmatter = (): string =>
   [

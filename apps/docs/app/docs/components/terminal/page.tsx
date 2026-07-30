@@ -73,7 +73,7 @@ export default function TerminalPage() {
 
       <AcquireSection
         registryName="terminal"
-        usage={`import { Terminal } from "usva/primitives/terminal";
+        usage={`import { Terminal } from "@usva-ui/react/primitives/terminal";
 
 <Terminal command="bun add usva" />`}
       />

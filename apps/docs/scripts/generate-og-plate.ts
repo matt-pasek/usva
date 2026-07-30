@@ -6,7 +6,6 @@ import { KAJASTUS_DEFAULTS } from "../../../packages/usva/src/atmospheres/kajast
 import {
   auroraPlacement,
   OG_AURORA,
-  OG_MARK,
   OG_PLATE_FILE,
   OG_PLATE_SCALE,
   OG_SIZE,

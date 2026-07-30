@@ -98,7 +98,7 @@ export default function LoimuPage() {
 
       <AcquireSection
         registryName="loimu"
-        usage={`import { Loimu } from "usva/atmospheres/loimu";
+        usage={`import { Loimu } from "@usva-ui/react/atmospheres/loimu";
 
 <Loimu className="relative min-h-svh">
   <div aria-hidden className="pointer-events-none absolute inset-0" style={{ backgroundImage: SCRIM }} />

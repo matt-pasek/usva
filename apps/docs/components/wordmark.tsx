@@ -1,4 +1,4 @@
-import { cn } from "usva/cn";
+import { cn } from "@usva-ui/react/cn";
 
 /**
  * The usva wordmark, one source. The letters plus the load-bearing period, which

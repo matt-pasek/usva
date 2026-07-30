@@ -1,5 +1,5 @@
 {
-  "name": "usva-cli",
+  "name": "@usva-ui/cli",
   "version": "0.0.0",
   "type": "module",
   "private": true,

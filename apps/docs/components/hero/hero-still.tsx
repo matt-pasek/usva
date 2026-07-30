@@ -1,13 +1,13 @@
 "use client";
 
+import { Vare } from "@usva-ui/react/atmospheres/vare";
+import { StatCard } from "@usva-ui/react/patterns/stat-card";
+import { StripeCard } from "@usva-ui/react/patterns/stripe-card";
+import { Badge } from "@usva-ui/react/primitives/badge";
+import { Button } from "@usva-ui/react/primitives/button";
+import { Card } from "@usva-ui/react/primitives/card";
+import { Knob } from "@usva-ui/react/primitives/knob";
 import * as React from "react";
-import { Vare } from "usva/atmospheres/vare";
-import { StatCard } from "usva/patterns/stat-card";
-import { StripeCard } from "usva/patterns/stripe-card";
-import { Badge } from "usva/primitives/badge";
-import { Button } from "usva/primitives/button";
-import { Card } from "usva/primitives/card";
-import { Knob } from "usva/primitives/knob";
 import { Cursor, useKnobCentre } from "@/components/hero/hero-pointer";
 import {
   HERO_CARD,

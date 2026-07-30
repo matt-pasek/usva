@@ -1,5 +1,8 @@
-import type { FilamentParams, FilamentView } from "usva/atmospheres/hehku";
-import { Hehku } from "usva/atmospheres/hehku";
+import type {
+  FilamentParams,
+  FilamentView,
+} from "@usva-ui/react/atmospheres/hehku";
+import { Hehku } from "@usva-ui/react/atmospheres/hehku";
 import { DarkStage } from "@/components/dark-stage";
 import { defineStudio } from "./types";
 
@@ -131,7 +134,7 @@ const snippet = (c: HehkuConfig): string => {
   if (c.bloom !== kajo.bloom) v.push(`bloom: ${c.bloom}`);
   if (c.exposure !== kajo.exposure) v.push(`exposure: ${c.exposure}`);
   if (v.length) lines.push(`  view={{ ${v.join(", ")} }}`);
-  return `import { Hehku } from "usva/atmospheres/hehku";
+  return `import { Hehku } from "@usva-ui/react/atmospheres/hehku";
 
 <Hehku
 ${lines.join("\n")}

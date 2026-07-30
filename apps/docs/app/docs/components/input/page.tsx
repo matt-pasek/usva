@@ -68,7 +68,7 @@ export default function InputPage() {
 
       <AcquireSection
         registryName="input"
-        usage={`import { Input } from "usva/primitives/input";
+        usage={`import { Input } from "@usva-ui/react/primitives/input";
 
 <Input placeholder="you@example.com" type="email" />
 <Input aria-invalid defaultValue="not-an-email" />

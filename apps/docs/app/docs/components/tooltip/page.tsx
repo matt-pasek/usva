@@ -80,7 +80,7 @@ export default function TooltipPage() {
 
       <AcquireSection
         registryName="tooltip"
-        usage={`import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "usva/primitives/tooltip";
+        usage={`import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@usva-ui/react/primitives/tooltip";
 
 <TooltipProvider>
   <Tooltip>

@@ -1,12 +1,12 @@
-import { Badge } from "usva/primitives/badge";
-import { Button } from "usva/primitives/button";
-import { Checkbox } from "usva/primitives/checkbox";
-import { Chip } from "usva/primitives/chip";
-import { Input } from "usva/primitives/input";
-import { Label } from "usva/primitives/label";
-import { Progress } from "usva/primitives/progress";
-import { StatChip } from "usva/primitives/stat-chip";
-import { Switch } from "usva/primitives/switch";
+import { Badge } from "@usva-ui/react/primitives/badge";
+import { Button } from "@usva-ui/react/primitives/button";
+import { Checkbox } from "@usva-ui/react/primitives/checkbox";
+import { Chip } from "@usva-ui/react/primitives/chip";
+import { Input } from "@usva-ui/react/primitives/input";
+import { Label } from "@usva-ui/react/primitives/label";
+import { Progress } from "@usva-ui/react/primitives/progress";
+import { StatChip } from "@usva-ui/react/primitives/stat-chip";
+import { Switch } from "@usva-ui/react/primitives/switch";
 
 /* The furniture is only convincing in a room. This is a screen out of the app
  * the system was extracted from, not a swatch page: a student enrolling on a

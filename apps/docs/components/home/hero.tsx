@@ -1,4 +1,6 @@
 "use client";
+import { Vare } from "@usva-ui/react/atmospheres/vare";
+import { Button } from "@usva-ui/react/primitives/button";
 import {
   motion,
   useReducedMotion,
@@ -7,8 +9,6 @@ import {
 } from "motion/react";
 import Link from "next/link";
 import { useRef } from "react";
-import { Vare } from "usva/atmospheres/vare";
-import { Button } from "usva/primitives/button";
 import { Wordmark } from "@/components/wordmark";
 import { counts } from "@/lib/catalog";
 import { useSplashLead } from "@/lib/splash";
@@ -33,8 +33,15 @@ export function Hero() {
   const cue = useTransform(scrollYProgress, [0.02, 0.1], [1, 0]);
 
   return (
-    <div ref={ref} className="-mt-20 relative h-[240svh] sm:-mt-24">
-      <div className="sticky top-0 flex h-svh items-center overflow-hidden">
+    <div
+      ref={ref}
+      data-pin-track="hero"
+      className="-mt-20 relative h-[240svh] sm:-mt-24"
+    >
+      <div
+        data-pin="viewport"
+        className="sticky top-0 flex h-svh items-center overflow-hidden"
+      >
         <div aria-hidden="true" className="absolute inset-0 -z-10">
           <Vare interactive className="h-full w-full" />
           {!reduced && (
@@ -107,7 +114,7 @@ export function Hero() {
             <Rise delay={lead + 1.24} bleed="pt-2">
               <div className="mt-5 flex flex-wrap items-center justify-center gap-4">
                 <Button asChild variant="onSurface" size="lg">
-                  <Link href="/docs/get-started">read the docs →</Link>
+                  <Link href="/docs/components">explore components →</Link>
                 </Button>
                 <Button asChild variant="outline" size="lg">
                   <Link href="/design-language">the design language</Link>

@@ -1,4 +1,4 @@
-import { tokens } from "usva-tokens";
+import { tokens } from "@usva-ui/tokens";
 
 export const springs = tokens.motion.spring;
 
@@ -75,6 +75,48 @@ export interface BuiltReveal {
   initial: Record<string, number | string>;
   animate: Record<string, number | string>;
   transition: Record<string, unknown>;
+}
+
+export interface ScrubRanges {
+  opacity: [number, number];
+  x: [number, number];
+  y: [number, number];
+  scale: [number, number];
+  blur: [number, number];
+  present: { x: boolean; y: boolean; scale: boolean; blur: boolean };
+}
+
+const BLUR_PX = /blur\(([\d.]+)px\)/;
+
+function px(value: number | string | undefined): number {
+  if (typeof value === "number") return value;
+  if (typeof value === "string") {
+    const hit = BLUR_PX.exec(value);
+    if (hit?.[1]) return Number.parseFloat(hit[1]);
+  }
+  return 0;
+}
+
+export function scrubRanges(built: BuiltReveal): ScrubRanges {
+  const { initial, animate } = built;
+  const pair = (key: string, fallback: number): [number, number] => [
+    typeof initial[key] === "number" ? (initial[key] as number) : fallback,
+    typeof animate[key] === "number" ? (animate[key] as number) : fallback,
+  ];
+
+  return {
+    opacity: pair("opacity", 1),
+    x: pair("x", 0),
+    y: pair("y", 0),
+    scale: pair("scale", 1),
+    blur: [px(initial.filter), px(animate.filter)],
+    present: {
+      x: initial.x != null,
+      y: initial.y != null,
+      scale: initial.scale != null,
+      blur: initial.filter != null,
+    },
+  };
 }
 
 /**

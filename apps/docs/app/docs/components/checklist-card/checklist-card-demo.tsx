@@ -1,5 +1,5 @@
 "use client";
-import { ChecklistCard } from "usva/patterns/checklist-card";
+import { ChecklistCard } from "@usva-ui/react/patterns/checklist-card";
 import { Playground } from "@/components/docs/playground";
 
 const MARKERS = ["tick", "dot", "star", "arrow"] as const;
@@ -54,7 +54,7 @@ const snippetFor = (c: Config): string => {
     `  items={${itemsLiteral}}`,
     c.marker !== "tick" && `  marker="${markerNode(c.marker)}"`,
   ].filter(Boolean);
-  return `import { ChecklistCard } from "usva/patterns/checklist-card";
+  return `import { ChecklistCard } from "@usva-ui/react/patterns/checklist-card";
 
 <ChecklistCard
 ${lines.join("\n")}

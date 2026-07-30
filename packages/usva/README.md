@@ -6,10 +6,10 @@ dense and quick, and savi is the light ground. One token vocabulary under all th
 Docs and live demos: **[usva.build](https://usva.build)**.
 
 ```sh
-bun add usva usva-tokens
+bun add @usva-ui/react @usva-ui/tokens
 ```
 
-React 18 or 19. Tailwind v4. `usva-tokens` is not optional; it holds every value the
+React 18 or 19. Tailwind v4. `@usva-ui/tokens` is not optional; it holds every value the
 components resolve against.
 
 ## Setup
@@ -18,11 +18,11 @@ In your global stylesheet:
 
 ```css
 @import "tailwindcss";
-@import "usva-tokens/theme.css";
-@import "usva-tokens/themes/kajo.css";
-@import "usva-tokens/roles-safelist.css";
+@import "@usva-ui/tokens/theme.css";
+@import "@usva-ui/tokens/themes/kajo.css";
+@import "@usva-ui/tokens/roles-safelist.css";
 
-@source "../node_modules/usva/dist/**/*.js";
+@source "../node_modules/@usva-ui/react/dist/**/*.js";
 ```
 
 **The `@source` line is the one people miss.** Tailwind v4 only generates classes it has seen in a
@@ -40,9 +40,9 @@ Import from a component's own path. The package root exists, but reaching throug
 graph, including `motion` and `ogl`, into anything that touches one badge.
 
 ```tsx
-import { Button } from "usva/primitives/button";
-import { StatCard } from "usva/patterns/stat-card";
-import { cn } from "usva/cn";
+import { Button } from "@usva-ui/react/primitives/button";
+import { StatCard } from "@usva-ui/react/patterns/stat-card";
+import { cn } from "@usva-ui/react/cn";
 ```
 
 Every component is its own subpath export, in one of five layers:
@@ -62,8 +62,8 @@ server component.
 
 ```tsx
 "use client";
-import { Button, type ButtonStatus } from "usva/primitives/button";
-import { Card } from "usva/primitives/card";
+import { Button, type ButtonStatus } from "@usva-ui/react/primitives/button";
+import { Card } from "@usva-ui/react/primitives/card";
 import * as React from "react";
 
 export function SaveCard({ save }: { save: () => Promise<void> }) {

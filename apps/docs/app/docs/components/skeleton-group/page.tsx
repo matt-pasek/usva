@@ -70,7 +70,7 @@ export default function SkeletonGroupPage() {
 
       <AcquireSection
         registryName="skeleton"
-        usage={`import { Skeleton, SkeletonGroup } from "usva/primitives/skeleton";
+        usage={`import { Skeleton, SkeletonGroup } from "@usva-ui/react/primitives/skeleton";
 
 <SkeletonGroup className="flex items-start gap-4">
   <Skeleton className="size-12 rounded-full" />

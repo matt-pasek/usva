@@ -78,7 +78,7 @@ export default function BentoCardPage() {
 
       <AcquireSection
         registryName="bento-grid"
-        usage={`import { BentoCard, BentoGrid } from "usva/patterns/bento-grid";
+        usage={`import { BentoCard, BentoGrid } from "@usva-ui/react/patterns/bento-grid";
 
 <BentoGrid columns={3}>
   <BentoCard span={2} rowSpan={2} highlight="wash">...</BentoCard>

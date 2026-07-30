@@ -88,10 +88,10 @@ jobs:
           bun-version: 1.3.13
       - run: bun install --frozen-lockfile
 
-      # presets.ts imports the token values from usva-tokens, whose "." export
+      # presets.ts imports the token values from @usva-ui/tokens, whose "." export
       # points into dist. A clean checkout has no dist, so storybook's vite build
       # cannot resolve the package and dies before it renders a single story.
-      - run: bunx turbo run build --filter=usva
+      - run: bunx turbo run build --filter=@usva-ui/react
 
       - uses: chromaui/action@v18
         with:

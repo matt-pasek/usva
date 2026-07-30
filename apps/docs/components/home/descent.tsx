@@ -1,4 +1,17 @@
 "use client";
+import { Kajastus } from "@usva-ui/react/atmospheres/kajastus";
+import { Kynnos } from "@usva-ui/react/atmospheres/kynnos";
+import { Loimu } from "@usva-ui/react/atmospheres/loimu";
+import {
+  BentoCard,
+  BentoGrid,
+  BentoMetric,
+  BentoText,
+} from "@usva-ui/react/patterns/bento-grid";
+import { Panel } from "@usva-ui/react/patterns/panel";
+import { ProgressRow } from "@usva-ui/react/patterns/progress-row";
+import { Badge } from "@usva-ui/react/primitives/badge";
+import { Button } from "@usva-ui/react/primitives/button";
 import {
   type MotionStyle,
   type MotionValue,
@@ -11,19 +24,6 @@ import {
 } from "motion/react";
 import Link from "next/link";
 import { type ReactNode, useEffect, useRef, useState } from "react";
-import { Kajastus } from "usva/atmospheres/kajastus";
-import { Kynnos } from "usva/atmospheres/kynnos";
-import { Loimu } from "usva/atmospheres/loimu";
-import {
-  BentoCard,
-  BentoGrid,
-  BentoMetric,
-  BentoText,
-} from "usva/patterns/bento-grid";
-import { Panel } from "usva/patterns/panel";
-import { ProgressRow } from "usva/patterns/progress-row";
-import { Badge } from "usva/primitives/badge";
-import { Button } from "usva/primitives/button";
 import { useTheme } from "@/components/theme-provider";
 import { counts, type Intensity } from "@/lib/catalog";
 import { ATMOSPHERE_LINKS } from "./descent-layout";
@@ -51,6 +51,7 @@ function useDescent() {
   const rootRef = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(0);
   const [inDescent, setInDescent] = useState(false);
+  const reduced = useReducedMotion() ?? false;
 
   useEffect(() => {
     const root = rootRef.current;
@@ -63,12 +64,9 @@ function useDescent() {
 
     const update = () => {
       const rootRect = root.getBoundingClientRect();
-      /* The next surface pulls itself over the last 100svh of the room's pin,
-       * so the rail steps aside one viewport early, right as the crest
-       * enters, rather than floating over the arriving mass. */
+      const tail = reduced ? window.innerHeight * 0.4 : window.innerHeight * 2;
       setInDescent(
-        rootRect.top < window.innerHeight * 0.5 &&
-          rootRect.bottom > window.innerHeight * 2,
+        rootRect.top < window.innerHeight * 0.5 && rootRect.bottom > tail,
       );
 
       const line = window.innerHeight * 0.4;
@@ -96,7 +94,7 @@ function useDescent() {
       window.removeEventListener("resize", measure);
       cancelAnimationFrame(frame);
     };
-  }, []);
+  }, [reduced]);
 
   return { active, inDescent, rootRef };
 }
@@ -421,10 +419,14 @@ function AssertsScene() {
     <section
       ref={ref}
       data-stratum="asserts"
+      data-pin-track
       className="relative h-[420svh] [--kuohu-lift:-50%] [--kuohu-reach:0rem] md:[--kuohu-lift:0px] md:[--kuohu-reach:max(-19rem,-24vw)]"
     >
       <SeamRow index={3} label="sula" bleed />
-      <div className="sticky top-0 flex h-dvh items-center overflow-hidden md:h-svh">
+      <div
+        data-pin
+        className="sticky top-0 flex h-dvh items-center overflow-hidden md:h-svh"
+      >
         <div
           className={`grid w-full items-center gap-8 md:grid-cols-2 md:gap-16 ${STRATUM}`}
         >
@@ -580,8 +582,16 @@ function Room() {
   });
 
   return (
-    <div ref={ref} data-stratum="room" className="relative h-[250svh]">
-      <section className="sticky top-0 flex h-svh items-center overflow-hidden">
+    <div
+      ref={ref}
+      data-stratum="room"
+      data-pin-track
+      className="relative h-[250svh]"
+    >
+      <section
+        data-pin
+        className="sticky top-0 flex h-svh items-center overflow-hidden"
+      >
         <div
           aria-hidden="true"
           className="pointer-events-none absolute inset-0 -z-10"

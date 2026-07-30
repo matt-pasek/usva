@@ -1,5 +1,5 @@
 "use client";
-import { Skeleton, SkeletonGroup } from "usva/primitives/skeleton";
+import { Skeleton, SkeletonGroup } from "@usva-ui/react/primitives/skeleton";
 import { Playground } from "@/components/docs/playground";
 
 type Config = { grouped: boolean };
@@ -11,14 +11,14 @@ const templates: Record<string, Config> = {
 
 const snippetFor = (c: Config): string =>
   c.grouped
-    ? `import { Skeleton, SkeletonGroup } from "usva/primitives/skeleton";
+    ? `import { Skeleton, SkeletonGroup } from "@usva-ui/react/primitives/skeleton";
 
 <SkeletonGroup>
   <Skeleton className="h-10 w-10 rounded-full" />
   <Skeleton className="h-4 w-40" />
   <Skeleton className="h-4 w-24" />
 </SkeletonGroup>`
-    : `import { Skeleton } from "usva/primitives/skeleton";
+    : `import { Skeleton } from "@usva-ui/react/primitives/skeleton";
 
 <Skeleton className="h-10 w-10 rounded-full" />
 <Skeleton className="h-4 w-40" />

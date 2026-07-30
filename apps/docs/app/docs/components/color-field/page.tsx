@@ -94,7 +94,7 @@ export default function ColorFieldPage() {
 
       <AcquireSection
         registryName="color-field"
-        usage={`import { ColorField } from "usva/primitives/color-field";
+        usage={`import { ColorField } from "@usva-ui/react/primitives/color-field";
 
 <ColorField
   label="Accent"

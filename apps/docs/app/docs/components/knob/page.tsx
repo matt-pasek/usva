@@ -99,9 +99,7 @@ export default function KnobPage() {
         </>
       }
       dependencies={
-        <>
-          <code className="font-mono text-xs">class-variance-authority</code>
-        </>
+        <code className="font-mono text-xs">class-variance-authority</code>
       }
     >
       <KnobDemo />
@@ -110,7 +108,7 @@ export default function KnobPage() {
 
       <AcquireSection
         registryName="knob"
-        usage={`import { Knob } from "usva/primitives/knob";
+        usage={`import { Knob } from "@usva-ui/react/primitives/knob";
 
 <Knob label="Volume" defaultValue={59} showValue formatValue={(v) => \`\${v} %\`} />`}
       />

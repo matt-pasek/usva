@@ -1,4 +1,4 @@
-import dtcg from "usva-tokens/tokens.dtcg.json";
+import dtcg from "@usva-ui/tokens/tokens.dtcg.json";
 
 export const dynamic = "force-static";
 

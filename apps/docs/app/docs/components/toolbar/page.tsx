@@ -77,8 +77,8 @@ export default function ToolbarPage() {
 
       <AcquireSection
         registryName="toolbar"
-        usage={`import { Toolbar, ToolbarActions, ToolbarGroup } from "usva/patterns/toolbar";
-import { Button } from "usva/primitives/button";
+        usage={`import { Toolbar, ToolbarActions, ToolbarGroup } from "@usva-ui/react/patterns/toolbar";
+import { Button } from "@usva-ui/react/primitives/button";
 
 <Toolbar aria-label="projects toolbar">
   <ToolbarGroup>

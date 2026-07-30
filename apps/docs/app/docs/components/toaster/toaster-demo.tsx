@@ -1,6 +1,6 @@
 "use client";
-import { Button } from "usva/primitives/button";
-import { notify, Toaster } from "usva/primitives/toast";
+import { Button } from "@usva-ui/react/primitives/button";
+import { notify, Toaster } from "@usva-ui/react/primitives/toast";
 import { Playground } from "@/components/docs/playground";
 
 type Config = { limit: number; timeout: number };
@@ -13,7 +13,7 @@ const templates: Record<string, Config> = {
 };
 
 const snippetFor = (c: Config): string =>
-  `import { Toaster } from "usva/primitives/toast";
+  `import { Toaster } from "@usva-ui/react/primitives/toast";
 
 // once, at the root of the app
 <Toaster${c.limit !== 3 ? ` limit={${c.limit}}` : ""}${c.timeout !== 5000 ? ` timeout={${c.timeout}}` : ""} />`;
