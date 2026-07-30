@@ -49,6 +49,7 @@ const GROUPS: { heading: string; links: FooterLink[] }[] = [
   {
     heading: "project",
     links: [
+      { href: "/press", label: "press kit" },
       { href: REPO, label: "source", external: true },
       { href: `${REPO}/issues/new`, label: "report a bug", external: true },
       { href: `${REPO}/issues`, label: "ask for a feature", external: true },
@@ -136,7 +137,7 @@ export function SiteFooter() {
             rel="noreferrer"
             className={footerLink}
           >
-            license <span aria-hidden="true">↗</span>
+            licence <span aria-hidden="true">↗</span>
           </a>
         </p>
       </div>
