@@ -33,8 +33,15 @@ export function Hero() {
   const cue = useTransform(scrollYProgress, [0.02, 0.1], [1, 0]);
 
   return (
-    <div ref={ref} className="-mt-20 relative h-[240svh] sm:-mt-24">
-      <div className="sticky top-0 flex h-svh items-center overflow-hidden">
+    <div
+      ref={ref}
+      data-pin-track="hero"
+      className="-mt-20 relative h-[240svh] sm:-mt-24"
+    >
+      <div
+        data-pin="viewport"
+        className="sticky top-0 flex h-svh items-center overflow-hidden"
+      >
         <div aria-hidden="true" className="absolute inset-0 -z-10">
           <Vare interactive className="h-full w-full" />
           {!reduced && (

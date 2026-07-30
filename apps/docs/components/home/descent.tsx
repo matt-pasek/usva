@@ -51,6 +51,7 @@ function useDescent() {
   const rootRef = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(0);
   const [inDescent, setInDescent] = useState(false);
+  const reduced = useReducedMotion() ?? false;
 
   useEffect(() => {
     const root = rootRef.current;
@@ -63,12 +64,9 @@ function useDescent() {
 
     const update = () => {
       const rootRect = root.getBoundingClientRect();
-      /* The next surface pulls itself over the last 100svh of the room's pin,
-       * so the rail steps aside one viewport early, right as the crest
-       * enters, rather than floating over the arriving mass. */
+      const tail = reduced ? window.innerHeight * 0.4 : window.innerHeight * 2;
       setInDescent(
-        rootRect.top < window.innerHeight * 0.5 &&
-          rootRect.bottom > window.innerHeight * 2,
+        rootRect.top < window.innerHeight * 0.5 && rootRect.bottom > tail,
       );
 
       const line = window.innerHeight * 0.4;
@@ -96,7 +94,7 @@ function useDescent() {
       window.removeEventListener("resize", measure);
       cancelAnimationFrame(frame);
     };
-  }, []);
+  }, [reduced]);
 
   return { active, inDescent, rootRef };
 }
