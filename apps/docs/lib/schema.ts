@@ -1,7 +1,7 @@
 import { canonicalUrl, SITE_DESCRIPTION, SITE_ORIGIN } from "@/lib/site";
 
 const REPO = "https://github.com/matt-pasek/usva";
-const NPM = "https://www.npmjs.com/package/usva";
+const NPM = "https://www.npmjs.com/package/@usva-ui/react";
 const AUTHOR_URL = "https://matt-pasek.dev";
 const AUTHOR_GITHUB = "https://github.com/matt-pasek";
 

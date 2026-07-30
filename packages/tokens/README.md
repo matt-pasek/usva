@@ -2,7 +2,7 @@
 
 The token layer: semantic roles, the three themes, and the exports that carry the same values into
 Figma. Installed on its own if you want usva's vocabulary without its components, and required
-alongside [`usva`](https://www.npmjs.com/package/usva) if you want both.
+alongside [`@usva-ui/react`](https://www.npmjs.com/package/@usva-ui/react) if you want both.
 
 ```sh
 bun add @usva-ui/tokens

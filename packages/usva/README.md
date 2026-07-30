@@ -1,4 +1,4 @@
-# usva
+# @usva-ui/react
 
 The components. A React design language in three themes, where kajo is atmospheric and dark, sisu is
 dense and quick, and savi is the light ground. One token vocabulary under all three.
