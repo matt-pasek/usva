@@ -5,7 +5,7 @@ import Link from "next/link";
 import { DemoPanel } from "@/components/docs/demo-panel";
 import { InstallBlock } from "@/components/install-block";
 import { counts } from "@/lib/catalog";
-import { PACKAGE_NAME, pageMetadata } from "@/lib/site";
+import { PACKAGE_NAME, pageMetadata, TOKENS_PACKAGE } from "@/lib/site";
 
 export const metadata: Metadata = pageMetadata(
   "/docs/get-started/installation",
@@ -51,8 +51,8 @@ const registrySetup = `@import "tailwindcss";
 }
 
 /* usva last. its @theme has to be read after shadcn's @theme inline */
-@import "usva-tokens/theme.css";
-@import "usva-tokens/themes/kajo.css";`;
+@import "${TOKENS_PACKAGE}/theme.css";
+@import "${TOKENS_PACKAGE}/themes/kajo.css";`;
 
 const usage = `import { Button } from "${PACKAGE_NAME}";
 
