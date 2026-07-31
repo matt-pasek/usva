@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { act, render, screen, waitFor } from "@testing-library/react";
 import { axe } from "jest-axe";
 import { describe, expect, it } from "vitest";
 import { buildReveal } from "./presets.js";
@@ -79,6 +79,45 @@ describe("RevealGroup", () => {
     );
     expect(screen.getByText("a")).toBeInTheDocument();
     expect(screen.getByText("b")).toBeInTheDocument();
+  });
+
+  it("shows its children once the group enters view", async () => {
+    const callbacks: Array<(entries: unknown[]) => void> = [];
+    const original = globalThis.IntersectionObserver;
+    globalThis.IntersectionObserver = class {
+      constructor(cb: (entries: unknown[]) => void) {
+        callbacks.push(cb);
+      }
+      observe() {}
+      unobserve() {}
+      disconnect() {}
+      takeRecords() {
+        return [];
+      }
+    } as never;
+
+    try {
+      render(
+        <RevealGroup force stagger={0}>
+          <span>a</span>
+          <span>b</span>
+        </RevealGroup>,
+      );
+      const wrapper = screen.getByText("a").parentElement as HTMLElement;
+      expect(wrapper.style.opacity).toBe("0");
+
+      act(() => {
+        for (const cb of callbacks) {
+          cb([{ isIntersecting: true, intersectionRatio: 1 }]);
+        }
+      });
+
+      await waitFor(() => {
+        expect(wrapper.style.opacity).not.toBe("0");
+      });
+    } finally {
+      globalThis.IntersectionObserver = original;
+    }
   });
 });
 
