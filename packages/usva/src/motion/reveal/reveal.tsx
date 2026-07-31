@@ -1,6 +1,7 @@
 "use client";
 import {
   motion,
+  useInView,
   useReducedMotion,
   useScroll,
   useTransform,
@@ -204,6 +205,10 @@ export const RevealGroup = React.forwardRef<HTMLElement, RevealGroupProps>(
     const reduced = useReducedMotion() ?? false;
     const disabled = reduced || k <= 0;
     const { ref, armed } = useArmed(amount, disabled, force);
+    const inView = useInView(ref as React.RefObject<Element>, {
+      once: true,
+      amount,
+    });
 
     const setRefs = React.useCallback(
       (node: HTMLElement | null) => {
@@ -224,27 +229,17 @@ export const RevealGroup = React.forwardRef<HTMLElement, RevealGroupProps>(
     }
 
     const built = buildReveal(variant, k, reduced);
-    const childVariants = {
-      hidden: built.initial,
-      show: { ...built.animate, transition: built.transition },
-    };
 
     return (
-      <Comp
-        ref={setRefs}
-        initial="hidden"
-        whileInView="show"
-        viewport={{ once: true, amount }}
-        variants={{
-          hidden: {},
-          show: {
-            transition: { staggerChildren: stagger, delayChildren: delay },
-          },
-        }}
-        {...rest}
-      >
-        {React.Children.map(children, (child) => (
-          <motion.div variants={childVariants}>{child}</motion.div>
+      <Comp ref={setRefs} {...rest}>
+        {React.Children.map(children, (child, index) => (
+          <motion.div
+            initial={built.initial}
+            animate={inView ? built.animate : built.initial}
+            transition={{ ...built.transition, delay: delay + index * stagger }}
+          >
+            {child}
+          </motion.div>
         ))}
       </Comp>
     );
