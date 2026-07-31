@@ -1,4 +1,4 @@
-import { act, render, screen } from "@testing-library/react";
+import { act, fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { axe } from "jest-axe";
 import type * as React from "react";
@@ -304,6 +304,272 @@ describe("SulaNav", () => {
     await user.click(trigger);
     expect(panel).toHaveClass("overflow-y-auto");
     expect(panel).not.toHaveClass("overflow-hidden");
+  });
+
+  it("resizes the panel without an overshooting timing curve", () => {
+    vi.stubGlobal("matchMedia", matchMedia(false, true));
+    render(<SulaNav views={views} collapseBelow="md" fluid={false} />);
+
+    const trigger = screen.getByRole("button", { name: "Menu" });
+    const panel = document.getElementById(
+      trigger.getAttribute("aria-controls") ?? "",
+    );
+    expect(panel).toHaveClass("ease-soft");
+    expect(panel).not.toHaveClass("ease-spring");
+  });
+
+  it("does not create a transient scroll layer while the panel changes height", async () => {
+    vi.stubGlobal("matchMedia", matchMedia(false, true));
+    vi.stubGlobal(
+      "ResizeObserver",
+      class {
+        observe() {}
+        disconnect() {}
+      },
+    );
+    let bodyHeight = 300;
+    const rect = vi
+      .spyOn(HTMLElement.prototype, "getBoundingClientRect")
+      .mockReturnValue(new DOMRect(0, 0, 300, 466));
+    const offsetHeight = vi
+      .spyOn(HTMLElement.prototype, "offsetHeight", "get")
+      .mockImplementation(() => bodyHeight);
+    const readComputedStyle = window.getComputedStyle;
+    const computedStyle = vi
+      .spyOn(window, "getComputedStyle")
+      .mockImplementation((element) => {
+        const styles = readComputedStyle(element);
+        return new Proxy(styles, {
+          get(target, key) {
+            if (key === "maxHeight") return "520px";
+            if (key === "paddingTop" || key === "paddingBottom") return "8px";
+            const value = Reflect.get(target, key, target);
+            return typeof value === "function" ? value.bind(target) : value;
+          },
+        });
+      });
+
+    try {
+      const user = userEvent.setup();
+      render(<SulaNav views={views} collapseBelow="md" fluid={false} />);
+
+      const trigger = screen.getByRole("button", { name: "Menu" });
+      const panel = document.getElementById(
+        trigger.getAttribute("aria-controls") ?? "",
+      );
+      await user.click(trigger);
+      bodyHeight = 600;
+      await user.click(screen.getByRole("button", { name: "Writing" }));
+
+      expect(panel).toHaveClass("overflow-clip");
+      expect(panel).not.toHaveClass("overflow-y-auto");
+
+      fireEvent.transitionEnd(panel as HTMLElement, {
+        propertyName: "clip-path",
+      });
+      expect(panel).toHaveClass("overflow-y-auto");
+    } finally {
+      rect.mockRestore();
+      offsetHeight.mockRestore();
+      computedStyle.mockRestore();
+    }
+  });
+
+  it("does not create a scroll layer after resizing when the contents fit", async () => {
+    vi.stubGlobal("matchMedia", matchMedia(false, true));
+    vi.stubGlobal(
+      "ResizeObserver",
+      class {
+        observe() {}
+        disconnect() {}
+      },
+    );
+    const rect = vi
+      .spyOn(HTMLElement.prototype, "getBoundingClientRect")
+      .mockReturnValue(new DOMRect(0, 0, 300, 466));
+    const offsetHeight = vi
+      .spyOn(HTMLElement.prototype, "offsetHeight", "get")
+      .mockReturnValue(300);
+    const readComputedStyle = window.getComputedStyle;
+    const computedStyle = vi
+      .spyOn(window, "getComputedStyle")
+      .mockImplementation((element) => {
+        const styles = readComputedStyle(element);
+        return new Proxy(styles, {
+          get(target, key) {
+            if (key === "maxHeight") return "520px";
+            if (key === "paddingTop" || key === "paddingBottom") return "8px";
+            const value = Reflect.get(target, key, target);
+            return typeof value === "function" ? value.bind(target) : value;
+          },
+        });
+      });
+
+    try {
+      const user = userEvent.setup();
+      render(<SulaNav views={views} collapseBelow="md" fluid={false} />);
+
+      const trigger = screen.getByRole("button", { name: "Menu" });
+      const panel = document.getElementById(
+        trigger.getAttribute("aria-controls") ?? "",
+      );
+      await user.click(trigger);
+      await user.click(screen.getByRole("button", { name: "Writing" }));
+      fireEvent.transitionEnd(panel as HTMLElement, {
+        propertyName: "clip-path",
+      });
+
+      expect(panel).toHaveClass("overflow-clip");
+      expect(panel).not.toHaveClass("overflow-y-auto");
+    } finally {
+      rect.mockRestore();
+      offsetHeight.mockRestore();
+      computedStyle.mockRestore();
+    }
+  });
+
+  it("keeps scrolling when both view bodies are already clamped to max height", async () => {
+    vi.stubGlobal("matchMedia", matchMedia(false, true));
+    vi.stubGlobal(
+      "ResizeObserver",
+      class {
+        observe() {}
+        disconnect() {}
+      },
+    );
+    const rect = vi
+      .spyOn(HTMLElement.prototype, "getBoundingClientRect")
+      .mockReturnValue(new DOMRect(0, 0, 300, 520));
+    const offsetHeight = vi
+      .spyOn(HTMLElement.prototype, "offsetHeight", "get")
+      .mockReturnValue(600);
+    const readComputedStyle = window.getComputedStyle;
+    const computedStyle = vi
+      .spyOn(window, "getComputedStyle")
+      .mockImplementation((element) => {
+        const styles = readComputedStyle(element);
+        return new Proxy(styles, {
+          get(target, key) {
+            if (key === "maxHeight") return "520px";
+            if (key === "paddingTop" || key === "paddingBottom") return "8px";
+            const value = Reflect.get(target, key, target);
+            return typeof value === "function" ? value.bind(target) : value;
+          },
+        });
+      });
+
+    try {
+      const user = userEvent.setup();
+      render(<SulaNav views={views} collapseBelow="md" fluid={false} />);
+
+      const trigger = screen.getByRole("button", { name: "Menu" });
+      const panel = document.getElementById(
+        trigger.getAttribute("aria-controls") ?? "",
+      );
+      await user.click(trigger);
+      await user.click(screen.getByRole("button", { name: "Writing" }));
+
+      expect(panel).toHaveClass("overflow-y-auto");
+      expect(panel).not.toHaveClass("overflow-clip");
+    } finally {
+      rect.mockRestore();
+      offsetHeight.mockRestore();
+      computedStyle.mockRestore();
+    }
+  });
+
+  it("folds every view into the menu, leaving no pill stranded in the bar", () => {
+    vi.stubGlobal("matchMedia", matchMedia(false, true));
+    render(<SulaNav views={views} collapseBelow="md" fluid={false} />);
+
+    expect(screen.queryByRole("link", { name: "Writing" })).toBeNull();
+    expect(screen.queryByRole("link", { name: "Playground" })).toBeNull();
+    expect(screen.getByRole("button", { name: "Menu" })).toBeInTheDocument();
+  });
+
+  it("lists every view in the collapsed panel", () => {
+    vi.stubGlobal("matchMedia", matchMedia(false, true));
+    render(<SulaNav views={views} collapseBelow="md" fluid={false} />);
+
+    for (const view of views) {
+      expect(
+        screen.getByRole("button", { name: view.label }),
+      ).toBeInTheDocument();
+    }
+  });
+
+  it("swaps the panel's item list without navigating away from the view", async () => {
+    vi.stubGlobal("matchMedia", matchMedia(false, true));
+    const onViewChange = vi.fn();
+    const user = userEvent.setup();
+    render(
+      <SulaNav
+        views={views}
+        collapseBelow="md"
+        fluid={false}
+        onViewChange={onViewChange}
+      />,
+    );
+
+    const trigger = screen.getByRole("button", { name: "Menu" });
+    await user.click(trigger);
+    expect(screen.getByRole("link", { name: "Home" })).toBeInTheDocument();
+
+    await user.click(screen.getByRole("button", { name: "Writing" }));
+
+    expect(screen.getByRole("link", { name: "Latest" })).toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "Home" })).toBeNull();
+    expect(onViewChange).not.toHaveBeenCalled();
+    expect(trigger).toHaveAttribute("aria-expanded", "true");
+  });
+
+  it("names a view once, in its switcher row and not again in its items", async () => {
+    vi.stubGlobal("matchMedia", matchMedia(false, true));
+    const user = userEvent.setup();
+    render(<SulaNav views={views} collapseBelow="md" fluid={false} />);
+
+    await user.click(screen.getByRole("button", { name: "Menu" }));
+
+    expect(screen.getAllByText("Site")).toHaveLength(1);
+    expect(screen.queryByRole("link", { name: "Site" })).toBeNull();
+  });
+
+  it("shows a single view's items with no switcher to choose from", () => {
+    vi.stubGlobal("matchMedia", matchMedia(false, true));
+    const only = views.slice(0, 1);
+    render(<SulaNav views={only} collapseBelow="md" fluid={false} />);
+
+    expect(screen.queryByRole("button", { name: "Site" })).toBeNull();
+    expect(screen.queryByRole("link", { name: "Site" })).toBeNull();
+    expect(screen.getByRole("link", { name: "Home" })).toBeInTheDocument();
+  });
+
+  it("reopens the collapsed panel on the view the reader is actually in", async () => {
+    vi.stubGlobal("matchMedia", matchMedia(false, true));
+    const user = userEvent.setup();
+    render(<SulaNav views={views} collapseBelow="md" fluid={false} />);
+
+    const trigger = screen.getByRole("button", { name: "Menu" });
+    await user.click(trigger);
+    await user.click(screen.getByRole("button", { name: "Writing" }));
+    expect(screen.getByRole("link", { name: "Latest" })).toBeInTheDocument();
+
+    await user.click(trigger);
+    await user.click(trigger);
+
+    expect(screen.getByRole("link", { name: "Home" })).toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "Latest" })).toBeNull();
+  });
+
+  it("has no a11y violations with the collapsed panel open on many views", async () => {
+    vi.stubGlobal("matchMedia", matchMedia(false, true));
+    const user = userEvent.setup();
+    const { container } = render(
+      <SulaNav views={views} collapseBelow="md" fluid={false} />,
+    );
+
+    await user.click(screen.getByRole("button", { name: "Menu" }));
+    expect(await axe(container)).toHaveNoViolations();
   });
 
   it("mounts no canvas when the user asked for reduced motion", () => {

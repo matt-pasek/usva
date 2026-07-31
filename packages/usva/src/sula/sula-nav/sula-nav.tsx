@@ -265,11 +265,9 @@ function readColors(
   };
 }
 
-/** `toCanvasSpace` gives every box a stadium radius, which is right for a pill and
- * wrong for a panel: it would round a tall box into a lozenge. */
-const panelBlob = (rect: DOMRect, box: DOMRect): Blob => {
+const panelBlob = (rect: DOMRect, box: DOMRect, clip: number): Blob => {
   const hw = rect.width / 2;
-  const hh = rect.height / 2;
+  const hh = Math.max((rect.height - clip) / 2, 0.5);
   return {
     cx: rect.left - box.left + hw,
     cy: rect.top - box.top + hh,
@@ -277,6 +275,21 @@ const panelBlob = (rect: DOMRect, box: DOMRect): Blob => {
     hh,
     r: Math.min(PANEL_RADIUS, hw, hh),
   };
+};
+
+const panelClip = (bottom: number): string =>
+  `inset(0px 0px ${Math.max(0, bottom)}px round ${PANEL_RADIUS}px)`;
+
+const panelClipBottom = (node: HTMLElement): number => {
+  const inset = getComputedStyle(node).clipPath.match(/inset\(([^)]+)\)/)?.[1];
+  if (!inset) return 0;
+  const parts = (inset.split("round")[0] ?? "")
+    .trim()
+    .split(/\s+/)
+    .map((value) => Number.parseFloat(value));
+  if (parts.length === 0 || parts.some(Number.isNaN)) return 0;
+  const bottom = parts.length >= 3 ? parts[2] : parts[0];
+  return bottom || 0;
 };
 
 const shift = (blob: Blob, rest: Blob): string =>
@@ -336,6 +349,7 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
     const panelId = React.useId();
     const [menuOpen, setMenuOpen] = React.useState(false);
     const setMenuRef = React.useRef<(open: boolean) => void>(() => {});
+    const panelFlowRef = React.useRef<(active: boolean) => void>(() => {});
     React.useEffect(() => {
       if (!collapsed) setMenuOpen(false);
     }, [collapsed]);
@@ -368,8 +382,21 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
     );
     const activeItems = views[activeViewIndex]?.items ?? [];
 
-    const activeIndexRef = React.useRef(activeViewIndex);
-    activeIndexRef.current = activeViewIndex;
+    const [browsedView, setBrowsedView] = React.useState(activeViewIndex);
+    const panelAnimatingRef = React.useRef(false);
+    const [panelResizing, setPanelResizing] = React.useState(false);
+    // biome-ignore lint/correctness/useExhaustiveDependencies: `menuOpen` is not read here. Its change is the reset: a reopened panel shows the view you are in, not the one you last browsed.
+    React.useEffect(() => {
+      setBrowsedView(activeViewIndex);
+      setPanelResizing(false);
+      panelAnimatingRef.current = false;
+    }, [activeViewIndex, menuOpen]);
+
+    const browsedItems = views[browsedView]?.items ?? [];
+
+    const rowViewIndex = collapsed ? 0 : activeViewIndex;
+    const activeIndexRef = React.useRef(rowViewIndex);
+    activeIndexRef.current = rowViewIndex;
     const leftCountRef = React.useRef(leftSats.length);
     leftCountRef.current = collapsed ? 0 : leftSats.length;
     const switchRef = React.useRef<(previous: number) => void>(() => {});
@@ -465,6 +492,7 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
       let dpr = 1;
       let raf = 0;
       let running = 0;
+      let panelFlow = false;
       let hoverIndex = -1;
       let hoverAmt = 0;
       let hoverBlob: Blob | null = null;
@@ -535,7 +563,11 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
 
         const panelNode = panelRef.current;
         const nextPanel = panelNode
-          ? panelBlob(panelNode.getBoundingClientRect(), box)
+          ? panelBlob(
+              panelNode.getBoundingClientRect(),
+              box,
+              panelClipBottom(panelNode),
+            )
           : null;
         const panelChanged = restDiffers(
           panelRest ? [panelRest] : [],
@@ -592,7 +624,8 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
         if (body) {
           const fade = swellFade(mT.value);
           body.style.opacity = `${fade}`;
-          body.style.transform = `translate3d(0, ${(1 - fade) * -10}px, 0)`;
+          body.style.transform =
+            fade >= 0.999 ? "" : `translate3d(0, ${(1 - fade) * -10}px, 0)`;
         }
         return { blobs: [swell.blob], necks: swell.neck ? [swell.neck] : [] };
       };
@@ -746,6 +779,7 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
       let textStarted = false;
       let dripStarted = false;
       const tick = () => {
+        if (panelFlow && !switching) measure();
         if (switching) switchFrame();
         else loadFrame();
 
@@ -829,6 +863,18 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
         menuControl = run(mT, [mT.value, to], open ? menuSwell : menuRetract);
       };
       setMenuRef.current = setMenu;
+
+      const setPanelFlow = (active: boolean) => {
+        if (panelFlow === active) return;
+        panelFlow = active;
+        if (active) {
+          running += 1;
+          wake();
+        } else {
+          running = Math.max(0, running - 1);
+        }
+      };
+      panelFlowRef.current = setPanelFlow;
 
       const doSwitch = (previousIndex: number) => {
         if (!loaded) return;
@@ -987,6 +1033,7 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
         switchRef.current = () => {};
         setSidesRef.current = () => {};
         setMenuRef.current = () => {};
+        panelFlowRef.current = () => {};
         if (panelBodyRef.current) {
           panelBodyRef.current.style.opacity = "";
           panelBodyRef.current.style.transform = "";
@@ -1042,6 +1089,10 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
     }, [menuOpen, isFluid]);
 
     React.useEffect(() => {
+      if (isFluid) panelFlowRef.current(panelResizing);
+    }, [panelResizing, isFluid]);
+
+    React.useEffect(() => {
       if (!menuOpen) return;
       const onKey = (event: KeyboardEvent) => {
         if (event.key === "Escape") setMenuOpen(false);
@@ -1064,7 +1115,7 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
     React.useEffect(() => {
       const nodes = [
         brandRef.current,
-        ...viewRefs.current.filter((_, i) => i !== activeViewIndex),
+        ...viewRefs.current.filter((_, i) => i !== rowViewIndex),
         ...Object.values(satRefs.current),
       ];
       for (const node of nodes) {
@@ -1072,7 +1123,7 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
         if (sidesOpen) node.removeAttribute("inert");
         else node.setAttribute("inert", "");
       }
-    }, [sidesOpen, activeViewIndex, brand, views, satellites]);
+    }, [sidesOpen, rowViewIndex, brand, views, satellites]);
 
     /* A closed panel is still laid out, because the field has to know the shape
      * it is growing toward. Laid out but not reachable: inert, or the whole menu
@@ -1084,6 +1135,80 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
       if (menuOpen) node.removeAttribute("inert");
       else node.setAttribute("inert", "");
     }, [menuOpen, collapsed]);
+
+    const [panelHeight, setPanelHeight] = React.useState<number | null>(null);
+    const [panelScrollable, setPanelScrollable] = React.useState(true);
+    const panelHeightRef = React.useRef<number | null>(null);
+    useIsomorphicLayoutEffect(() => {
+      const panel = panelRef.current;
+      const body = panelBodyRef.current;
+      if (!collapsed || !panel || !body) {
+        panelHeightRef.current = null;
+        panelAnimatingRef.current = false;
+        setPanelHeight(null);
+        setPanelResizing(false);
+        setPanelScrollable(true);
+        return;
+      }
+      if (typeof ResizeObserver === "undefined") return;
+      const sync = () => {
+        const style = getComputedStyle(panel);
+        const pad =
+          (Number.parseFloat(style.paddingTop) || 0) +
+          (Number.parseFloat(style.paddingBottom) || 0);
+        const nextHeight = Math.round(body.offsetHeight + pad);
+        const styleMax = Number.parseFloat(style.maxHeight);
+        const rootSize =
+          Number.parseFloat(
+            getComputedStyle(document.documentElement).fontSize,
+          ) || 16;
+        const viewportHeight =
+          window.visualViewport?.height ?? window.innerHeight;
+        const maxHeight = Number.isFinite(styleMax)
+          ? styleMax
+          : Math.min(520, viewportHeight - 5 * rootSize);
+        const bounded = Math.min(nextHeight, maxHeight);
+        const previous = panelHeightRef.current;
+
+        setPanelScrollable(nextHeight > maxHeight + 0.5);
+        if (
+          menuOpen &&
+          !reduced &&
+          previous != null &&
+          Math.abs(previous - bounded) > 0.5
+        ) {
+          const from =
+            panel.getBoundingClientRect().height - panelClipBottom(panel);
+          const box = Math.max(from, bounded);
+          panel.style.height = `${box}px`;
+          panel.style.transitionProperty = "none";
+          panel.style.clipPath = panelClip(box - from);
+          void panel.offsetHeight;
+          panel.style.transitionProperty = "";
+          panel.style.clipPath = panelClip(box - bounded);
+          panelAnimatingRef.current = true;
+          setPanelResizing(true);
+          setPanelHeight(box);
+        } else if (!panelAnimatingRef.current) {
+          if (panelClipBottom(panel) > 0) {
+            panel.style.transitionProperty = "none";
+            panel.style.clipPath = panelClip(0);
+            void panel.offsetHeight;
+            panel.style.transitionProperty = "";
+          }
+          setPanelHeight(bounded);
+        }
+        panelHeightRef.current = bounded;
+      };
+      sync();
+      const observer = new ResizeObserver(sync);
+      observer.observe(body);
+      window.addEventListener("resize", sync);
+      return () => {
+        observer.disconnect();
+        window.removeEventListener("resize", sync);
+      };
+    }, [collapsed, browsedView, menuOpen, reduced]);
 
     const part = cn(
       "relative rounded-full",
@@ -1186,9 +1311,20 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
       </button>
     );
 
+    const menuNode = (
+      <div
+        ref={(node) => {
+          viewRefs.current[0] = node;
+        }}
+        className={part}
+        data-active
+      >
+        {menuDroplet}
+      </div>
+    );
+
     const viewNodes = views.map((view, index) => {
       const isActive = index === activeViewIndex;
-      const isMenu = isActive && collapsed;
       return (
         <div
           key={view.href}
@@ -1201,9 +1337,7 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
           )}
           data-active={isActive || undefined}
         >
-          {isMenu ? (
-            menuDroplet
-          ) : isActive ? (
+          {isActive ? (
             <ul className="flex items-center gap-1 p-1.5">
               <span
                 aria-hidden="true"
@@ -1273,17 +1407,76 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
         id={panelId}
         className={cn(
           "absolute top-full right-0 left-0 z-10 mt-3 max-h-[min(520px,calc(100dvh-5rem))] rounded-[28px] p-2",
-          fluidShell
-            ? "transition-opacity duration-fast motion-reduce:transition-none"
-            : "border border-border bg-surface/95 shadow-raised backdrop-blur-xl",
-          menuOpen && "overflow-y-auto",
+          "transition-[clip-path] duration-slow ease-soft motion-reduce:transition-none",
+          !fluidShell &&
+            "border border-border bg-surface/95 shadow-raised backdrop-blur-xl",
+          menuOpen &&
+            (panelResizing || !panelScrollable
+              ? "overflow-clip"
+              : "overflow-y-auto"),
           !menuOpen &&
             (fluidShell ? "pointer-events-none overflow-hidden" : "hidden"),
         )}
+        style={
+          panelHeight == null
+            ? { clipPath: panelClip(0) }
+            : { height: panelHeight, clipPath: panelClip(0) }
+        }
+        onTransitionEnd={(event) => {
+          if (
+            event.target !== event.currentTarget ||
+            event.propertyName !== "clip-path"
+          )
+            return;
+          /* The clipped remainder and the removed box height are the same
+           * pixels, so this swap does not paint. */
+          const panel = event.currentTarget;
+          const target = panelHeightRef.current;
+          if (target != null) {
+            panel.style.transitionProperty = "none";
+            panel.style.clipPath = panelClip(0);
+            panel.style.height = `${target}px`;
+            void panel.offsetHeight;
+            panel.style.transitionProperty = "";
+            setPanelHeight(target);
+          }
+          panelAnimatingRef.current = false;
+          setPanelResizing(false);
+        }}
       >
         <div ref={panelBodyRef} className={cn(fluidShell && "opacity-0")}>
-          <ul className="flex flex-col gap-0.5">
-            {activeItems.map((item) => (
+          {views.length > 1 ? (
+            <ul className="flex flex-col gap-0.5 border-border border-b pb-2">
+              {views.map((view, index) => (
+                <li key={view.href}>
+                  <button
+                    type="button"
+                    aria-pressed={index === browsedView}
+                    onClick={() => {
+                      if (index !== browsedView) setBrowsedView(index);
+                    }}
+                    className={cn(
+                      "flex min-h-11 w-full items-center gap-3 rounded-full px-4 text-sm whitespace-nowrap outline-none",
+                      "text-muted transition-tint duration-fast ease-soft hover:text-ink",
+                      "aria-pressed:bg-ink/6 aria-pressed:text-ink focus-visible:ring-focus",
+                    )}
+                  >
+                    <span aria-hidden="true" className="inline-flex shrink-0">
+                      {view.icon}
+                    </span>
+                    {view.label}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          ) : null}
+          <ul
+            aria-label={
+              views.length > 1 ? views[browsedView]?.label : undefined
+            }
+            className={cn("flex flex-col gap-0.5", views.length > 1 && "mt-2")}
+          >
+            {browsedItems.map((item) => (
               <li key={item.href}>{itemLink(item, true)}</li>
             ))}
           </ul>
@@ -1337,7 +1530,7 @@ export const SulaNav = React.forwardRef<HTMLElement, SulaNavProps>(
         {collapsed ? (
           <>
             {brandNode}
-            {viewNodes}
+            {menuNode}
           </>
         ) : hasSatellites ? (
           <>
