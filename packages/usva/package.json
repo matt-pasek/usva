@@ -1,6 +1,6 @@
 {
   "name": "@usva-ui/react",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A React design language in three themes: kajo is atmospheric and dark, sisu is dense and quick, savi is the light ground. One token vocabulary under all three.",
   "keywords": [
     "usva",
