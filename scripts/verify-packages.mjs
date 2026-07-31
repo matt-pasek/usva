@@ -144,6 +144,31 @@ try {
     run("bunx", ["publint"], join(ROOT, dir));
   }
 
+  // `npm publish` ships the manifest byte-for-byte; unlike bun and pnpm it does
+  // not rewrite `workspace:` ranges. 1.0.0 and 1.0.1 both went out carrying
+  // `"@usva-ui/tokens": "workspace:*"`, which every consumer install rejects
+  // with EUNSUPPORTEDPROTOCOL. Read it back off the tarball, not the source
+  // tree, so this asserts against the bytes that actually reach the registry.
+  console.log("\n=== no workspace: ranges in the packed manifests ===");
+  for (const { tarball } of PACKAGES) {
+    const manifest = JSON.parse(
+      execFileSync("tar", ["-xOf", tarball, "package/package.json"], {
+        cwd: work,
+        encoding: "utf8",
+      }),
+    );
+    for (const field of ["dependencies", "peerDependencies", "optionalDependencies"]) {
+      for (const [dep, range] of Object.entries(manifest[field] ?? {})) {
+        if (String(range).startsWith("workspace:")) {
+          throw new Error(
+            `${tarball}: ${field}.${dep} is "${range}". npm publishes this verbatim and the install fails. Pin a real range.`,
+          );
+        }
+      }
+    }
+    console.log(`${tarball}: clean`);
+  }
+
   for (const { tarball, entrypoints } of PACKAGES) {
     console.log(`\n=== attw ${tarball} ===`);
     run(
@@ -164,8 +189,10 @@ try {
   console.log("\n=== install tarballs into a clean consumer ===");
   const consumer = join(work, "consumer");
   mkdirSync(consumer);
-  // `npm pack` leaves `workspace:*` in the manifest; only publish rewrites it,
-  // so the tokens tarball has to be pinned explicitly for the fixture to resolve.
+  // The override forces the react tarball onto the tokens tarball built in this
+  // same run, so the fixture proves the two local builds agree. Without it the
+  // pinned range would resolve tokens from the registry and the freshly packed
+  // one would never be exercised.
   const tokensTarball = `file:${join(work, PACKAGES[1].tarball)}`;
   writeFileSync(
     join(consumer, "package.json"),
