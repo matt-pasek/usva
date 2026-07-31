@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   type Blob,
+  BRIDGE_REACH,
   bridgeNecks,
   lerpBlob,
   packUniforms,
@@ -237,6 +238,32 @@ describe("revealPhase", () => {
     expect(
       bridgeNecks([bar, overshot], restK * 1.15, 0.32).length,
     ).toBeGreaterThan(0);
+  });
+
+  it("eases into the bounce budget instead of stopping dead on it", () => {
+    /* A hard min/max held the pill on its limit for ~350ms of the settle: the
+     * spring kept pushing, the drawn position did not move, and the eye read a
+     * wall. Every sample through the outward turn must still advance. */
+    const restK = 14;
+    const near = blob({ cx: 630, cy: 40, hw: 22, hh: 22, r: 22 });
+    const at = (t: number) => revealSide(bar, near, t, restK).blob.cx;
+    const restCx = at(1);
+
+    let previous = restCx;
+    let pinned = 0;
+    for (let t = 1.02; t <= 1.4; t += 0.02) {
+      const cx = at(t);
+      if (Math.abs(cx - previous) < 1e-4) pinned++;
+      previous = cx;
+    }
+    expect(pinned).toBe(0);
+
+    // The ceiling still holds: slack * BOUNCE_OF_SLACK past the rest line.
+    const restGap = Math.abs(near.cx - bar.cx) - near.hw - bar.hw;
+    const budget = (restK * BRIDGE_REACH - restGap) * 0.75;
+    for (let t = 1; t <= 3; t += 0.01) {
+      expect(at(t) - restCx).toBeLessThanOrEqual(budget + 1e-6);
+    }
   });
 
   it("lets a satellite bound past the bridge's reach overshoot freely", () => {

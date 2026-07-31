@@ -204,12 +204,12 @@ export function revealSide(
    * spring carries it. */
   const restGap = Math.abs(rest.cx - bar.cx) - rest.hw - bar.hw;
   const slack = k * BRIDGE_REACH - restGap;
+  const limit = slack * BOUNCE_OF_SLACK;
+  const past = (rawCx - rest.cx) * dir;
   const cx =
-    slack <= 0
+    slack <= 0 || past <= 0
       ? rawCx
-      : dir > 0
-        ? Math.min(rawCx, rest.cx + slack * BOUNCE_OF_SLACK)
-        : Math.max(rawCx, rest.cx - slack * BOUNCE_OF_SLACK);
+      : rest.cx + dir * limit * Math.tanh(past / limit);
   const cy = mix(bar.cy, rest.cy, travel);
   const blob: Blob = { cx, cy, hw, hh, r: Math.min(hw, hh) };
 
