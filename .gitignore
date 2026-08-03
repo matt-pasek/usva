@@ -37,5 +37,3 @@ ds-bundle/
 
 brag-output
 
-# press footage lives on the press-assets release, never in the tree
-apps/docs/public/press/*.mp4

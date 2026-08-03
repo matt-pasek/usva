@@ -29,9 +29,10 @@ const REPO = "https://github.com/matt-pasek/usva";
 const NPM = `https://www.npmjs.com/package/${PACKAGE_NAME}`;
 const SITE = SITE_ORIGIN.replace(/^https?:\/\//, "");
 
-/* Stored on the press-assets release, served back through our own route so the
- * content-type is right. See app/press/footage/[file]/route.ts. */
-const FOOTAGE = "/press/footage";
+/* Served straight from public/. A route handler cannot do this job here: it is
+ * the only dynamic route in the app, and Vercel's CommonJS launcher cannot
+ * require() it while the package is type: module. */
+const FOOTAGE = "/press";
 
 function Asset({
   href,
